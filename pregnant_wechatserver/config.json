@@ -1,0 +1,15 @@
+{
+    "dbaddr":"localhost",
+    "port":"3306",
+    "user":"root",
+    "pass":"zhaowen",
+    "dbname":"yxdDB",
+    "dialect":"mysql",
+    "poolsize":5,
+    "listen":8090,
+    "appid":"wx5da59f32f8c2f724",
+    "appsec":"034d7b352fd2f99095128730f87baf81",
+    "token":"czwserver",
+    "encodingAESKey":"",
+    "authCodeAddress":"http://czw123.ngrok.cc/api/auth"
+}

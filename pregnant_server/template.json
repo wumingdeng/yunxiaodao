@@ -1,0 +1,14 @@
+{
+    "template_inform_user_pay_expired":"",
+    "template_inform_workers":"",
+    "template_inform_user_repick":"",
+    "template_inform_worker_assign":"",
+    "template_inform_user_beaccepted":"",
+    "template_inform_worker_start":"",
+    "template_inform_user_comment":"",
+    "template_inform_user_confirm_service":"",
+    "template_inform_staff_start_service:":"", 
+    "template_inform_user_confirm_exam:":"", 
+    "template_inform_exam_worker":"", 
+    "template_inform_exam_worker_connect":"" 
+}
