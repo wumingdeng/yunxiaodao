@@ -1,6 +1,6 @@
 <template>
 	<f7-page navbar-through>
-    <f7-navbar sliding>
+    <f7-navbar sliding style='height:60px;background-color:#1f2d3d;color:#ffffff'>
       <f7-nav-left v-if="!isNecessary">
           <f7-link icon="icon-back" @click="$router.go(-1)"></f7-link>
       </f7-nav-left>
@@ -8,36 +8,36 @@
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
 
-    <f7-list id="userinfoForm" form>
+    <f7-list id="userinfoForm" form style='margin-top:17px'>
       <f7-list-item>
         <f7-label>身高</f7-label>
         <div class="item-input custom">
           <input id="heightInput" type="number" placeholder="" v-model="$store.state.userinfo.height">
         </div>
         <!-- <f7-input class="custom" id="heightInput" type="number" placeholder="" v-model="userHeight"></f7-input> -->
-        <span style="width:100%;margin-left:10px;">cm</span>
+        <span style="width:20%;margin-left:50px;">cm</span>
       </f7-list-item>
       <f7-list-item>
         <f7-label>孕前体重</f7-label>
         <div class="item-input custom">
           <input id="weightInput" type="number" placeholder="" v-model="$store.state.userinfo.weight">
         </div>
-        <!-- <f7-input class="custom" id="weightInput" type="number" placeholder="" v-model="userWeight"></f7-input> -->
-        <span style="width:100%;margin-left:10px;">kg</span>
+        <span style="width:20%;margin-left:50px;">kg</span>
       </f7-list-item>
       <f7-list-item>
         <f7-label>末次月经时间</f7-label>
-        <f7-input id="lastPeriodInput" type="date" placeholder=""></f7-input>
+        <f7-input class='datainput' style='margin-left: 160px' id="lastPeriodInput" type="date" placeholder=""></f7-input>
       </f7-list-item>
-      <f7-list-item>
+      <f7-list-item form>
         <f7-label>是否单胎妊娠</f7-label>
-        <f7-input id="isSingleInput" type="select" v-model="userIsSingle">
-          <option value="1">是</option>
-          <option value="0">否</option>
-        </f7-input>
+      	<f7-list-item style='margin-left:80px' checkbox id="my-radio_0" value="0" title="是" :checked='radio_0' @click="radio_0_fun"></f7-list-item>
+				<f7-list-item  checkbox id="my-radio_1" value="1" title="否" :checked='radio_1' @click="radio_1_fun"></f7-list-item>
       </f7-list-item>
-      <p><f7-button round fill color="green" @click="onUpdateInfo">更新</f7-button></p>
     </f7-list>
+		<f7-grid>
+          <f7-col><f7-button big fill style='margin:-10px 0px 0px 10px;background-color:#fa7699' @click="onUpdateInfo">更新</f7-button></f7-col>
+          <f7-col><f7-button big fill style='margin:-10px 10px 0px 0px;background-color:#fa7699'>取消</f7-button></f7-col>
+        </f7-grid>
 	</f7-page>
 </template>
 
@@ -45,7 +45,9 @@
 	export default {
 		data() {
 			return {
-				isNecessary:false
+				isNecessary:false,
+				radio_0:false,
+				radio_1:false,
 			}
 		},
 		computed:{
@@ -70,6 +72,23 @@
 		},
 
 		methods:{
+			radio_0_fun(event) {
+				if(this.$data.radio_0){
+						this.$data.radio_0 = false
+				}else{
+						this.$data.radio_0 = true
+				}
+				this.$data.radio_1 = false
+			},
+			radio_1_fun(event) {
+				if(this.$data.radio_1){
+					this.$data.radio_1 = false
+				}else{
+					this.$data.radio_1 = true
+				}
+				this.$data.radio_0 = false
+				
+			},
 			checkInput() {
   			var height = document.getElementById("heightInput").value
     		if (!height) {
@@ -85,7 +104,7 @@
     			this.$f7.alert('','请输入体重 单位:kg')
     			return false
     		}
-  			var isSingle = document.getElementById("isSingleInput").value
+  			
   			var	lastPeriod = document.getElementById("lastPeriodInput").value
     		if (!lastPeriod) {
     			this.$f7.alert('','请选择末次月经时间')
@@ -98,6 +117,13 @@
     			return false
     		}
 
+				var isSingle = this.$data.radio_0?1:0
+				if(!this.$data.radio_0 && !this.$data.radio_1)
+				{
+					this.$f7.alert('','请选择单胎妊娠')
+					return false
+				}
+
     		return true;
 			},
 			onUpdateInfo() {
@@ -109,7 +135,7 @@
   				wxid:this.$store.state.wxid,
   				height:document.getElementById("heightInput").value,
   				weight:document.getElementById("weightInput").value,
-  				isSingle:document.getElementById("isSingleInput").value,
+  				isSingle:this.$data.radio_0?1:0,
   				lastPeriod:document.getElementById("lastPeriodInput").value
   			}
 				this.$store.dispatch('updateInfo',{
@@ -137,9 +163,17 @@
 
 <style scoped>
   .custom {
-    width: 30%;
+    width: 100%;
   }
   .custom input {
     text-align: right;
   }
+	.page-content {
+    padding-top: 5px;
+	}
+	.datainput{
+    width: 40%;
+	}
+	
+	
 </style>
