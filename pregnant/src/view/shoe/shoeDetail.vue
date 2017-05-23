@@ -22,14 +22,14 @@
 			</f7-card-content>
 		</f7-card>
 
-<!--     <buyShoe 
+    <buyShoe 
       :pickerOpened="pickerOpened">
      
-    </buyShoe> -->
+    </buyShoe>
 
     <div class="navFooter">
-        <p><f7-button class="pre" @click="$router.push('/buyShoe')">立即购买</f7-button></p>
-        <!-- <p><f7-button class="pre" @click="pickerOpened=true">立即购买</f7-button></p> -->
+        <!-- <p><f7-button class="pre" @click="$router.push('/buyShoe')">立即购买</f7-button></p> -->
+        <p><f7-button class="pre" @click="onClickBuy">立即购买</f7-button></p>
     </div>
 	</f7-page>
 </template>
@@ -57,6 +57,13 @@
     			return []
     		}
     	}
+    },
+    methods:{
+      onClickBuy() {
+        console.log(this.$f7);
+        debugger
+        this.pickerOpened = true;
+      }
     },
 		beforeRouteEnter(to,from,next){
 			//获取首页的配置信息

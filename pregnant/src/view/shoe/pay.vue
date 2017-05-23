@@ -91,7 +91,9 @@
 					self:this,
 					info:info,
 					callback(self, res) {
-
+						if (res.body.w) {
+							self.$f7.alert('','下单成功')
+						}
 					}
 				})
 			}
