@@ -201,6 +201,28 @@ export function getProductDetail ({commit, state},data) {
     });
 }
 
+export function ordermake ({commit, state}, data) {
+  var self = data.self;
+  self.$http.post(g.debugUrlPrefix + '/api/ordermake', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      onErrorRefresh(self);
+    });
+}
+
+
+
 //取订单
 export function orderlistUser ({commit, state}, data) {
   var self = data.self;

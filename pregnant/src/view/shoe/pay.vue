@@ -70,7 +70,30 @@
 		},
 		methods:{
 			onPay() {
-				
+				var state = this.$store.state
+				var info = {}
+				info.wxid = state.wxid
+				info.shoeid = state.productDetail.id
+				info.size = state.shoeSize
+				info.color = state.shoeColor
+				info.type = state.shoeType
+				info.remark = state.remark
+				info.contact = state.userinfo.contact
+				info.gender = state.userinfo.gender
+				info.tel = state.userinfo.tel
+				info.address = state.userinfo.address
+				info.province = state.userinfo.province
+				info.city = state.userinfo.city
+				info.area = state.userinfo.area
+
+
+				this.$store.dispatch('ordermake',{
+					self:this,
+					info:info,
+					callback(self, res) {
+
+					}
+				})
 			}
 		}
 	}

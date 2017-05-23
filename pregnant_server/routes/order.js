@@ -19,7 +19,6 @@ order_router.route('/ordermake').post(function(req,res){
     var city = req.body.city || ''
     var area = req.body.area
     var shoeid = req.body.shoeid
-    var shoeName = req.body.shoeName
     var size = req.body.size
     var color = req.body.color || ''
     var type = req.body.type
@@ -35,25 +34,21 @@ order_router.route('/ordermake').post(function(req,res){
     
     // 计算价格
     var price = mem.m.products[shoeid].price;
+    var shoeName = mem.m.products[shoeid].name;
     
     db.users.findOne({where:{'wxid':wxid}}).then(function(data){
         if(data){
             var nowsec = Math.floor(Date.now()/1000)
-            var payExpireSec = mem.m.configs[0].payExpiredTime * 3600
-            var payend = nowsec + payExpireSec
-            var point = { type: 'Point', coordinates: [geo.x,geo.y]};
-            console.log('geoaddress=' + geoaddress);
-            db.orders.create({geoaddress:geoaddress,catalog:cid,service:sid,userid:data.id,
-                workerid:wid,needpay:price,payend:payend,price:price,city:city,
-                address:address,extra:extra,geo:point,createtime:nowsec,userwxid:wxid,
-                username:username,tel:tel,hospitalid:hospital,user_idnumber:user_idnumber,lastPeriod:lastPeriod,status:1}).then(function(order) {
-                    mem.r.pub.set('pe:'+order.id+":"+data.id,1)
-                    mem.r.pub.expire('pe:'+order.id+":"+data.id,payExpireSec)
+            db.orders.create({wxid:wxid,contact:contact,gender:gender,tel:tel,
+                address:address,province:province,city:city,area:area,shoeid:shoeid,
+                price:price,shoeName:shoeName,size:size,createtime:nowsec,color:color,
+                type:type,remark:remark,status:0}).then(function(order) {
+                    // mem.r.pub.set('pe:'+order.id+":"+data.id,1)
+                    // mem.r.pub.expire('pe:'+order.id+":"+data.id,payExpireSec)
                     // mem.r.pub.expire('pe:'+order.id,7)
-                    res.json({w:price})
-                    if(data.lastPeriod == 0){
-                        db.users.update({lastPeriod:lastPeriod},{where:{wxid:wxid}})
-                    }
+                res.json({w:price})
+                //更新用户资料
+                db.users.update({contact:contact,gender: gender,tel: tel,address: address,province: province,city: city,area: area},{where:{wxid:wxid}})
             })
         }else{
             res.json({err:g.errorCode.WRONG_USER_MISSING})

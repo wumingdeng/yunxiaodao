@@ -47,17 +47,21 @@ user_router.route('/getWeightInfo').post(function(req, res) {
         db.users.findOne({where:{'wxid':wxid}}).then(function(data){
             if (data) {
                 db.weight_records.findOne({where:{'userid': wxid},order:'recordDate DESC'}).then(function(wdata){
+                    var lastPeriod = data.dataValues.lastPeriod;
+                    var currentWeek = getWeek(lastPeriod);  //取当前周数
+                    var currentStandard = getStandardWeight();  //取当前标准体重
                     if (wdata) {
-                        var lastPeriod = data.dataValues.lastPeriod;
-                        var currentWeek = getWeek(lastPeriod);  //取当前周数
-                        var currentStandard = getStandardWeight();  //取当前标准体重
                         wdata.dataValues.currentWeek = currentWeek;
                         wdata.dataValues.currentStandard = currentStandard;
                         console.log('get weightRecord');
                         res.json({ok:wdata.dataValues})
                     } else {
+                        var resData = {
+                            currentWeek: currentWeek,
+                            currentStandard: currentStandard
+                        }
                         console.log('no weightRecord');
-                        res.json({ok:0})
+                        res.json({ok:resData})
                     }
                 })               
             } else {
@@ -77,20 +81,35 @@ user_router.route('/fillWeight').post(function(req, res) {
     } else {
         //取出最新的一条数据 如果是当天存的 就覆盖掉
         //根据算法 得出体重数据 存入体重数据表中
-        var newRecord = {weight:weight,week: 2,recordDate:new Date()};
+        var newRecord = {weight:weight,recordDate:new Date().toLocaleDateString()};
         db.weight_records.update(newRecord, {
-            where:
-                db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')),'=',db.sequelize.fn('TO_DAYS',new Date()))
-            
+            where:[
+                {userid:wxid},
+                db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')),'=',db.sequelize.fn('TO_DAYS',new Date().toLocaleString()))
+            ]
         }).then(function(data){
+            console.log(data);
             if (data[0] != 0) {
                 console.log('更新体重数据')
                 res.json({ok:newRecord})
             } else {
-                newRecord.userid = wxid;
-                db.weight_records.create(newRecord).then(function() {
-                    console.log('创建体重数据')
-                    res.json({ok:newRecord})
+                //计算周数
+                db.users.findOne({where:{'wxid':wxid}}).then(function(udata){
+                    if (udata) {
+                        var lastPeriod = udata.dataValues.lastPeriod;
+                        var currentWeek = getWeek(lastPeriod);  //取当前周数
+                        var currentStandard = getStandardWeight();  //取当前标准体重
+                        newRecord.userid = wxid;
+                        newRecord.week = currentWeek;
+                        db.weight_records.create(newRecord).then(function() {
+                            console.log('创建体重数据')
+                            res.json({ok:newRecord})
+                        }, function() {
+                            console.log('不能创建数据。。')
+                        })
+                    } else {
+                        res.json({ok:0})
+                    }
                 })
             }
         });

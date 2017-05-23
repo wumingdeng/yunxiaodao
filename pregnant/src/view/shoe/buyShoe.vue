@@ -1,12 +1,12 @@
 <template>
-	<f7-page navbar-through>
-		<f7-navbar sliding>
-      <f7-nav-left>
-          <f7-link icon="icon-back" @click="$router.go(-1)"></f7-link>
-      </f7-nav-left>
-      <f7-nav-center sliding title="购买商品"></f7-nav-center>
-      <f7-nav-right></f7-nav-right>
-    </f7-navbar>
+  <f7-page>
+<!--   <f7-picker-modal id="buy-picker" :opened="pickerOpened" style="height:500px;">
+    <f7-toolbar>
+    <f7-nav-left></f7-nav-left>
+      <f7-nav-right>
+        <f7-link @click="pickerOpened=false">关闭</f7-link>
+      </f7-nav-right>
+    </f7-toolbar> -->
 		<f7-block inner>
 			<f7-grid name="baseInfo">
 				<f7-col width=40>
@@ -67,12 +67,13 @@
 				</ul>
 			</div>			
 
+      <div style="height:100px;"></div>
 		</f7-block>
-		<div style="height:100px;"></div>
     <div class="navFooter">
         <p><f7-button class="pre" @click="onBuy">立即购买</f7-button></p>
     </div>
-	</f7-page>
+  <!-- </f7-picker-modal> -->
+  </f7-page>
 </template>
 
 <script>
@@ -85,6 +86,7 @@
   			productDetail:{}
   		}
   	},
+    props:['pickerOpened'],
   	computed:{
   		sizeArray() {
   			if (this.productDetail && this.productDetail.size) {
@@ -157,7 +159,7 @@
     bottom: 0;
     right: auto;
     top: auto;
-    height: 1.5px;
+    height: 1px;
     width: 100%;
     background-color: #e1e1e1;
     display: block;

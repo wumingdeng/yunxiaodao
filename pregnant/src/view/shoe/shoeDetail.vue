@@ -22,22 +22,31 @@
 			</f7-card-content>
 		</f7-card>
 
+<!--     <buyShoe 
+      :pickerOpened="pickerOpened">
+     
+    </buyShoe> -->
+
     <div class="navFooter">
         <p><f7-button class="pre" @click="$router.push('/buyShoe')">立即购买</f7-button></p>
+        <!-- <p><f7-button class="pre" @click="pickerOpened=true">立即购买</f7-button></p> -->
     </div>
 	</f7-page>
 </template>
 
 <script>
 	import homeSwipe from "./homeSwipe";
+  import buyShoe from "./buyShoe";
 	export default{
 		data () {
 			return {
+        pickerOpened:false,
 				productData:{}
 			}
 		},
     components:{
-    	"homeSwipe":homeSwipe
+    	"homeSwipe":homeSwipe,
+      'buyShoe':buyShoe
     },     
     computed: {
     	swipeData() {

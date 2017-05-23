@@ -11,15 +11,23 @@
     <f7-list id="userinfoForm" form>
       <f7-list-item>
         <f7-label>身高</f7-label>
-        <f7-input id="heightInput" type="number" placeholder="cm" v-model="userHeight"></f7-input>
+        <div class="item-input custom">
+          <input id="heightInput" type="number" placeholder="" v-model="$store.state.userinfo.height">
+        </div>
+        <!-- <f7-input class="custom" id="heightInput" type="number" placeholder="" v-model="userHeight"></f7-input> -->
+        <span style="width:100%;margin-left:10px;">cm</span>
       </f7-list-item>
       <f7-list-item>
         <f7-label>孕前体重</f7-label>
-        <f7-input id="weightInput" type="number" placeholder="kg" v-model="userWeight"></f7-input>
+        <div class="item-input custom">
+          <input id="weightInput" type="number" placeholder="" v-model="$store.state.userinfo.weight">
+        </div>
+        <!-- <f7-input class="custom" id="weightInput" type="number" placeholder="" v-model="userWeight"></f7-input> -->
+        <span style="width:100%;margin-left:10px;">kg</span>
       </f7-list-item>
       <f7-list-item>
         <f7-label>末次月经时间</f7-label>
-        <f7-input id="lastPeriodInput" type="date" placeholder="" value="2016-04-30" v-model="userLastPeroid"></f7-input>
+        <f7-input id="lastPeriodInput" type="date" placeholder=""></f7-input>
       </f7-list-item>
       <f7-list-item>
         <f7-label>是否单胎妊娠</f7-label>
@@ -126,3 +134,12 @@
 		}
 	}
 </script>
+
+<style scoped>
+  .custom {
+    width: 30%;
+  }
+  .custom input {
+    text-align: right;
+  }
+</style>

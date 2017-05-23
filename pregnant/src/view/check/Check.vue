@@ -3,7 +3,7 @@
     <!-- <f7-navbar back-link="返回" title="产检记录" sliding></f7-navbar> -->
     <f7-card>
       <f7-card-content>
-        <h3 style="text-align:center;">您已经怀孕 {{weightInfo.week}} 周了</h3>
+        <h3 style="text-align:center;">您已经怀孕 {{weightInfo.currentWeek}} 周了</h3>
         <p style="text-align:center;">建议体重范围：{{weightInfo.currentStandard}}</p>
         <p>
           <f7-grid>
@@ -19,8 +19,16 @@
         <f7-list style="margin-bottom:10px;" form>
           <f7-list-item>
             <f7-label>手工输入:</f7-label>
-            <f7-input id="inputWeight" name="name" type="number" placeholder="kg"></f7-input>
+            <div class="item-input custom">
+              <input id="inputWeight" type="number" placeholder="">
+            </div>
+            <!-- <f7-input class="custom" id="weightInput" type="number" placeholder="" v-model="userWeight"></f7-input> -->
+            <span style="width:100%;margin-left:10px;">kg</span>
           </f7-list-item>
+   <!--        <f7-list-item>
+            <f7-label>手工输入:</f7-label>
+            <f7-input id="inputWeight" name="name" type="number" placeholder="kg"></f7-input>
+          </f7-list-item> -->
         </f7-list>
         <f7-button fill color="green" @click='onFillWeight'>评估</f7-button>
       </f7-card-content>
@@ -55,17 +63,7 @@
       return {
         msg: 'Welcome to Check Page',
         haveData: true,
-        weightInfo:{
-          week:2,
-          currentStandard:'50,60',
-          standard:'50,60',
-          weight:55,
-          hospital:'妇幼医院',
-          recordDate:'1999-12-12',
-          result:'正常',
-          tip:'注意保暖',
-          diet:'少吃饭'
-        }
+        weightInfo:{}
       }
     },
 
@@ -84,8 +82,14 @@
     methods: {
       onFillWeight() {
         var weight = document.getElementById("inputWeight").value;
+        var isSend = false
         if (weight != '') {
           this.$f7.confirm('','您输入的体重为:' + weight + 'kg',()=>{
+            if (isSend) {
+              document.getElementById("inputWeight").value = ''
+              return
+            }
+            isSend = true;
             this.$store.dispatch('fillWeight',{
               self:this,
               info:{
@@ -96,6 +100,7 @@
                 if (res.body.ok) {
                   self.weightInfo = {...self.weightInfo,...res.body.ok} //覆盖原数据
                   self.haveData = true;
+                  document.getElementById("inputWeight").value = ''
                 } else {
 
                 }
@@ -118,11 +123,11 @@
           wxid: this.$store.state.wxid
         },
         callback:function(self,res) {
-          if (res.body.ok == 0) {
+          self.weightInfo = res.body.ok
+          if (!res.body.ok.id) {
             self.haveData = false;
             console.log('没有体重信息')
           } else {
-            self.weightInfo = res.body.ok
           }
         }
       })
@@ -146,4 +151,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .custom {
+    width: 30%;
+  }
+  .custom input {
+    text-align: right;
+  }
 </style>

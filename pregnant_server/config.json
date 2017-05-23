@@ -1,5 +1,5 @@
 {
-    "dbaddr":"192.168.18.216",
+    "dbaddr":"localhost",
     "port":"3306",
     "user":"root",
     "pass":"zhaowen",

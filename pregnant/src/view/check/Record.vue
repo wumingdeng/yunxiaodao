@@ -8,7 +8,14 @@
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
     
-    <f7-card>
+    <div v-if="isNoData"
+      style="text-align:center;height:100%;" 
+    >
+      <span style="height:100%;vertical-align:middle;display:inline-block;"></span>
+      <img style="vertical-align:middle;" src="static/assets/no_records.png">
+    </div>
+
+    <f7-card v-if="!isNoData">
       <f7-card-content>
         <div id="charts">
             <div id="myChart"  :style="{width:'390px',height:'400px'}"></div>
@@ -102,7 +109,7 @@
               // interval:1,
               boundaryGap: false,
               type: 'value',
-              min:'dataMin',
+              min: 0,
               max: 40
               // interval:1,
               // data: self.chartData.map(function (item) {
@@ -114,7 +121,7 @@
                   show: true
               },
               name:'体重 (kg)',
-              min:'dataMin'
+              min: 30
           },
           // toolbox: {
           //     left: 'center',
@@ -184,7 +191,21 @@
         console.log(date)
         return date.substring(0,10)
       },
-
+      getChartData(data) {
+        //取折线图数据
+        this.$store.dispatch('getWeightChart',{
+          self:this,
+          info:{
+            wxid:this.$store.state.wxid
+          },
+          callback(self,res) {
+            if (res.body.ok != 0) {
+              self.chartData = res.body.ok
+              self.showCharts();
+            }
+          }
+        })
+      },
       getWeightData(callback) {
         this.$store.dispatch('getWeightData',{
           self:this,
@@ -197,6 +218,7 @@
               self.weightInfo = self.weightInfo.concat(res.body.ok)
               if (res.body.ok.length > 0) {
                   self.isNoData = false;
+                  this.getChartData();
               }
               if (res.body.ok.length < self.pageCount) {
                   //停止加载
@@ -216,20 +238,6 @@
     mounted () {
       // this.$f7.resize()
       this.$f7.initPageInfiniteScroll('#app');
-
-      //取折线图数据
-      this.$store.dispatch('getWeightChart',{
-        self:this,
-        info:{
-          wxid:this.$store.state.wxid
-        },
-        callback(self,res) {
-          if (res.body.ok != 0) {
-            self.chartData = res.body.ok
-            self.showCharts();
-          }
-        }
-      })
 
       //取每条记录
       this.getWeightData();
