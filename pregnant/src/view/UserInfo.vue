@@ -14,24 +14,23 @@
         <div class="item-input custom">
           <input id="heightInput" type="number" placeholder="" v-model="$store.state.userinfo.height">
         </div>
-        <!-- <f7-input class="custom" id="heightInput" type="number" placeholder="" v-model="userHeight"></f7-input> -->
-        <span style="width:20%;margin-left:50px;">cm</span>
+        <span style="width:100%;margin-right:100px;">cm</span>
       </f7-list-item>
       <f7-list-item>
         <f7-label>孕前体重</f7-label>
         <div class="item-input custom">
           <input id="weightInput" type="number" placeholder="" v-model="$store.state.userinfo.weight">
         </div>
-        <span style="width:20%;margin-left:50px;">kg</span>
+        <span style="width:100%;margin-right:95px">kg</span>
       </f7-list-item>
       <f7-list-item>
         <f7-label>末次月经时间</f7-label>
-        <f7-input class='datainput' style='margin-left: 160px' id="lastPeriodInput" type="date" placeholder=""></f7-input>
+        <f7-input style='margin-left:10px' id="lastPeriodInput" type="date" placeholder=""></f7-input>
       </f7-list-item>
       <f7-list-item form>
         <f7-label>是否单胎妊娠</f7-label>
-      	<f7-list-item style='margin-left:80px' checkbox id="my-radio_0" value="0" title="是" :checked='radio_0' @click="radio_0_fun"></f7-list-item>
-				<f7-list-item  checkbox id="my-radio_1" value="1" title="否" :checked='radio_1' @click="radio_1_fun"></f7-list-item>
+      	<f7-list-item  checkbox id="my-radio_0" value="0" title="是" :checked='radio_0' @click="radio_0_fun"></f7-list-item>
+				<f7-list-item  style='margin-right:120px' checkbox id="my-radio_1" value="1" title="否" :checked='radio_1' @click="radio_1_fun"></f7-list-item>
       </f7-list-item>
     </f7-list>
 		<f7-grid>
@@ -166,14 +165,14 @@
     width: 100%;
   }
   .custom input {
-    text-align: right;
+    text-align: left;
+		margin-left:10px;
   }
 	.page-content {
     padding-top: 5px;
 	}
 	.datainput{
-    width: 40%;
+		margin-right:100px;
 	}
-	
 	
 </style>
