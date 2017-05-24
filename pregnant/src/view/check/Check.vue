@@ -55,7 +55,7 @@
     </f7-card>
     
     <f7-card v-if='haveData'>
-      <f7-card-header><div style='margin-left:110px'><li class='ion-ios-medkit' style='color:#fe4365;float:left'/><span style='margin-left:10px;color:#fa7190'>饮食健康小贴士</span></div></f7-card-header>
+      <f7-card-header><div style='margin-left:110px'><li class='ion-ios-medkit' style='color:#fe4365;float:left;font-size:30px;margin-top:-13px'/><span style='margin-left:10px;color:#fa7190'>饮食健康小贴士</span></div></f7-card-header>
       <f7-card-content>{{weightInfo.diet}}</f7-card-content>
     </f7-card>
       </f7-page>
