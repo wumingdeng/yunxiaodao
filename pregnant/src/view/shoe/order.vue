@@ -1,13 +1,13 @@
 <template>
 	<f7-page id="orderPage" infinite-scroll :infinite-scroll-preloader="isPreloader" @infinite="onInfinite">
-<!-- 	  <f7-navbar sliding>
+	  <f7-navbar sliding>
 	      <f7-nav-left>
 	        <f7-link icon="icon-back" @click="$router.go(-1)"></f7-link>
 	      </f7-nav-left>
 	      <f7-nav-center sliding style="left:-22px;" title="我的订单"></f7-nav-center>
 	      <f7-nav-right></f7-nav-right>
-	  </f7-navbar> -->
-	<f7-page-content>
+	  </f7-navbar>
+	<f7-page-content style="margin-top:44px;">
     <div v-if="isNoData" style="float:left;width:100%;">
         <p style="margin-top:50px;text-align:center;">暂无订单</p>
     </div>
@@ -21,7 +21,7 @@
     </div>
     <div style="height:50px;"></div>       
 	</f7-page-content>
-	<navFooter selectId=2></navFooter>   
+	<!-- <navFooter selectId=2></navFooter>    -->
 	</f7-page>
 </template>
 

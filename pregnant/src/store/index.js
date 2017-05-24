@@ -10,7 +10,7 @@ const state = {
 	userinfo:{
 		height:'',
 		weight:'',
-		lastPeroid:'',
+		lastPeriod:'',
 		isSingle:1,
 		contact:'',
 		province:'福建',

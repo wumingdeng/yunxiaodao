@@ -12,11 +12,50 @@ function getWeek(lastPeriod, now) {
         now =  new Date().getTime();
     }
     var week = now - lastPeriod.getTime();
-    week = Math.floor(week/(7*24*3600*1000))
+    week = Math.floor(week/(7*24*3600*1000)) + 1
     return week;
 }
-function getStandardWeight() {
-    return '50kg-60kg';
+
+//取标准体重
+function getStandardWeight(week, weight, shape, isSingle) {
+    var early = g.earlyStage
+    if (week <= early) {
+        return {
+            value: weight + 'kg-' + (weight + g.earlyAdd) + 'kg',
+            min: weight,
+            max: weight + g.earlyAdd
+        }
+    }
+    week -= early  //减去孕早期
+    var config = mem.m.weightRate_configs[shape];
+    var minRate, maxRate
+    if (isSingle == 1) {
+        minRate = config.rateMin
+        maxRate = config.rateMax
+    } else {
+        minRate = config.dRateMin
+        maxRate = config.dRateMax
+    }
+    var minWeight = weight + minRate * week;
+    var maxWeight = weight + g.earlyAdd + maxRate * week;
+    return  {
+        value: minWeight + 'kg-' + maxWeight+ 'kg',
+        min: minWeight,
+        max: maxWeight
+    }
+}
+
+//计算体型
+function getShape(weight, height) {
+    var config = g.weightStandard;
+    var result = weight / (height*height/10000);
+    console.log(result);
+    for (var i = 0; i < config.length; ++i) {
+        if (result >= config[i].min && result < config[i].max) {
+            return config[i].value;
+        }
+    }
+    return -1
 }
 
 user_router.route('/quickloginwxUser').post(function(req,res){
@@ -49,7 +88,7 @@ user_router.route('/getWeightInfo').post(function(req, res) {
                 db.weight_records.findOne({where:{'userid': wxid},order:'recordDate DESC'}).then(function(wdata){
                     var lastPeriod = data.dataValues.lastPeriod;
                     var currentWeek = getWeek(lastPeriod);  //取当前周数
-                    var currentStandard = getStandardWeight();  //取当前标准体重
+                    var currentStandard = getStandardWeight(currentWeek, data.dataValues.weight ,data.dataValues.shape, data.dataValues.isSingle).value;  //取当前标准体重
                     if (wdata) {
                         wdata.dataValues.currentWeek = currentWeek;
                         wdata.dataValues.currentStandard = currentStandard;
@@ -80,39 +119,51 @@ user_router.route('/fillWeight').post(function(req, res) {
         res.json({err:g.errorCode.WRONG_PARAM})
     } else {
         //取出最新的一条数据 如果是当天存的 就覆盖掉
-        //根据算法 得出体重数据 存入体重数据表中
-        var newRecord = {weight:weight,recordDate:new Date().toLocaleDateString()};
-        db.weight_records.update(newRecord, {
-            where:[
-                {userid:wxid},
-                db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')),'=',db.sequelize.fn('TO_DAYS',new Date().toLocaleString()))
-            ]
-        }).then(function(data){
-            console.log(data);
-            if (data[0] != 0) {
-                console.log('更新体重数据')
-                res.json({ok:newRecord})
-            } else {
-                //计算周数
-                db.users.findOne({where:{'wxid':wxid}}).then(function(udata){
-                    if (udata) {
-                        var lastPeriod = udata.dataValues.lastPeriod;
-                        var currentWeek = getWeek(lastPeriod);  //取当前周数
-                        var currentStandard = getStandardWeight();  //取当前标准体重
-                        newRecord.userid = wxid;
-                        newRecord.week = currentWeek;
+        var newRecord = {weight:weight,recordDate:new Date()};
+        db.users.findOne({where:{'wxid':wxid}}).then(function(udata){
+            //计算周数
+            if (udata) {
+                //根据算法 得出体重数据 存入体重数据表中
+                //计算标准体重
+                var lastPeriod = udata.dataValues.lastPeriod;
+                var currentWeek = getWeek(lastPeriod);  //取当前周数
+                newRecord.userid = wxid;
+                newRecord.week = currentWeek;
+                var standard = getStandardWeight(currentWeek, udata.dataValues.weight ,udata.dataValues.shape, udata.dataValues.isSingle);
+                newRecord.standard = standard.value
+                var result  
+                if (weight < standard.min) {
+                    result = g.weightStatus.skinny;
+                } else if (weight > standard.max) {
+                    result = g.weightStatus.fat
+                } else {
+                    result = g.weightStatus.normal
+                }
+                newRecord.result = result
+                console.log(newRecord)
+                db.weight_records.update(newRecord, {
+                    where:[
+                        {userid:wxid},
+                        db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')),'=',db.sequelize.fn('TO_DAYS',new Date().toLocaleString()))
+                    ]
+                }).then(function(data){
+                    console.log(data);
+                    if (data[0] != 0) {
+                        console.log('更新体重数据')
+                        res.json({ok:newRecord})
+                    } else {
                         db.weight_records.create(newRecord).then(function() {
                             console.log('创建体重数据')
                             res.json({ok:newRecord})
                         }, function() {
                             console.log('不能创建数据。。')
                         })
-                    } else {
-                        res.json({ok:0})
                     }
-                })
+                });
+            } else {
+                res.json({ok:0})
             }
-        });
+        })
     }
 })
 
@@ -188,9 +239,12 @@ user_router.route('/updateInfo').post(function(req, res) {
         res.json({err:g.errorCode.WRONG_PARAM})
     }else{
         //TODO 验证参数
+        //计算体型
+        var shape = getShape(weight,height);
         var newInfo = {
             height: height, 
             weight: weight, 
+            shape: shape,
             lastPeriod: new Date(lastPeriod), 
             isSingle: isSingle
         };

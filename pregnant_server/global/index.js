@@ -67,6 +67,40 @@ module.exports = {
         RECEIPT_NO_EVALUATE:3,  //待评价
         FINISH:4    //订单完成
     },
+    earlyStage: 12,     //孕早期
+    earlyAdd: 2,   //早期体重增加
+    weightStatus:{
+        skinny: '偏轻',
+        normal: '正常',
+        fat: '偏重'
+    },
+    weightStandard:[    //孕前BMI（kg/㎡）
+        {
+            name:"低体重",
+            value:1,
+            min:0,
+            max:18.5
+        },
+        {
+            name:"正常体重",
+            value:2,
+            min:18.5,
+            max:25
+        },
+        {
+            name:"超重",
+            value:3,
+            min:25,
+            max:30
+        },
+        {
+            name:"肥胖",
+            value:4,
+            min:30,
+            max:10000
+        }
+    ],
+
     worker_per_servicepage:3,
     worker_per_workerpage:10,
     // 111km -> 1度

@@ -9,10 +9,11 @@
 				<f7-col width=60>
 					<h2 style="margin-bottom:0.5em">{{productDetail.name}}</h2>
 					<p style="font-size:1.2em;margin:0">优惠价: {{productDetail.price}}</p>
-          <f7-link 
+<!--           <f7-link 
             class="closeBtn"
             @click="onClose"
-          >关闭</f7-link>
+          >关闭</f7-link> -->
+          <img src="static/assets/shoe/guanbi.png" class="closeBtn" @click="onClose">
 				</f7-col>
 			</f7-grid>
 			<div class="partingLine"></div>
@@ -80,7 +81,7 @@
       <div style="height:30px;"></div>
 		</f7-block>
     <div class="navFooter">
-        <p><f7-button class="pre" @click="onBuy">立即购买</f7-button></p>
+        <span><f7-button class="pre" @click="onBuy">立即购买</f7-button></span>
     </div>
   </f7-picker-modal>
   <!-- </f7-page> -->
@@ -251,8 +252,8 @@
     border: 2px solid #F40;
 	}
   .navFooter {
-      height: 60px;
-      line-height: 40px;
+      height: 50px;
+      line-height: 50px;
       background: #fff;
       position: fixed;
       width: 100%;
@@ -260,20 +261,21 @@
       bottom: 0;
       left: 0;
       z-index: 900;
-      border-top: 1px solid #ddd;
+      border-top: 1px solid #eaa6c8;
   }
-  .navFooter p {
-  	margin:0;
+  .navFooter span {
+    margin:0;
   }
   .pre {
-      width: 90%;
-      height: 40px;
-      line-height: 40px;
+      width:100%;
+      height: 50px;
+      line-height: 50px;
       border: none;
       color: #ffffff;
       font-size: 20px;
-      margin:0 auto;
-      margin-top: 10px;
-      background-color:#18ac16;
+      margin:0;
+      padding: 0;
+      background-color:#fa7699;
+      border-radius:0;
   }
 </style>

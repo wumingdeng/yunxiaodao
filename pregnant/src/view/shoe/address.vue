@@ -12,7 +12,7 @@
 	      <f7-label>联系人</f7-label>
 	      <f7-input id="inputContact" type="text" placeholder="" v-model="$store.state.userinfo.contact"></f7-input>
 	    </f7-list-item>
-	    <li class="">
+	    <li v-if="false" class="">
 	    	<div style="width:60%;margin:0 auto;">
 		    	<label class="item-content label-radio customRadio" @click="onGender(0)">
 		    		<input value="0" name="my-radio" type="radio" :checked="gender == 0 ? 'checked' : false">

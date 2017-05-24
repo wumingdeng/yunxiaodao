@@ -69,6 +69,7 @@ var routes = [
 
 const router = new VueRouter({
   mode: 'history',
+  // base: '/yxd/',
   routes
 })
 

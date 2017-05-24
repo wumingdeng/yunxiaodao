@@ -1,7 +1,7 @@
 <template>
   <f7-page>
     <f7-navbar sliding style='border-radius:1px;height:60px;background-color:#1f2d3d;color:#ffffff'>
-        <f7-nav-left v-if="!isNecessary">
+        <f7-nav-left>
             <f7-link icon="icon-back" @click="$router.go(-1)"></f7-link>
         </f7-nav-left>
         <f7-nav-center sliding title="体重管理"></f7-nav-center>

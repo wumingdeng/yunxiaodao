@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes) {
     lastPeriod:DataTypes.BIGINT,
     name:DataTypes.STRING,
     weight:DataTypes.FLOAT,
+    shape:DataTypes.INTEGER,
     height:DataTypes.FLOAT,
     isSingle:DataTypes.INTEGER,
     contact:DataTypes.STRING,

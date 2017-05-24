@@ -1,6 +1,8 @@
 
 var data = {
     swipe_configs:{},
-    products:{}
+    products:{},
+    weightAdvice_configs:{},
+    weightRate_configs:{}
 }
 module.exports = data;

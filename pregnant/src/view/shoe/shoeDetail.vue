@@ -37,8 +37,8 @@
 
       <div class="navFooter">
           <!-- <p><f7-button class="pre" @click="$router.push('/buyShoe')">立即购买</f7-button></p> -->
-          <span style="width:30%;"><f7-button style="background-color:#fff" class="pre" @click="onClickBuy">
-            <img src='/static/assets/shoe/icon3.png'></img>
+          <span style="width:30%;"><f7-button style="background-color:#fff" class="pre" @click="$router.push('/order')">
+            <img src='/static/assets/shoe/myOrder.png'></img>
           </f7-button></span>
           <span style="width:70%;"><f7-button class="pre" @click="onClickBuy">立即购买</f7-button></span>
       </div>
@@ -151,7 +151,7 @@
       font-size: 20px;
       margin:0;
       padding: 0;
-      background-color:#e06666;
+      background-color:#fa7699;
       border-radius:0;
   }
   .blackMask {

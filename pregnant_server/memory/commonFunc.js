@@ -41,6 +41,16 @@ var mod = {
                 for(var i = 0;i<data3.length;i++){
                     m.products[data3[i].id]=data3[i].dataValues
                 }
+                db.weightAdvice_configs.findAll().then(function(data4){
+                    for(var i = 0;i<data4.length;i++){
+                        m.weightAdvice_configs[data4[i].id]=data4[i].dataValues
+                    }
+                    db.weightRate_configs.findAll().then(function(data5){
+                        for(var i = 0;i<data5.length;i++){
+                            m.weightRate_configs[data5[i].id]=data5[i].dataValues
+                        }
+                    })
+                })
             })
         })
     }
