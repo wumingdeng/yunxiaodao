@@ -9,8 +9,9 @@
     </f7-navbar>
     <f7-page style='margin-top:60px'>
     <f7-card>
-      <f7-card-content>
-        <h3 style="text-align:center;color:#fe4365">您已经怀孕 {{weightInfo.currentWeek}} 周</h3>
+      <f7-card-content style='text-align: center;'>
+        <li style='font-size:33px;margin:0px 0px -50px 65px;color:#fa7699' class='ion-pinpoint'></li>
+        <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
         <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
         <p>
           <f7-grid>
@@ -22,30 +23,28 @@
     </f7-card>
     <f7-card>
       <f7-card-content>
-        <f7-list style="margin-bottom:10px;" form>
+        <f7-list form>
           <f7-list-item>
-            <f7-label>手工输入:</f7-label>
-            <div class="item-input custom">
-              <input id="inputWeight" type="number" placeholder="">
+            <f7-label style='width:22%'>当前体重:</f7-label>
+            <div style='width:20%'>
+              <input id="inputWeight" style='text-align:center;background-color:#f0f0f0;height:30px;border-radius:1px' type="number" placeholder="">
             </div>
-            <!-- <f7-input class="custom" id="weightInput" type="number" placeholder="" v-model="userWeight"></f7-input> -->
-            <span style="width:100%;margin-left:10px;">kg</span>
+            <span style="width:10%">kg</span>
+            <f7-button style='width:40%' class='cusBtn' fill  @click='onFillWeight'>评估</f7-button>
           </f7-list-item>
-   <!--        <f7-list-item>
-            <f7-label>手工输入:</f7-label>
-            <f7-input id="inputWeight" name="name" type="number" placeholder="kg"></f7-input>
-          </f7-list-item> -->
         </f7-list>
-        <f7-button fill color="green" @click='onFillWeight'>评估</f7-button>
       </f7-card-content>
     </f7-card>
 
     <f7-card v-if='haveData'>
-      <f7-card-content>
-        <p>最新称重结果: {{weightInfo.weight}}kg {{weightInfo.recordDate.substring(0,10)}} 于 {{weightInfo.hospital}}</p>
-        <p>体重: {{weightInfo.result}}</p>
-        <p>建议标准体重范围: {{adviseWeight}}</p>
-        <p>注意点: {{weightInfo.tip}}</p>
+      <f7-card-content clase='p-title'>
+        <p><span style='font-weight:bold'>最新称重结果</span> : {{weightInfo.weight}}kg ( {{weightInfo.hospital}} )</p>
+        <p><span style='font-weight:bold'>体重情况目前</span> : {{weightInfo.result}}</p>
+        <p><span style='font-weight:bold'>建议体重范围</span> : {{adviseWeight}}</p>
+        <f7-grid no-gutter>
+          <f7-col width="26"><span style='font-weight:bold'>孕妇注意事项</span> :</f7-col>
+          <f7-col width="70">{{weightInfo.tip}}</f7-col>
+        </f7-grid>
       </f7-card-content>
     </f7-card>
 
@@ -56,7 +55,7 @@
     </f7-card>
     
     <f7-card v-if='haveData'>
-      <f7-card-header><div><li class='ion-ios-medkit' style='color:#fe4365;float:left'/><span style='margin-left:10px;color:#fa7190'>饮食健康小贴士</span></div></f7-card-header>
+      <f7-card-header><div style='margin-left:110px'><li class='ion-ios-medkit' style='color:#fe4365;float:left'/><span style='margin-left:10px;color:#fa7190'>饮食健康小贴士</span></div></f7-card-header>
       <f7-card-content>{{weightInfo.diet}}</f7-card-content>
     </f7-card>
       </f7-page>
@@ -68,9 +67,10 @@
     name: 'check',
     data () {
       return {
+        columnStyle: 'border: 1px solid #e5e5e5; padding:5px; text-align: center',
         msg: 'Welcome to Check Page',
         haveData: true,
-        weightInfo:{}
+        weightInfo:{tip:'阿克苏多方了解啊路上看到解放了空间啊死了快点放假苦辣就是独立空间发生地方'},
       }
     },
 
@@ -173,5 +173,8 @@
     background-color:#fa7699;
     height: 35px;
     line-height: 32px;
+  }
+  .cusareatext textarea{
+    font-size:17px;
   }
 </style>
