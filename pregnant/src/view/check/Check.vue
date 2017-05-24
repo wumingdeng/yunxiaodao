@@ -1,19 +1,25 @@
 <template>
   <f7-page>
-    <!-- <f7-navbar back-link="返回" title="产检记录" sliding></f7-navbar> -->
+    <f7-navbar sliding style='border-radius:1px;height:60px;background-color:#1f2d3d;color:#ffffff'>
+        <f7-nav-left v-if="!isNecessary">
+            <f7-link icon="icon-back" @click="$router.go(-1)"></f7-link>
+        </f7-nav-left>
+        <f7-nav-center sliding title="体重管理"></f7-nav-center>
+        <f7-nav-right></f7-nav-right>
+    </f7-navbar>
+    <f7-page style='margin-top:60px'>
     <f7-card>
       <f7-card-content>
-        <h3 style="text-align:center;">您已经怀孕 {{weightInfo.currentWeek}} 周了</h3>
-        <p style="text-align:center;">建议体重范围：{{weightInfo.currentStandard}}</p>
+        <h3 style="text-align:center;color:#fe4365">您已经怀孕 {{weightInfo.currentWeek}} 周</h3>
+        <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
         <p>
           <f7-grid>
-            <f7-col><f7-button fill color="green" @click="$router.push('/userInfo')">个人资料</f7-button></f7-col>
-            <f7-col><f7-button fill color="orange" @click="$router.push('/record')">历史记录</f7-button></f7-col>
+            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/userInfo')"><li style='font-size:25px;float:left' class='icon ion-home'><div style='font-size:17px;margin-left:30px;float:right'>个人资料</div></li></f7-button></f7-col>
+            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/record')"><li style='font-size:25px;float:left' class='ion-clock'><div style='font-size:17px;margin-left:30px;float:right'>历史记录</div></li></f7-button></f7-col>
           </f7-grid>
         </p>
       </f7-card-content>
     </f7-card>
-
     <f7-card>
       <f7-card-content>
         <f7-list style="margin-bottom:10px;" form>
@@ -50,9 +56,10 @@
     </f7-card>
     
     <f7-card v-if='haveData'>
-      <f7-card-header>饮食健康小贴士</f7-card-header>
+      <f7-card-header><div><li class='ion-ios-medkit' style='color:#fe4365;float:left'/><span style='margin-left:10px;color:#fa7190'>饮食健康小贴士</span></div></f7-card-header>
       <f7-card-content>{{weightInfo.diet}}</f7-card-content>
     </f7-card>
+      </f7-page>
   </f7-page>
 </template>
 
@@ -156,5 +163,15 @@
   }
   .custom input {
     text-align: right;
+  }
+  .page div{
+    border-radius:10px;
+  }
+ 
+  .cusBtn{
+    border-radius: 10px;
+    background-color:#fa7699;
+    height: 35px;
+    line-height: 32px;
   }
 </style>
