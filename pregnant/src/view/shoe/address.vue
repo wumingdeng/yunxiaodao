@@ -153,4 +153,7 @@
 	.form-radio input[type=radio]:checked~i, label.label-radio input[type=checkbox]:checked~.item-inner, label.label-radio input[type=radio]:checked~.item-inner {
 		color: #111188;
 	}
+	.list-block .item-title.label {
+		width: 28%;
+	}
 </style>
