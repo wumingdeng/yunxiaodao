@@ -33,10 +33,12 @@
 				<f7-list-item  style='margin-right:120px' checkbox id="my-radio_1" value="1" title="否" :checked='radio_1' @click="radio_1_fun"></f7-list-item>
       </f7-list-item>
     </f7-list>
-		<f7-grid>
-          <f7-col><f7-button big fill style='margin:-10px 0px 0px 10px;background-color:#fa7699' @click="onUpdateInfo">更新</f7-button></f7-col>
-          <f7-col><f7-button big fill style='margin:-10px 10px 0px 0px;background-color:#fa7699'>取消</f7-button></f7-col>
-        </f7-grid>
+
+    <p v-if="isNecessary"><f7-button big fill style='margin:-10px 0px 0px 0px;background-color:#fa7699' @click="onUpdateInfo">更新</f7-button></p>
+		<f7-grid v-else>
+      <f7-col><f7-button big fill style='margin:-10px 0px 0px 10px;background-color:#fa7699' @click="onUpdateInfo">更新</f7-button></f7-col>
+      <f7-col><f7-button big fill style='margin:-10px 10px 0px 0px;background-color:#fa7699' @click="$router.go(-1)">取消</f7-button></f7-col>
+    </f7-grid>
 	</f7-page>
 </template>
 
@@ -72,21 +74,12 @@
 
 		methods:{
 			radio_0_fun(event) {
-				if(this.$data.radio_0){
-						this.$data.radio_0 = false
-				}else{
-						this.$data.radio_0 = true
-				}
-				this.$data.radio_1 = false
+        this.radio_0 = !this.radio_0
+				this.radio_1 = false
 			},
 			radio_1_fun(event) {
-				if(this.$data.radio_1){
-					this.$data.radio_1 = false
-				}else{
-					this.$data.radio_1 = true
-				}
-				this.$data.radio_0 = false
-				
+        this.radio_1 = !this.radio_1
+				this.radio_0 = false
 			},
 			checkInput() {
   			var height = document.getElementById("heightInput").value
@@ -154,7 +147,8 @@
 		mounted() {
       this.$f7.resize()
       this.isNecessary = this.$route.query.isNecessary || false;
-      console.log(this.userLastPeroid)
+      this.radio_0  = this.$store.state.userinfo.isSingle == 1;
+      this.radio_1  = this.$store.state.userinfo.isSingle == 0;
       document.getElementById('lastPeriodInput').value = this.userLastPeroid
 		}
 	}

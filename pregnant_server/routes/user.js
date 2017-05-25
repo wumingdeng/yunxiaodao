@@ -18,6 +18,7 @@ function getWeek(lastPeriod, now) {
 
 //取标准体重
 function getStandardWeight(week, weight, shape, isSingle) {
+    weight = Number(weight);
     var early = g.earlyStage
     if (week <= early) {
         return {
@@ -140,14 +141,32 @@ user_router.route('/fillWeight').post(function(req, res) {
                     result = g.weightStatus.normal
                 }
                 newRecord.result = result
+                //取对应提示
+                var tipInfo;
+                var tip = mem.m.weightAdvice_configs
+                for(var i = 0 in tip) {
+                    if (currentWeek >= tip[i].minWeek && currentWeek <= tip[i].maxWeek) {
+                        if (result ==g.weightStatus.skinny) {
+                            tipInfo = tip[i].skinny
+                        } else if (result == g.weightStatus.fat) {
+                            tipInfo = tip[i].fat
+                        } else {
+                            tipInfo = tip[i].normal
+                        }
+                        break
+                    }
+                }
+                newRecord.tip = tipInfo
+
                 console.log(newRecord)
                 db.weight_records.update(newRecord, {
                     where:[
                         {userid:wxid},
-                        db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')),'=',db.sequelize.fn('TO_DAYS',new Date().toLocaleString()))
+                        db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')),'=',db.sequelize.fn('TO_DAYS',new Date()))
                     ]
                 }).then(function(data){
                     console.log(data);
+                    newRecord.recordDate = newRecord.recordDate.toLocaleDateString()
                     if (data[0] != 0) {
                         console.log('更新体重数据')
                         res.json({ok:newRecord})
@@ -155,8 +174,10 @@ user_router.route('/fillWeight').post(function(req, res) {
                         db.weight_records.create(newRecord).then(function() {
                             console.log('创建体重数据')
                             res.json({ok:newRecord})
-                        }, function() {
+                        }, function(err) {
+                            console.log(err)
                             console.log('不能创建数据。。')
+                            res.json({ok:0})
                         })
                     }
                 });
@@ -253,14 +274,48 @@ user_router.route('/updateInfo').post(function(req, res) {
             {where:{wxid:wxid}}
         ).then(function(data){
             if (data) {
-                //更新体重记录里的周数
+                //更新体重记录
                 db.weight_records.findAll({where:{userid: wxid}}).then(function(records){
-                    for(var i = 0;i<records.length;i++){
+                    for(var i = 0;i < records.length; i++){
                         var record = records[i];
+                        var newRecord = {}
+                        var currentWeek = getWeek(new Date(lastPeriod),record.recordDate)
+                        newRecord.week = currentWeek
+                        var standard = getStandardWeight(currentWeek, weight , shape, isSingle);
+                        newRecord.standard = standard.value
+                        var result
+                        if (record.weight < standard.min) {
+                            result = g.weightStatus.skinny;
+                        } else if (record.weight > standard.max) {
+                            result = g.weightStatus.fat
+                        } else {
+                            result = g.weightStatus.normal
+                        }
+                        newRecord.result = result
+                        //取对应提示
+                        var tipInfo;
+                        var tip = mem.m.weightAdvice_configs
+                        for(var j = 0 in tip) {
+                            if (currentWeek >= tip[j].minWeek && currentWeek <= tip[j].maxWeek) {
+                                if (result ==g.weightStatus.skinny) {
+                                    tipInfo = tip[j].skinny
+                                } else if (result == g.weightStatus.fat) {
+                                    tipInfo = tip[j].fat
+                                } else {
+                                    tipInfo = tip[j].normal
+                                }
+                                break
+                            }
+                        }
+                        newRecord.tip = tipInfo
                         db.weight_records.update(
-                            {week:getWeek(new Date(lastPeriod),record.recordDate)},
+                            newRecord,
                             {where:{id: record.id}}
-                        )
+                        ).then(function(){
+                            console.log('更新记录')
+                        },function(err){
+                            console.log(err)
+                        })
                     }
                 })
                 res.json({ok: newInfo});

@@ -1,6 +1,6 @@
 <template>
 	<f7-card @click.native="onDetail">
-		<f7-card-header style="height:50px;width:100%;">
+		<f7-card-header style="">
 			<p>订单号：{{orderData.id}}</p>
 			<p style="float:right">{{statusName[orderData.status]}}</p>
 		</f7-card-header>
@@ -183,6 +183,14 @@
 		display:inline-block;
 		white-space: nowrap;
 		width:60%;
+	}
+	.card-header {
+		padding: 0 15px;
+		height: 40px;
+		min-height: 40px;
+	}
+	.card{
+    box-shadow: 0 1px 1px rgba(0,0,0,.3);
 	}
 	.oc_button{
 /*		position:absolute;

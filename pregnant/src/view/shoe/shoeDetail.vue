@@ -9,7 +9,7 @@
     </f7-navbar> -->
     <f7-page-content  style="">
   		<homeSwipe :swipeData="swipeData"></homeSwipe>
-  		<f7-block inner style="margin-top:0px;">
+  		<f7-block inner style="margin:-5px 0 0 0;font-size:17px;">
   			<span>{{productData.name}}</span>
   			<span style="float:right;color:#ff6ec7;margin-right:20px">价格:{{productData.price}}</span>
   		</f7-block>
@@ -132,7 +132,7 @@
       bottom: 0;
       left: 0;
       z-index: 900;
-      border-top: 1px solid #eaa6c8;
+      border-top: 1px solid #aaaaaa;
   }
   .navFooter span {
   	margin:0;
@@ -164,5 +164,8 @@
     position: absolute;
     top: 0px;
     z-index: 99;
+  }
+  .swiper-pagination-bullet-active {
+    background-color:#ff7777;
   }
 </style>

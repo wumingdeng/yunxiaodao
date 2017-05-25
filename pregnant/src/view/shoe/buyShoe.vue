@@ -7,8 +7,8 @@
 					<img class="shoeImg" :src="selectColorImg">
 				</f7-col>
 				<f7-col width=60>
-					<h2 style="margin-bottom:0.5em">{{productDetail.name}}</h2>
-					<p style="font-size:1.2em;margin:0">优惠价: {{productDetail.price}}</p>
+					<p style="margin-bottom:0.5em;font-size:1.2em;color:#1f2d3d;">{{productDetail.name}}</p>
+					<p style="font-size:1.2em;margin:0;color:#6d737b;">优惠价: <span style="color:#fa7699">{{productDetail.price}}</span></p>
 <!--           <f7-link 
             class="closeBtn"
             @click="onClose"
@@ -190,7 +190,7 @@
 	.shoeImg {
 		width: 30%;
     position: absolute;
-    top: -40px;
+    top: -45px;
     text-align:center;
     border:1px solid #a1a1a1;
     padding:5px 5px; 
@@ -248,8 +248,8 @@
 	}
 	.isSelected {
 		padding: 2px 5px;
-    color: #F40;
-    border: 2px solid #F40;
+    color: #fa7699;
+    border: 2px solid #fa7699;
 	}
   .navFooter {
       height: 50px;

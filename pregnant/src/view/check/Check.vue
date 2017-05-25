@@ -25,7 +25,7 @@
       <f7-card-content>
         <f7-list form>
           <f7-list-item>
-            <f7-label style='width:22%'>当前体重:</f7-label>
+            <f7-label style='width:25%'>当前体重:</f7-label>
             <div style='width:20%'>
               <input id="inputWeight" style='text-align:center;background-color:#f0f0f0;height:30px;border-radius:1px' type="number" placeholder="">
             </div>
@@ -40,7 +40,7 @@
       <f7-card-content clase='p-title'>
         <p><span style='font-weight:bold'>最新称重结果</span> : {{weightInfo.weight}}kg ( {{weightInfo.hospital}} )</p>
         <p><span style='font-weight:bold'>体重情况目前</span> : {{weightInfo.result}}</p>
-        <p><span style='font-weight:bold'>建议体重范围</span> : {{adviseWeight}}</p>
+        <p><span style='font-weight:bold'>建议体重范围</span> : {{weightInfo.standard}}</p>
         <f7-grid no-gutter>
           <f7-col width="26"><span style='font-weight:bold'>孕妇注意事项</span> :</f7-col>
           <f7-col width="70">{{weightInfo.tip}}</f7-col>

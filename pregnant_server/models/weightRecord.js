@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
     recordDate: DataTypes.INTEGER,
     hospital: DataTypes.INTEGER,
     weight:DataTypes.FLOAT,
-    result: DataTypes.INTEGER,
+    result: DataTypes.STRING,
     standard:DataTypes.STRING,
     tip:DataTypes.STRING,
     diet:DataTypes.STRING
