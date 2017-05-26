@@ -39,7 +39,7 @@ order_router.route('/ordermake').post(function(req,res){
     db.users.findOne({where:{'wxid':wxid}}).then(function(data){
         if(data){
             var nowsec = Math.floor(Date.now()/1000)
-            db.orders.create({wxid:wxid,contact:contact,gender:gender,tel:tel,
+            db.orders.create({userid:wxid,contact:contact,gender:gender,tel:tel,
                 address:address,province:province,city:city,area:area,shoeid:shoeid,
                 price:price,shoeName:shoeName,size:size,createtime:nowsec,color:color,
                 type:type,remark:remark,status:0}).then(function(order) {

@@ -8,7 +8,7 @@
 				</f7-col>
 				<f7-col width=60>
 					<p style="margin-bottom:0.5em;font-size:1.2em;color:#1f2d3d;">{{productDetail.name}}</p>
-					<p style="font-size:1.2em;margin:0;color:#6d737b;">优惠价: <span style="color:#fa7699">{{productDetail.price}}</span></p>
+					<p style="font-size:1.2em;margin:0;color:#ff0000;">优惠价: <span style="color:#ff0000">{{productDetail.price}}</span></p>
 <!--           <f7-link 
             class="closeBtn"
             @click="onClose"
@@ -162,6 +162,7 @@
   			this.$store.commit('SHOE_SIZE',this.nowSize)
   			this.$store.commit('SHOE_COLOR',this.nowColor)
   			this.$store.commit('SHOE_TYPE',this.nowType)
+        this.$store.state.nowPicture = this.selectColorImg;
         // this.$emit('close');
         this.$f7.closeModal()
   			this.$router.push('/address')

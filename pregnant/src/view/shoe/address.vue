@@ -2,14 +2,16 @@
 	<f7-page navbar-through>
 		<f7-navbar sliding>
       <f7-nav-left>
-          <f7-link icon="icon-back" @click="$router.go(-1)"></f7-link>
+          <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
       </f7-nav-left>
       <f7-nav-center sliding title="邮寄地址"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
+
+    <f7-block-title style="margin-top:10px;font-size:18px;">联系人</f7-block-title>
 		<f7-list form>
 	    <f7-list-item>
-	      <f7-label>联系人</f7-label>
+	      <f7-label>姓名</f7-label>
 	      <f7-input id="inputContact" type="text" placeholder="" v-model="$store.state.userinfo.contact"></f7-input>
 	    </f7-list-item>
 	    <li v-if="false" class="">
@@ -29,14 +31,18 @@
 	    	</div>
 	    </li>
 <!--       <f7-list-item radio name="my-radio" checked :value="1" title="先生"></f7-list-item>
-      <f7-list-item radio name="my-radio" :value="2" title="女士"></f7-list-item> -->
+      <f7-list-item radio name="my-radio" :value="2" title="女士"></f7-list-item> -->    
 	    <f7-list-item>
 	      <f7-label>手机号</f7-label>
 	      <f7-input id="inputTel" type="number" placeholder="" v-model='$store.state.userinfo.tel'></f7-input>
 	    </f7-list-item>
-	    <f7-list-item>
+    </f7-list>
+
+    <f7-block-title style="margin-top:-20px;font-size:18px;">联系地址</f7-block-title>
+		<f7-list form>
+			<f7-list-item>
 	      <f7-label>所在地区</f7-label>
-    		<chinaCity v-model="cityInfo" :initInfo="cityInit" :test='87'></chinaCity>
+    		<chinaCity style="margin-left:5px;" v-model="cityInfo" :initInfo="cityInit" :test='87'></chinaCity>
 	    </f7-list-item>
 	    <f7-list-item>
 	      <f7-label>详细地址</f7-label>
@@ -45,15 +51,9 @@
 	    <f7-list-item>
 	      <f7-label>备注</f7-label>
 	      <f7-input id="inputRemark" type="textarea" placeholder="" v-model="$store.state.remark"></f7-input>
-	    </f7-list-item>
-
-	    <li>
-    		<p style="width:90%;margin:10px auto;"><f7-button fill color='green' @click="onSure">确定</f7-button></p>
-	    </li>
-	    <li>
-	    	<div style="height:5px;"></div>
-	    </li>
-    </f7-list>
+	    </f7-list-item>	    
+		</f7-list>
+		<p style="width:90%;margin:-15px auto 0 auto;"><f7-button style="background-color:#fa7699" big fill @click="onSure">确定</f7-button></p>
 	</f7-page>
 </template>
 
@@ -154,6 +154,6 @@
 		color: #111188;
 	}
 	.list-block .item-title.label {
-		width: 28%;
+		width: 25%;
 	}
 </style>

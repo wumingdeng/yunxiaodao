@@ -26,7 +26,9 @@
 			console.log(this.$route)
 			console.log(this.$router)
 			console.log(wxid)
-			this.$f7.showPreloader('登录中')	
+			// this.$f7.showPreloader('登录中')	
+			// this.$store.state.isloading = true;
+			this.$store.commit("LOADING",true)
 			// debugger
 			this.$store.commit('GET_WXID',wxid)
 

@@ -31,6 +31,9 @@
 		  ])
 			
 		},
+    beforeCreate() {
+      document.title = '一双好鞋'
+    },
 		created () {
       // this.getContent();
       console.log('home created...')

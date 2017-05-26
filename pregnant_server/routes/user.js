@@ -166,9 +166,9 @@ user_router.route('/fillWeight').post(function(req, res) {
                     ]
                 }).then(function(data){
                     console.log(data);
-                    newRecord.recordDate = newRecord.recordDate.toLocaleDateString()
                     if (data[0] != 0) {
                         console.log('更新体重数据')
+                        newRecord.recordDate = newRecord.recordDate.toLocaleDateString()
                         res.json({ok:newRecord})
                     } else {
                         db.weight_records.create(newRecord).then(function() {

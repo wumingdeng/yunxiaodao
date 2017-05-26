@@ -1,14 +1,14 @@
 <template>
 	<f7-page navbar-through>
-    <f7-navbar sliding style='height:60px;background-color:#1f2d3d;color:#ffffff'>
+    <f7-navbar sliding>
       <f7-nav-left v-if="!isNecessary">
-          <f7-link icon="icon-back" @click="$router.go(-1)"></f7-link>
+          <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
       </f7-nav-left>
       <f7-nav-center sliding title="个人资料"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
 
-    <f7-list id="userinfoForm" form style='margin-top:17px'>
+    <f7-list id="userinfoForm" form style='margin-top:0px;'>
       <f7-list-item>
         <f7-label>身高</f7-label>
         <div class="item-input custom">
@@ -30,7 +30,7 @@
       <f7-list-item form>
         <f7-label>是否单胎妊娠</f7-label>
       	<f7-list-item  checkbox id="my-radio_0" value="0" title="是" :checked='radio_0' @click="radio_0_fun"></f7-list-item>
-				<f7-list-item  style='margin-right:120px' checkbox id="my-radio_1" value="1" title="否" :checked='radio_1' @click="radio_1_fun"></f7-list-item>
+				<f7-list-item  style='margin-right:10px' checkbox id="my-radio_1" value="1" title="否" :checked='radio_1' @click="radio_1_fun"></f7-list-item>
       </f7-list-item>
     </f7-list>
 
@@ -143,6 +143,10 @@
 				})
 			}
 		},
+
+    beforeCreate() {
+      document.title = '个人资料'
+    },
 
 		mounted() {
       this.$f7.resize()

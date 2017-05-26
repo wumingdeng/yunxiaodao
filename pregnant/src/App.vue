@@ -1,9 +1,13 @@
 <template>
   <f7-views style='z-index:1000;' id="app">
-    <div v-if="showLoading" class="loading" 
+    <div v-show="showLoading" class="loading" 
     >
       <span style="height:100%;vertical-align:middle;display:inline-block;"></span>
-      <img style="vertical-align:middle;" src="static/assets/loading.gif">
+      <div style="vertical-align:middle;display:inline-block;">
+        <img style="vertical-align:middle;" src="static/assets/loading.gif">
+        <p style="display:block;margin-top:0">载入中...</p>
+      </div>
+      </img>
     </div>
     <router-view></router-view>
   </f7-views>
@@ -25,7 +29,7 @@
         },
         computed:{
           showLoading() {
-            return this.$store.state.isloading
+            return Global.s.state.isloading
           }
         }
 
@@ -33,6 +37,12 @@
 </script>
 
 <style>
+  .form-checkbox input[type=checkbox]:checked~i, label.label-checkbox input[type=checkbox]:checked+.item-media i.icon-form-checkbox, label.label-checkbox input[type=radio]:checked+.item-media i.icon-form-checkbox {
+    background-color: #fc5475
+  }
+  i.icon.icon-back {
+    background-image: url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%…-8%2C8l8%2C8l-2%2C2L0%2C10L10%2C0z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E);
+  }
   .loading {
     text-align:center;
     width:100%;

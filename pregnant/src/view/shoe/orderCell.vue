@@ -13,7 +13,7 @@
 					<div class="oc_right">
 						<span style="">{{orderData.shoeName}}</span>
 						<span style="color:#ff0000;font-size:1.5em;position:absolute;top:10px;right:16px;">¥{{orderData.price}}</span>
-						<p style="color:#71777f">尺码:{{orderData.size}}码 颜色:{{orderData.color}} 鞋型:{{orderData.type}}</p>
+						<p style="color:#71777f;white-space:nowrap;">尺码:{{orderData.size}}码 颜色:{{orderData.color}} 鞋型:{{orderData.type}}</p>
 						<p>订单时间:{{timeToDate(orderData.createtime,true)}}</p>
 					</div>
 				</f7-col>
@@ -26,7 +26,7 @@
 				<f7-col><f7-button  style="background-color:#fd7f97" fill>支付</f7-button></f7-col>
 			</f7-grid>
 			<f7-grid v-if="orderData.status==orderstatus.waitReceipt" style="width:100%;height:30px">
-				<f7-col><f7-button  style="border-color:#fd7f97;color:#fd7f97">查看物流</f7-button></f7-col>
+				<f7-col><f7-button  style="border-color:#fd7f97;color:#fd7f97" @click.stop.prevent="openLogistics">查看物流</f7-button></f7-col>
 				<f7-col><f7-button  style="background-color:#fd7f97" fill>确认收货</f7-button></f7-col>
 			</f7-grid>
 			<f7-grid v-if="orderData.status==orderstatus.waitEvaluate" style="width:100%;height:30px">
@@ -105,45 +105,15 @@
 			},
 			onDetail(){
 				//进入订单明细
-				this.$router.push({
-					path:'/checkOrder',
-					query:{
-						oid:this.orderData.id
-					}
-				});
+				// this.$router.push({
+				// 	path:'/checkOrder',
+				// 	query:{
+				// 		oid:this.orderData.id
+				// 	}
+				// });
 			},
-			onReselection(isSelect) {
-				if (isSelect) {
-					//进入正常订单流程 根据订单信息 写用户信息和服务信息
-					var self = this;
-					this.$router.push({
-						path:'/selectCulinarian',
-						query:{
-							oid:this.orderData.id,
-							isReselection:true,
-							sid:this.orderData.service,
-							geo:JSON.stringify({x:self.orderData.geo.coordinates[0],y:self.orderData.geo.coordinates[1]})
-						}
-					})
-					//进入选择技师界面
-
-				} else {
-					this.$f7.confirm('','系统将为您找到更合适的技师',()=>{
-						this.$f7.showPreloader('系统派单中')
-						//系统分配技师
-						this.$store.dispatch('orderreset',{
-							self:this,
-							info:{
-								oid:this.orderData.id,
-								wid:0
-							},
-							callback:function(self,res) {
-								self.$f7.alert('','成功匹配技师');
-								self.orderData.status = self.orderstatus.waitConfirm;
-							}
-						})
-					})
-				}
+			openLogistics() {
+				this.$emit('logistics',this.orderData.id)
 			}
 		},
 		mounted(){

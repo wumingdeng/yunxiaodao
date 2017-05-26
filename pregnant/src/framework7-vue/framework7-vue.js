@@ -4001,7 +4001,6 @@ var TimelineItem = {
       }
 
       dividerEl = c('div', {staticClass:'timeline-item-divider'});
-
       if (self.time) {
         timeEl = c('div', {staticClass:'timeline-item-time', domProps: {innerHTML: self.time}});
       }

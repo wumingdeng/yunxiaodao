@@ -2,14 +2,14 @@
 	<div class="navFooter">
 		<ul>
 	    	<router-link tag='li' to="/shoeHome">
-	    		<img v-if="isShow1" class="homeIcon" src='/static/assets/shoe/icon1_active.png'></img>
-	    		<img v-else class="homeIcon" src='/static/assets/shoe/icon1.png'></img>
+	    		<img v-if="isShow1" class="homeIcon" src='static/assets/shoe/icon1_active.png'></img>
+	    		<img v-else class="homeIcon" src='static/assets/shoe/icon1.png'></img>
 	    		<!-- <p>首页</p> -->
 	    	</router-link>
 	    	<router-link tag='li' to="/order">
 	    		<!-- <i class="userIcon"></i> -->
-	    		<img v-if="isShow2" class="homeIcon" src='/static/assets/shoe/icon3_active.png'></img>
-	    		<img v-else class="homeIcon" src='/static/assets/shoe/icon3.png'></img>
+	    		<img v-if="isShow2" class="homeIcon" src='static/assets/shoe/icon3_active.png'></img>
+	    		<img v-else class="homeIcon" src='static/assets/shoe/icon3.png'></img>
 	    		<!-- <i class="f7-icons"></i> -->
 	    		<!-- <p>个人中心</p> -->
 	    	</router-link>

@@ -13,6 +13,7 @@ export function quickloginwxUser ({commit, state}, data) {
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
+      self.$store.state.isloading = false;
       console.log(response)
       if(response.body.err){
         self.$router.push('/useWX')

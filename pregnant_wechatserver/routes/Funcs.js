@@ -59,7 +59,7 @@ tour_router.route('/auth_foot').get(function(req,res){
 });
 
 tour_router.route('/auth_shoe').get(function(req,res){
-    authUser("shoeHome",req,res)
+    authUser("shoeDetail",req,res)
 });
 
 function authUser(page,req,res) {
@@ -74,13 +74,13 @@ function authUser(page,req,res) {
                             console.log('用户已存在')
                             db.users.update({headUrl:data.headimgurl,name:data.nickname},{where:{wxid:openid}}).then(function(){
                                 // to change redirect url
-                                res.redirect(301,'http://czw321.ngrok.cc/?wxid='+openid+'&type=1&page=' + page);
+                                res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1&page=' + page);
                             })
                         }else{
                             console.log('创建用户')
                             db.users.create({wxid:openid,headUrl:data.headimgurl,name:data.nickname}).then(function(){
                                 // to change redirect url
-                                res.redirect(301,'http://czw321.ngrok.cc/?wxid='+openid+'&type=1$page=' + page);
+                                res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1$page=' + page);
                             })
                         }
                     })

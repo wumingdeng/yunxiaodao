@@ -97,7 +97,7 @@
 		width:100%;
 	}
   .city-select select{
-  	color: #111188;
+  	color: #71777e;
   	width:33%;
   	float:left;
   	display: inline-block;

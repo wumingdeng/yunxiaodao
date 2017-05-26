@@ -25,6 +25,9 @@ const mutations = {
   ['SHOE_TYPE'] (state, value){
     state.shoeType = value || state.shoeType;
   },
+  ['LOADING'] (state, value){
+    state.isloading = value || state.isloading;
+  },
 }
 
 export default mutations

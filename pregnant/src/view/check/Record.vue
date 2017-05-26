@@ -1,8 +1,8 @@
 <template>
     <f7-page name="recordPage" navbar-through id="withdrawPage" infinite-scroll :infinite-scroll-preloader="isPreloader" @infinite="onInfinite">
-    <f7-navbar sliding style='height:60px;background-color:#1f2d3d;color:#ffffff'>
+    <f7-navbar sliding>
       <f7-nav-left>
-          <f7-link icon="icon-back" @click="$router.go(-1)"></f7-link>
+          <f7-link icon="icon-back color-black color-black" @click="$router.go(-1)"></f7-link>
       </f7-nav-left>
       <f7-nav-center sliding title="历史记录"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
@@ -33,7 +33,7 @@
         <f7-table-cell label><f7-grid no-gutter><f7-col :style="columnStyle_head">状态</f7-col></f7-grid></f7-table-cell>
       </f7-table-row>
       <f7-table-row v-for="(item,index) in weightInfo" :key="index">
-      <f7-table-cell label sytle='padding:0px'>
+        <f7-table-cell label sytle='padding:0px'>
         <f7-grid no-gutter v-if='item.recordDate'>
             <f7-col :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-if="item.recordDate">{{getRecordDate(item.recordDate)}}</f7-col>
           </f7-grid>
@@ -73,12 +73,13 @@
         columnStyle_right: 'border-right: 1px solid #e5e5e5;border-bottom:1px solid #e5e5e5; padding:12px; text-align: center',
         columnStyle_right_end: 'border-bottom:1px solid #e5e5e5; padding:12px; text-align: center',
         columnStyle_left: 'border-right: 1px solid #e5e5e5;border-bottom:1px solid #e5e5e5; padding:12px; text-align: center',
-        columnStyle_head: 'border-right: 1px solid #e5e5e5;background-color:#fa7190;color:#ffffff;padding:12px; text-align: center;font-size:17px',
-        columnStyle_end:'border-right: 1px solid #e5e5e5;padding:12px; text-align: center',
+        columnStyle_head: 'border-right: 1px solid #e5e5e5;background-color:#fa7190;color:#ffffff;padding:12px; text-align: center;font-size:17px;white-space:nowrap',
+        columnStyle_end:'border-right: 1px solid #e5e5e5;padding:12px; text-align: center;',
         isNoData:true,
         page:1,
         pageCount:10,
         isPreloader:true,
+        chartData:[],
         weightInfo:[
           // {
           //   recordDate:'2017-5-1',
@@ -208,7 +209,6 @@
       },
       onInfinite(event, done){
         //获取数据
-        console.log('pulldown...')
         this.getWeightData(done);
       },
 
@@ -226,6 +226,10 @@
           callback(self,res) {
             if (res.body.ok != 0) {
               self.chartData = res.body.ok
+              self.chartData.unshift({
+                week: 0,
+                weight: self.$store.state.userinfo.weight
+              })
               self.showCharts();
             }
           }

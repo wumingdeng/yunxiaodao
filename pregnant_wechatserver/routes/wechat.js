@@ -31,7 +31,7 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
         title: '足部健康报告',
         description: '请点击查看您的足部健康报告',
         picurl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1495434160&di=011945b146f93281dbd690a59fbcca36&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.cnxmld.com%2Ftupians%2Fbd14908247.jpg',
-        url: 'http://czw321.ngrok.cc/foot/?wxid=' + message.FromUserName 
+        url: config.webAddress + '/?wxid=' + message.FromUserName + '&type=1&page=foot'
       }
   	])
   }

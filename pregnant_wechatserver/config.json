@@ -2,7 +2,7 @@
     "dbaddr":"localhost",
     "port":"3306",
     "user":"root",
-    "pass":"zhaowen",
+    "pass":"2932615qian",
     "dbname":"yxdDB",
     "dialect":"mysql",
     "poolsize":5,
@@ -11,5 +11,6 @@
     "appsec":"034d7b352fd2f99095128730f87baf81",
     "token":"czwserver",
     "encodingAESKey":"",
-    "authCodeAddress":"http://czw123.ngrok.cc/api/auth"
+    "authCodeAddress":"http://yzxs.sujudao.com:8090/api/auth",
+    "webAddress":"http://yzxs.sujudao.com/yxd"
 }

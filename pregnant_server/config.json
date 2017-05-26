@@ -2,9 +2,9 @@
     "dbaddr":"localhost",
     "port":"3306",
     "user":"root",
-    "pass":"zhaowen",
+    "pass":"2932615qian",
     "dbname":"yxdDB",
     "dialect":"mysql",
     "poolsize":5,
-    "listen":8091
+    "listen":8092
 }

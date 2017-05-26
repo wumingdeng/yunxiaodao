@@ -2,7 +2,7 @@
 	<f7-page>
 <!-- 		<f7-navbar sliding>
       <f7-nav-left>
-          <f7-link icon="icon-back" @click="$router.go(-1)"></f7-link>
+          <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
       </f7-nav-left>
       <f7-nav-center sliding title="产品详情"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
@@ -11,7 +11,7 @@
   		<homeSwipe :swipeData="swipeData"></homeSwipe>
   		<f7-block inner style="margin:-5px 0 0 0;font-size:17px;">
   			<span>{{productData.name}}</span>
-  			<span style="float:right;color:#ff6ec7;margin-right:20px">价格:{{productData.price}}</span>
+  			<span style="float:right;color:#ff0000;margin-right:20px">价格:{{productData.price}}</span>
   		</f7-block>
   		
   		<f7-card style="margin: 10px 0">
@@ -38,7 +38,7 @@
       <div class="navFooter">
           <!-- <p><f7-button class="pre" @click="$router.push('/buyShoe')">立即购买</f7-button></p> -->
           <span style="width:30%;"><f7-button style="background-color:#fff" class="pre" @click="$router.push('/order')">
-            <img src='/static/assets/shoe/myOrder.png'></img>
+            <img src='static/assets/shoe/myOrder.png'></img>
           </f7-button></span>
           <span style="width:70%;"><f7-button class="pre" @click="onClickBuy">立即购买</f7-button></span>
       </div>
@@ -89,6 +89,9 @@
 				callback:next
     	})
 		},
+    beforeCreate() {
+      document.title = '一双好鞋'
+    },
 		mounted() {
 			this.productData = this.$store.state.productDetail
 		},

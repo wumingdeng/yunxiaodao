@@ -7,6 +7,7 @@ import mutations from './mutations'
 const state = {
 	wxid: 'onmcQ08YlxYrpJYJgc7lJVIXAkt4',
 	isLogin:false,
+	isloading:false,
 	userinfo:{
 		height:'',
 		weight:'',
