@@ -1,5 +1,13 @@
 // import g from '../globals/global'
 import g from '../globals/global'
+
+var serverAddress
+if (process.env.NODE_ENV == 'development') {
+  serverAddress = g.debugServerAddress;
+} else {
+  serverAddress = g.serverAddress;
+}
+
 function onErrorRefresh(vue,err) {
   vue.$f7.params.modalButtonOk = '刷新'
   vue.$f7.alert('error',err || '刷新重试',()=>{
@@ -9,7 +17,7 @@ function onErrorRefresh(vue,err) {
 export function quickloginwxUser ({commit, state}, data) {
   var self = data.self;
   console.log(self)
-  self.$http.post(g.debugUrlPrefix + '/api/quickloginwxUser', data.info)
+  self.$http.post(serverAddress + '/api/quickloginwxUser', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -32,7 +40,7 @@ export function quickloginwxUser ({commit, state}, data) {
 export function getWeightInfo ({commit, state}, data) {
   var self = data.self;
   console.log(self)
-  self.$http.post(g.debugUrlPrefix + '/api/getWeightInfo', data.info)
+  self.$http.post(serverAddress + '/api/getWeightInfo', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -53,7 +61,7 @@ export function getWeightInfo ({commit, state}, data) {
 export function fillWeight ({commit, state}, data) {
   var self = data.self;
   console.log(self)
-  self.$http.post(g.debugUrlPrefix + '/api/fillWeight', data.info)
+  self.$http.post(serverAddress + '/api/fillWeight', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -75,7 +83,7 @@ export function fillWeight ({commit, state}, data) {
 export function getWeightChart ({commit, state}, data) {
   var self = data.self;
   console.log(self)
-  self.$http.post(g.debugUrlPrefix + '/api/getWeightChart', data.info)
+  self.$http.post(serverAddress + '/api/getWeightChart', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -97,7 +105,7 @@ export function getWeightChart ({commit, state}, data) {
 export function getWeightData ({commit, state}, data) {
   var self = data.self;
   console.log(self)
-  self.$http.post(g.debugUrlPrefix + '/api/getWeightData', data.info)
+  self.$http.post(serverAddress + '/api/getWeightData', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -119,7 +127,7 @@ export function getWeightData ({commit, state}, data) {
 export function updateInfo ({commit, state}, data) {
   var self = data.self;
   console.log(self)
-  self.$http.post(g.debugUrlPrefix + '/api/updateInfo', data.info)
+  self.$http.post(serverAddress + '/api/updateInfo', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -140,7 +148,7 @@ export function updateInfo ({commit, state}, data) {
 //取用户足部报告
 export function getFootRecord ({commit, state}, data) {
   var self = data.self;
-  self.$http.post(g.debugUrlPrefix + '/api/getFootRecord', data.info)
+  self.$http.post(serverAddress + '/api/getFootRecord', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -161,7 +169,7 @@ export function getFootRecord ({commit, state}, data) {
 export function getHomeData ({commit, state},data) {
   var self = data.self;
   var next = data.callback;
-  self.http.get(g.debugUrlPrefix+'/api/mainpage')
+  self.http.get(serverAddress+'/api/mainpage')
     .then((response) => {
       // success callback
       console.log(response)
@@ -184,7 +192,7 @@ export function getHomeData ({commit, state},data) {
 export function getProductDetail ({commit, state},data) {
   var self = data.self;
   var next = data.callback;
-  self.http.post(g.debugUrlPrefix + '/api/getProductDetail', data.info)
+  self.http.post(serverAddress + '/api/getProductDetail', data.info)
     .then((response) => {
       // success callback
       console.log(response)
@@ -204,7 +212,7 @@ export function getProductDetail ({commit, state},data) {
 
 export function ordermake ({commit, state}, data) {
   var self = data.self;
-  self.$http.post(g.debugUrlPrefix + '/api/ordermake', data.info)
+  self.$http.post(serverAddress + '/api/ordermake', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -227,7 +235,28 @@ export function ordermake ({commit, state}, data) {
 //取订单
 export function orderlistUser ({commit, state}, data) {
   var self = data.self;
-  self.$http.post(g.debugUrlPrefix + '/api/orderlistUser', data.info)
+  self.$http.post(serverAddress + '/api/orderlistUser', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      onErrorRefresh(self);
+    });
+}
+
+//取消订单
+export function ordercancel ({commit, state}, data) {
+  var self = data.self;
+  self.$http.post(serverAddress + '/api/ordercancel', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()

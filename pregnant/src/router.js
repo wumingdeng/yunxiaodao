@@ -69,7 +69,7 @@ var routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  // base: '/yxd/',
+  base: process.env.NODE_ENV == 'development' ? '': '/yxd/',
   routes
 })
 

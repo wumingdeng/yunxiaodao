@@ -1,27 +1,28 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var orders = sequelize.define('orders', {
-    userid: DataTypes.INTEGER,
-    workerid: DataTypes.INTEGER,
-    catalog: DataTypes.INTEGER,
-    service: DataTypes.INTEGER,
+    userid: DataTypes.STRING,
+    orderid: DataTypes.STRING,
     valid: DataTypes.INTEGER,
-    payend: DataTypes.BIGINT,
-    actualpay: DataTypes.INTEGER,
-    needpay: DataTypes.INTEGER,
+    contact: DataTypes.STRING,
+    gender:DataTypes.INTEGER,
+    tel: DataTypes.STRING,
     address:DataTypes.STRING,
-    extra:DataTypes.STRING,
-    geo:DataTypes.GEOMETRY('POINT'),
-    waitend:DataTypes.BIGINT,
-    status:DataTypes.INTEGER,
-    rate:DataTypes.FLOAT,
+    province:DataTypes.STRING,
+    city:DataTypes.STRING,
+    area:DataTypes.STRING,
+    shoeid:DataTypes.INTEGER,
+    shoeName:DataTypes.STRING,
+    size:DataTypes.INTEGER,
+    color:DataTypes.STRING,
+    type:DataTypes.STRING,
     price:DataTypes.INTEGER,
-    startat:DataTypes.BIGINT,
-    finishat:DataTypes.BIGINT,
-    createtime:DataTypes.BIGINT
-  }, {
-       timestamps: false
+    remark:DataTypes.STRING,
+    createtime:DataTypes.BIGINT,
+    status:DataTypes.INTEGER
   },{
+       timestamps: false
+  }, {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
