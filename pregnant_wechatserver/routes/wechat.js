@@ -4,6 +4,7 @@ var wechat = require('wechat');
 w_router.use(express.query());
 var config = require('../config.json')
 var app = express()
+var mem = require('../memory')
 // w_router.use('/', wechat(config.token, function(req, res, next) {
 // 	var message = req.weixin;
 // 	//文本
@@ -34,6 +35,13 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
         url: config.webAddress + '/?wxid=' + message.FromUserName + '&type=1&page=foot'
       }
   	])
+  }else if(message.Event === 'subscribe'){
+    //  res.reply('欢迎关注测试号！');
+     console.log(message.Ticket)
+     mem.r.client.hmset(message.Ticket, "open_id", message.FromUserName);
+  }else if(message.Event === 'SCAN'){
+    //  res.reply('欢迎扫描测试号！'+message.EventKey+' '+message.FromUserName);
+     mem.r.client.hmset(message.Ticket, "open_id", message.FromUserName);
   }
 }).middlewarify());
 

@@ -12,5 +12,6 @@
     "token":"czwserver",
     "encodingAESKey":"",
     "authCodeAddress":"http://yzxs.sujudao.com:8090/api/auth",
-    "webAddress":"http://yzxs.sujudao.com/yxd"
+    "webAddress":"http://yzxs.sujudao.com/yxd",
+    "redisAdress":"127.0.0.1"
 }

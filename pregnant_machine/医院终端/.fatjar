@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri May 05 09:08:12 CST 2017
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=\u533B\u9662\u7EC8\u7AEF_fat.jar
+manifest.mergeall=true
+manifest.mainclass=org.liuhe.main.MainJFrame
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
