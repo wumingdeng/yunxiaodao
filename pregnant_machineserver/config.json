@@ -1,0 +1,14 @@
+{
+    "dbaddr":"localhost",
+    "port":"3306",
+    "user":"root",
+    "pass":"2932615qian",
+    "dbname":"yxddb",
+    "dialect":"mysql",
+    "poolsize":3,
+    "listen":8097,
+    "sqldebug":false,
+    "redisAdress":"127.0.0.1",
+    "serverAdress":"http://127.0.0.1",
+    "wechatServerAdress":"http://127.0.0.1:8090"
+}

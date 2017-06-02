@@ -22,6 +22,11 @@ tour_router.route('/test').get(function(req,res){
     res.json({ok:1});
 });
 
+tour_router.route('/accesstoken').get(function(req,res){
+    res.write(cfg.access_token)
+    res.end()
+})
+
 // server wechatserver :80
 // url:api/jsticket
 // 返回jsticket

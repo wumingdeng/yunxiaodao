@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var cfg = require('./config.json')
 var db = require('./models');
+var mem = require('./memory');
 var utils = require('./utils')
 var crypto = require('crypto');
 // api controllers

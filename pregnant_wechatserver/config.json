@@ -8,12 +8,10 @@
     "poolsize":5,
     "listen":8090,
     "appid":"wx5da59f32f8c2f724",
-    "mchid":"1230000109",
-    "pfx":"",
     "appsec":"034d7b352fd2f99095128730f87baf81",
     "token":"czwserver",
     "encodingAESKey":"",
     "authCodeAddress":"http://yzxs.sujudao.com:8090/api/auth",
     "webAddress":"http://yzxs.sujudao.com/yxd",
-    "wechatServerAddress":"http://yzxs.sujudao.com/payResult"
+    "redisAdress":"127.0.0.1"
 }
