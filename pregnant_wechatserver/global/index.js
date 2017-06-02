@@ -1,5 +1,6 @@
 var redis = require("redis");
 // var pub = redis.createClient();
+var cfg = require('../config.json')
 module.exports = {
     errorCode:{
         WRONG_WORKER_ID:1,
@@ -19,4 +20,11 @@ module.exports = {
         WRONG_PARAM:999
     },
     // pub:pub
+    wechatPayInitConfig : {
+      partnerKey: "<partnerkey>",
+      appId: 'wx7fdd16d11d66d539',
+      mchId: '1457175702',
+      notifyUrl: cfg.wechatServerAddress,
+      // pfx: fs.readFileSync("")
+    }
 }

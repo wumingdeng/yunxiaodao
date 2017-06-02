@@ -47,14 +47,16 @@
 					waitDeliver:1,	//待发货
 					waitReceipt:2,	//待收货
 					waitEvaluate:3,	//待评价
-					finish:4	//完成
+					finish:4,	//完成
+					cancel:5
 				},
 				statusName:[
 					'待付款',
 					'待发货',
 					'待收货',
 					'待评价',
-					'交易完成'
+					'交易完成',
+					'订单已取消'
 				]
 			}
 		},
@@ -84,7 +86,7 @@
 					this.$store.dispatch('ordercancel',{
 						self:this,
 						info:{
-							wxid:this.$store.state.user.wxid,
+							wxid:this.$store.state.userinfo.wxid,
 							oid:this.orderData.id
 						},
 						callback:function(self,res) {

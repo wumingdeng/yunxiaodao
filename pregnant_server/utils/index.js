@@ -12,6 +12,17 @@ var utilsf = {
             body: data
         }
         request(options, cb);
+    },
+
+    sendPayToWxServer:function(data,cb){
+        var options = {
+            headers: {"Connection": "close"},
+            url: cfg.wx_server_address+'/api/sendPay',
+            method: 'POST',
+            json:true,
+            body: data
+        }
+        request(options, cb);
     }
 }
 

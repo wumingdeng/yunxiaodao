@@ -6,5 +6,6 @@
     "dbname":"yxdDB",
     "dialect":"mysql",
     "poolsize":5,
-    "listen":8092
+    "listen":8092,
+    "wx_server_address": "http://localhost:8090"
 }

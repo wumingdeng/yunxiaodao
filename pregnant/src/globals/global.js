@@ -11,7 +11,8 @@ export const ERROR_MSG = {
 export default {
   r: {},
   // debugUrlPrefix: 'http://czwyxd.ngrok.cc'
-  debugUrlPrefix: 'http://yzxs.sujudao.com:8092'
+  debugServerAddress: 'http://192.168.18.216:8092',
+  serverAddress: 'http://yzxs.sujudao.com:8092',
 }
 
 export function timeToDate(time,showTime) {

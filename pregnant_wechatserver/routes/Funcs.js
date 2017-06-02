@@ -5,6 +5,18 @@ var g = require('../global')
 var utils = require('../utils')
 var cfg = require('../config.json')
 var jsSHA = require('jssha')
+
+var Payment = require('wechat-pay').Payment;
+var initConfig = {
+  partnerKey: "<partnerkey>",
+  appId: cfg.appid,
+  mchId: cfg.mchid,
+  notifyUrl: cfg.wechatServerAddress,
+  // pfx: fs.readFileSync("")
+};
+var payment = new Payment(initConfig);
+
+
 // for quick test
 tour_router.route('/test').get(function(req,res){
     db.configs.findAll({
@@ -44,6 +56,22 @@ tour_router.route('/sendMsg').post(function(req,res){
     // first ,service is setting as {{first.DATA}} in template,alse can use "color"
     var data = req.body.d
     utils.wechat_f.sendToUser(wxid,tid,data)
+})
+
+tour_router.route('/sendPay').post(function(req,res){
+    var data = req.body;
+    console.log(data);
+
+    payment.getBrandWCPayRequestParams(data, function(err, payargs){
+        console.log('支付返回');
+        console.log(err)
+        console.log(payargs)
+        if (err) {
+            res.json({err:err})
+        } else {
+            res.json(payargs);
+        }
+    });
 })
 
 tour_router.route('/sendMoney').get(function(req,res){
