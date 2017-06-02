@@ -273,3 +273,25 @@ export function ordercancel ({commit, state}, data) {
       onErrorRefresh(self);
     });
 }
+
+//取物流信息
+export function getLogistics ({commit, state}, data) {
+  var self = data.self;
+  self.$http.post(g.adminServerAddress + '/api/getExpInfo', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      onErrorRefresh(self);
+    });
+}
+

@@ -15,7 +15,7 @@
   			v-for="(cell,index) in orderArr"
   			:orderData="cell"
   			:key="index"
-        @logistics="openLogistics"
+        @logistics="openLogistics(cell)"
   		></orderCell>
       <div v-show="!isNoData && !isPreloader" style="width:100%;">
           <p style="margin-bottom:50px;text-align:center;">没有更多订单了</p>
@@ -25,22 +25,24 @@
     <f7-popup id="demo-popup" :opened="popupOpened" @popup:closed="popupOpened=false">
       <f7-view>
         <f7-pages>
-          <f7-page navbar-fixed>
+          <f7-page navbar-fixed style="background-color:#ffffff">
             <f7-navbar title="物流信息">
               <f7-nav-right>
                 <!-- Using state: -->
-                <f7-link @click="popupOpened=false">关闭</f7-link>
+                <img src="static/assets/shoe/guanbi.png" class="closeBtn" @click="popupOpened=false">
+                <!-- <f7-link @click="popupOpened=false">关闭</f7-link> -->
                 <!--
                 Or using F7 API:
                 <f7-link close-popup>Close</f7-link>
                 -->
               </f7-nav-right>
             </f7-navbar>
-            <f7-block inner>
+            <f7-block inner style="margin-top:0">
               <f7-timeline-item inner 
                 v-for="(item,index) in logisticsData.Traces"
-                :content="item.AcceptStation"
-                :date="item.AcceptTime"
+                :text="item.AcceptStation"
+                :date="getLogisticsDate(item.AcceptTime)"
+                :time="getLogisticsTime(item.AcceptTime)"
                 :key="index"
               ></f7-timeline-item>
             </f7-block>
@@ -64,46 +66,31 @@
 				pageCount:10,
 				isPreloader:true,
         popupOpened:false,
+        dateObj:{}, //存物流已有的日期
         logisticsData:{
-          "EBusinessID": "1287326",
-          "ShipperCode": "YTO",
-          "Success": true,
-          "LogisticCode": "12345678",
-          "State": "2",
-          "Traces": [
-            {
-              "AcceptTime": "2017-05-18 10:12:38",
-              "AcceptStation": "圆通合作点【指尖快递】快件已到达绿地蓝海国际大厦B座负一层驿站,如有疑问请联系055163520604"
-            },
-            {
-              "AcceptTime": "2017-05-19 15:16:13",
-              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-            },
-            {
-              "AcceptTime": "2017-05-19 15:16:13",
-              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-            },
-            {
-              "AcceptTime": "2017-05-19 15:16:13",
-              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-            },
-            {
-              "AcceptTime": "2017-05-19 15:16:13",
-              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-            },
-            {
-              "AcceptTime": "2017-05-19 15:16:13",
-              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-            },
-            {
-              "AcceptTime": "2017-05-19 15:16:13",
-              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-            },
-            {
-              "AcceptTime": "2017-05-19 15:16:13",
-              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-            }
-          ]
+          // "EBusinessID": "1287326",
+          // "ShipperCode": "YTO",
+          // "Success": true,
+          // "LogisticCode": "12345678",
+          // "State": "2",
+          // "Traces": [
+          //   {
+          //     "AcceptTime": "2017-05-18 10:12:38",
+          //     "AcceptStation": "圆通合作点【指尖快递】快件已到达绿地蓝海国际大厦B座负一层驿站,如有疑问请联系055163520604"
+          //   },
+          //   {
+          //     "AcceptTime": "2017-05-19 15:16:13",
+          //     "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
+          //   },
+          //   {
+          //     "AcceptTime": "2017-05-19 15:16:13",
+          //     "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
+          //   },
+          //   {
+          //     "AcceptTime": "2017-05-19 15:16:13",
+          //     "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
+          //   },
+          // ]
         }
 			}
     },
@@ -113,7 +100,38 @@
     },
     methods:{
       openLogistics(data) {
+        console.log('get logistics')
+        this.dateObj = {}
+        this.logisticsData = {}
         this.popupOpened = true
+        //取物流信息
+        this.$store.dispatch('getLogistics',{
+          self:this,
+          info:{
+            expCode:'',
+            expNo:'',
+            orderCode:data.id
+          },
+          callback(self, res) {
+            if (res.body.ok == 1) {
+              self.logisticsData = res.body.d;
+            }
+          }
+        })
+      },
+      getLogisticsDate(str) {
+        var date = str.substring(0,10)
+        date = date.replace(/\-/,'  ')
+        //同一天只显示一次
+        if (this.dateObj[date]) {
+          return ''
+        } else {
+          this.dateObj[date] = true
+          return date
+        }
+      },
+      getLogisticsTime(str) {
+        return str.substring(11)
       },
     	onInfinite(event, done){
     		//获取数据
