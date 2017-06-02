@@ -40,39 +40,6 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
 }).middlewarify());
 
 
-//接受微信付款确认请求
-var middleware = require('wechat-pay').middleware;
-app.use('/payResult', middleware(g.wechatPayInitConfig).getNotify().done(function(message, req, res, next) {
-  var openid = message.openid;
-  var order_id = message.out_trade_no;
-  var attach = {};
-  try{
-   attach = JSON.parse(message.attach);
-  }catch(e){}
-
-  /**
-   * 查询订单，在自己系统里把订单标为已处理
-   * 如果订单之前已经处理过了直接返回成功
-   */
-  db.orders.findOne({where:{'userid': openid,'id': order_id}}).then(function(order){
-    if (!order) {
-      res.reply('fail');
-    }
-    if(order.status == 0) {
-      db.orders.update({status: 1},{whree:{'id': order_id}}).then(function() {
-        res.reply('success');
-      })
-    } else {
-      res.reply('success');
-    }
-  })
-
-
-  /**
-   * 有错误返回错误，不然微信会在一段时间里以一定频次请求你
-   * res.reply(new Error('...'))
-   */
-}));
 
 
 module.exports = w_router;
