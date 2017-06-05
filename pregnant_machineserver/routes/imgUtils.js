@@ -61,7 +61,8 @@ function doInit(app){
                 if(req.body.oper!==undefined){
                      if(req.body.oper==='upload'){
                         var ym = getDateStr(new Date())
-                        var p = cfg.serverAdress+':'+cfg.listen+'/upload/'+ym+'/'
+                        // var p = cfg.serverAdress+':'+cfg.listen+'/upload/'+ym+'/'
+                        var p = cfg.serverAdress+':'+cfg.listen+'/'+ym+'/'
                         res.json({"errcode":0,"errmsg":p})
                      }else{
                         res.json({"errcode":2,"errmsg":"成功访问图片上传接口"})

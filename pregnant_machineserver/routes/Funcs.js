@@ -224,7 +224,7 @@ tour_router.route('/serverdata').post(function(req,res){
                                 age:infos.age,district:infos.district,province:infos.province,city:infos.city,
                                 county:infos.county,country:infos.country,nation:infos.nation,height:infos.height,
                                 weight:infos.weight,date_yunfu:date_yunfu,hospital_no:infos.hospital_no,hospital_name:infos.hospital_name,
-                                clinic_dept:infos.clinic_dept,doctor_name:infos.doctor_name,clinic_type:infos.clinic_type,user_id:infos.user_id,
+                                doctor_name:infos.doctor_name,user_id:infos.user_id,doctor_id:infos.doctor_id,
                                 period:infos.period}).then(function(dta){
                                     db.yxd_parameters.create({id:dta.id,mac_id:infos.mac_id,
                                         left_length:infos.left_length,left_width:infos.left_width,right_length:infos.right_length,
@@ -284,14 +284,14 @@ tour_router.route('/serverdata').post(function(req,res){
                                                                             }
                                                                         })
                                                                     }
-                                                                    //如果存在挂号功能，将挂号信息和脚型数据做匹配
-                                                                    if(infos.hospital_no!=='null'){
-                                                                        db.yxd_details.update({record_id:dta.id},{where:{hospital_no:infos.hospital_no,
-                                                                            clinic_dept:infos.clinic_dept,doctor_name:infos.doctor_name,clinic_type:infos.clinic_type,
-                                                                            }}).then(function(){
+                                                                    // //如果存在挂号功能，将挂号信息和脚型数据做匹配
+                                                                    // if(infos.hospital_no!=='null'){
+                                                                    //     db.yxd_details.update({record_id:dta.id},{where:{hospital_no:infos.hospital_no,
+                                                                    //         clinic_dept:infos.clinic_dept,doctor_name:infos.doctor_name,clinic_type:infos.clinic_type,
+                                                                    //         }}).then(function(){
 
-                                                                        })
-                                                                    }
+                                                                    //     })
+                                                                    // }
                                                                     res.json({"errcode":0,"errmsg":"新增脚型数据成功"})
                                                             }).catch(function(err){
                                                                 db.yxd_pictures.destroy({where:{id:dta.id}})
@@ -316,7 +316,7 @@ tour_router.route('/serverdata').post(function(req,res){
                                         res.json({"errcode":1,"errmsg":"添加脚型数据parameter失败！"})
                                     })
                             }).catch(function(err){
-                                res.json({"errcode":1,"errmsg":"添加脚型数据basicinfo失败！"})
+                                res.json({"errcode":1,"errmsg":"添加脚型数据basicinfo失败！"+err})
                             })
                         }
                     })
@@ -391,18 +391,129 @@ tour_router.route('/serverdata').post(function(req,res){
     }
 })
 
+tour_router.route('/serverclinic').post(function(req,res){
+    if(req.body.sign!==undefined){
+        if(req.body.hospital !== undefined && req.body.worktime != undefined){
+            db.doctors.findAll({where:{hospital_no:req.body.hospital}}).then(function(data){
+                if(data){
+                    var clinic = []
+                    for(var i=0;i<data.length;i++){
+                        clinic.push({id:data[i].id,clinic_dept:'',doctor_name:data[i].name,clinic_type:'',wait:'0',count_num:0})
+                    }
+                    res.json({"errcode":0,"errmsg":"",total:data.length,clinic:clinic})
+                }else{
+                    res.json({"errcode":0,"errmsg":"",total:0,clinic:[]})
+                }
+            })
+        }else if(req.body.hospital !== undefined && req.body.doctor !== undefined && req.body.did !== undefined){
+            db.users.update({doctor_id:req.body.did},{where:{wxid:req.body.open_id,card_id:req.body.card_id}}).then(function(){
+                res.json({"errcode":0,"errmsg":"队列中","doctor":req.body.doctor})
+            }).catch(function(err){
+                res.json({"errcode":2,"errmsg":err})
+            })
+        }else{
+            res.json({"errcode":2,"errmsg":"成功连接接口服务器"})
+        }
+    }else{
+        res.json({"errcode":1,"errmsg":"非法访问！"})
+    }
+})
+
+tour_router.route('/get_user_reportlist').post(function(req,res){
+    var openid = req.body.openid || ''
+    var page = req.body.p || 1
+     if(openid === '' || page < 1){
+        res.json({error:g.errorCode.WRONG_PARAM})
+    }else{
+        db.yxd_basicinfos.findAndCountAll({attributes: ['mac_id','open_id','card_id','user_id','date_server',
+            'name','birth','date_yunfu','hospital_name','doctor_name'],
+            where:{open_id:openid},order: db.sequelize.literal('ID DESC'),limit:10,offset:10*(page-1)}).then(function(records){
+            res.json({r:records})
+        }).catch(function(err){
+            res.json({error:g.errorCode.WRONG_SQL})
+        })
+    }
+})
+
+tour_router.route('/get_doctor_reportlist').post(function(req,res){
+    var doctor_id = req.body.did || 0
+    var page = req.body.p || 1
+    var status = req.body.s || 0
+    if(doctor_id === '' || page < 1){
+        res.json({error:g.errorCode.WRONG_PARAM})
+    }else{
+        db.yxd_basicinfos.findAndCountAll({attributes: ['id','mac_id','open_id','card_id','user_id','date_server',
+            'name','birth','date_yunfu','status','age','sex','height','weight'],
+            where:{doctor_id:doctor_id,status:status},order: db.sequelize.literal('ID DESC'),limit:10,offset:10*(page-1)}).then(function(records){
+            res.json({r:records})
+        }).catch(function(err){
+            res.json({error:g.errorCode.WRONG_SQL})
+        })
+    }
+})
+
+tour_router.route('/doctor_mark_readed').post(function(req,res){
+    var id = req.body.id || 0
+    if(id === 0){
+        res.json({error:g.errorCode.WRONG_PARAM})
+    }else{
+        db.yxd_basicinfos.update({status:1},{where:{id:id}}).then(function(){
+            res.json({ok:1})
+        })
+    }
+})
+
+tour_router.route('/getreport').post(function(req,res){
+    var report_id = req.body.rid || 0
+    var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,
+        ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
+	    ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
+        ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
+        yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.mac_id=?`
+    db.sequelize.query(query, { replacements: [report_id], 
+        type: db.sequelize.QueryTypes.SELECT }
+        ).then(function(records){
+        if(records){
+            res.json({data:records})
+        }else{
+            res.json({data:[]})
+        }
+    }).catch(function(err){
+        res.json({error:g.errorCode.WRONG_SQL})
+    })
+})
+
 tour_router.route('/yxd3').post(function(req,res){
-    res.json({"hospital_no":"J180","machine_type":"2",
-    "hospital_name":"解放军第180医院","worktime":"23:00",
-    "db_ip":"","db_port":"",
-    "db_name":"","db_user":"","db_psw":"",
-    "wechat_url":cfg.wechatServerAdress+"/api/accesstoken",
-    "verify_url":cfg.serverAdress+':'+cfg.listen+"/api/scanverify",
-    "userinfo_url":cfg.serverAdress+':'+cfg.listen+"/api/userinfo",
-    "clinic_url":"http://jessielaura.asia/aaction/serverclinic.php",
-    "upload_url":cfg.serverAdress+':'+cfg.listen+"/serverftp4",
-    "data_url":cfg.serverAdress+':'+cfg.listen+"/api/serverdata",
-    "space_day":"0","app_name":"yxd","errcode":0,"errmsg":"ok2"})
+    if(req.body.mac_id !== undefined){
+        db.yxd_machines.findOne({where:{machine_mac:req.body.mac_id,status:1}}).then(function(data){
+            if(data){
+                db.hospitals.findOne({where:{id:data.hospital_no}}).then(function(hos){
+                    if(hos){
+                        res.json({"hospital_no":hos.id,"machine_type":"2",
+                            "hospital_name":hos.name,"worktime":"23:00",
+                            "db_ip":"","db_port":"",
+                            "db_name":"","db_user":"","db_psw":"",
+                            "wechat_url":cfg.wechatServerAdress+"/api/accesstoken",
+                            "verify_url":cfg.serverAdress+':'+cfg.listen+"/api/scanverify",
+                            "userinfo_url":cfg.serverAdress+':'+cfg.listen+"/api/userinfo",
+                            "clinic_url":cfg.serverAdress+':'+cfg.listen+"/api/serverclinic",
+                            "upload_url":cfg.serverAdress+':'+cfg.listen+"/serverftp4",
+                            "data_url":cfg.serverAdress+':'+cfg.listen+"/api/serverdata",
+                            "space_day":"0","app_name":"yxd","errcode":0,"errmsg":"ok2"})
+                    }else{
+                        res.json({"errcode":2,"errmsg":"成功连接数据服务器"})
+                    }
+                })
+            }else{
+                // illegal
+                db.yxd_wrong_machine_logs.create({ipaddress:req.ip,wrong_mac:req.body.mac_id}).then(function(){
+                    res.json({"errcode":3,"errmsg":"非法"})
+                })
+            }
+        })
+    }else{
+        res.json({"errcode":2,"errmsg":"成功连接数据服务器"})
+    }
 });
 
 module.exports=tour_router;

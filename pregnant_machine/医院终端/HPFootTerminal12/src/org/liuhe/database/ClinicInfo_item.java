@@ -6,7 +6,15 @@ public class ClinicInfo_item {
 	private String clinic_type;
 	private String wait;
 	private String count_num;
-	
+	// modify by kael
+	private int id;
+	public int getid() {
+		return id;
+	}
+	public void setid(int id) {
+		this.id = id;
+	}
+	// modify by kael over
 	public String getClinic_dept() {
 		return clinic_dept;
 	}

@@ -924,7 +924,7 @@ public class MainJFrame extends JFrame{
 			for (int i = clinicInfo.startIndex(); i < clinicInfo.endIndex(); i++) {
 				ClinicInfo_item info = list.get(i);
 				ClinicButton clinicButton = new ClinicButton(info.getClinic_dept(),
-						info.getDoctor_name(),info.getClinic_type(),info.getWait(),info.getCount_num());
+						info.getDoctor_name(),info.getClinic_type(),info.getWait(),info.getCount_num(),info.getid());
 				clinicButton.setPreferredSize(new Dimension(200,95));
 				clinicButPane.add(clinicButton);
 				clinicButton.addActionListener(action_listener);
@@ -1454,11 +1454,12 @@ public class MainJFrame extends JFrame{
 				String type = clinicButton.getType();
 				String wait = clinicButton.getWait();
 				String repeate_num = clinicButton.getRepeateNum();
+				int id = clinicButton.getid();
 				System.out.println("打印该专科按钮的信息： 医院："+serverConfig.getHospital_no()+" 专科："+clinic+" 医生："+doctor
 						+" 号别："+type+" 等候人数："+wait+" 复诊次数："+repeate_num);
 
 				Map<String, String> print_info = sqlServer.registration(clinic, doctor, type
-						,studyinfo.getOpen_id(), studyinfo.getCard_id(), studyinfo.getName());
+						,studyinfo.getOpen_id(), studyinfo.getCard_id(), studyinfo.getName(),id);
 				
 				if(print_info == null){
 					MessageDialog option = new MessageDialog(MainJFrame.this,"挂号失败，请重试！","提示",MessageDialog.WARNING_MESSAGE);
@@ -1471,11 +1472,16 @@ public class MainJFrame extends JFrame{
 				}
 				
 				if(print_info.get("errmsg").equals("队列中")){
-					if(print_info.get("doctor").equals("医生")){
-						toBackPane("您已经在专科队列中，请耐心等候！",clinic+"  医生  普通号","5");
-					}else{
-						toBackPane("您已经在叫号队列中，请耐心等候！",clinic+"  "+doctor+"  "+type,"5");
-					}
+					// modify by kael
+					studyinfo.setDoctor_name(doctor);
+					studyinfo.setCurrentDoctor_id(id);
+					toScanPane();
+					// modify by kael over
+//					if(print_info.get("doctor").equals("医生")){
+//						toBackPane("您已经在专科队列中，请耐心等候！",clinic+"  医生  普通号","5");
+//					}else{
+//						toBackPane("您已经在叫号队列中，请耐心等候！",clinic+"  "+doctor+"  "+type,"5");
+//					}
 //					studyinfo.setHospital_no(serverConfig.getHospital_no());
 //					studyinfo.setHospital_name(serverConfig.getHospital_name());
 //					studyinfo.setClinic_dept(clinic);
@@ -1799,13 +1805,13 @@ public class MainJFrame extends JFrame{
 							toIndentityPane();
 						}else{
 							// modify by kael
-							toScanPane();
+//							toScanPane();
 							// modify by kael over
-//							if(serverConfig.getMachine_type().equals("0") || serverConfig.getMachine_type().equals("1")){
-//								toScanPane();
-//							}else if(serverConfig.getMachine_type().equals("2")){
-//								toClinicPane02();
-//							}
+							if(serverConfig.getMachine_type().equals("0") || serverConfig.getMachine_type().equals("1")){
+								toScanPane();
+							}else if(serverConfig.getMachine_type().equals("2")){
+								toClinicPane02();
+							}
 						}
 						stopRequested = true;
 					}
@@ -2325,12 +2331,15 @@ public class MainJFrame extends JFrame{
 					}
 				}
 				if(result.equals("true")){
-					if(Integer.parseInt(serverConfig.getMachine_type()) >= 2){
-						printQrcode.showClinic(studyinfo.getClinic_dept()+";"+studyinfo.getDoctor_name()+";"+studyinfo.getClinic_type()+";"
-								+studyinfo.getClinic_status()+";"+studyinfo.getQueue_num()+";"+studyinfo.getWait_num());
-					}else{
-						printQrcode.showUploaded();
-					}
+					// modify by kael
+					printQrcode.showUploaded();
+					// modify by kael over
+//					if(Integer.parseInt(serverConfig.getMachine_type()) >= 2){
+//						printQrcode.showClinic(studyinfo.getClinic_dept()+";"+studyinfo.getDoctor_name()+";"+studyinfo.getClinic_type()+";"
+//								+studyinfo.getClinic_status()+";"+studyinfo.getQueue_num()+";"+studyinfo.getWait_num());
+//					}else{
+//						printQrcode.showUploaded();
+//					}
 					if(printUtil.havePrint() != null){
 						if(Integer.parseInt(serverConfig.getMachine_type()) >= 2){
 							printUtil.setCinicInfo(studyinfo.getClinic_dept()+"  "+studyinfo.getQueue_num(), studyinfo.getWait_num());

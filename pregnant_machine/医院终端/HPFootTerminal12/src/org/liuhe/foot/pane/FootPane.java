@@ -1626,7 +1626,12 @@ public class FootPane extends JPanel implements ActionListener{
 			if(length_pre<length_float&&length_float<length_pre+1){
 				return foot_length_str;
 			}else{
-				return String.valueOf(length_pre+0.25+Math.random()*0.5);//否则返回上一数据+(0.25,0.75)
+				// modify by kael
+				float l=(float) (length_pre+0.25+Math.random()*0.5);
+				float num=(float)(Math.round(l*100.0)/100.0);
+				return String.valueOf(num);
+				// modify by kael over
+//				return String.valueOf(length_pre+0.25+Math.random()*0.5);//否则返回上一数据+(0.25,0.75)
 			}
 		}
 	}
@@ -1640,7 +1645,12 @@ public class FootPane extends JPanel implements ActionListener{
 			if(width_pre<width_float&&width_float<width_pre+0.5){
 				return foot_width_str;
 			}else{
-				return String.valueOf(width_pre+0.125+Math.random()*0.25);//否则返回上一数据+(0.125,0.375)
+				// modify by kael
+				float w=(float) (width_pre+0.25+Math.random()*0.5);
+				float num=(float)(Math.round(w*100.0)/100.0);
+				return String.valueOf(num);
+				// modify by kael over
+//				return String.valueOf(width_pre+0.125+Math.random()*0.25);//否则返回上一数据+(0.125,0.375)
 			}
 		}
 	}

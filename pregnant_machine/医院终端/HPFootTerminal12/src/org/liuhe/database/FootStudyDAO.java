@@ -96,6 +96,9 @@ public class FootStudyDAO {
 	        json = json+"\"clinic_type\":"+"\""+object.getClinic_type()+"\",";
 	        json = json+"\"user_id\":"+"\""+object.getUser_id()+"\",";//json = json+"\"user_id\":"+object.getUser_id()+",";
 	        json = json+"\"period\":"+"\""+object.getPeriod()+"\",";//json = json+"\"period\":"+object.getPeriod()+",";   
+	        // modify by kael
+	        json = json+"\"doctor_id\":"+"\""+object.getCurrentDoctor_id()+"\",";
+	        // modify by kael over
 		}
         //添加参数信息42
         json = json+"\"left_length\":"+object.getLeft_length_float()+",";
@@ -291,11 +294,12 @@ public class FootStudyDAO {
 	 * 实现挂号
 	 * 返回："初诊/复诊;number;wait"
 	 * */
-	public Map<String, String> registration(String clinic,String doctor,String type,String open_id,String card_id,String pat_name){
+	public Map<String, String> registration(String clinic,String doctor,String type,String open_id,String card_id,String pat_name,int doctorid){
 		String outputStr = "sign=liuhe&hospital="+serverConfig.getHospital_no()+"&clinic="+clinic+"&doctor="+doctor+"&type="+type;
 		outputStr = outputStr + (open_id!=null?"&open_id="+open_id:"");
 		outputStr = outputStr + (card_id!=null?"&card_id="+card_id:"");
 		outputStr = outputStr + (pat_name!=null?"&pat_name="+pat_name:"");
+		outputStr = outputStr + ("&did="+doctorid);
 		JSONObject jsonObject = HttpUtil.httpRequest(serverConfig.getClinicUrl(),"POST",outputStr);
 		if(jsonObject == null){
 			return null;

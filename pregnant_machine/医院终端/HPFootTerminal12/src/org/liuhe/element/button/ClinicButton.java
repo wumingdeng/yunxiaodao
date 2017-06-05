@@ -25,7 +25,7 @@ public class ClinicButton extends JButton{
 	private String type = null;
 	private String wait = null;
 	private String repeat_num = null;
-	
+	private int id = -1;
 	private Color gen_color = new Color(62,170,245);
 	private Font gen_font = new Font("ºÚÌå", Font.PLAIN+Font.BOLD, 20);
 	private int differV = 0;
@@ -34,7 +34,7 @@ public class ClinicButton extends JButton{
 	private Color startFillColor = new Color(245,246,246);
 	private Color endFillColor = new Color(211,213,214);
 	
-	public ClinicButton(String clinic,String doctor,String type,String wait,String repeat_num){
+	public void SetParams(String clinic,String doctor,String type,String wait,String repeat_num){
 		this.clinic = clinic;
 		this.doctor = doctor;
 		this.type = type;
@@ -61,6 +61,18 @@ public class ClinicButton extends JButton{
                 repaint();
             }
         });
+	}
+	
+	public ClinicButton(String clinic,String doctor,String type,String wait,String repeat_num){
+		this.SetParams(clinic,doctor,type,wait,repeat_num);
+	}
+	
+	public ClinicButton(String clinic,String doctor,String type,String wait,String repeat_num,int id){
+		this.id = id;
+		this.SetParams(clinic,doctor,type,wait,repeat_num);
+	}
+	public int getid(){
+		return id;
 	}
 	
 	public String getClinic(){

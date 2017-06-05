@@ -6,6 +6,7 @@ var data={
 module.exports = {
     errorCode:{
         WRONG_PARAM:1,
+        WRONG_SQL:2,
         WRONG_USER:101
     },
     ReceiptStatus:{

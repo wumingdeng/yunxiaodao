@@ -13,7 +13,6 @@ module.exports = function(sequelize, DataTypes) {
     name:DataTypes.STRING,
     birth:DataTypes.STRING,
     age:DataTypes.INTEGER,//
-    address:DataTypes.STRING,
     sex:DataTypes.STRING,
     district:DataTypes.STRING,
     province:DataTypes.STRING,
@@ -35,9 +34,9 @@ module.exports = function(sequelize, DataTypes) {
     blood:DataTypes.STRING,
     hospital_no:DataTypes.STRING,
     hospital_name:DataTypes.STRING,//
-    clinic_dept:DataTypes.STRING,//
     doctor_name:DataTypes.STRING,
-    clinic_type:DataTypes.STRING
+    doctor_id:DataTypes.INTEGER,
+    status:DataTypes.INTEGER
   },{
        timestamps: false
   }, {

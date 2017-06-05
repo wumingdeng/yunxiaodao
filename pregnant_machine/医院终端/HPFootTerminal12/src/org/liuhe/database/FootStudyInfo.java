@@ -36,6 +36,9 @@ public class FootStudyInfo {
 	private String hospital_name;
 	private String clinic_dept;
 	private String doctor_name;
+	// modify by kael
+	private int   current_doctor_id;
+	// modify by kael over
 	private String clinic_type;
 	
 	private String clinic_status;
@@ -59,6 +62,12 @@ public class FootStudyInfo {
 	}
 	public void setClinic_dept(String clinicDept) {
 		clinic_dept = clinicDept;
+	}
+	public void setCurrentDoctor_id(int id) {
+		current_doctor_id = id;
+	}
+	public int getCurrentDoctor_id() {
+		return current_doctor_id;
 	}
 	public String getDoctor_name() {
 		return doctor_name;

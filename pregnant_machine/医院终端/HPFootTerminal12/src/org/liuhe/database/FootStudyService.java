@@ -34,8 +34,8 @@ public class FootStudyService {
 		return dao.getClinicInfo(open_id, card_id);
 	}
 	//实现挂号
-	public Map<String, String> registration(String clinic,String doctor,String type,String open_id,String card_id,String pat_name){
-		return dao.registration(clinic, doctor, type, open_id, card_id, pat_name);
+	public Map<String, String> registration(String clinic,String doctor,String type,String open_id,String card_id,String pat_name,int doctorid){
+		return dao.registration(clinic, doctor, type, open_id, card_id, pat_name,doctorid);
 	}
 	
 	//新增二维码ticket和scene参数记录，便于验证扫描

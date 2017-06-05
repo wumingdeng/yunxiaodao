@@ -30,7 +30,8 @@ module.exports = function(sequelize, DataTypes) {
     blood:DataTypes.STRING,
     // date_yunfu:DataTypes.STRING,
     user_email:DataTypes.STRING,//注册邮箱
-    user_date:DataTypes.BIGINT//注册时间
+    user_date:DataTypes.BIGINT,//注册时间
+    doctor_id:DataTypes.INTEGER// 所屬醫生ID
   },{
        timestamps: false
   }, {

@@ -41,7 +41,7 @@ for(var key in route_table){
 utils.onServerInit();
 
 app.set('port', cfg.listen);
-
+app.use(express.static(path.join(__dirname, './uploads')));
 var server = app.listen(app.get('port'), function() {
     console.log('server listening on port ' + server.address().port);
 });
