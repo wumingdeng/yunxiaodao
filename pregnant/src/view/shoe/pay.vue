@@ -83,7 +83,6 @@
 							// 	self.$router.push('/order')
 							// })
 						}
-						console.log(res.body)
 						var payargs = {
 							 "appId":"wx5da59f32f8c2f724",     //公众号名称，由商户传入     
 		           "timeStamp":"1395712654",         //时间戳，自1970年以来的秒数     
@@ -92,12 +91,15 @@
 		           "signType":"MD5",         //微信签名方式：     
 		           "paySign":"70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名 
 						}
+						payargs = res.body;
 						WeixinJSBridge.invoke('getBrandWCPayRequest', payargs, function(res){
+							console.log(res)
 						  if(res.err_msg == "get_brand_wcpay_request:ok"){
-						    alert("支付成功");
+						  	self.$router.push('/order');
+						    // alert("支付成功");
 						    // 这里可以跳转到订单完成页面向用户展示
 						  }else{
-						    alert("支付失败，请重试");
+						    alert('支付失败，请重试');
 						  }
 						});
 					}

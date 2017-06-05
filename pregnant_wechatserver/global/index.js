@@ -21,9 +21,9 @@ module.exports = {
     },
     // pub:pub
     wechatPayInitConfig : {
-      partnerKey: "<partnerkey>",
-      appId: 'wx7fdd16d11d66d539',
-      mchId: '1457175702',
+      partnerKey: cfg.partnerKey,
+      appId: cfg.appid,
+      mchId: cfg.mchid,
       notifyUrl: cfg.wechatServerAddress,
       // pfx: fs.readFileSync("")
     }

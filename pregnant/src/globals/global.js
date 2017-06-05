@@ -13,6 +13,7 @@ export default {
   // debugUrlPrefix: 'http://czwyxd.ngrok.cc'
   debugServerAddress: 'http://192.168.18.216:8092',
   serverAddress: 'http://yzxs.sujudao.com:8092',
+  adminServerAddress: 'http://192.168.18.165:8101'
 }
 
 export function timeToDate(time,showTime) {

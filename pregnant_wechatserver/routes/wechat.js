@@ -45,4 +45,5 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
   }
 }).middlewarify());
 
+
 module.exports = w_router;

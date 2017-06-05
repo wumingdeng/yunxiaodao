@@ -7,25 +7,19 @@ var cfg = require('../config.json')
 var jsSHA = require('jssha')
 
 var Payment = require('wechat-pay').Payment;
-var initConfig = {
-  partnerKey: "<partnerkey>",
-  appId: cfg.appid,
-  mchId: cfg.mchid,
-  notifyUrl: cfg.wechatServerAddress,
-  // pfx: fs.readFileSync("")
-};
-var payment = new Payment(initConfig);
+var payment = new Payment(g.wechatPayInitConfig);
 
 
 // for quick test
 tour_router.route('/test').get(function(req,res){
-    db.configs.findAll({
-        // attributes: ['cat_id'],
-        where:{id:0}
-    }).then(function(data){
-        // mem.r.pub.publish('memory-channel',"666")
-        res.json({d:data});
-    })
+    // db.configs.findAll({
+    //     // attributes: ['cat_id'],
+    //     where:{id:0}
+    // }).then(function(data){
+    //     // mem.r.pub.publish('memory-channel',"666")
+    //     res.json({d:data});
+    // })
+    res.json({ok:1});
 });
 
 tour_router.route('/accesstoken').get(function(req,res){
@@ -60,19 +54,53 @@ tour_router.route('/sendMsg').post(function(req,res){
 
 tour_router.route('/sendPay').post(function(req,res){
     var data = req.body;
+    data.spbill_create_ip = data.spbill_create_ip[0];
     console.log(data);
 
     payment.getBrandWCPayRequestParams(data, function(err, payargs){
         console.log('支付返回');
         console.log(err)
-        console.log(payargs)
         if (err) {
             res.json({err:err})
         } else {
+            console.log(payargs)
             res.json(payargs);
         }
     });
 })
+
+
+//接受微信付款确认请求
+var middleware = require('wechat-pay').middleware;
+// app.use('/wechat/payResult', middleware(g.wechatPayInitConfig).getNotify().done(function(message, req, res, next) {
+tour_router.route('/payResult').post(middleware(g.wechatPayInitConfig).getNotify().done(function(message, req, res, next) {
+  var openid = message.openid;
+  var order_id = message.out_trade_no;
+  console.log('支付确认。。' + order_id);
+
+  /**
+   * 查询订单，在自己系统里把订单标为已处理
+   * 如果订单之前已经处理过了直接返回成功
+   */
+  db.orders.findOne({where:{'userid': openid,'id': order_id}}).then(function(order){
+    if (!order) {
+      res.reply('fail');
+    }
+    if(order.status == 0) {
+      db.orders.update({status: 1},{where:{'id': order_id}}).then(function() {
+        res.reply('success');
+      })
+    } else {
+      res.reply('success');
+    }
+  })
+
+
+  /**
+   * 有错误返回错误，不然微信会在一段时间里以一定频次请求你
+   * res.reply(new Error('...'))
+   */
+}));
 
 tour_router.route('/sendMoney').get(function(req,res){
 
