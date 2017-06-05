@@ -21,7 +21,7 @@
   			<f7-card-content style="">
           <img 
             style="width:100%; display:block;" 
-            v-for="n in 18" 
+            v-for="n in productData.introNum" 
             :src="getImgSrc(n)">
   			</f7-card-content>
   		</f7-card>
@@ -70,11 +70,22 @@
     	}
     },
     methods:{
+      onImgNum() {
+        // fs
+        // .readdirSync(__dirname)
+        // .filter(function(file) {
+        //   return (file.indexOf('.') !== 0) && (file.slice(-4) === '.jpg');
+        // })
+        // .forEach(function(file) {
+        //   console.log('hehehe')
+
+        // });
+      },
       onClickBuy() {
         this.pickerOpened = true;
       },
       getImgSrc(n) {
-        return "static/assets/shoe/product/intro_p1/" + n +".jpg"
+        return "static/assets/shoe/product/intro_p" + this.productData.pid + "/" + n +".jpg"
       }
     },
 		beforeRouteEnter(to,from,next){

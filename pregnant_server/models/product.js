@@ -8,7 +8,9 @@ module.exports = function(sequelize, DataTypes) {
     intro:DataTypes.STRING,
     size:DataTypes.STRING,
     color:DataTypes.STRING,
-    type:DataTypes.STRING
+    type:DataTypes.STRING,
+    pid:DataTypes.INTEGER,
+    introNum:DataTypes.INTEGER
   },{
        timestamps: false
   }, {

@@ -20,32 +20,29 @@
 			console.log(wxid)
 			localStorage.wxid = wxid;
 			localStorage.type = type;
+			localStorage.page = page;
 			// localStorage.oid = oid;
 			// this.$store.commit('user/GET_WXID',wxid);
-			console.log('enter login')
-			console.log(this.$route)
-			console.log(this.$router)
-			console.log(wxid)
 			// this.$f7.showPreloader('登录中')	
 			// this.$store.state.isloading = true;
-			this.$store.commit("LOADING",true)
 			// debugger
 			this.$store.commit('GET_WXID',wxid)
 
 
-			if (type == 1) {
-				if (!this.$store.state.isLogin) {
-					this.$store.dispatch('quickloginwxUser',{
-						self:this,
-						info:{
-							wxid: wxid
-						},
-						callback:function(self,res) {
-		        	self.$store.commit('USERINFO',res.body.ok);
-		        	self.$router.push('/' + page);
-						}
-					})
-				}
+			if (!this.$store.state.isLogin) {
+				this.$store.commit("LOADING",true)
+				this.$store.dispatch('quickloginwxUser',{
+					self:this,
+					info:{
+						wxid: wxid
+					},
+					callback:function(self,res) {
+	        	self.$store.commit('USERINFO',res.body.ok);
+	        	self.$router.push('/' + page);
+					}
+				})
+			} else {
+      	this.$router.push('/' + page);
 			}
 		}
 	}

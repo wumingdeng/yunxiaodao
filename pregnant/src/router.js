@@ -20,7 +20,8 @@ var routes = [
   {
     path: '/login', alias: '/', 
     component: Login, 
-    name: 'login'
+    name: 'login',
+    meta: { auth: true }
   },
 	{
     path: '/check',
@@ -71,6 +72,37 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.NODE_ENV == 'development' ? '': '/yxd/',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  //只能微信上访问
+  // if (!to.matched.some(record => record.meta.notNeedWX)) {  //没有配置notNeedWX的路由都要判断是否在微信上登录
+  //   if(!g.isInWeiXin()) {
+  //     console.log('plase use wx....')
+  //     next('/useWX')
+  //     return
+  //   }
+  // }
+  if (to.matched.some(record => !record.meta.auth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    var isLogin = window.Global.s.state.isLogin
+    if (!isLogin) {
+      next({
+        path: '/',
+        query: { 
+          redirect: to.fullPath,
+          wxid:localStorage.wxid,
+          type:localStorage.type,
+          oid:localStorage.oid
+        }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // 确保一定要调用 next()
+  }
 })
 
 export default router

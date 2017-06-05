@@ -2,10 +2,10 @@
     "dbaddr":"localhost",
     "port":"3306",
     "user":"root",
-    "pass":"2932615qian",
+    "pass":"zhaowen",
     "dbname":"yxdDB",
     "dialect":"mysql",
     "poolsize":5,
     "listen":8092,
-    "wx_server_address": "http://localhost:8090"
+    "wx_server_address": "http://localhost"
 }
