@@ -36,12 +36,12 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
       }
   	])
   }else if(message.Event === 'subscribe'){
-    //  res.reply('欢迎关注测试号！');
-     console.log(message.Ticket)
      mem.r.client.hmset(message.Ticket, "open_id", message.FromUserName);
+     res.reply('欢迎关注测试号！');
   }else if(message.Event === 'SCAN'){
     //  res.reply('欢迎扫描测试号！'+message.EventKey+' '+message.FromUserName);
      mem.r.client.hmset(message.Ticket, "open_id", message.FromUserName);
+     res.reply('SCAN');
   }
 }).middlewarify());
 

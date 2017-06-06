@@ -117,7 +117,7 @@ tour_router.route('/userinfo').post(function(req,res){
                         db.users.create({wxid:req.body.idValue}).then(function(data){
                             var result={id:data.id,open_id:data.wxid,card_id:'',name:'',nation:'',
                                 date_birth:'',district:'',province:'',city:'',
-                                county:'',height:0,weight:0,date_yunfu:'',
+                                county:'',weight:0,date_yunfu:'',
                                 left_length:'',right_length:'',left_width:'',right_width:'',
                                 "errcode":0,"errmsg":"ok"
                             }
