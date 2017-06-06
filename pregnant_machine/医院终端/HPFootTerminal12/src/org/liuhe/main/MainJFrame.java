@@ -1309,7 +1309,8 @@ public class MainJFrame extends JFrame{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
 							toScanPane();
 						}else if(serverConfig.getMachine_type().equals("2")){
-							toClinicPane01(false);
+//							toClinicPane01(false);
+							toScanPane();
 						}
 					}
 				}
@@ -1326,7 +1327,8 @@ public class MainJFrame extends JFrame{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
 						toScanPane();
 					}else if(serverConfig.getMachine_type().equals("2")){
-						toClinicPane01(false);
+//						toClinicPane01(false);
+						toScanPane();
 					}
 				}
 			}
@@ -1354,7 +1356,8 @@ public class MainJFrame extends JFrame{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
 							toScanPane();
 						}else if(serverConfig.getMachine_type().equals("2")){
-							toClinicPane01(false);
+//							toClinicPane01(false);
+							toScanPane();
 						}
 					}
 				}
@@ -1369,7 +1372,8 @@ public class MainJFrame extends JFrame{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
 						toScanPane();
 					}else if(serverConfig.getMachine_type().equals("2")){
-						toClinicPane01(false);
+//						toClinicPane01(false);
+						toScanPane();
 					}
 				}
 			}
@@ -1381,7 +1385,8 @@ public class MainJFrame extends JFrame{
 				if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
 					toScanPane();
 				}else if(serverConfig.getMachine_type().equals("2")){
-					toClinicPane01(false);
+//					toClinicPane01(false);
+					toScanPane();
 				}
 			}
 			// 触发扫描面板按钮
@@ -1805,13 +1810,13 @@ public class MainJFrame extends JFrame{
 							toIndentityPane();
 						}else{
 							// modify by kael
-//							toScanPane();
+							toScanPane();
 							// modify by kael over
-							if(serverConfig.getMachine_type().equals("0") || serverConfig.getMachine_type().equals("1")){
-								toScanPane();
-							}else if(serverConfig.getMachine_type().equals("2")){
-								toClinicPane02();
-							}
+//							if(serverConfig.getMachine_type().equals("0") || serverConfig.getMachine_type().equals("1")){
+//								toScanPane();
+//							}else if(serverConfig.getMachine_type().equals("2")){
+//								toClinicPane02();
+//							}
 						}
 						stopRequested = true;
 					}
@@ -1855,16 +1860,16 @@ public class MainJFrame extends JFrame{
 				ReadIDCardUtil cardUtil = new ReadIDCardUtil();
 				Map<String, String> map = null;
 				try {
-//					map = cardUtil.readCardInfo();
+					map = cardUtil.readCardInfo();
 					// modify by kael
-					map = new HashMap<String,String>();
-					map.put("Name", "大名");
-					map.put("Sex", "女");
-					map.put("Nation", "俄羅斯");
-					map.put("Born", "1990-3-20");
-					map.put("Address", "大名水水");
-					map.put("errcode", "0");
-					map.put("IDCardNo","33392023920");
+//					map = new HashMap<String,String>();
+//					map.put("Name", "大名");
+//					map.put("Sex", "女");
+//					map.put("Nation", "俄羅斯");
+//					map.put("Born", "1990-3-20");
+//					map.put("Address", "大名水水");
+//					map.put("errcode", "0");
+//					map.put("IDCardNo","33392023920");
 					// modify by kael overs
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -1914,7 +1919,8 @@ public class MainJFrame extends JFrame{
 							if(serverConfig.getMachine_type().equals("0") || serverConfig.getMachine_type().equals("1")){
 								toScanPane();
 							}else if(serverConfig.getMachine_type().equals("2")){
-								toClinicPane02();
+//								toClinicPane02();
+								toScanPane();
 							}
 							stopRequested = true;					
 						}
@@ -1924,7 +1930,8 @@ public class MainJFrame extends JFrame{
 							if(serverConfig.getMachine_type().equals("0") || serverConfig.getMachine_type().equals("1")){
 								toScanPane();
 							}else if(serverConfig.getMachine_type().equals("2")){
-								toClinicPane02();
+//								toClinicPane02();
+								toScanPane();
 							}
 							stopRequested = true;
 						}

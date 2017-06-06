@@ -398,9 +398,14 @@ public class FootStudyDAO {
         	if(!jsonObject.getString("date_yunfu").equals("")){
         		map.put("date_yunfu", jsonObject.getString("date_yunfu"));
         	}
-        	if(!jsonObject.getString("height").equals("")){
-        		map.put("height", jsonObject.getString("height"));
+        	if(jsonObject.containsKey("height")){
+        		if(!jsonObject.getString("height").equals("")){
+            		map.put("height", jsonObject.getString("height"));
+            	}
+        	}else{
+        		map.put("height", null);
         	}
+        	
         	if(!jsonObject.getString("left_length").equals("")){
         		map.put("left_length", jsonObject.getString("left_length"));
         	}
