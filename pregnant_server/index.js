@@ -26,10 +26,6 @@ app.all('*', function(req, res, next) {
     next();
 });
 
-// wechat vaild
-var wc = require('./routes/wechat')
-app.use('/wechat',wc)
-
 // error handler
 app.use(function(err, req, res, next) {
   console.error(err.stack);

@@ -79,12 +79,12 @@ var f = {
             }
         });
     },
-    sendToUser:function(userOpenid,templateid,data){
+    sendToUser:function(userOpenid,templateid,data,msgUrl){
         var url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='+cfg.access_token;
         var obj={
             "touser":userOpenid,
             "template_id":templateid,
-            "url":"http://weixin.qq.com/download",            
+            "url":msgUrl || '',            
             "data":data
         }
         var options = {

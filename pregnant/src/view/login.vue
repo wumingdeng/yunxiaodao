@@ -16,6 +16,7 @@
 			var wxid = this.$route.query.wxid;
 			var type = this.$route.query.type;
 			var page = this.$route.query.page;	//跳转的页面
+			var rid = this.$route.query.rid	//足部报告id
 			// var oid = this.$route.query.oid;
 			console.log(wxid)
 			localStorage.wxid = wxid;
@@ -38,7 +39,17 @@
 					},
 					callback:function(self,res) {
 	        	self.$store.commit('USERINFO',res.body.ok);
-	        	self.$router.push('/' + page);
+	        	if (page == 'foot' && rid) {
+	        		self.$router.push({
+	        			path:'/' + page,
+	        			query:{
+	        				rid:rid,
+	        				wxid:wxid
+	        			}
+	        		});
+	        	} else {
+	        		self.$router.push('/' + page);
+	        	}
 					}
 				})
 			} else {

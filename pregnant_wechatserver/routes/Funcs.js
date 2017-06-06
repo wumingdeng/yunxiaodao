@@ -4,7 +4,9 @@ var db = require('../models')
 var g = require('../global')
 var utils = require('../utils')
 var cfg = require('../config.json')
+var template = require('../template.json');
 var jsSHA = require('jssha')
+var moment = require('moment')
 
 var Payment = require('wechat-pay').Payment;
 var payment = new Payment(g.wechatPayInitConfig);
@@ -67,6 +69,38 @@ tour_router.route('/sendPay').post(function(req,res){
             res.json(payargs);
         }
     });
+})
+
+
+tour_router.route('/footReport').post(function(req,res){
+    var wxid = req.body.wxid || ''
+    var rid = req.body.rid
+    if(wxid === '' || !rid){
+        res.json({err:g.errorCode.WRONG_PARAM})
+        return
+    }
+    // templateid
+    var tid = template.template_message_send_foot_report;
+    // data formate: "d":{"first":{"value":"DAMAO"},"service":{"value":"ni h你好s j"}}
+    // first ,service is setting as {{first.DATA}} in template,alse can use "color"
+    var data = {
+        first:{
+            value:'您好，您的足部检测报告已完成。',
+            color:"#000000"
+        },
+        keyword1:{
+            value:'孕小岛'
+        },
+        keyword2:{
+            value:moment().format("YYYY-MM-DD hh:mm:ss")
+        },
+        remark:{
+            value:'请您点击查看'
+        }
+    }
+    var url = cfg.webAddress + '/?wxid=' + wxid + '&type=1&page=foot&rid=' + rid;
+    utils.wechat_f.sendToUser(wxid,tid,data,url)
+    res.json({ok:1})
 })
 
 

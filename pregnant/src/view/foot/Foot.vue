@@ -112,9 +112,11 @@
 		mounted() {
 			//取数据
 			var wxid = this.$route.query.wxid;
+			var rid = this.$route.query.rid;
 			this.$store.dispatch('getFootRecord',{
 				self:this,
 				info:{
+					rid:rid,
 					wxid:wxid
 				},
 				callback(self,res) {
