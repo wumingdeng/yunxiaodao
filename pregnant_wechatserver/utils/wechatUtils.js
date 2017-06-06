@@ -34,7 +34,7 @@ var f = {
                     if(bodyToken&&bodyToken.access_token){
                         cfg.access_token = bodyToken.access_token;
                         getJsTicket(function(){},function(){})
-                        self.setupMenu(cfg.authCodeAddress)
+                        // self.setupMenu(cfg.authCodeAddress)
                         // fs.writeFile('./token', bodyToken.access_token, function (err) {
                         // });
                     }
@@ -124,9 +124,9 @@ var f = {
                     "url": redirect_url_check//"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+cfg.appid+"&redirect_uri="+codeCallback+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
                 },
                 {
-                    "type":"click",
-                    "name":"足部健康",
-                    "key":"FOOT_REPORT"
+                    "type": "view",
+                    "name": "足部健康",
+                    "url": redirect_url_foot
                 },
                 {
                     "type": "view",

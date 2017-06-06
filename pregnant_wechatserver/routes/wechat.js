@@ -16,7 +16,7 @@ var mem = require('../memory')
 
 w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
   // 微信输入信息都在message上
-  res.reply('欢迎来到测试号！');
+  res.reply('欢迎来到孕小岛！');
 }).location(function (message, req, res, next) {
   res.reply('location');
 }).image(function (message, req, res, next) {
