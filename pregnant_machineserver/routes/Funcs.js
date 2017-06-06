@@ -463,6 +463,21 @@ tour_router.route('/doctor_mark_readed').post(function(req,res){
     }
 })
 
+tour_router.route('/get_user_latest_report').post(function(req,res){
+    var openid = req.body.openid || ''
+     if(openid === ''){
+        res.json({error:g.errorCode.WRONG_PARAM})
+    }else{
+        db.yxd_basicinfos.findAndCountAll({attributes: ['mac_id','open_id','card_id','user_id','date_server',
+            'name','birth','date_yunfu','hospital_name','doctor_name'],
+            where:{open_id:openid},order: db.sequelize.literal('ID DESC'),limit:1}).then(function(records){
+            res.json({r:records})
+        }).catch(function(err){
+            res.json({error:g.errorCode.WRONG_SQL})
+        })
+    }
+})
+
 tour_router.route('/getreport').post(function(req,res){
     var report_id = req.body.rid || 0
     var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,

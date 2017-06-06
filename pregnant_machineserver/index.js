@@ -10,6 +10,7 @@ var db = require('./models');
 var mem = require('./memory');
 var utils = require('./utils')
 var middleware = require('./middleware')
+var process = require('process')
 // api controllers
 var route_table = require('./routes/routeTable');
 
@@ -42,6 +43,11 @@ utils.onServerInit();
 
 app.set('port', cfg.listen);
 app.use(express.static(path.join(__dirname, './uploads')));
+
+process.on('uncaughtException', function (err) {
+　　console.log('Caught exception: ' + err);
+});
+
 var server = app.listen(app.get('port'), function() {
     console.log('server listening on port ' + server.address().port);
 });

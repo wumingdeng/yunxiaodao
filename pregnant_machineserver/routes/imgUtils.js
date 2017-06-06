@@ -50,7 +50,6 @@ var cpUpload3 = upload3.fields([{ name: 'file1', maxCount: 1 },
         { name: 'file2', maxCount: 1 }])
 
 function doInit(app){
-    // 创建某次服务签到
     app.post('/serverftp4',cpUpload3,function(req,res,next){
         if(req.body.sign === undefined){
             res.json({"errcode":1,"errmsg":"非法访问！"})
