@@ -292,6 +292,16 @@ tour_router.route('/serverdata').post(function(req,res){
 
                                                                     //     })
                                                                     // }
+                                                                    // 通知微信給用戶發消息
+                                                                    var options = {
+                                                                        headers: {"Connection": "close"},
+                                                                        url: cfg.wechatServerAdress+'/api/footReport',
+                                                                        method: 'POST',
+                                                                        json:true,
+                                                                        body: {wxid:infos.open_id,rid:infos.mac_id}
+                                                                    }
+                                                                    request(options, function(error, response, data){
+                                                                    })
                                                                     res.json({"errcode":0,"errmsg":"新增脚型数据成功"})
                                                             }).catch(function(err){
                                                                 db.yxd_pictures.destroy({where:{id:dta.id}})
