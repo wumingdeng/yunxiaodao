@@ -14,10 +14,9 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "compression-webpack-plugin": "^0.4.0",
     "echarts": "^3.5.4",
     "es6-promise": "^4.1.0",
-    "framework7": "^1.6.0",
-    "framework7-vue": "^0.9.0",
     "vue": "^2.2.6",
     "vue-resource": "^1.3.1",
     "vue-router": "^2.5.3",

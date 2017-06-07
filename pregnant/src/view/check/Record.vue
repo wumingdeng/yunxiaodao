@@ -27,30 +27,24 @@
     <f7-card-header><div style='margin-left:10px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>历史记录</span></div></f7-card-header>
     <f7-table card>
       <f7-table-row>
-        <f7-table-cell label><f7-grid no-gutter><f7-col :style="columnStyle_head">日期</f7-col></f7-grid></f7-table-cell>
-        <f7-table-cell label><f7-grid no-gutter><f7-col :style="columnStyle_head">孕周</f7-col></f7-grid></f7-table-cell>
-        <f7-table-cell numeric><f7-grid no-gutter><f7-col :style="columnStyle_head">体重 (kg)</f7-col></f7-grid></f7-table-cell>
-        <f7-table-cell label><f7-grid no-gutter><f7-col :style="columnStyle_head">状态</f7-col></f7-grid></f7-table-cell>
+        <f7-table-cell label :style="columnStyle_head">日期</f7-table-cell>
+        <f7-table-cell label :style="columnStyle_head">孕期</f7-table-cell>
+        <f7-table-cell numeric :style="columnStyle_head">体重 (kg)</f7-table-cell>
+        <f7-table-cell label :style="columnStyle_head">状态</f7-table-cell>
       </f7-table-row>
       <f7-table-row v-for="(item,index) in weightInfo" :key="index">
-        <f7-table-cell label sytle='padding:0px'>
-        <f7-grid no-gutter v-if='item.recordDate'>
-            <f7-col :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-if="item.recordDate">{{getRecordDate(item.recordDate)}}</f7-col>
-          </f7-grid>
+        <f7-table-cell label :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-if="item.recordDate">
+            {{getRecordDate(item.recordDate)}}
         </f7-table-cell>
-        <f7-table-cell label style='background-color:#fff5f7'>
-          <f7-grid no-gutter v-if='item.week'>
-            <f7-col :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_left" v-if="item.week">{{item.week}}</f7-col>
-          </f7-grid>
+        <f7-table-cell label style='background-color:#fff5f7' :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_left" v-if="item.week">
+          {{item.week}}
         </f7-table-cell>
-        <f7-table-cell numeric>
-         <f7-grid no-gutter v-if='item.weight'>
-            <f7-col :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-if="item.weight">{{item.weight}}</f7-col>
-          </f7-grid></f7-table-cell>
-        <f7-table-cell label style='background-color:#fff5f7'>
-        <f7-grid no-gutter>
-            <f7-col :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right_end" v-if="item.result">{{item.result}}</f7-col>
-          </f7-grid></f7-table-cell>
+        <f7-table-cell numeric :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-if="item.weight">
+          {{item.weight}}
+        </f7-table-cell>
+        <f7-table-cell label style='background-color:#fff5f7' :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right_end" v-if="item.result">
+          {{item.result}}
+        </f7-table-cell>
       </f7-table-row>
     </f7-table>
     </f7-card>
@@ -63,18 +57,18 @@
   let echarts = require('echarts/lib/echarts')
   // 引入饼图组件
   require('echarts/lib/chart/line')
-  require('echarts/lib/component/dataZoom');
+  // require('echarts/lib/component/dataZoom');
   require('echarts/lib/component/tooltip');
-  require('echarts/lib/component/markLine');
+  // require('echarts/lib/component/markLine');
   export default {
     data () {
       return {
         ds:' ',
-        columnStyle_right: 'border-right: 1px solid #e5e5e5;border-bottom:1px solid #e5e5e5; padding:12px; text-align: center',
-        columnStyle_right_end: 'border-bottom:1px solid #e5e5e5; padding:12px; text-align: center',
-        columnStyle_left: 'border-right: 1px solid #e5e5e5;border-bottom:1px solid #e5e5e5; padding:12px; text-align: center',
-        columnStyle_head: 'border-right: 1px solid #e5e5e5;background-color:#fa7190;color:#ffffff;padding:12px; text-align: center;font-size:17px;white-space:nowrap',
-        columnStyle_end:'border-right: 1px solid #e5e5e5;padding:12px; text-align: center;',
+        columnStyle_right: 'border-right: 1px solid #e5e5e5;border-bottom:1px solid #e5e5e5; text-align: center',
+        columnStyle_right_end: 'border-bottom:1px solid #e5e5e5; text-align: center',
+        columnStyle_left: 'border-right: 1px solid #e5e5e5;border-bottom:1px solid #e5e5e5; text-align: center',
+        columnStyle_head: 'border-right: 1px solid #e5e5e5;background-color:#fa7190;color:#ffffff; text-align: center;font-size:17px;white-space:nowrap',
+        columnStyle_end:'border-right: 1px solid #e5e5e5; text-align: center;',
         isNoData:true,
         page:1,
         pageCount:10,

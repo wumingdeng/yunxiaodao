@@ -43,3 +43,10 @@ var server = app.listen(8092, function () {
 
   console.log('Example app listening at http://%s:%s', host, port);
 });
+
+process.on('uncaughtException', function (err) {
+    //打印出错误
+    console.log(err);
+    //打印出错误的调用栈方便调试
+    console.log(err.stack)
+});
