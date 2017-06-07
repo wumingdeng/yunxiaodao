@@ -470,6 +470,21 @@ public class FootStudyDAO {
         }
 	}
 	
+	//添加孕前體重信息到userinfo
+	public boolean addWeight(String open_id, String weight){
+		String outputStr = "sign=liuhe&open_id="+open_id+"&weight="+weight;
+		JSONObject jsonObject = HttpUtil.httpRequest(serverConfig.getUserinfoUrl(),"POST",outputStr);
+		if(jsonObject == null){
+			return false;
+		}
+		int errcode = jsonObject.getInt("errcode");
+        if(errcode==0){
+        	return true;
+        }else{
+        	return false;
+        }
+	}
+	
 	//判断是否需要扫描脚型
 	public boolean ifNeedScan(String open_id,String card_id){
 		try {

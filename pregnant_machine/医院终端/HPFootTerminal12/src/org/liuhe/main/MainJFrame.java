@@ -66,6 +66,7 @@ import org.liuhe.element.button.ClinicButton;
 import org.liuhe.element.button.GeneralButton;
 import org.liuhe.element.button.ImageButton;
 import org.liuhe.element.button.RoundRectButton;
+import org.liuhe.element.other.BeforePregnantWeightPane;
 import org.liuhe.element.other.FirstActionButton;
 import org.liuhe.element.other.PeriodDayPane;
 import org.liuhe.element.other.StaturePane;
@@ -99,6 +100,7 @@ public class MainJFrame extends JFrame{
 	private BackCardPane qrcodeCardPane;		//扫描二维码
 	private BackCardPane periodCardPane;		//末次月经
 	private BackCardPane statureCardPane;		//输入身高信息
+	private BackCardPane beforeWeightCardPane;		//输入孕前體重信息
 	private BackCardPane identityCardPane;		//身份证读取
 	private BackCardPane clinicCardPane;		//专科选择
 	private JPanel scanCardPane;				//数据采集页
@@ -141,6 +143,10 @@ public class MainJFrame extends JFrame{
 	private ClinicInfo clinicInfo;
 	// 身高面板组件
 	private StaturePane staturePane;
+	// 孕前體重面板组件 modify by kael
+	private BeforePregnantWeightPane beforeWeightPane;
+	private RoundRectButton beforeWeightBut;
+	private GeneralButton jumpBeforeWeightBut;
 	private RoundRectButton statureSureBut;
 	private GeneralButton jumpStature;
 	// 扫描面板组件
@@ -330,6 +336,13 @@ public class MainJFrame extends JFrame{
 		statureCardPane.setLayout(new BorderLayout());
 		initStaturePane();
 		cardPane.add("stature", statureCardPane);
+		
+		// 孕前體重手动输入页面
+		beforeWeightCardPane = new BackCardPane();
+		beforeWeightCardPane.setLayout(new BorderLayout());
+		this.initBeforeWeightPane();
+		cardPane.add("beforeWeight", beforeWeightCardPane);
+		
 		// 登陆界面：身份证验证
 		identityCardPane = new BackCardPane();
 		identityCardPane.setLayout(new BorderLayout());
@@ -753,6 +766,60 @@ public class MainJFrame extends JFrame{
 		staturePane.initStature();
 		card.show(cardPane, "stature");
 	}
+	
+	private void initBeforeWeightPane(){
+		JPanel statureTopPane = new JPanel();
+		statureTopPane.setOpaque(false);
+		statureTopPane.setLayout(new BorderLayout(10,20));
+		statureTopPane.setBorder(BorderFactory.createEmptyBorder(70, 5, 10, 5));
+		this.beforeWeightCardPane.add(statureTopPane, BorderLayout.NORTH);
+		
+		JPanel mainTitlePane = new JPanel();
+		mainTitlePane.setLayout(new FlowLayout(FlowLayout.CENTER));
+		mainTitlePane.setOpaque(false);
+		statureTopPane.add(mainTitlePane,BorderLayout.NORTH);
+		JLabel mainTitle = new JLabel("请输入您的孕前体重");
+		mainTitle.setFont(new Font("宋体", Font.PLAIN+Font.BOLD, 38));
+		mainTitle.setForeground(new Color(144,197,72));
+		mainTitlePane.add(mainTitle);
+		
+		JPanel statureCenterPane = new JPanel();
+		statureCenterPane.setOpaque(false);
+		statureCenterPane.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+		statureTopPane.add(statureCenterPane, BorderLayout.CENTER);
+		
+		this.beforeWeightPane = new BeforePregnantWeightPane();
+		statureCenterPane.add(beforeWeightPane);
+		
+		JPanel buttonPane = new JPanel();
+		buttonPane.setOpaque(false);
+		buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
+		beforeWeightCardPane.add(buttonPane, BorderLayout.CENTER);
+		
+		beforeWeightBut = new RoundRectButton(" 确 定 ");
+		beforeWeightBut.setGenFont(new Font("黑体", Font.PLAIN+Font.BOLD, 26));
+		beforeWeightBut.setRoundAngle(50);
+		beforeWeightBut.setPreferredSize(new Dimension(160,50));
+		beforeWeightBut.addActionListener(action_listener);
+		buttonPane.add(beforeWeightBut);
+		
+		JPanel jumpPane = new JPanel();
+		jumpPane.setOpaque(false);
+		jumpPane.setPreferredSize(new Dimension(jumpPane.getWidth(),60));
+		jumpPane.setLayout(new FlowLayout(FlowLayout.RIGHT,60,10));
+		beforeWeightCardPane.add(jumpPane, BorderLayout.SOUTH);
+		jumpBeforeWeightBut = new GeneralButton("跳 过 >>");
+		jumpBeforeWeightBut.setPreferredSize(new Dimension(80,25));
+		jumpBeforeWeightBut.setDifferV(3);
+		jumpBeforeWeightBut.setGenFont(new Font("微软雅黑", Font.PLAIN+Font.BOLD, 18));
+		jumpBeforeWeightBut.addActionListener(action_listener);
+		jumpPane.add(jumpStature);
+	}
+	private void toBeforeWeighPane(){
+		this.beforeWeightPane.initStature();
+		card.show(cardPane, "beforeWeight");
+	}
+	
 	private void initIdentityPane(){
 		JPanel identityTopPane = new JPanel();
 		identityTopPane.setOpaque(false);
@@ -1303,6 +1370,8 @@ public class MainJFrame extends JFrame{
 					sqlServer.addPeriodDate(studyinfo.getOpen_id(), studyinfo.getDate_yunfu_str());
 					if(studyinfo.getHeight()==null){
 						toStaturePane();
+					}else if(studyinfo.getWeight()==null){
+						toBeforeWeighPane();
 					}else if(studyinfo.getName()==null){
 						toIndentityPane();
 					}else{
@@ -1321,6 +1390,8 @@ public class MainJFrame extends JFrame{
 					toStaturePane();
 				}else if(studyinfo.getHeight() == null){
 					toStaturePane();
+				}else if(studyinfo.getWeight() == null){
+					toBeforeWeighPane();
 				}else if(studyinfo.getName() == null){
 					toIndentityPane();
 				}else{
@@ -1350,7 +1421,9 @@ public class MainJFrame extends JFrame{
 					toIndentityPane();
 				}else{
 					sqlServer.addHeight(studyinfo.getOpen_id(), studyinfo.getHeight());
-					if(studyinfo.getName() == null){
+					if(studyinfo.getWeight()==null){
+						toBeforeWeighPane();
+					}else if(studyinfo.getName() == null){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1364,6 +1437,51 @@ public class MainJFrame extends JFrame{
 			}
 			// 跳过身高采集
 			else if(button == jumpStature){
+				if(studyinfo.getOpen_id() == null){
+					toIndentityPane();
+				}else if(studyinfo.getName() == null){
+					toIndentityPane();
+				}else{
+					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
+						toScanPane();
+					}else if(serverConfig.getMachine_type().equals("2")){
+//						toClinicPane01(false);
+						toScanPane();
+					}
+				}
+			}
+			// 确认身高采集 modify by kael
+			else if(button == beforeWeightBut){
+				String stature = beforeWeightPane.getStature();
+				if(stature.equals("")){
+					MessageDialog option = new MessageDialog(MainJFrame.this,"孕前体重数值不能为空！","提示",MessageDialog.WARNING_MESSAGE);
+					option.create_option();
+					return;
+				}
+				if(!RegexUtil.isFloat(stature)){
+					MessageDialog option = new MessageDialog(MainJFrame.this,"请输入正确的孕前体重数值！","提示",MessageDialog.WARNING_MESSAGE);
+					option.create_option();
+					return;
+				}
+				studyinfo.setWeight(stature);
+				if(studyinfo.getOpen_id() == null){
+					toIndentityPane();
+				}else{
+					sqlServer.addWeight(studyinfo.getOpen_id(), studyinfo.getWeight());
+					if(studyinfo.getName() == null){
+						toIndentityPane();
+					}else{
+						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
+							toScanPane();
+						}else if(serverConfig.getMachine_type().equals("2")){
+//										toClinicPane01(false);
+							toScanPane();
+						}
+					}
+				}
+			}
+			// 跳过身高采集 modify by kael
+			else if(button == jumpBeforeWeightBut){
 				if(studyinfo.getOpen_id() == null){
 					toIndentityPane();
 				}else if(studyinfo.getName() == null){
@@ -1806,6 +1924,8 @@ public class MainJFrame extends JFrame{
 							toPeriodPane();
 						}else if(userinfo.get("height") == null || userinfo.get("height").equals("") || userinfo.get("height").equals("null")){
 							toStaturePane();
+						}else if(userinfo.get("weight") == null || userinfo.get("weight").equals("") || userinfo.get("weight").equals("null")){
+							toBeforeWeighPane();
 						}else if(userinfo.get("name") == null || userinfo.get("name").equals("") || userinfo.get("name").equals("null")){
 							toIndentityPane();
 						}else{
