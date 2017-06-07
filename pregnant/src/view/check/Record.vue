@@ -59,7 +59,7 @@
   require('echarts/lib/chart/line')
   // require('echarts/lib/component/dataZoom');
   require('echarts/lib/component/tooltip');
-  // require('echarts/lib/component/markLine');
+  require('echarts/lib/component/markLine');
   export default {
     data () {
       return {
