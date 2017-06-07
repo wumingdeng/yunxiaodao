@@ -302,6 +302,16 @@ tour_router.route('/serverdata').post(function(req,res){
                                                                     }
                                                                     request(options, function(error, response, data){
                                                                     })
+                                                                    // 發送給業務服務器
+                                                                    var options2 = {
+                                                                        headers: {"Connection": "close"},
+                                                                        url: cfg.logicOutAdress+'/api/fillWeight',
+                                                                        method: 'POST',
+                                                                        json:true,
+                                                                        body: {wxid:infos.open_id,weight:infos.weight,hospital_no:infos.hospital_no}
+                                                                    }
+                                                                    request(options2, function(error2, response2, data2){
+                                                                    })
                                                                     res.json({"errcode":0,"errmsg":"新增脚型数据成功"})
                                                             }).catch(function(err){
                                                                 db.yxd_pictures.destroy({where:{id:dta.id}})

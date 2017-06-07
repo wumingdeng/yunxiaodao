@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2017-06-06 09:46:25
+Date: 2017-06-06 18:19:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `doctors`;
 CREATE TABLE `doctors` (
-`id`  int(11) NOT NULL ,
+`id`  int(11) NOT NULL AUTO_INCREMENT ,
 `name`  varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `sex`  int(11) NULL DEFAULT 0 ,
 `phone`  int(11) NULL DEFAULT 0 ,
@@ -29,10 +29,12 @@ CREATE TABLE `doctors` (
 `updatedAt`  datetime NULL DEFAULT NULL ,
 `job`  int(11) NULL DEFAULT 0 ,
 PRIMARY KEY (`id`),
-FOREIGN KEY (`hospital_no`) REFERENCES `hospitals` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+FOREIGN KEY (`hospital_no`) REFERENCES `hospitals` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+INDEX `hospital_no` (`hospital_no`) USING BTREE 
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=3
 
 ;
 
@@ -41,7 +43,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `foot_records`;
 CREATE TABLE `foot_records` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `userid`  varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户id' ,
 `recordDate`  date NULL DEFAULT NULL COMMENT '扫描时间' ,
 `picture`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '扫描图片' ,
@@ -62,6 +64,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=2
 
 ;
 
@@ -70,12 +73,13 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `footknowledge`;
 CREATE TABLE `footknowledge` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `content`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '内容' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=1
 
 ;
 
@@ -102,7 +106,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `link_configs`;
 CREATE TABLE `link_configs` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `url`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '地址' ,
 `picture`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图片' ,
 `linkName`  varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '链接名称' ,
@@ -111,6 +115,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=2
 
 ;
 
@@ -119,7 +124,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `userid`  varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户id' ,
 `valid`  tinyint(4) NULL DEFAULT NULL COMMENT '是否有效' ,
 `orderid`  int(11) NULL DEFAULT NULL COMMENT '订单id' ,
@@ -143,6 +148,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=51
 
 ;
 
@@ -151,7 +157,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `name`  varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '名称' ,
 `smallPic`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小图片' ,
 `swipePic`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '轮播图片' ,
@@ -164,6 +170,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=4
 
 ;
 
@@ -172,7 +179,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `swipe_configs`;
 CREATE TABLE `swipe_configs` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `url`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '地址' ,
 `showTime`  int(11) NOT NULL COMMENT '显示时间' ,
 `place`  tinyint(4) NULL DEFAULT NULL COMMENT '显示位置' ,
@@ -180,6 +187,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=4
 
 ;
 
@@ -188,7 +196,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `wxid`  varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `userName`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名' ,
 `password`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '密码' ,
@@ -222,6 +230,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=25
 
 ;
 
@@ -230,7 +239,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `weight_records`;
 CREATE TABLE `weight_records` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `userid`  varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户id' ,
 `week`  int(11) NULL DEFAULT NULL COMMENT '怀孕周数' ,
 `recordDate`  date NULL DEFAULT NULL COMMENT '测重时间' ,
@@ -240,10 +249,12 @@ CREATE TABLE `weight_records` (
 `standard`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标准体重范围' ,
 `tip`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '注意点' ,
 `diet`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '日常饮食贴士' ,
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+UNIQUE INDEX `as` (`userid`, `recordDate`) USING BTREE 
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=93
 
 ;
 
@@ -252,7 +263,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `weightadvice_configs`;
 CREATE TABLE `weightadvice_configs` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `minWeek`  int(11) NULL DEFAULT NULL COMMENT '周数范围' ,
 `maxWeek`  int(11) NULL DEFAULT NULL ,
 `normal`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '正常提示' ,
@@ -265,6 +276,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=4
 
 ;
 
@@ -273,7 +285,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `weightrate_configs`;
 CREATE TABLE `weightrate_configs` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `status`  int(11) NULL DEFAULT NULL COMMENT '1:偏轻 2:正常 3:偏重 4:肥胖' ,
 `rateMin`  float NULL DEFAULT NULL COMMENT '每周体重变化' ,
 `rateMax`  float NULL DEFAULT NULL ,
@@ -283,6 +295,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=5
 
 ;
 
@@ -291,7 +304,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_basicinfos`;
 CREATE TABLE `yxd_basicinfos` (
-`id`  int(16) UNSIGNED NOT NULL COMMENT '表间关联' ,
+`id`  int(16) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表间关联' ,
 `mac_id`  varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '唯一' ,
 `user_id`  int(11) NULL DEFAULT NULL COMMENT '关联userinfo表主键ID' ,
 `open_id`  varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信用户号' ,
@@ -328,7 +341,8 @@ CREATE TABLE `yxd_basicinfos` (
 `doctor_name`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医生名称' ,
 `doctor_id`  int(11) NULL DEFAULT NULL ,
 `status`  tinyint(4) NOT NULL DEFAULT 0 COMMENT '相關醫生是否已經打開過' ,
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+UNIQUE INDEX `mac_id` (`mac_id`) USING BTREE 
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
@@ -340,7 +354,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_details`;
 CREATE TABLE `yxd_details` (
-`id`  int(11) UNSIGNED NOT NULL COMMENT '主键' ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键' ,
 `hospital_no`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `clinic_dept`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `doctor_name`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
@@ -368,7 +382,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_machines`;
 CREATE TABLE `yxd_machines` (
-`id`  smallint(5) UNSIGNED NOT NULL COMMENT '主键' ,
+`id`  smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键' ,
 `hospital_no`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '医院编号' ,
 `machine_no`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '机器编号' ,
 `machine_type`  tinyint(1) NULL DEFAULT NULL COMMENT '机器类型' ,
@@ -378,7 +392,8 @@ CREATE TABLE `yxd_machines` (
 `date`  datetime NOT NULL COMMENT '注册时间' ,
 `status`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否启用,1可用,0不可用' ,
 `info`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
-PRIMARY KEY (`id`, `hospital_no`)
+PRIMARY KEY (`id`, `hospital_no`),
+UNIQUE INDEX `machine_mac` (`machine_mac`) USING BTREE 
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
@@ -390,7 +405,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_master`;
 CREATE TABLE `yxd_master` (
-`id`  int(11) UNSIGNED NOT NULL COMMENT '主键ID' ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID' ,
 `hospital_no`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医院编号' ,
 `clinic_dept`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '专科名称' ,
 `doctor_name`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医生名称' ,
@@ -411,7 +426,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_parameters`;
 CREATE TABLE `yxd_parameters` (
-`id`  int(11) UNSIGNED NOT NULL COMMENT '表间关联' ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表间关联' ,
 `mac_id`  varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '唯一' ,
 `left_length`  float(5,2) NULL DEFAULT NULL COMMENT '左脚长' ,
 `left_width`  float(5,2) NULL DEFAULT NULL COMMENT '左脚宽' ,
@@ -481,7 +496,8 @@ CREATE TABLE `yxd_parameters` (
 `right_size_11`  float(5,2) NULL DEFAULT NULL ,
 `right_size_12`  float(5,2) NULL DEFAULT NULL ,
 `right_size_13`  float(5,2) NULL DEFAULT NULL ,
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+UNIQUE INDEX `mac_id` (`mac_id`) USING BTREE 
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
@@ -493,7 +509,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_patient`;
 CREATE TABLE `yxd_patient` (
-`id`  int(11) UNSIGNED NOT NULL ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `hospital_no`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `open_id`  varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `pat_name`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
@@ -524,7 +540,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_pictures`;
 CREATE TABLE `yxd_pictures` (
-`id`  int(11) UNSIGNED NOT NULL COMMENT '表间关联' ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表间关联' ,
 `mac_id`  varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '唯一' ,
 `left_dpi`  smallint(3) NULL DEFAULT NULL COMMENT '左脚型图片分辨率' ,
 `right_dpi`  smallint(3) NULL DEFAULT NULL COMMENT '右脚型图片分辨率' ,
@@ -532,7 +548,8 @@ CREATE TABLE `yxd_pictures` (
 `right_url`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '右脚型图片文件名' ,
 `left_urla`  varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '左脚型图片资源路径' ,
 `right_urla`  varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '右脚型图片资源路径' ,
-PRIMARY KEY (`id`)
+PRIMARY KEY (`id`),
+UNIQUE INDEX `mac_id` (`mac_id`) USING BTREE 
 )
 ENGINE=MyISAM
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
@@ -544,7 +561,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_references`;
 CREATE TABLE `yxd_references` (
-`id`  int(11) UNSIGNED NOT NULL COMMENT '表间关联' ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表间关联' ,
 `mac_id`  varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '唯一' ,
 `lcircle_01_x`  float(8,4) NULL DEFAULT NULL ,
 `lcircle_01_y`  float(8,4) NULL DEFAULT NULL ,
@@ -640,7 +657,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_suggestions`;
 CREATE TABLE `yxd_suggestions` (
-`id`  int(11) UNSIGNED NOT NULL COMMENT '表间关联' ,
+`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表间关联' ,
 `mac_id`  varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '唯一' ,
 `left_foot_size`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '左推荐鞋码' ,
 `left_foot_width`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '左推荐半型宽' ,
@@ -690,7 +707,7 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 -- ----------------------------
 DROP TABLE IF EXISTS `yxd_wrong_machine_logs`;
 CREATE TABLE `yxd_wrong_machine_logs` (
-`id`  int(11) NOT NULL ,
+`id`  int(11) NOT NULL AUTO_INCREMENT ,
 `ipaddress`  varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL ,
 `wrong_mac`  varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL ,
 `createdAt`  date NULL DEFAULT NULL ,
@@ -702,32 +719,3 @@ DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
 
 ;
 
--- ----------------------------
--- Indexes structure for table doctors
--- ----------------------------
-CREATE INDEX `hospital_no` ON `doctors`(`hospital_no`) USING BTREE ;
-
--- ----------------------------
--- Indexes structure for table weight_records
--- ----------------------------
-CREATE UNIQUE INDEX `as` ON `weight_records`(`userid`, `recordDate`) USING BTREE ;
-
--- ----------------------------
--- Indexes structure for table yxd_basicinfos
--- ----------------------------
-CREATE UNIQUE INDEX `mac_id` ON `yxd_basicinfos`(`mac_id`) USING BTREE ;
-
--- ----------------------------
--- Indexes structure for table yxd_machines
--- ----------------------------
-CREATE UNIQUE INDEX `machine_mac` ON `yxd_machines`(`machine_mac`) USING BTREE ;
-
--- ----------------------------
--- Indexes structure for table yxd_parameters
--- ----------------------------
-CREATE UNIQUE INDEX `mac_id` ON `yxd_parameters`(`mac_id`) USING BTREE ;
-
--- ----------------------------
--- Indexes structure for table yxd_pictures
--- ----------------------------
-CREATE UNIQUE INDEX `mac_id` ON `yxd_pictures`(`mac_id`) USING BTREE ;

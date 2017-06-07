@@ -10,5 +10,6 @@
     "sqldebug":false,
     "redisAdress":"127.0.0.1",
     "serverAdress":"http://127.0.0.1",
-    "wechatServerAdress":"http://127.0.0.1:8090"
+    "wechatServerAdress":"http://127.0.0.1:8090",
+    "logicOutAdress":"http://127.0.0.1:8092"
 }
