@@ -408,6 +408,7 @@ tour_router.route('/serverclinic').post(function(req,res){
     }
 })
 
+// 用戶報告列表
 tour_router.route('/get_user_reportlist').post(function(req,res){
     var openid = req.body.openid || ''
     var page = req.body.p || 1
@@ -424,6 +425,7 @@ tour_router.route('/get_user_reportlist').post(function(req,res){
     }
 })
 
+// 醫生報告列表
 tour_router.route('/get_doctor_reportlist').post(function(req,res){
     var doctor_id = req.body.did || 0
     var page = req.body.p || 1
@@ -441,6 +443,7 @@ tour_router.route('/get_doctor_reportlist').post(function(req,res){
     }
 })
 
+// 醫生標記已讀
 tour_router.route('/doctor_mark_readed').post(function(req,res){
     var id = req.body.id || 0
     if(id === 0){
@@ -452,6 +455,7 @@ tour_router.route('/doctor_mark_readed').post(function(req,res){
     }
 })
 
+// 用戶最新報告
 tour_router.route('/get_user_latest_report').post(function(req,res){
     var openid = req.body.openid || ''
      if(openid === ''){
@@ -467,6 +471,7 @@ tour_router.route('/get_user_latest_report').post(function(req,res){
     }
 })
 
+// 報告細節,按ID取
 tour_router.route('/getreport').post(function(req,res){
     var report_id = req.body.rid || 0
     var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,
