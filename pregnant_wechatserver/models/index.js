@@ -4,6 +4,7 @@ var path      = require('path');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
 var db        = {};
+var cfg = require('../config.json')
 
 var config = require('../config.json')
 // database initialize
@@ -16,7 +17,7 @@ var sequelize = new Sequelize(config.dbname, config.user, config.pass, {
     min: 0,
     idle: 10000
   },
-  logging: true
+  logging: cfg.sqlDebug
 });
 
 // schema miration

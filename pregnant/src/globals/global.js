@@ -9,8 +9,6 @@ export const ERROR_MSG = {
 // 2.if you use import {xx} from this module,will use the varible have name of xx and will be read only
 // 3.if you use import * as xx from thismoudele,will use all as one object name xx
 export default {
-  r: {},
-  // debugUrlPrefix: 'http://czwyxd.ngrok.cc'
   debugServerAddress: 'http://192.168.18.216:8092',
   serverAddress: 'http://yzxs.sujudao.com:8092',
   adminServerAddress: 'http://192.168.18.165:8101'

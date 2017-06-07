@@ -116,11 +116,12 @@ user_router.route('/getWeightInfo').post(function(req, res) {
 user_router.route('/fillWeight').post(function(req, res) {
     var wxid = req.body.wxid || ''
     var weight = req.body.weight || ''
+    var hospital_no = req.body.hospital_no || ''
     if (wxid == '' || weight == '' || typeof Number(weight) != 'number') {
         res.json({err:g.errorCode.WRONG_PARAM})
     } else {
         //取出最新的一条数据 如果是当天存的 就覆盖掉
-        var newRecord = {weight:weight,recordDate:new Date()};
+        var newRecord = {hospital:hospital_no,weight:weight,recordDate:new Date()};
         db.users.findOne({where:{'wxid':wxid}}).then(function(udata){
             //计算周数
             if (udata) {
