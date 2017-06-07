@@ -8,44 +8,7 @@ var cfg = require('../config.json')
 var mem = require('../memory')
 // for quick test
 tour_router.route('/test').get(function(req,res){
-    var ccc = { mac_id: '0A002700001720170601153508',
-  open_id: 'orzDvv0yDNiYzvwT0v7nyUB8Ek3I',
-  card_id: '33392023920',
-  ticket: 'gQEo8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyX0NpUTlyTE1iTF8xMExsTk5wMTIAAgSvwy9ZAwSAUQEA',
-  scene: '33602855',
-  from_id: '0A0027000017',
-  from_app: 'yxd',
-  date_server: 1496302537349,
-  date_host: '2017-06-01 15:35:35',
-  name: '大名',
-  sex: '女',
-  birth: '1990-03-20T00:00:00.000Z',
-  age: '27',
-  district: 'null',
-  province: 'null',
-  city: 'null',
-  county: 'null',
-  country: 'null',
-  nation: '俄羅斯',
-  height: '175.0',
-  weight: '70.5',
-  date_yunfu: '2017-03-01T00:00:00.000Z',
-  hospital_no: 'J180',
-  hospital_name: '解放军第180医院',
-  clinic_dept: 'null',
-  doctor_name: 'null',
-  clinic_type: 'null',
-  user_id: '14',
-  period: '13' }
-  ccc.birth=new Date(ccc.birth).toLocaleDateString()
-  var now = new Date()
-                            ccc.date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString()
-                            ccc.date_yunfu=new Date(ccc.date_yunfu).toLocaleDateString()
-    db.yxd_basicinfos.create(ccc).then(function(dta){
-        res.json({ok:dta})
-    }).catch(function(err){
-        res.json({"errcode":1,"errmsg":"添加脚型数据basicinfo失败"+err})
-    })
+    res.json({ok:1})
 });
 
 tour_router.route('/scanverify').post(function(req,res){
@@ -159,6 +122,12 @@ tour_router.route('/userinfo').post(function(req,res){
                     res.json({"errcode":0,"errmsg":"ok"})
                 }).catch(function(err){
                     res.json({"errcode":3,"errmsg":"更新身高信息失败！"})
+                })
+            }else if(req.body.open_id!==undefined && req.body.weight!==undefined){
+                db.users.update({weight:req.body.weight},{where:{wxid:req.body.open_id}}).then(function(){
+                    res.json({"errcode":0,"errmsg":"ok"})
+                }).catch(function(err){
+                    res.json({"errcode":3,"errmsg":"更新孕前體重信息失败！"})
                 })
             }else{
                 res.json({"errcode":2,"errmsg":"成功连接接口服务器"})

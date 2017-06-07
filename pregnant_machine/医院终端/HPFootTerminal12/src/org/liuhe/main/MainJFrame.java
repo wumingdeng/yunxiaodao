@@ -2031,36 +2031,36 @@ public class MainJFrame extends JFrame{
 						studyinfo.setWeight("70.5");
 						hwLabel.setText("体重：70.5kg");
 						
-//						HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
-//						hweightUtil.doActionPerformed();
-//						int times = 0;
-//						while(!hweightUtil.isOK()&&times<30){
-//							try {
-//								Thread.sleep(100);
-//							} catch (InterruptedException e1) {
-//								e1.printStackTrace();
-//							}
-//							times++;
-//							System.out.println("****************** HWeight wait 100ms ****************");
-//						}
-//						if(times == 30){
-//							System.out.println("3秒后未读取到串口数据！退出读取数据");
-//							MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
-//							option.create_option();
-//							button_oper.setTitle("开始检测");
-//							return ;
-//						}
-//						Float weight = hweightUtil.getWeight();
-//						if(weight == null){
-//							System.out.println("读取的数据有误！退出重新测量");
-//							MessageDialog option = new MessageDialog(MainJFrame.this,"获取体重数据失败，请重试！","提示",MessageDialog.WARNING_MESSAGE);
-//							option.create_option();
-//							button_oper.setTitle("开始检测");
-//							return ;
-//						}
-//						weight = weight + Float.parseFloat(hwConfig.getWeight());
-//						studyinfo.setWeight_float(weight);
-//						hwLabel.setText("体重："+weight+"kg");
+						HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
+						hweightUtil.doActionPerformed();
+						int times = 0;
+						while(!hweightUtil.isOK()&&times<30){
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+							times++;
+							System.out.println("****************** HWeight wait 100ms ****************");
+						}
+						if(times == 30){
+							System.out.println("3秒后未读取到串口数据！退出读取数据");
+							MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
+							option.create_option();
+							button_oper.setTitle("开始检测");
+							return ;
+						}
+						Float weight = hweightUtil.getWeight();
+						if(weight == null){
+							System.out.println("读取的数据有误！退出重新测量");
+							MessageDialog option = new MessageDialog(MainJFrame.this,"获取体重数据失败，请重试！","提示",MessageDialog.WARNING_MESSAGE);
+							option.create_option();
+							button_oper.setTitle("开始检测");
+							return ;
+						}
+						weight = weight + Float.parseFloat(hwConfig.getWeight());
+						studyinfo.setWeight_float(weight);
+						hwLabel.setText("体重："+weight+"kg");
 					}
 				}
 				
