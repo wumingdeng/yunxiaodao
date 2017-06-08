@@ -187,7 +187,7 @@ tour_router.route('/serverdata').post(function(req,res){
                         }else{
                             var birth=new Date(infos.birth).toLocaleDateString()
                             var now = new Date()
-                            var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString()
+                            var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString().replace('AM','').replace('PM','')
                             var date_yunfu=new Date(infos.date_yunfu).toLocaleDateString()
                             db.yxd_basicinfos.create({mac_id:infos.mac_id,
                                 open_id:infos.open_id,card_id:infos.card_id,ticket:infos.ticket,
