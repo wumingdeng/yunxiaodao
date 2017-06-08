@@ -12,6 +12,7 @@ tour_router.route('/test').get(function(req,res){
 });
 
 tour_router.route('/scanverify').post(function(req,res){
+    console.log('scanverify at:'+Date.now())
     if(req.body.mac_id===undefined){
         res.json({"errcode":3,"errmsg":"插入验证数据错误！"})
     }else{
@@ -36,6 +37,7 @@ tour_router.route('/scanverify').post(function(req,res){
 })
 
 tour_router.route('/userinfo').post(function(req,res){
+    console.log('userinfo at:'+Date.now())
     if(req.body.sign === undefined){
         res.json({"errcode":1,"errmsg":"非法访问！"})
     }else{
@@ -137,6 +139,7 @@ tour_router.route('/userinfo').post(function(req,res){
 })
 
 tour_router.route('/serverdata').post(function(req,res){
+    console.log('serverdata at:'+Date.now())
     if(req.body.sign === undefined){
         res.json({"errcode":1,"errmsg":"非法访问！"})
     }else{
@@ -381,6 +384,7 @@ tour_router.route('/serverdata').post(function(req,res){
 })
 
 tour_router.route('/serverclinic').post(function(req,res){
+    console.log('serverclinic at:'+Date.now())
     if(req.body.sign!==undefined){
         if(req.body.hospital !== undefined && req.body.worktime != undefined){
             db.doctors.findAll({where:{hospital_no:req.body.hospital}}).then(function(data){
@@ -410,6 +414,7 @@ tour_router.route('/serverclinic').post(function(req,res){
 
 // 用戶報告列表
 tour_router.route('/get_user_reportlist').post(function(req,res){
+    console.log('get_user_reportlist at:'+Date.now())
     var openid = req.body.openid || ''
     var page = req.body.p || 1
      if(openid === '' || page < 1){
@@ -427,6 +432,7 @@ tour_router.route('/get_user_reportlist').post(function(req,res){
 
 // 醫生報告列表
 tour_router.route('/get_doctor_reportlist').post(function(req,res){
+    console.log('get_doctor_reportlist at:'+Date.now())
     var doctor_id = req.body.did || 0
     var page = req.body.p || 1
     var status = req.body.s || 0
@@ -445,6 +451,7 @@ tour_router.route('/get_doctor_reportlist').post(function(req,res){
 
 // 醫生標記已讀
 tour_router.route('/doctor_mark_readed').post(function(req,res){
+    console.log('doctor_mark_readed at:'+Date.now())
     var id = req.body.id || 0
     if(id === 0){
         res.json({error:g.errorCode.WRONG_PARAM})
@@ -457,29 +464,34 @@ tour_router.route('/doctor_mark_readed').post(function(req,res){
 
 // 用戶最新報告
 tour_router.route('/get_user_latest_report').post(function(req,res){
+    console.log('get_user_latest_report at:'+Date.now())
     var openid = req.body.openid || ''
      if(openid === ''){
         res.json({error:g.errorCode.WRONG_PARAM})
     }else{
-        db.yxd_basicinfos.findAndCountAll({attributes: ['mac_id','open_id','card_id','user_id','date_server',
-            'name','birth','date_yunfu','hospital_name','doctor_name'],
-            where:{open_id:openid},order: db.sequelize.literal('ID DESC'),limit:1}).then(function(records){
-            res.json({r:records})
-        }).catch(function(err){
-            res.json({error:g.errorCode.WRONG_SQL})
-        })
-    }
+        getLatestReport(openid,res)
+   }
 })
 
-// 報告細節,按ID取
-tour_router.route('/getreport').post(function(req,res){
-    var report_id = req.body.rid || 0
+function getLatestReport(openid,res){
+    // db.yxd_basicinfos.findAndCountAll({attributes: ['mac_id','open_id','card_id','user_id','date_server',
+    //     'name','birth','date_yunfu','hospital_name','doctor_name'],
+    //     where:{open_id:openid},order: db.sequelize.literal('ID DESC'),limit:1}).then(function(records){
+    //         // if(records.length>0){
+    //         //     res.json({r:records[0]})
+    //         // }else{
+    //         //     res.json({r:{}})
+    //         // }
+    //         res.json({r:records})
+    // }).catch(function(err){
+    //     res.json({error:g.errorCode.WRONG_SQL})
+    // })
     var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,
         ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
-	    ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
+        ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
         ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
-        yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.mac_id=?`
-    db.sequelize.query(query, { replacements: [report_id], 
+        yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.open_id=? order by yb.id desc limit 1`
+    db.sequelize.query(query, { replacements: [openid], 
         type: db.sequelize.QueryTypes.SELECT }
         ).then(function(records){
         if(records){
@@ -490,6 +502,37 @@ tour_router.route('/getreport').post(function(req,res){
     }).catch(function(err){
         res.json({error:g.errorCode.WRONG_SQL})
     })
+}
+
+// 報告細節,按ID取
+tour_router.route('/getreport').post(function(req,res){
+    console.log('getreport at:'+Date.now())
+    var report_id = req.body.rid || ''
+    var openid = req.body.openid || ''
+    if(report_id==='' && openid===''){
+        res.json({error:g.errorCode.WRONG_PARAM})
+    }else{
+        if(report_id===''){
+            getLatestReport(openid,res)
+        }else{
+            var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,
+                ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
+                ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
+                ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
+                yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.mac_id=?`
+            db.sequelize.query(query, { replacements: [report_id], 
+                type: db.sequelize.QueryTypes.SELECT }
+                ).then(function(records){
+                if(records){
+                    res.json({data:records})
+                }else{
+                    res.json({data:[]})
+                }
+            }).catch(function(err){
+                res.json({error:g.errorCode.WRONG_SQL})
+            })
+        }
+    }
 })
 
 tour_router.route('/yxd3').post(function(req,res){
