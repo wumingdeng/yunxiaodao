@@ -150,6 +150,7 @@
 
 		mounted() {
       this.$f7.resize()
+      this.$f7.init()
       this.isNecessary = this.$route.query.isNecessary || false;
       this.radio_0  = this.$store.state.userinfo.isSingle == 1;
       this.radio_1  = this.$store.state.userinfo.isSingle == 0;

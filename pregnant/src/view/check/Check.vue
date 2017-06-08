@@ -72,7 +72,7 @@
         columnStyle: 'border: 1px solid #e5e5e5; padding:5px; text-align: center',
         msg: 'Welcome to Check Page',
         haveData: true,
-        weightInfo:{tip:'阿克苏多方了解啊路上看到解放了空间啊死了快点放假苦辣就是独立空间发生地方'},
+        weightInfo:{}
       }
     },
 

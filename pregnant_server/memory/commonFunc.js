@@ -49,6 +49,11 @@ var mod = {
                         for(var i = 0;i<data5.length;i++){
                             m.weightRate_configs[data5[i].id]=data5[i].dataValues
                         }
+                        db.weight_diet_configs.findAll().then(function(data6) {
+                            for(var i = 0;i<data6.length;i++){
+                                m.weight_diet_configs[data6[i].week] = data6[i].dataValues
+                            }
+                        })
                     })
                 })
             })
