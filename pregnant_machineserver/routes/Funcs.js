@@ -486,7 +486,7 @@ function getLatestReport(openid,res){
     // }).catch(function(err){
     //     res.json({error:g.errorCode.WRONG_SQL})
     // })
-    var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,
+    var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,yb.date_server,
         ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
         ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
         ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
@@ -515,7 +515,7 @@ tour_router.route('/getreport').post(function(req,res){
         if(report_id===''){
             getLatestReport(openid,res)
         }else{
-            var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,
+            var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,yb.date_server,
                 ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
                 ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
                 ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
