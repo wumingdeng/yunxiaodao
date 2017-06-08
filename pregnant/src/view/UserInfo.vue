@@ -34,7 +34,7 @@
       </f7-list-item>
     </f7-list>
 
-    <p v-if="isNecessary"><f7-button big fill style='margin:-10px 0px 0px 0px;background-color:#fa7699' @click="onUpdateInfo">更新</f7-button></p>
+    <p v-if="isNecessary"><f7-button big fill style='margin:-10px 10px 10px 10px;background-color:#fa7699' @click="onUpdateInfo">保存</f7-button></p>
 		<f7-grid v-else>
       <f7-col><f7-button big fill style='margin:-10px 0px 0px 10px;background-color:#fa7699' @click="onUpdateInfo">更新</f7-button></f7-col>
       <f7-col><f7-button big fill style='margin:-10px 10px 0px 0px;background-color:#fa7699' @click="$router.go(-1)">取消</f7-button></f7-col>

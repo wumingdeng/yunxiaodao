@@ -15,8 +15,8 @@
         <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
         <p>
           <f7-grid>
-            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/userInfo')"><div style='float:left;margin:5px 0px'><span style='font-family:hcpfont;font-size:25px'>!</span></div><div style='float:left;font-size:25px;margin-left:20px;color:#f4436d'>|</div><div style='float:right;margin-right:12px'>个人资料</div></f7-button></f7-col>
-            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/record')"><div style='float:left;margin-top:5px'><span style='font-family:hcpfont;font-size:20px'>@</span></div><div style='float:left;font-size:25px;margin-left:10px;color:#f4436d'>|</div><div style='float:right;margin-right:12px'>历史记录</div></f7-button></f7-col>
+            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/userInfo')"><div style='float:left;margin:5px 0px'><span style='font-family:hcpfont;font-size:25px'>!</span></div><div style='float:left;font-size:25px;margin-left:20px;color:#c13e61'>|</div><div style='float:right;margin-right:12px'>个人资料</div></f7-button></f7-col>
+            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/record')"><div style='float:left;margin-top:5px'><span style='font-family:hcpfont;font-size:20px'>@</span></div><div style='float:left;font-size:25px;margin-left:10px;color:#c13e61'>|</div><div style='float:right;margin-right:12px'>历史记录</div></f7-button></f7-col>
           </f7-grid>
         </p>
       </f7-card-content>
