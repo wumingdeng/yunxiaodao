@@ -1899,6 +1899,7 @@ public class MainJFrame extends JFrame{
 							studyinfo.setCounty(userinfo.get("county"));
 							studyinfo.setDate_yunfu_str(userinfo.get("date_yunfu"));
 							studyinfo.setHeight(userinfo.get("height"));
+							studyinfo.setWeight(userinfo.get("weight"));
 							left_foot_pane.setPredictData(userinfo.get("left_length"), userinfo.get("left_width"));
 							right_foot_pane.setPredictData(userinfo.get("right_length"), userinfo.get("right_width"));
 						}

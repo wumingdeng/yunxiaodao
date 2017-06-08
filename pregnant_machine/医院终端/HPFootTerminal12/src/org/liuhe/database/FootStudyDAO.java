@@ -405,7 +405,6 @@ public class FootStudyDAO {
         	}else{
         		map.put("height", null);
         	}
-        	
         	if(!jsonObject.getString("left_length").equals("")){
         		map.put("left_length", jsonObject.getString("left_length"));
         	}
@@ -417,6 +416,13 @@ public class FootStudyDAO {
         	}
         	if(!jsonObject.getString("right_width").equals("")){
         		map.put("right_width", jsonObject.getString("right_width"));
+        	}
+        	if(jsonObject.containsKey("weight")){
+        		if(!jsonObject.getString("weight").equals("")){
+            		map.put("weight", jsonObject.getString("weight"));
+            	}
+        	}else{
+        		map.put("weight", null);
         	}
         	return map;
         }else{
