@@ -15,8 +15,8 @@
         <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
         <p>
           <f7-grid>
-            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/userInfo')"><li style='font-size:25px;float:left;margin-left:15px;' class='icon ion-home'><div style='font-size:17px;margin-left:15px;float:right'>个人资料</div></li></f7-button></f7-col>
-            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/record')"><li style='font-size:25px;float:left;margin-left:15px;' class='ion-clock'><div style='font-size:17px;margin-left:15px;float:right'>历史记录</div></li></f7-button></f7-col>
+            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/userInfo')"><div style='font-family:hcpfont;font-size:20px;float:left;margin:5px 5px'>%</div><span style='margin-right:10px'>个人资料</span></f7-button></f7-col>
+            <f7-col><f7-button class='cusBtn' big fill  @click="$router.push('/record')"><div style='font-family:hcpfont;font-size:20px;float:left;margin:5px 5px'>@</div><span style='margin-right:5px'>历史记录</span></f7-button></f7-col>
           </f7-grid>
         </p>
       </f7-card-content>
@@ -25,12 +25,12 @@
       <f7-card-content>
         <f7-list form>
           <f7-list-item>
-            <f7-label style='width:25%'>当前体重:</f7-label>
-            <div style='width:20%'>
+            <f7-label style='width:27%'>当前体重:</f7-label>
+            <div style='width:25%'>
               <input id="inputWeight" style='text-align:center;background-color:#f0f0f0;height:30px;border-radius:1px' type="number" placeholder="">
             </div>
             <span style="width:10%">kg</span>
-            <f7-button style='width:40%' class='cusBtn' fill  @click='onFillWeight'>评估</f7-button>
+            <f7-button style='width:30%;font-size:17px' class='cusBtn' fill  @click='onFillWeight'>评估</f7-button>
           </f7-list-item>
         </f7-list>
       </f7-card-content>
@@ -55,8 +55,8 @@
     <f7-card v-if='haveData'>
       <f7-card-header>
         <p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
-          <span class='ion-ios-medkit' style='color:#fe4365;font-size:25px;'/>
-          饮食健康小贴士</p>
+          <span style='font-family:hcpfont;'>(</span>
+          &nbsp;&nbsp;饮食健康小贴士</p>
       </f7-card-header>
       <f7-card-content>{{weightInfo.diet}}</f7-card-content>
     </f7-card>
@@ -163,6 +163,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@font-face {font-family:'hcpfont'; src: url('/static/assets/font/tupianwenzi.ttf')} 
   .custom {
     width: 30%;
   }
