@@ -14,17 +14,17 @@
         <div class="item-input custom">
           <input id="heightInput" type="number" placeholder="" v-model="$store.state.userinfo.height">
         </div>
-        <span style="width:100%;margin-right:100px;">cm</span>
+        <span style="width:100%;margin-right:50px;">cm</span>
       </f7-list-item>
       <f7-list-item>
         <f7-label>孕前体重</f7-label>
         <div class="item-input custom">
           <input id="weightInput" type="number" placeholder="" v-model="$store.state.userinfo.weight">
         </div>
-        <span style="width:100%;margin-right:95px">kg</span>
+        <span style="width:100%;margin-right:50px">kg</span>
       </f7-list-item>
       <f7-list-item>
-        <f7-label>末次月经时间</f7-label>
+        <f7-label style='width:50'>末次月经时间</f7-label>
         <f7-input style='margin-left:10px' id="lastPeriodInput" type="date" placeholder=""></f7-input>
       </f7-list-item>
       <f7-list-item form>
@@ -171,6 +171,9 @@
 	}
 	.datainput{
 		margin-right:100px;
+	}
+	.list-block .item-title.label{
+		width:50%;
 	}
 	
 </style>

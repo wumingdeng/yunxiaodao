@@ -11,7 +11,7 @@
   		<homeSwipe :swipeData="swipeData"></homeSwipe>
   		<f7-block inner style="margin:-5px 0 0 0;font-size:17px;">
   			<span>{{productData.name}}</span>
-  			<span style="float:right;color:#ff0000;margin-right:20px">价格:{{productData.price}}</span>
+  			<span style="float:right;color:#ff0000;margin-right:20px">价格:{{productData.price}}元</span>
   		</f7-block>
   		
   		<f7-card style="margin: 10px 0">
