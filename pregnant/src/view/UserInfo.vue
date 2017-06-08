@@ -174,7 +174,7 @@
 		margin-right:100px;
 	}
 	.list-block .item-title.label{
-		width:50%;
+		width:45%;
 	}
 	
 </style>
