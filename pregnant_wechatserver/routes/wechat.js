@@ -37,11 +37,11 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
   	])
   }else if(message.Event === 'subscribe'){
      mem.r.client.hmset(message.Ticket, "open_id", message.FromUserName);
-     res.reply('欢迎关注测试号！');
+     res.reply('欢迎关注孕小岛!');
   }else if(message.Event === 'SCAN'){
     //  res.reply('欢迎扫描测试号！'+message.EventKey+' '+message.FromUserName);
      mem.r.client.hmset(message.Ticket, "open_id", message.FromUserName);
-     res.reply('SCAN');
+     // res.reply('SCAN');
   }
 }).middlewarify());
 

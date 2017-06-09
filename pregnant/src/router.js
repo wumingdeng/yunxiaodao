@@ -37,7 +37,8 @@ var routes = [
   },
   {
     path: '/foot',
-    component: Foot
+    component: Foot,
+    meta: { auth: true }
   },
   {
     path: '/shoeHome',

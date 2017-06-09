@@ -37,7 +37,7 @@
 </script>
 
 <style>
-  .form-checkbox input[type=checkbox]:checked~i, label.label-checkbox input[type=checkbox]:checked+.item-media i.icon-form-checkbox, label.label-checkbox input[type=radio]:checked+.item-media i.icon-form-checkbox {
+  label.label-checkbox input[type=checkbox]:checked+.item-media i.icon-form-checkbox{
     background-color: #fc5475
   }
   i.icon.icon-back {

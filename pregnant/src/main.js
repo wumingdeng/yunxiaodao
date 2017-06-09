@@ -7,7 +7,7 @@ import store from './store'
 
 import router from './router.js'
 // Import F7
-import Framework7 from '../static/framework7/js/framework7.custom.js'
+import Framework7 from '../static/framework7/js/framework7.js'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 

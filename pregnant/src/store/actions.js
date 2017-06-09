@@ -11,7 +11,7 @@ if (process.env.NODE_ENV == 'development') {
 function onErrorRefresh(vue,err) {
   vue.$f7.params.modalButtonOk = '刷新'
   vue.$f7.alert('error',err || '刷新重试',()=>{
-    window.location.reload(); 
+    // window.location.reload(); 
   })
 }
 export function quickloginwxUser ({commit, state}, data) {
@@ -148,7 +148,7 @@ export function updateInfo ({commit, state}, data) {
 //取用户足部报告
 export function getFootRecord ({commit, state}, data) {
   var self = data.self;
-  self.$http.post(serverAddress + '/api/getFootRecord', data.info)
+  self.$http.post(g.machineServerAddress + '/api/getreport', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()

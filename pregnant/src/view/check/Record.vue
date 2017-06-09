@@ -16,7 +16,7 @@
     </div>
 
     <f7-card v-if="!isNoData" style='border-radius:10px'>
-      <f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>体重曲线</span></div></f7-card-header>
+      <f7-card-header><div style='margin-left:10px;font-size:17px'><span style='color:#fa7190;float:left;font-family:hcpfont;margin-top:2px'>*&nbsp;</span><span style='margin-left:10px;color:#000000;font-weight:bold'>体重曲线</span></div></f7-card-header>
       <f7-card-content style="margin-top:-30px">
         <div id="charts">
             <div id="myChart"  :style="{width:'390px',height:'330px'}"></div>
@@ -24,7 +24,7 @@
       </f7-card-content>
     </f7-card>
     <f7-card v-if="!isNoData" style='border-radius:10px;padding:5px'>
-    <f7-card-header><div style='margin-left:10px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>历史记录</span></div></f7-card-header>
+    <f7-card-header><div style='margin-left:10px'><span style='color:#fa7190;float:left;font-family:hcpfont;margin-top:2px'>*&nbsp;</span><span style='margin-left:10px;color:#000000;font-weight:bold'>历史记录</span></div></f7-card-header>
     <f7-table card>
       <f7-table-row>
         <f7-table-cell label :style="columnStyle_head">日期</f7-table-cell>

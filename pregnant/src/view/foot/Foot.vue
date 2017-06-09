@@ -1,7 +1,7 @@
 <template>
 	<f7-page name="footPage">
 		<f7-card>
-			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>足部健康评测报告</span></div></f7-card-header>
+			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>足部健康评测报告</span><span style="font-size:16px;">  {{reportDate}}</span></div></f7-card-header>
 <!-- 			<f7-card-header>
 				<img class="iconTitle" src='static/assets/icon/icon_title.png'></img>
 				<span>足部健康评测报告</span>
@@ -13,6 +13,10 @@
 							<div class="bTitle">
 	    						<img src='static/assets/icon/icon_foot.png'></img>
 								  足型扫描
+							</div>
+							<div style="width:100%;height:150px;overflow:hidden;">
+								<img style="width:50%;float:left;" v-if="footData.left_urla" :src="footData.left_urla">
+								<img style="width:50%;float:left" v-if="footData.right_urla" :src="footData.right_urla">
 							</div>
 						</div>
 					</f7-col>
@@ -30,9 +34,9 @@
 										<td>右脚</td>
 									</tr>
 									<tr v-for="(item,index) in dataName">
-										<td>{{footData['l' + valueName[index]]}}</td>
+										<td style="font-size:11px;color:#8f8f8f;">{{footData['left_' + valueName[index]]}}</td>
 										<td>{{item}}</td>
-										<td>{{footData['r' + valueName[index]]}}</td>
+										<td style="font-size:11px;color:#8f8f8f;">{{footData['right_' + valueName[index]]}}</td>
 									</tr>
 								</table>
 							</div>
@@ -99,31 +103,45 @@
 		data() {
 			return {
 				footData:{
-					suggestShoe:5
+					suggestShoe:5,
 				},
 				dataName:['足长','足宽','鞋码','型宽','足型'],
-				valueName:['footLength','footWidth','size','typeWidth','footType'],
+				valueName:['length','width','foot_size','foot_width','foot_status'],
 				shoeType:['基础功能型','加强缓震型', '控制型', '超级稳定型', '保胎孕妇鞋']
 			}
 		},
     beforeCreate() {
       document.title = '足部报告'
     },
+    computed:{
+    	reportDate() {
+    		if (this.footData.server_date) {
+    			return this.footData.server_date.substring(0,10)
+    		} else {
+    			return ''
+    		}
+    	}
+    },
 		mounted() {
 			//取数据
-			var wxid = this.$route.query.wxid;
+			var wxid = this.$route.query.wxid || this.$store.state.wxid;
 			var rid = this.$route.query.rid;
 			this.$store.dispatch('getFootRecord',{
 				self:this,
 				info:{
-					rid:rid,
-					wxid:wxid
+					rid: rid,
+					openid: wxid
 				},
 				callback(self,res) {
-					if (res.body.ok == 0) {
-						self.$f7.alert('您还没有足部健康记录')
+					if (res.body.error || res.body.data.length == 0) {
+						self.$f7.alert("",'您还没有足部健康记录')
 					} else {
-						self.footData = res.body.ok
+						self.footData = res.body.data[0]
+						self.footData.left_length = self.footData.left_length.toFixed()
+						self.footData.right_length = self.footData.right_length.toFixed()
+						self.footData.left_foot_size = (self.footData.left_foot_size - 200) * 0.2 + 30;
+						self.footData.right_foot_size = (self.footData.right_foot_size - 200) * 0.2 + 30;
+						self.footData.suggestShoe = 5;
 					}
 				}
 			})

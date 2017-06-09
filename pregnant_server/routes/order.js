@@ -56,8 +56,8 @@ order_router.route('/ordermake').post(function(req,res){
                     openid: wxid,
                     out_trade_no: order.id,
                     body: order.shoeName,
-                    // total_fee:price * 100,
-                    total_fee:1,
+                    total_fee:price * 100,
+                    // total_fee:1,
                     trade_type: 'JSAPI'
                 }, function(err, response, payargs){
                     console.log('支付返回');
