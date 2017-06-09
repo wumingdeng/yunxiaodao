@@ -6,6 +6,7 @@ var utils = require('../utils')
 var request=require('request')
 var cfg = require('../config.json')
 var mem = require('../memory')
+
 // for quick test
 tour_router.route('/test').get(function(req,res){
     res.json({ok:1})
@@ -185,7 +186,10 @@ tour_router.route('/serverdata').post(function(req,res){
                         if(data){
                             res.json({"errcode":0,"errmsg":"数据已经新增过了"})
                         }else{
-                            var birth=new Date(infos.birth).toLocaleDateString()
+                            var birth//new Date(infos.birth).toLocaleDateString()
+                            if(infos.birth!=='null'){
+                                birth=new Date(infos.birth).toLocaleDateString()
+                            }
                             var now = new Date()
                             var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString().replace('AM','').replace('PM','')
                             var date_yunfu=new Date(infos.date_yunfu).toLocaleDateString()

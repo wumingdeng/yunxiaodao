@@ -10,7 +10,7 @@
     <f7-page>
     <f7-card>
       <f7-card-content style='text-align: center;'>
-        <li style='font-size:35px;margin:3px 0px -52px 65px;color:#fa7699;font-weight:bold' class='ion-load-c'></li>
+        <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -59px 42px'>!</div>
         <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
         <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
         <p>
@@ -171,7 +171,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@font-face {font-family:'hcpfont'; src: url('/static/assets/font/tupianwenzi.ttf')} 
   .custom {
     width: 30%;
   }
