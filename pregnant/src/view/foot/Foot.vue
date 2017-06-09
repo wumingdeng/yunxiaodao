@@ -137,8 +137,10 @@
 						self.$f7.alert("",'您还没有足部健康记录')
 					} else {
 						self.footData = res.body.data[0]
-						self.footData.left_length = self.footData.left_length.toFixed()
-						self.footData.right_length = self.footData.right_length.toFixed()
+						self.footData.left_length = self.footData.left_length.toFixed() + 'mm'
+						self.footData.right_length = self.footData.right_length.toFixed() + 'mm'
+						self.footData.left_width = self.footData.left_width.toFixed() + 'mm'
+						self.footData.right_width = self.footData.right_width.toFixed() + 'mm'
 						self.footData.left_foot_size = (self.footData.left_foot_size - 200) * 0.2 + 30;
 						self.footData.right_foot_size = (self.footData.right_foot_size - 200) * 0.2 + 30;
 						self.footData.suggestShoe = 5;

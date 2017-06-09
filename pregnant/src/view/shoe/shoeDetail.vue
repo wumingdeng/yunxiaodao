@@ -7,7 +7,7 @@
       <f7-nav-center sliding title="产品详情"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar> -->
-    <f7-page-content  style="">
+    <f7-page-content  style="-webkit-transform: translateZ(0px);">
   		<homeSwipe :swipeData="swipeData"></homeSwipe>
   		<f7-block inner style="margin:-5px 0 0 0;font-size:17px;">
   			<span>{{productData.name}}</span>
@@ -86,6 +86,11 @@
       },
       getImgSrc(n) {
         return "static/assets/shoe/product/intro_p" + this.productData.pid + "/" + n +".jpg"
+      },
+      doIt:function() {
+        //刷新一下。。。解决ios卡住的问题
+        var card = document.getElementsByClassName('card')[0]
+        card.style.marginBottom = '1px';
       }
     },
 		beforeRouteEnter(to,from,next){
@@ -104,7 +109,8 @@
       document.title = '一双好鞋'
     },
 		mounted() {
-			this.productData = this.$store.state.productDetail
+      this.productData = this.$store.state.productDetail
+      window.setTimeout(this.doIt,1000); 
 		},
     beforeDestroy() {
       console.log('destory...')

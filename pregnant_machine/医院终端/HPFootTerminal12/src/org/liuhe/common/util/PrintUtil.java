@@ -123,30 +123,30 @@ public class PrintUtil implements Printable{
 				Font font = new Font("新宋体", Font.PLAIN, 13);
 				g2.setFont(font);
 				float height = font.getSize2D();
-				if(clinic_info != null){
-					g2.drawString("您好！您的排队号：", 0, (float)(1*height));
-					g2.translate(0, (float)(1*height+15));
-					
-					font = new Font("新宋体", Font.PLAIN, 20);
-					g2.setFont(font);
-					height = font.getSize2D();
-					g2.drawString(clinic_info, 10, (float)(1*height));
-					g2.drawLine(0, (int)(1*height+15), 200,(int)(1*height+15));
-					g2.translate(0, (float)(1*height+15));
-					
-					font = new Font("新宋体", Font.PLAIN, 13);
-					g2.setFont(font);
-					height = font.getSize2D();
-					g2.drawString("您所在的排队队列前还", 0, (float)(8+1*height));
-					g2.drawString("有" + wait_num + "人等候", 0, (float)(10+2*height));
-					g2.translate(0, (float)(10+2*height+8));
-					
-					font = new Font("新宋体", Font.PLAIN, 10);
-					g2.setFont(font);
-					height = font.getSize2D();
-					g2.drawString("请耐心留意叫号，过号作废", 0, (float)(1*height));
-					g2.translate(0, (float)(1*height));
-				}
+//				if(clinic_info != null){
+//					g2.drawString("您好！您的排队号：", 0, (float)(1*height));
+//					g2.translate(0, (float)(1*height+15));
+//					
+//					font = new Font("新宋体", Font.PLAIN, 20);
+//					g2.setFont(font);
+//					height = font.getSize2D();
+//					g2.drawString(clinic_info, 10, (float)(1*height));
+//					g2.drawLine(0, (int)(1*height+15), 200,(int)(1*height+15));
+//					g2.translate(0, (float)(1*height+15));
+//					
+//					font = new Font("新宋体", Font.PLAIN, 13);
+//					g2.setFont(font);
+//					height = font.getSize2D();
+//					g2.drawString("您所在的排队队列前还", 0, (float)(8+1*height));
+//					g2.drawString("有" + wait_num + "人等候", 0, (float)(10+2*height));
+//					g2.translate(0, (float)(10+2*height+8));
+//					
+//					font = new Font("新宋体", Font.PLAIN, 10);
+//					g2.setFont(font);
+//					height = font.getSize2D();
+//					g2.drawString("请耐心留意叫号，过号作废", 0, (float)(1*height));
+//					g2.translate(0, (float)(1*height));
+//				}
 				
 				if(para != null){
 					if(clinic_info != null){
@@ -155,8 +155,9 @@ public class PrintUtil implements Printable{
 					font = new Font("新宋体", Font.PLAIN, 13);
 					g2.setFont(font);
 					height = font.getSize2D();
-					g2.drawString("测量数据结果如下：", 0, (float)(18+1*height));
-					g2.translate(0, (float)(18+1*height+8));
+					g2.drawString("您的测量数据结果如下：", 0, (float)(18+1*height));
+					g2.drawLine(0, (int)(1*height+32), 200,(int)(1*height+32));
+					g2.translate(0, (float)(32+1*height+8));
 					
 					font = new Font("新宋体", Font.PLAIN, 10);
 					g2.setFont(font);
@@ -172,11 +173,17 @@ public class PrintUtil implements Printable{
 						}
 					}
 					
-					g2.drawString("左脚长:"+para[2]+"mm 右脚长:"+para[3]+"mm", 0, (float)(1*height+3));
-					g2.drawString("左脚宽:"+para[4]+"mm 右脚宽:"+para[5]+"mm", 0, (float)(2*height+6));
+//					g2.drawString("左脚长:"+para[2]+"mm 右脚长:"+para[3]+"mm", 0, (float)(1*height+3));
+//					g2.drawString("左脚宽:"+para[4]+"mm 右脚宽:"+para[5]+"mm", 0, (float)(2*height+6));
+//					
+//					g2.drawString("左足弓:"+para[6]+"mm 右足弓:"+para[7]+"mm", 0, (float)(3*height+8));
+//					g2.drawString("左足态:"+para[8]+" 右足态:"+para[9], 0, (float)(4*height+10));
 					
-					g2.drawString("左足弓:"+para[6]+"mm 右足弓:"+para[7]+"mm", 0, (float)(3*height+8));
-					g2.drawString("左足态:"+para[8]+" 右足态:"+para[9], 0, (float)(4*height+10));
+					g2.drawString("左脚长:"+para[2].substring(0, para[2].indexOf("."))+" 右脚长:"+para[3].substring(0, para[3].indexOf("."))+"", 0, (float)(1*height+3));
+					g2.drawString("左脚宽:"+para[4].substring(0, para[4].indexOf("."))+" 右脚宽:"+para[5].substring(0, para[5].indexOf("."))+"", 0, (float)(2*height+6));
+					
+					g2.drawString("左足弓:"+para[6].substring(0, para[6].indexOf("."))+" 右足弓:"+para[7].substring(0, para[7].indexOf("."))+"", 0, (float)(3*height+8));
+					g2.drawString("左足态:"+para[8].replaceAll("足弓", "")+" 右足态:"+para[9].replaceAll("足弓", ""), 0, (float)(4*height+10));
 					
 					if(qrcode == null){
 						g2.drawString("请在公众号上查询更多信息", 0, (float)(5*height+14));

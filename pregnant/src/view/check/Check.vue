@@ -38,7 +38,7 @@
 
     <f7-card v-if='haveData'>
       <f7-card-content clase='p-title'>
-        <p><span style='font-weight:bold'>最新体重结果</span> : {{weightInfo.weight}}kg {{weightInfo.hospital}}</p>
+        <p><span style='font-weight:bold'>最新体重结果</span> : {{weightInfo.weight}}kg {{recordDate}}</p>
         <p><span style='font-weight:bold'>目前体重情况</span> : {{weightInfo.result}}</p>
         <p><span style='font-weight:bold'>建议体重范围</span> : {{weightInfo.standard}}</p>
         <p><span style='font-weight:bold'>孕妇注意事项</span> :</p>
@@ -82,6 +82,14 @@
         if (weight) {
           var arr = weight.split(',');
           return '( ' + arr[0] + 'kg - ' + arr[1] + 'kg )'
+        } else {
+          return ''
+        }
+      },
+      recordDate() {
+        var date = this.weightInfo.recordDate
+        if (date) {
+          return date.substring(0,10)
         } else {
           return ''
         }

@@ -36,7 +36,7 @@
         <f7-table-cell label :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-if="item.recordDate">
             {{getRecordDate(item.recordDate)}}
         </f7-table-cell>
-        <f7-table-cell label style='background-color:#fff5f7' :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_left" v-if="item.week">
+        <f7-table-cell label style='background-color:#fff5f7' :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_left" >
           {{item.week}}
         </f7-table-cell>
         <f7-table-cell numeric :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-if="item.weight">
@@ -162,7 +162,8 @@
               name: '体重',
               type: 'line',
               data: self.chartData.map(function (item) {
-                  return [item.week, item.weight];
+                  if (item.week <= 40)
+                    return [item.week, item.weight];
               }),
               smooth:true,
               areaStyle: {normal: {

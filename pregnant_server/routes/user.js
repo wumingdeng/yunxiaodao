@@ -264,7 +264,7 @@ user_router.route('/getWeightData').post(function(req, res) {
     if(wxid === 0){
         res.json({err:g.errorCode.WRONG_PARAM})
     }else{
-        db.weight_records.findAll({order:'recordDate DESC',offset:offset,limit:limit,where:{'userid':wxid, week:{$gte:0}}}).then(function(records){
+        db.weight_records.findAll({order:'recordDate DESC',offset:offset,limit:limit,where:{'userid':wxid, week:{$gt:0}}}).then(function(records){
             if (records) {
                 res.json({ok:records})
             } else {

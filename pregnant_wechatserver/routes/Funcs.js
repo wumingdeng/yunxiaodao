@@ -166,13 +166,13 @@ function authUser(page,req,res) {
                     // res.redirect(301,'http://czw321.ngrok.cc/?wxid='+openid+'&type=1');
                     db.users.findOne({where:{'wxid':openid}}).then(function(user){
                         if(user){
-                            console.log('用户已存在')
+                            // console.log('用户已存在')
                             db.users.update({headUrl:data.headimgurl,name:data.nickname},{where:{wxid:openid}}).then(function(){
                                 // to change redirect url
                                 res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1&page=' + page);
                             })
                         }else{
-                            console.log('创建用户')
+                            // console.log('创建用户')
                             db.users.create({wxid:openid,headUrl:data.headimgurl,name:data.nickname}).then(function(){
                                 // to change redirect url
                                 res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1$page=' + page);
