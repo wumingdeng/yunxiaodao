@@ -1418,10 +1418,10 @@ public class MainJFrame extends JFrame{
 				}
 				studyinfo.setHeight(stature);
 				if(studyinfo.getOpen_id() == null){
-					toIndentityPane();
+					toBeforeWeighPane();
 				}else{
 					sqlServer.addHeight(studyinfo.getOpen_id(), studyinfo.getHeight());
-					if(studyinfo.getWeight()==null){
+					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")){
 						toBeforeWeighPane();
 					}else if(studyinfo.getName() == null){
 						toIndentityPane();
@@ -1438,9 +1438,11 @@ public class MainJFrame extends JFrame{
 			// 跳过身高采集
 			else if(button == jumpStature){
 				if(studyinfo.getOpen_id() == null){
-					toIndentityPane();
+					toBeforeWeighPane();
 				}else if(studyinfo.getName() == null){
-					toIndentityPane();
+					toBeforeWeighPane();
+				}else if(studyinfo.getWeight() == null){
+					toBeforeWeighPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
 						toScanPane();
