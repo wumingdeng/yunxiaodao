@@ -156,15 +156,15 @@ public class PrintUtil implements Printable{
 					g2.setFont(font);
 					height = font.getSize2D();
 					g2.drawString("ÄúµÄ²âÁ¿Êı¾İ½á¹ûÈçÏÂ£º", 0, (float)(18+1*height));
-					g2.drawLine(0, (int)(1*height+32), 200,(int)(1*height+32));
-					g2.translate(0, (float)(32+1*height+8));
+					g2.drawLine(0, (int)(1*height+31), 200,(int)(1*height+32));
+					g2.translate(0, (float)(31+1*height+8));
 					
 					font = new Font("ĞÂËÎÌå", Font.PLAIN, 10);
 					g2.setFont(font);
 					height = font.getSize2D();
 					
 					if(para[0] != null){
-						g2.drawString("Éí¸ß:"+para[0]+"cm  ÌåÖØ:"+para[1]+"kg", 0, (float)(1*height));
+						g2.drawString("Éí¸ß:"+para[0]+"cm    ÌåÖØ:"+para[1]+"kg", 0, (float)(1*height));
 						g2.translate(0, (float)(1*height));
 					}else{
 						if(para[1] != null){
@@ -179,11 +179,32 @@ public class PrintUtil implements Printable{
 //					g2.drawString("×ó×ã¹­:"+para[6]+"mm ÓÒ×ã¹­:"+para[7]+"mm", 0, (float)(3*height+8));
 //					g2.drawString("×ó×ãÌ¬:"+para[8]+" ÓÒ×ãÌ¬:"+para[9], 0, (float)(4*height+10));
 					
-					g2.drawString("×ó½Å³¤:"+para[2].substring(0, para[2].indexOf("."))+" ÓÒ½Å³¤:"+para[3].substring(0, para[3].indexOf("."))+"", 0, (float)(1*height+3));
-					g2.drawString("×ó½Å¿í:"+para[4].substring(0, para[4].indexOf("."))+" ÓÒ½Å¿í:"+para[5].substring(0, para[5].indexOf("."))+"", 0, (float)(2*height+6));
+					String leftLengthString = para[2].substring(0, para[2].indexOf("."))+"mm";
+					String rightLengthString = para[3].substring(0, para[3].indexOf("."));
+					String leftWidthString = para[4].substring(0, para[4].indexOf("."))+"mm";
+					String rightWidthString = para[5].substring(0, para[5].indexOf("."));
+					String leftArrowString = para[6].substring(0, para[6].indexOf("."))+"mm";
+					String rightArrowtring = para[7].substring(0, para[7].indexOf("."));
+					String leftStatusString = para[8].replaceAll("×ã¹­", "");
+					String rightStatusString = para[9].replaceAll("×ã¹­", "");
+					short totalLength=7;
+					short leftLengthLeft = (short) (totalLength - leftLengthString.length());
+					for(int i = 0;i<leftLengthLeft;i++){
+						leftLengthString+=" ";
+					}
+					short leftWidthLeft = (short) (totalLength - leftWidthString.length());
+					for(int i = 0;i<leftWidthLeft;i++){
+						leftWidthString+=" ";
+					}
+					short leftArrorLeft = (short) (totalLength - leftArrowString.length());
+					for(int i = 0;i<leftArrorLeft;i++){
+						leftArrowString+=" ";
+					}
+					g2.drawString("×ó½Å³¤:"+leftLengthString+"ÓÒ½Å³¤:"+rightLengthString+"mm", 0, (float)(1*height+3));
+					g2.drawString("×ó½Å¿í:"+leftWidthString+"ÓÒ½Å¿í:"+rightWidthString+"mm", 0, (float)(2*height+6));
 					
-					g2.drawString("×ó×ã¹­:"+para[6].substring(0, para[6].indexOf("."))+" ÓÒ×ã¹­:"+para[7].substring(0, para[7].indexOf("."))+"", 0, (float)(3*height+8));
-					g2.drawString("×ó×ãÌ¬:"+para[8].replaceAll("×ã¹­", "")+" ÓÒ×ãÌ¬:"+para[9].replaceAll("×ã¹­", ""), 0, (float)(4*height+10));
+					g2.drawString("×ó×ã¹­:"+leftArrowString+"ÓÒ×ã¹­:"+rightArrowtring+"mm", 0, (float)(3*height+8));
+					g2.drawString("×ó×ãÌ¬:"+leftStatusString+"   ÓÒ×ãÌ¬:"+rightStatusString, 0, (float)(4*height+10));
 					
 					if(qrcode == null){
 						g2.drawString("ÇëÔÚ¹«ÖÚºÅÉÏ²éÑ¯¸ü¶àĞÅÏ¢", 0, (float)(5*height+14));
