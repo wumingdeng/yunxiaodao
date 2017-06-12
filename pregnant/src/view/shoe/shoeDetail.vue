@@ -152,7 +152,7 @@
       bottom: 0;
       left: 0;
       z-index: 900;
-      border-top: 1px solid #aaaaaa;
+      border-top:1px solid rgba(170, 170, 170, 0.5);
   }
   .navFooter span {
   	margin:0;
