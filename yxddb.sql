@@ -166,6 +166,8 @@ CREATE TABLE `products` (
 `size`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '尺码(37,38,39)' ,
 `color`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '颜色(黑色,白色)' ,
 `type`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '鞋型(正常,加宽)' ,
+`pid` int(11) DEFAULT NULL,
+`introNum` int(11) DEFAULT NULL,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
