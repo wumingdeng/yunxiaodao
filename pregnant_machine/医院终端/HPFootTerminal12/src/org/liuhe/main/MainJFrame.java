@@ -181,7 +181,7 @@ public class MainJFrame extends JFrame{
 	private AWTEvent_listener awtEvent_listener = new AWTEvent_listener();
 	
 	// modify by kael
-	private String scanExternProgramDir;
+	public static String scanExternProgramDir;
 	// modify by kael end
 	private String scanDir;
 	private AcquireHelper acquire;			//É¨Ãè²Ù×÷Àà

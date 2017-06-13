@@ -186,6 +186,39 @@ public  class AcquireHelper {
 	}
 	
 	/**
+	 * 获取整张的扫描图像BufferedImage
+	 * 并经过亮度和对比度的处理
+	 * 水平、垂直、翻转
+	 * */
+	public boolean startAcquireOneDir(String scanDir,String filename){
+		try {
+			// modify by kael
+			String cmd = scanDir+"startConfig.bat";
+			ProcessBuilder pb = new ProcessBuilder(cmd,scanDir);
+			Process process = pb.start();
+			process.waitFor();
+			System.out.println(process.exitValue()); 
+			BufferedImage bimg = ImageIO.read(new File(scanDir+"/Image/fin.jpg"));
+			saveJpgFile(bimg,filename);
+			try {
+				setJpgDpi(filename);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return true;
+			// modify by kael over
+		}catch(Exception e1) {
+			e1.printStackTrace();
+			return false;
+		}finally{
+			try{
+			}catch(Exception e2){
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	/**
 	 * 分割左右脚图片
 	 * 根据左右脚边界获取像素域
 	 * 对左右脚进行比例校正
