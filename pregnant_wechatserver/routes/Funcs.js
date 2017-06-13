@@ -194,4 +194,40 @@ function authUser(page,req,res) {
     })
 }
 
+var createNonceStr = function() {
+    return Math.random().toString(36).substr(2, 15);
+};
+
+// timestamp
+var createTimeStamp = function () {
+    return parseInt(new Date().getTime() / 1000) + '';
+};
+
+var calcSignature = function (ticket, noncestr, ts, url) {
+    var str = 'jsapi_ticket=' + ticket + '&noncestr=' + noncestr + '&timestamp='+ ts +'&url=' + url;
+    shaObj = new jsSHA(str, 'TEXT');
+    return shaObj.getHash('SHA-1', 'HEX');
+}
+
+function getSignature(url){
+    var ts = createTimeStamp();
+    var noncestr = createNonceStr();
+    var signature = calcSignature(cfg.jsticket, noncestr, ts, url);
+    return signature
+}
+
+tour_router.route('/signature').post(function(req,res){
+    var url = req.body.url || ''
+    if(url === ''){
+        res.json({err:g.errorCode.WRONG_PARAM})
+        return
+    }
+    var ts = createTimeStamp();
+    var noncestr = createNonceStr();
+    var signature = calcSignature(cfg.jsticket, noncestr, ts, url);
+    // var sig = getSignature(url)
+    res.json({sig:signature,ts:ts,noncestr:noncestr,appid:cfg.appid})
+})
+
+
 module.exports=tour_router;

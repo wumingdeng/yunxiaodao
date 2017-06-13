@@ -251,13 +251,12 @@ CREATE TABLE `users` (
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `weight_records`;
-
 CREATE TABLE `weight_records` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `userid` varchar(128) DEFAULT NULL COMMENT '用户id',
   `week` int(11) DEFAULT NULL COMMENT '怀孕周数',
-  `recordDate` date DEFAULT NULL COMMENT '测重时间',
-  `hospital` smallint(6) DEFAULT NULL COMMENT '医院id',
+  `recordDate` datetime DEFAULT NULL COMMENT '测重时间',
+  `hospital` varchar(20) DEFAULT NULL COMMENT '医院id',
   `weight` float DEFAULT NULL COMMENT '体重(kg)',
   `result` varchar(6) DEFAULT NULL COMMENT '评估结果',
   `standard` varchar(32) DEFAULT NULL COMMENT '标准体重范围',
@@ -265,7 +264,8 @@ CREATE TABLE `weight_records` (
   `diet` text COMMENT '日常饮食贴士',
   PRIMARY KEY (`id`),
   UNIQUE KEY `as` (`userid`,`recordDate`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) 
+ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
 
 
 
@@ -740,6 +740,13 @@ CREATE TABLE `yxd_wrong_machine_logs` (
 
 
 
+DROP TABLE IF EXISTS `weight_diet_configs`;
+CREATE TABLE `weight_diet_configs` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `week` int(11) DEFAULT NULL COMMENT '周数',
+  `content` text COMMENT '内容',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

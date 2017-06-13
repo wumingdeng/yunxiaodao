@@ -48,6 +48,7 @@
 <script>
 	import homeSwipe from "./homeSwipe";
   import buyShoe from "./buyShoe";
+  // import wxApi from '../../utils/wxApi.js'
 	export default{
 		data () {
 			return {
