@@ -284,7 +284,7 @@ tour_router.route('/serverdata').post(function(req,res){
                                                                         url: cfg.logicOutAdress+'/api/fillWeight',
                                                                         method: 'POST',
                                                                         json:true,
-                                                                        body: {wxid:infos.open_id,weight:infos.weight,hospital_no:infos.hospital_no}
+                                                                        body: {wxid:infos.open_id,weight:infos.weight,hospital_no:infos.hospital_name}
                                                                     }
                                                                     request(options2, function(error2, response2, data2){
                                                                     })

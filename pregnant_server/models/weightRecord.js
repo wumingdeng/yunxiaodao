@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     userid: DataTypes.STRING,
     week: DataTypes.INTEGER,
     recordDate: DataTypes.INTEGER,
-    hospital: DataTypes.INTEGER,
+    hospital: DataTypes.STRING,
     weight:DataTypes.FLOAT,
     result: DataTypes.STRING,
     standard:DataTypes.STRING,
