@@ -2151,8 +2151,8 @@ public class MainJFrame extends JFrame{
 							e1.printStackTrace();
 						}
 						System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
-						studyinfo.setWeight("70.5");
-						hwLabel.setText("体重：70.5kg");
+						studyinfo.setWeight("0.0");
+						hwLabel.setText("体重：0.0kg");
 						
 						HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 						hweightUtil.doActionPerformed();
