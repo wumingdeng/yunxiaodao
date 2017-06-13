@@ -174,6 +174,19 @@ AUTO_INCREMENT=4
 
 ;
 
+LOCK TABLES `products` WRITE;
+/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+
+INSERT INTO `products` (`id`, `name`, `smallPic`, `swipePic`, `price`, `intro`, `size`, `color`, `type`, `pid`, `introNum`)
+VALUES
+  (1,'孕妇保健鞋','https://v3.modao.cc/uploads3/images/924/9242419/raw_1493883466.png','static/assets/shoe/product/p1/ps1.jpg,static/assets/shoe/product/p1/ps2.jpg,static/assets/shoe/product/p1/ps3.jpg',879,'just do it','37,38,39,40','黑色:static/assets/shoe/product/color_p1/color1.webp,白色:static/assets/shoe/product/color_p1/color2.webp,红色:static/assets/shoe/product/color_p1/color3.webp,灰色:static/assets/shoe/product/color_p1/color4.webp','正常,加宽',1,18),
+  (2,'孕妇保健鞋2','https://v3.modao.cc/uploads3/images/924/9242419/raw_1493883466.png','static/assets/shoe/product/p1/ps1.jpg,static/assets/shoe/product/p1/ps2.jpg,static/assets/shoe/product/p1/ps3.jpg,static/assets/shoe/product/p1/ps4.jpg,static/assets/shoe/product/p1/ps5.jpg',879,'just do it','37,38,39,40,41','黑色:static/assets/shoe/product/color_p1/color1.webp,白色:static/assets/shoe/product/color_p1/color2.webp,红色:static/assets/shoe/product/color_p1/color3.webp,灰色:static/assets/shoe/product/color_p1/color4.webp','正常,加宽',2,1),
+  (3,'孕妇保健鞋3','https://v3.modao.cc/uploads3/images/924/9242419/raw_1493883466.png','static/assets/shoe/product/p1/ps1.jpg,static/assets/shoe/product/p1/ps2.jpg,static/assets/shoe/product/p1/ps3.jpg,static/assets/shoe/product/p1/ps4.jpg,static/assets/shoe/product/p1/ps5.jpg',879,'just do it','37,38,39,40,41','黑色:static/assets/shoe/product/color_p1/color1.webp,白色:static/assets/shoe/product/color_p1/color2.webp,红色:static/assets/shoe/product/color_p1/color3.webp,灰色:static/assets/shoe/product/color_p1/color4.webp','正常,加宽',3,1);
+
+/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 -- ----------------------------
 -- Table structure for `swipe_configs`
 -- ----------------------------
@@ -190,6 +203,19 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 AUTO_INCREMENT=4
 
 ;
+
+
+LOCK TABLES `swipe_configs` WRITE;
+/*!40000 ALTER TABLE `swipe_configs` DISABLE KEYS */;
+
+INSERT INTO `swipe_configs` (`id`, `url`, `showTime`, `place`)
+VALUES
+  (1,'/static/assets/shoe/swipe/swipe.jpg',3,1),
+  (2,'/static/assets/shoe/swipe/swipe1.jpg',3,2),
+  (3,'/static/assets/shoe/swipe/swipe2.jpg',3,3);
+
+/*!40000 ALTER TABLE `swipe_configs` ENABLE KEYS */;
+UNLOCK TABLES;
 
 -- ----------------------------
 -- Table structure for `users`
@@ -239,24 +265,23 @@ AUTO_INCREMENT=25
 -- ----------------------------
 DROP TABLE IF EXISTS `weight_records`;
 CREATE TABLE `weight_records` (
-`id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
-`userid`  varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户id' ,
-`week`  int(11) NULL DEFAULT NULL COMMENT '怀孕周数' ,
-`recordDate`  date NULL DEFAULT NULL COMMENT '测重时间' ,
-`hospital`  smallint(6) NULL DEFAULT NULL COMMENT '医院id' ,
-`weight`  float NULL DEFAULT NULL COMMENT '体重(kg)' ,
-`result`  varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '评估结果' ,
-`standard`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标准体重范围' ,
-`tip`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '注意点' ,
-`diet`  text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '日常饮食贴士' ,
-PRIMARY KEY (`id`),
-UNIQUE INDEX `as` (`userid`, `recordDate`) USING BTREE 
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=93
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` varchar(128) DEFAULT NULL COMMENT '用户id',
+  `week` int(11) DEFAULT NULL COMMENT '怀孕周数',
+  `recordDate` datetime DEFAULT NULL COMMENT '测重时间',
+  `hospital` varchar(20) DEFAULT NULL COMMENT '医院id',
+  `weight` float DEFAULT NULL COMMENT '体重(kg)',
+  `result` varchar(6) DEFAULT NULL COMMENT '评估结果',
+  `standard` varchar(32) DEFAULT NULL COMMENT '标准体重范围',
+  `tip` text COMMENT '注意点',
+  `diet` text COMMENT '日常饮食贴士',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `as` (`userid`,`recordDate`) USING BTREE
+) 
+ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
 
 ;
+
 
 -- ----------------------------
 -- Table structure for `weightadvice_configs`
@@ -280,6 +305,18 @@ AUTO_INCREMENT=4
 
 ;
 
+LOCK TABLES `weightadvice_configs` WRITE;
+/*!40000 ALTER TABLE `weightadvice_configs` DISABLE KEYS */;
+
+INSERT INTO `weightadvice_configs` (`id`, `minWeek`, `maxWeek`, `normal`, `skinny`, `fat`, `tip_normal`, `tip_skinny`, `tip_fat`)
+VALUES
+  (1,1,12,'由于胎儿生长速度较慢，母体的相关组织增长变化也不明显，所需营养较为有限。因此，不必强求补充大量的营养，但这个阶段是胎儿生长发育最重要的时期，某种营养素的缺乏或过量，会引起胎儿早期发育障碍和畸形，此时需注意营养全面，烹调时应做到食物清淡爽口，避免刺激性强的食物。如有呕吐不可禁食，吐后仍要吃一些易消化的食物。','\"原因一：孕吐反应\r对策：为了缓解孕吐反应所带来的不适，建议孕妈咪在孕早期的饮食不要太油腻，多吃清淡的食物，像烤馍片、烤面包、苏打饼等食品有助缓解孕吐症状，所以孕吐比较厉害的孕妈咪可以买些来吃哦。饮食要营养均衡，像鸡蛋、绿叶蔬菜、豆类食品、动物肝脏、坚果、水果等食物都要各自摄取一些。有的孕妈咪孕吐实在严重就不强求说像常人那样有规律性的饮食，也不必为了宝宝而强制自己进食，都吐出来话也没什么营养可以吸收，进食的数量、种类、次数可以根据孕妈咪自身的食欲好坏来调整，少吃多餐，从整体上保证进食量。\r原因二：食欲不振\r对策：食欲不好的孕妈咪可以适当进行一些户外运动，这样可促进肠胃消化吸收，让食欲大增。然后再搭配清淡可口、富含营养、容易消化的饮食原则增加进食量。口味方面，孕妈咪也不必太忌讳哪些东西不能吃，以符合孕妈咪的饮食习惯和爱好为主，但不得接触酒类。\r原因三：胎儿的原因\r对策：想要增加体重，孕妈咪除了要保证正常的进食之外，还要记得补充动物肝脏、绿叶蔬菜等食物哦，这些食物都含有丰富的叶酸。\"','\"尽量少吃零食和夜宵。大家都知道，吃零食是导致肥胖的重要因素之一。其实夜宵也是保持体重的大敌，特别是就寝前两个小时左右吃夜宵，缺乏消耗，脂肪很容易在体内囤积，使人发胖。\r多吃一些绿色蔬菜。蔬菜本身不但含有丰富的维生素，而且还有助于体内钙、铁、纤维素的吸收，以防止便秘。少吃油腻食物，多吃富含蛋白、维生素的食物。\r饮食过量时隔天节食：有时不小心贪吃，也不必过于自责，建议不妨减少第二天的饮食量，而且以吃清淡食物为宜。\"',NULL,NULL,NULL),
+  (2,13,27,'胎儿生长发育迅速，母体也发生了极大变化，要增加热量，给予足够的蛋白质，增加动物性食品、植物油、维生素及微量元素的摄入。膳食要荤素兼备、粗细搭配，同时摄取足够的粮谷类食物，每天膳食中粮谷类需有300克至450克，除大米、面粉外，还可选用B族维生素类和氨基酸丰富的杂粮，如小米、玉米、麦片等；每日肉、蛋、禽、鱼类动物性食物或豆类及其制品需有200克、动物内脏(肝)50克(每周一至两次)，蔬菜500克，水果200克、植物油30克至40克。孕中期每餐摄取量可因孕妇食欲增加而有所增加，但随着妊娠的进展，子宫不断增大，胃部会受到挤压，使得孕妇餐后出现饱胀感。为此，可增加每日的餐次，但每次的食量要适度，切忌盲目过量进食或大吃甜食，避免孕妇因肥胖或血糖过高导致妊娠期糖尿病的发生。','\"一、孕吐反应\r措施：这时的饮食宜清淡、不要太油腻，烤面包片、烤馍片、苏打饼干等可以缓解孕吐症状，但同时也要平衡饮食，补充一定的叶酸，如动物的肝脏、鸡蛋、豆类、绿叶蔬菜、水果以及坚果。孕妇，孕吐反应比较严重的饮食不必像常人那样强调规律性，更不可强制进食，进食的餐次、数量、种类及时间应根据孕妇的食欲和反应轻重进行调整，采取少食多餐的办法，保证进食量。\r二、食欲不振\r措施：合理调配饮食，孕妇的饮食应以富含营养、清淡可口、容易消化为原则。在口味方面，不必太忌讳，可以尽可能照顾孕妇的饮食习惯和爱好。酒类应绝对禁止。\"','\"尽量少吃零食和夜宵。大家都知道，吃零食是导致肥胖的重要因素之一。其实夜宵也是保持体重的大敌，特别是就寝前两个小时左右吃夜宵，缺乏消耗，脂肪很容易在体内囤积，使人发胖。\r多吃一些绿色蔬菜。蔬菜本身不但含有丰富的维生素，而且还有助于体内钙、铁、纤维素的吸收，以防止便秘。少吃油腻食物，多吃富含蛋白、维生素的食物。\r饮食过量时隔天节食：有时不小心贪吃，也不必过于自责，建议不妨减少第二天的饮食量，而且以吃清淡食物为宜。\"',NULL,NULL,NULL),
+  (3,28,40,'\"1. 多吃鲫鱼、鲤鱼、萝卜和冬瓜等食物，有助于缓解水肿症状。\r2. 多吃含有丰富胶原蛋白的食品，如猪蹄等，有助于增加皮肤的弹性。\r3. 多吃鸡肉、鱼肉等易于消化吸收且含丰富蛋白质的食物。\r4. 吃一些动物的内脏，如心、肝、肾等，可满足多种无机盐和维生素的需要。\r5. 经常吃一些富含碘的食物，如海带、鱿鱼、紫菜等海洋植物。\r6. 多选用芹菜和莴苣等含有丰富的维生素和矿物质的食物。\r7. 多吃些花生、芝麻、豌豆、菠菜等含各种维生素和不饱和脂肪酸的食物，以避免胎儿发育异常和肌肉萎缩。\r不要过多摄入碳水化合物（主食）和饱和脂肪（例如奶油、油炸食品），避免胎儿过大。可以多吃一些优质蛋白，比如鱼、虾类的食物，另外要吃新鲜的蔬菜和水果，补充各种维生素和微量元素。\"','可以多吃些含有糖分的食物，如甘蔗汁、果汁等。不过，当发现宝宝体重不足时，最好先检查是不是胎 盘或其他功能有问题，如果是因为疾病因素造成胎儿体重不 足，只要控制病情，宝宝的体重自然就会跟上。其次饮食要均衡，宝宝体重才会标准，可着重增加蛋 白质、氣基酸的摄取，至于油脂类并不需要额外摄取，因为 日常饮食中的油脂已经很多了。','\"尽量少吃零食和夜宵。大家都知道，吃零食是导致肥胖的重要因素之一。其实夜宵也是保持体重的大敌，特别是就寝前两个小时左右吃夜宵，缺乏消耗，脂肪很容易在体内囤积，使人发胖。\r多吃一些绿色蔬菜。蔬菜本身不但含有丰富的维生素，而且还有助于体内钙、铁、纤维素的吸收，以防止便秘。少吃油腻食物，多吃富含蛋白、维生素的食物。\r饮食过量时隔天节食：有时不小心贪吃，也不必过于自责，建议不妨减少第二天的饮食量，而且以吃清淡食物为宜。\"',NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `weightadvice_configs` ENABLE KEYS */;
+UNLOCK TABLES;
+
 -- ----------------------------
 -- Table structure for `weightrate_configs`
 -- ----------------------------
@@ -298,6 +335,20 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 AUTO_INCREMENT=5
 
 ;
+
+LOCK TABLES `weightrate_configs` WRITE;
+/*!40000 ALTER TABLE `weightrate_configs` DISABLE KEYS */;
+
+INSERT INTO `weightrate_configs` (`id`, `status`, `rateMin`, `rateMax`, `dRateMin`, `dRateMax`)
+VALUES
+  (1,1,0.44,0.58,0.66,0.87),
+  (2,2,0.35,0.5,0.53,0.75),
+  (3,3,0.23,0.33,0.46,0.66),
+  (4,4,0.17,0.27,0.34,0.54);
+
+/*!40000 ALTER TABLE `weightrate_configs` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 -- ----------------------------
 -- Table structure for `yxd_basicinfos`
@@ -719,3 +770,10 @@ DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
 
 ;
 
+DROP TABLE IF EXISTS `weight_diet_configs`;
+CREATE TABLE `weight_diet_configs` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `week` int(11) DEFAULT NULL COMMENT '周数',
+  `content` text COMMENT '内容',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
