@@ -25,7 +25,10 @@
 
 			// this.$store.commit('GET_WXID',wxid)
 
-
+			var isTest = process.env.NODE_ENV == 'development'
+			if (isTest) {
+				code = 'heheda'
+			}
 			if (!this.$store.state.isLogin) {
 				if (code) {
 					//登录

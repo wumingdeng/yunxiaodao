@@ -163,6 +163,16 @@ tour_router.route('/auth').post(function(req,res){
     if (!code) {
         res.json({err:g.errorCode.WRONG_PARAM})
     }
+    if (code == 'heheda' && cfg.debug && cfg.testUser) {
+        db.users.findOne({where:{'wxid':cfg.testUser}}).then(function(user){
+            if (user) {
+                res.json({ok:user})
+            } else {
+                res.json({err:g.errorCode.WRONG_WXCHAT_AUTHFAILED});
+            }
+        })
+        return
+    }
     utils.wechat_f.getUserOpenid(code,function(openid){
         if(openid){
             utils.wechat_f.getUserBrief(openid,function(data){
