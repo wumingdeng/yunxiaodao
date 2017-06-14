@@ -30,6 +30,7 @@ var routes = [
     component: Check, 
     name: 'check',
     meta: { 
+      auth: true,
       share: true
     }
 	},
@@ -44,6 +45,7 @@ var routes = [
     path: '/userInfo',
     component: UserInfo,
     meta: { 
+      auth: true,
       share: false
     }
   },
