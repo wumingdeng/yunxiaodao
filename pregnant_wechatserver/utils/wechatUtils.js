@@ -51,9 +51,11 @@ var f = {
                     var bodyToken=JSON.parse(body);
                     if(bodyToken&&bodyToken.openid){
                         cb(bodyToken.openid)
+                    } else {
+                        err(bodyToken.errmsg)
                     }
                 }else{
-                    err()
+                    err(error)
                 }
             })
     },
@@ -112,9 +114,9 @@ var f = {
         // for example:
         // 网页授权处填写例如xxvwa.free.natapp.cc的完整域名即可
         // 回调url填写如http://xxvwa.free.natapp.cc/api/auth即可
-        var redirect_url_check = client.getAuthorizeURL(codeCallback+ '_check', 1, 'snsapi_userinfo');
-        var redirect_url_foot = client.getAuthorizeURL(codeCallback + '_foot', 1, 'snsapi_base');
-        var redirect_url_shoe = client.getAuthorizeURL(codeCallback + '_shoe', 1, 'snsapi_base');
+        var redirect_url_check = client.getAuthorizeURL(codeCallback+ '/?page=check', 1, 'snsapi_userinfo');
+        var redirect_url_foot = client.getAuthorizeURL(codeCallback + '/?page=foot', 1, 'snsapi_base');
+        var redirect_url_shoe = client.getAuthorizeURL(codeCallback + '/?page=shoeDetail', 1, 'snsapi_base');
         var url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='+cfg.access_token;
         var menus = {
             "button": [

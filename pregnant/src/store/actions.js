@@ -17,19 +17,21 @@ function onErrorRefresh(vue,err) {
 export function quickloginwxUser ({commit, state}, data) {
   var self = data.self;
   console.log(self)
-  self.$http.post(serverAddress + '/api/quickloginwxUser', data.info)
+  // self.$http.post(serverAddress + '/api/quickloginwxUser', data.info)
+  self.$http.post(g.wechatServerAddress + '/api/auth', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
       self.$store.state.isloading = false;
       console.log(response)
-      if(response.body.err){
-        self.$router.push('/useWX')
-      }else{
-        if (data.callback) {
-          data.callback(self,response)
-        }
-      }       
+      data.callback(self,response)
+      // if(response.body.err){
+      //   self.$router.push('/useWX')
+      // }else{
+      //   if (data.callback) {
+      //     data.callback(self,response)
+      //   }
+      // }       
     }, (response) => {
       // error callback
       self.$f7.alert('登录失败') 
