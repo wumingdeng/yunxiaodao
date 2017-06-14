@@ -16,6 +16,7 @@
 <script>
     // import navFooter from './views/navFooter'
     import g from './globals/global.js'
+    import wxApi from './utils/wxApi.js'
     export default {
         data () {
           return {
@@ -32,45 +33,6 @@
           showLoading() {
             return Global.s.state.isloading
           }
-        },
-        methods:{
-          sendMessage() {
-            WeixinJSBridge.on('menu:share:appmessage', function(argv){
-
-              WeixinJSBridge.invoke('sendAppMessage',{
-
-                "appid":"", //appid 设置空就好了。
-                "img_url": 'imgUrl', //分享时所带的图片路径
-                "img_width": "120", //图片宽度
-                "img_height": "120", //图片高度
-                "link":'url', //分享附带链接地址
-                "desc":"我是一个介绍", //分享内容介绍
-                "title":"标题，再简单不过了。"
-                }, function(res){/*** 回调函数，最好设置为空 ***/
-
-              });
-
-            });
-          },
-          setWxConfig() {
-            this.sendMessage();
-          }
-        },
-        mounted() {
-          // if (g.isInWeiXin()) {
-          //   if (typeof(WeixinJSBridge) == "undefined"){
-          //      if( document.addEventListener ){
-          //          document.addEventListener('WeixinJSBridgeReady', this.setWxConfig, false);
-          //      }else if (document.attachEvent){
-          //          document.attachEvent('WeixinJSBridgeReady', this.setWxConfig); 
-          //          document.attachEvent('onWeixinJSBridgeReady', this.setWxConfig);
-          //      }
-          //   }else{
-          //      this.setWxConfig();
-          //   }
-          // }
-          // window.setTimeout(this.setWxConfig,1000)
-
         }
     }
 </script>

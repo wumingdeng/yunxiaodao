@@ -30,6 +30,7 @@ export default {
   serverAddress: webConfig.serverAddress,
   adminServerAddress: webConfig.adminServerAddress,
   machineServerAddress: webConfig.machineServerAddress,
+  wechatServerAddress: webConfig.wechatServerAddress,
   // machineServerAddress: "http://192.168.18.111:8097"
   isInWeiXin:function() {
     if (browser.versions.mobile) {

@@ -294,4 +294,22 @@ export function getLogistics ({commit, state}, data) {
       onErrorRefresh(self);
     });
 }
-
+//微信sdk认证
+export function signature ({commit, state},data) {
+  var self = data.self;
+  self.http.post(g.wechatServerAddress+'/api/signature',data.info)
+    .then((response) => {
+      // success callback
+      console.log(response)
+      if(response.body.err){
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
