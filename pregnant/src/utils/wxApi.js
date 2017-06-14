@@ -97,7 +97,9 @@ export default {
           jsApiList: [
             'onMenuShareAppMessage',
             'onMenuShareTimeline',
-            'hideMenuItems'
+            'hideMenuItems',
+            'hideOptionMenu',
+            'showOptionMenu'
           ] 
         });
       }

@@ -16,7 +16,7 @@ module.exports = {
         WRONG_MIN_PAY:11,
         WRONG_MAX_SETTLED:12,// 超过最大结算额度
         WRONG_NOT_ENOUGH_MONEY:13,// 没有足够提现额度
-        WRONG_WXCHAT_AUTHFAILED:14,// 没有足够提现额度
+        WRONG_WXCHAT_AUTHFAILED:14,// 授权失败
         WRONG_PARAM:999
     },
     // pub:pub

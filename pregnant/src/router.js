@@ -28,9 +28,9 @@ var routes = [
 	{
     path: '/check',
     component: Check, 
-    name: 'login',
+    name: 'check',
     meta: { 
-      share: false
+      share: true
     }
 	},
 	{
@@ -65,6 +65,7 @@ var routes = [
     path: '/shoeDetail',
     component: shoeDetail,
     meta: { 
+      auth: true,
       share: true
     }
   },
@@ -129,25 +130,31 @@ router.beforeEach((to, from, next) => {
 import wxApi from './utils/wxApi.js'
 import cfg from '../static/webConfig.json'
 router.afterEach(route => {
-  if (route.fullPath == "/shoeDetail") {
     window.setTimeout(wxApi.init,10)  //加个延时 要不location.href 还是旧的路由
     // wxApi.init();
     wx.ready(function(){
-        console.log('app.vue wxapi ready')
+      console.log('app.vue wxapi ready')
+      if (route.meta.share) { //页面是否可分享
         //设置分享功能
+        console.log('set share..')
         setWxConfig()
+      } else {
+        // hideMenu(['menuItem:share:appMessage','menuItem:share:timeline'])
+        console.log('hide all...')
+        wx.hideOptionMenu();
+      }
     });
-  }
 })
 
 function shareAppMessage(link) {
-  var codeCallback = cfg.authCodeAddress + '_shoe'
-  link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+cfg.appId+"&redirect_uri="+codeCallback+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
-  console.log('link:' + link)
+  var url = cfg.webAddress
+  var route = location.href.split('#')[0].substring(url.length + 1)
+  url = url + '/?page=' + route;
+  console.log('link:' + url)
   wx.onMenuShareAppMessage({
     title: '快来孕小岛看看～！', // 分享标题
     desc: '这是一个分享页', // 分享描述
-    link: location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+    link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
     imgUrl: '', // 分享图标
     type: '', // 分享类型,music、video或link，不填默认为link
     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -159,14 +166,14 @@ function shareAppMessage(link) {
     }
   });
 }
-function shareTimeline(link) {
-  var codeCallback = cfg.authCodeAddress + '_shoe'
-  codeCallback = encodeURIComponent(codeCallback);
-  link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+cfg.appId+"&redirect_uri="+codeCallback+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
-  console.log('link timeline:' + link)
+function shareTimeline(link) { 
+  var url = cfg.webAddress
+  var route = location.href.split('#')[0].substring(url.length + 1)
+  url = url + '/?page=' + route;
+  console.log('link timeline:' + url)
   wx.onMenuShareTimeline({
       title: '快来孕小岛看看～！', // 分享标题
-      link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       imgUrl: '', // 分享图标
       success: function () { 
           // 用户确认分享后执行的回调函数
@@ -176,13 +183,16 @@ function shareTimeline(link) {
       }
   });
 }
-function hideMenu() {
+function hideMenu(arr) {
   console.log('隐藏部分菜单')
+  arr = arr || []
+  arr = arr.concat(["menuItem:share:qq","menuItem:share:QZone","menuItem:readMode"]);
   wx.hideMenuItems({
-      menuList: ["menuItem:share:qq","menuItem:share:QZone","menuItem:readMode"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+      menuList: arr // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
   });
 }
 function setWxConfig() {
+  wx.showOptionMenu();
   shareAppMessage();
   shareTimeline();
   hideMenu()

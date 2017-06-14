@@ -141,41 +141,47 @@ tour_router.route('/sendMoney').get(function(req,res){
 })
 
 tour_router.route('/create_menu').get(function(req,res){
-    utils.wechat_f.setupMenu(cfg.authCodeAddress)
+    utils.wechat_f.setupMenu(cfg.webAddress)
     res.json({"cc":3})
 })
 
-tour_router.route('/auth_check').get(function(req,res){
-    authUser("check",req,res)
-});
+// tour_router.route('/auth_check').get(function(req,res){
+//     authUser("check",req,res)
+// });
 
-tour_router.route('/auth_foot').get(function(req,res){
-    authUser("foot",req,res)
-});
+// tour_router.route('/auth_foot').get(function(req,res){
+//     authUser("foot",req,res)
+// });
 
-tour_router.route('/auth_shoe').get(function(req,res){
-    authUser("shoeDetail",req,res)
-});
+// tour_router.route('/auth_shoe').get(function(req,res){
+//     authUser("shoeDetail",req,res)
+// });
 
-function authUser(page,req,res) {
-    utils.wechat_f.getUserOpenid(req.query.code,function(openid){
+tour_router.route('/auth').post(function(req,res){
+    var code = req.body.code
+    console.log('code:'+code)
+    if (!code) {
+        res.json({err:g.errorCode.WRONG_PARAM})
+    }
+    utils.wechat_f.getUserOpenid(code,function(openid){
         if(openid){
             utils.wechat_f.getUserBrief(openid,function(data){
                 if(data){
-                    console.log(db.users);
                     // res.redirect(301,'http://czw321.ngrok.cc/?wxid='+openid+'&type=1');
                     db.users.findOne({where:{'wxid':openid}}).then(function(user){
                         if(user){
                             // console.log('用户已存在')
                             db.users.update({headUrl:data.headimgurl,name:data.nickname},{where:{wxid:openid}}).then(function(){
                                 // to change redirect url
-                                res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1&page=' + page);
+                                // res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1&page=' + page);
+                                res.json({ok:user})
                             })
                         }else{
                             // console.log('创建用户')
-                            db.users.create({wxid:openid,headUrl:data.headimgurl,name:data.nickname}).then(function(){
+                            db.users.create({wxid:openid,headUrl:data.headimgurl,name:data.nickname}).then(function(newUser){
                                 // to change redirect url
-                                res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1$page=' + page);
+                                // res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1$page=' + page);
+                                res.json({ok:newUser})
                             })
                         }
                     })
@@ -189,10 +195,11 @@ function authUser(page,req,res) {
                 res.json({err:g.errorCode.WRONG_WXCHAT_AUTHFAILED});
             })
         }
-    },function(){
+    },function(error){
+        console.log(error);
         res.json({err:g.errorCode.WRONG_WXCHAT_AUTHFAILED});
     })
-}
+})
 
 var createNonceStr = function() {
     return Math.random().toString(36).substr(2, 15);
