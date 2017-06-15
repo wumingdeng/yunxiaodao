@@ -1,7 +1,10 @@
 <template>
 	<f7-page name="footPage">
 		<f7-card>
-			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>足部健康评测报告</span><span style="font-size:16px;">  {{reportDate}}</span></div></f7-card-header>
+		
+			<f7-card-header><p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
+            <span style='font-family:hcpfont;'>*</span>
+            &nbsp;&nbsp;足部健康评测报告</p><span style="font-size:16px;">  {{reportDate}}</span></div></f7-card-header>
 <!-- 			<f7-card-header>
 				<img class="iconTitle" src='static/assets/icon/icon_title.png'></img>
 				<span>足部健康评测报告</span>
@@ -47,7 +50,10 @@
 		</f7-card>
 
 		<f7-card>			
-			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>足型判断及建议</span></div></f7-card-header>
+			<f7-card-header>
+			<p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
+            <span style='font-family:hcpfont;'>*</span>
+            &nbsp;&nbsp;足型判断及建议</p></f7-card-header>
 <!-- 			<f7-card-header>
 				<img class="iconTitle" src='static/assets/icon/icon_title.png'></img>
 				<span>足型判断</span>
@@ -60,7 +66,9 @@
 		</f7-card>
 
 		<f7-card v-if="false">
-			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>建议鞋型</span></div></f7-card-header>
+			<f7-card-header><p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
+            <span style='font-family:hcpfont;'>*</span>
+            &nbsp;&nbsp;建议鞋型</p></f7-card-header>
 <!-- 			<f7-card-header>
 				<img class="iconTitle" src='static/assets/icon/icon_title.png'></img>
 				<span>建议鞋型</span>
@@ -87,7 +95,11 @@
 		</f7-card>
 
 		<f7-card>
-			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>孕期常见症状及建议</span></div></f7-card-header>
+			<f7-card-header>
+			<p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
+            <span style='font-family:hcpfont;'>*</span>
+            &nbsp;&nbsp;足型判断及建议</p>
+			</f7-card-header>
 <!-- 			<f7-card-header>
 				<img class="iconTitle" src='static/assets/icon/icon_title.png'></img>
 				<span>足部健康知识</span>
