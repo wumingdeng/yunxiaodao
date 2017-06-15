@@ -51,7 +51,7 @@ var routes = [
     path: '/foot',
     component: Foot,
     meta: { 
-      auth: true
+      // auth: true
     }
   },
   {
@@ -131,7 +131,7 @@ import wxApi from './utils/wxApi.js'
 import cfg from '../static/webConfig.json'
 router.afterEach(route => {
     if (process.env.NODE_ENV == 'development') return;
-    
+
     window.setTimeout(wxApi.init,10)  //加个延时 要不location.href 还是旧的路由
     // wxApi.init();
     wx.ready(function(){
