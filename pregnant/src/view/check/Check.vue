@@ -54,8 +54,11 @@
           <p>
             <span style='font-weight:bold'>建议体重范围</span> : {{weightInfo.standard}}</p>
           <p>
-            <span style='font-weight:bold'>孕妇注意事项</span> :</p>
-          <div id='testP'></div>
+            <span style='font-weight:bold'>体重管理建议</span> :</p>
+            <div id='w_sug'></div>
+          <p>
+            <span style='font-weight:bold'>{{weightInfo.result}}准妈妈饮食要注意下面几点</span> :</p>
+            <div id='w_diet'></div>
         </f7-card-content>
       </f7-card>
       <f7-card v-else>
@@ -69,7 +72,7 @@
             <span style='font-family:hcpfont;'>(</span>
             &nbsp;&nbsp;产检贴士</p>
         </f7-card-header>
-        <f7-card-content>{{weightInfo.diet}}</f7-card-content>
+        <f7-card-content></f7-card-content>
       </f7-card>
       <f7-card v-if='haveData'>
         <f7-card-header>
@@ -77,7 +80,7 @@
             <span style='font-family:hcpfont;'>(</span>
             &nbsp;&nbsp;关键词</p>
         </f7-card-header>
-        <f7-card-content>{{weightInfo.diet}}</f7-card-content>
+        <f7-card-content><div id='g_sign'></div></f7-card-content>
       </f7-card>
       <f7-card v-if='haveData'>
         <f7-card-header>
@@ -85,7 +88,9 @@
             <span style='font-family:hcpfont;'>(</span>
             &nbsp;&nbsp;下一阶体重管理建议</p>
         </f7-card-header>
-        <f7-card-content>{{weightInfo.diet}}</f7-card-content>
+        <f7-card-content>
+          A.饮食:<br><div id='g_diet'><br>B.运动:<br></div><div id='g_sug'></div>
+        </f7-card-content>
       </f7-card>
     </f7-page>
   </f7-page>
@@ -178,7 +183,11 @@ export default {
           console.log('没有体重信息')
         } else {
         }
-        document.getElementById("testP").innerHTML = self.weightInfo.tip
+        document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
+        document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
+        document.getElementById("g_diet").innerHTML = self.weightInfo.diet.con_diet
+        document.getElementById("g_sug").innerHTML = self.weightInfo.diet.con_sug
+        document.getElementById("g_sign").innerHTML = self.weightInfo.diet.con_sign
       }
     })
 
