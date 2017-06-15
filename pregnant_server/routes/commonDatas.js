@@ -35,4 +35,11 @@ common_router.route('/getProductDetail').post(function(req,res){
 });
 
 
+common_router.route('/freshConfig').get(function(req,res){
+    console.log("fuck you")
+    mem.f.reloadWeightConfig()
+    console.log("_______")
+    res.json({ok:0});
+});
+
 module.exports=common_router;
