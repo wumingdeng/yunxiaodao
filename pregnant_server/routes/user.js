@@ -349,30 +349,140 @@ user_router.route('/updateInfo').post(function(req, res) {
     }
 })
 
-//获取用户最新的一次足部扫描报告
-user_router.route('/getFootRecord').post(function(req, res) {
-    var wxid  = req.body.wxid || 0
-    var rid  = req.body.rid || 0
-    if(wxid === 0){
-        res.json({err:g.errorCode.WRONG_PARAM})
-    } else {
-        var cond = {'userid': wxid}
-        if (rid) {
-            cond.rid = rid
-        }
-        db.foot_records.findOne({
-            where:cond,
-            order:'recordDate DESC'
-        }).then(function(record) {
-            if (record) {
-                res.json({ok:record})
-            } else {
-                res.json({ok: 0})
-            }
-        })
-    }
+// 用戶最新報告
+user_router.route('/get_user_latest_report').post(function(req,res){
+    console.log('get_user_latest_report at:'+Date.now())
+    var openid = req.body.openid || ''
+     if(openid === ''){
+        res.json({error:g.errorCode.WRONG_PARAM})
+    }else{
+        getLatestReport(openid,res)
+   }
 })
 
+function getLatestReport(openid,res){
+    // db.yxd_basicinfos.findAndCountAll({attributes: ['mac_id','open_id','card_id','user_id','date_server',
+    //     'name','birth','date_yunfu','hospital_name','doctor_name'],
+    //     where:{open_id:openid},order: db.sequelize.literal('ID DESC'),limit:1}).then(function(records){
+    //         // if(records.length>0){
+    //         //     res.json({r:records[0]})
+    //         // }else{
+    //         //     res.json({r:{}})
+    //         // }
+    //         res.json({r:records})
+    // }).catch(function(err){
+    //     res.json({error:g.errorCode.WRONG_SQL})
+    // })
+    var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,yb.date_server,
+        ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
+        ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
+        ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
+        yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.open_id=? order by yb.id desc limit 1`
+    db.sequelize.query(query, { replacements: [openid], 
+        type: db.sequelize.QueryTypes.SELECT }
+        ).then(function(records){
+            //取足部建议
+            if(records){
+                var record = records[0]
+                db.users.findOne({where:{'wxid':openid}}).then(function(data){
+                    if(data){
+                        console.log(data.dataValues.lastPeriod)
+                        var lastPeriod = data.dataValues.lastPeriod;
+                        if (!lastPeriod) {  //没有末次月经时间
+                            res.json({data:record})
+                            return
+                        }
+                        var currentWeek = getWeek(lastPeriod);  //取当前周数
+                        var footknowledges = mem.m.footknowledge_configs
+                        for (var i in footknowledges) {
+                            var fData = footknowledges[i]
+                                    console.log(fData)
+                            if (fData.minWeek <= currentWeek && fData.maxWeek >= currentWeek) {
+                                record.footknowledge = fData.content;
+                                break;
+                            }
+                        }
+                        var footTypeAdvice = mem.m.footType_advice_configs
+                        console.log(record)
+                        for (var i in footTypeAdvice) {
+                            var faData = footTypeAdvice[i]
+                            var fy = record.left_foot_status == "正常足弓" ? record.right_foot_status : record.left_foot_status
+                            
+                            console.log(fy)
+                                    console.log(faData)
+                            if (faData.minWeek <= currentWeek && faData.maxWeek >= currentWeek && fy == faData.footType ) {
+                                console.log('get it')
+                                record.footAdvice = faData.content;
+                            }
+                        }
+                        res.json({data:records})
+                    }
+                })
+            }else{
+                res.json({data:[]})
+            }
+        }).catch(function(err){
+            res.json({error:g.errorCode.WRONG_SQL})
+    })
+}
 
+// 報告細節,按ID取
+user_router.route('/getreport').post(function(req,res){
+    console.log('getreport at:'+Date.now())
+    var report_id = req.body.rid || ''
+    var openid = req.body.openid || ''
+    if(report_id==='' && openid===''){
+        res.json({error:g.errorCode.WRONG_PARAM})
+    }else{
+        if(report_id===''){
+            getLatestReport(openid,res)
+        }else{
+            var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,yb.date_server,
+                ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
+                ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
+                ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
+                yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.mac_id=?`
+            db.sequelize.query(query, { replacements: [report_id], 
+                type: db.sequelize.QueryTypes.SELECT }
+                ).then(function(records){
+                if(records){
+                    var record = records[0]
+                    //取足部建议
+                    db.users.findOne({where:{'wxid':openid}}).then(function(data){
+                        if(data){
+                            var lastPeriod = data.dataValues.lastPeriod;
+                            if (!lastPeriod) {  //没有末次月经时间
+                                res.json({data:record})
+                                return
+                            }
+                            var currentWeek = getWeek(lastPeriod);  //取当前周数
+                            var footknowledges = mem.m.footknowledge_configs
+                            for (var i in footknowledges) {
+                                var fData = footknowledges[i]
+                                if (fData.minWeek <= currentWeek && fData.maxWeek >= currentWeek) {
+                                    record.footknowledge = fData.content;
+                                    break;
+                                }
+                            }
+                            var footTypeAdvice = mem.m.footType_advice_configs
+                            for (var i in footTypeAdvice) {
+                                var faData = footTypeAdvice[i]
+                                var fy = record.dataValues.left_foot_status == "正常足弓" ? record.dataValues.right_foot_status : record.dataValues.left_foot_status
+                                if (faData.minWeek <= currentWeek && faData.maxWeek >= currentWeek && fy == faData.footType ) {
+                                    record.footAdvice = faData.content;
+                                }
+                            }
+                            res.json({data:records})
+                        }
+                    })
+                }else{
+                    res.json({data:[]})
+                }
+            }).catch(function(err){
+                res.json({error:g.errorCode.WRONG_SQL})
+            })
+        }
+    }
+})
 
 module.exports=user_router;

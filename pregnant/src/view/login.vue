@@ -24,7 +24,7 @@
 
 
 			// this.$store.commit('GET_WXID',wxid)
-			debugger
+			// debugger
 			var isTest = process.env.NODE_ENV == 'development'
 			if (isTest) {
 				code = 'heheda'

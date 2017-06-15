@@ -53,6 +53,16 @@ var mod = {
                             for(var i = 0;i<data6.length;i++){
                                 m.weight_diet_configs[data6[i].week] = data6[i].dataValues
                             }
+                            db.footknowledge_configs.findAll().then(function(data7) {
+                                for(var i = 0;i<data7.length;i++){
+                                    m.footknowledge_configs[data7[i].id] = data7[i].dataValues
+                                }
+                                db.footType_advice_configs.findAll().then(function(data8) {
+                                    for(var i = 0;i<data8.length;i++){
+                                        m.footType_advice_configs[data8[i].id] = data8[i].dataValues
+                                    }                                   
+                                })
+                            })
                         })
                     })
                 })
