@@ -62,25 +62,24 @@ function getShape(weight, height) {
     return -1
 }
 
+function getWeightSize(result){
+    switch (result) {
+        case g.weightStatus.skinny:
+            return 0
+        case g.weightStatus.fat:
+            return 2
+        case g.weightStatus.normal:
+            return 1
+        default:
+            return 0
+    }
+}
 //取体重提示和小贴士
 function getWeightTipInfo(week, result) {
     var tipInfo={};
     var diet={};
     var tip = mem.m.weightAdvice_configs
-    var w_size = 0
-    switch (result) {
-        case g.weightStatus.skinny:
-            w_size = 0
-            break;
-        case g.weightStatus.fat:
-            w_size = 2
-            break; 
-        case g.weightStatus.normal:
-            w_size = 1
-            break;
-        default:
-            break;
-    }
+    var w_size = getWeightSize(result)
     for (var i = 0 in tip) {
         if (week >= tip[i].minWeek && week <= tip[i].maxWeek && w_size==tip[i].weight_size && tip[i].type==1) {
             // if (result == g.weightStatus.skinny) {
@@ -350,15 +349,11 @@ user_router.route('/updateInfo').post(function (req, res) {
                         //取对应提示
                         var tipInfo;
                         var tip = mem.m.weightAdvice_configs
+                        var w_size = getWeightSize(result)
                         for (var j = 0 in tip) {
-                            if (currentWeek >= tip[j].minWeek && currentWeek <= tip[j].maxWeek) {
-                                if (result == g.weightStatus.skinny) {
-                                    tipInfo = tip[j].skinny
-                                } else if (result == g.weightStatus.fat) {
-                                    tipInfo = tip[j].fat
-                                } else {
-                                    tipInfo = tip[j].normal
-                                }
+                            if (week >= tip[i].minWeek && week <= tip[i].maxWeek && w_size==tip[i].weight_size && tip[i].type==1) {
+                                tipInfo.con_sug = tip[i].con_sug
+                                tipInfo.con_diet = tip[i].con_diet
                                 break
                             }
                         }
