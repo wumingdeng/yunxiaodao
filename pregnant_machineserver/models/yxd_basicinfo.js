@@ -36,7 +36,8 @@ module.exports = function(sequelize, DataTypes) {
     hospital_name:DataTypes.STRING,//
     doctor_name:DataTypes.STRING,
     doctor_id:DataTypes.INTEGER,
-    status:DataTypes.INTEGER
+    status:DataTypes.INTEGER,
+    view_type:DataTypes.INTEGER
   },{
        timestamps: false
   }, {

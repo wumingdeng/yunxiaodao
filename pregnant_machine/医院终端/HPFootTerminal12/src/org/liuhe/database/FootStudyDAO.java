@@ -63,6 +63,26 @@ public class FootStudyDAO {
         }
 	}
 	
+	// modify by kael 
+	private String packgeJsonWeight(FootStudyInfo object){
+		String json = "{";
+		json = json+"\"mac_id\":"+"\""+object.getMac_id()+"\",";
+		json = json+"\"open_id\":"+"\""+object.getOpen_id()+"\",";
+		json = json+"\"card_id\":"+"\""+object.getCard_id()+"\",";
+		json = json+"\"hospital_no\":"+"\""+object.getHospital_no()+"\",";
+        json = json+"\"hospital_name\":"+"\""+object.getHospital_name()+"\",";
+        json = json+"\"clinic_dept\":"+"\""+object.getClinic_dept()+"\",";
+        json = json+"\"doctor_name\":"+"\""+object.getDoctor_name()+"\",";
+        json = json+"\"clinic_type\":"+"\""+object.getClinic_type()+"\",";
+        json = json+"\"user_id\":"+"\""+object.getUser_id()+"\",";//json = json+"\"user_id\":"+object.getUser_id()+",";
+        json = json+"\"period\":"+"\""+object.getPeriod()+"\",";
+        json = json+"\"weight\":"+"\""+object.getWeight_float()+"\",";
+        json = json+"\"doctor_id\":"+"\""+object.getCurrentDoctor_id()+"\"";
+        json = json+"}";
+		return json;
+	}
+	// modify by kael over
+	
 	private String packgeJson(FootStudyInfo object,String oper){
 		String json = "{";
 		json = json+"\"oper\":"+"\""+oper+"\",";
@@ -517,4 +537,25 @@ public class FootStudyDAO {
 		}
 	}	
 	
+	// 提交一次只包含體重的體檢報告記錄
+	public boolean sendWeightBaseinfo(FootStudyInfo object){
+		try {
+			String json = packgeJsonWeight(object);
+			 String content = "sign=liuhe&w=1&data="+json;
+			JSONObject jsonObject = HttpUtil.httpRequest(serverConfig.getDataUrl(),"POST",content);
+			if(jsonObject == null){
+				return false;
+			}
+			int errcode = jsonObject.getInt("errcode");
+            if(errcode==0){
+            	String errmsg = jsonObject.getString("errmsg");
+            	return Boolean.parseBoolean(errmsg);
+            }else{
+            	return false;
+            }
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

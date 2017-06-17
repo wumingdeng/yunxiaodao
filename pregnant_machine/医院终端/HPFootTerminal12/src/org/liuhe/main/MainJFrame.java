@@ -119,6 +119,7 @@ public class MainJFrame extends JFrame{
 	private JPanel title_center_pane;
 		
 	// 首页屏保
+	private JustGetWeightThread getWeightThread;
 	private UploadThread uploadThread;
 	private GetQrcodeThread getQrcodeThread;
 	private ArrayList<QRcodeInfo> qrcodeArr;
@@ -1197,7 +1198,9 @@ public class MainJFrame extends JFrame{
 			if(ifNeedScan){
 				card.show(cardPane, "scan");
 			}else{
-				toBackPane("系 统 消 息","您已在"+serverConfig.getInterval()+"天内完成一次采集，请下次再来！","5");
+				getWeightThread = new JustGetWeightThread();
+				getWeightThread.start();
+				toBackPane("系 统 消 息","您已在"+serverConfig.getInterval()+"天内完成过采集.","5");
 			}
 		}else{
 			toBackPane("系 统 消 息","无身份验证！","5");
@@ -2603,4 +2606,56 @@ public class MainJFrame extends JFrame{
 		}
 	}
 	
+	private class JustGetWeightThread extends Thread{
+		public void run() {
+//			studyinfo.setHospital_no(serverConfig.getHospital_no());
+//			studyinfo.setHospital_name(serverConfig.getHospital_name());
+//			studyinfo.setWeight_float(new Float(33.3));
+//			sqlServer.sendWeightBaseinfo(studyinfo);
+//			return ;
+			if(!serverConfig.getMachine_type().equals("0")){
+				if(hwLabel.getText().equals("")){
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
+					studyinfo.setWeight("0.0");
+					hwLabel.setText("体重：0.0kg");
+					
+					HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
+					hweightUtil.doActionPerformed();
+					int times = 0;
+					while(!hweightUtil.isOK()&&times<30){
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+						times++;
+						System.out.println("****************** HWeight wait 100ms ****************");
+					}
+					if(times == 30){
+						System.out.println("3秒后未读取到串口数据！退出读取数据");
+						MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
+						option.create_option();
+						return ;
+					}
+					Float weight = hweightUtil.getWeight();
+					if(weight == null){
+						System.out.println("读取的数据有误！退出重新测量");
+						MessageDialog option = new MessageDialog(MainJFrame.this,"获取体重数据失败，请重试！","提示",MessageDialog.WARNING_MESSAGE);
+						option.create_option();
+						return ;
+					}
+					weight = weight + Float.parseFloat(hwConfig.getWeight());
+					studyinfo.setWeight_float(weight);
+					studyinfo.setHospital_no(serverConfig.getHospital_no());
+					studyinfo.setHospital_name(serverConfig.getHospital_name());
+					sqlServer.sendWeightBaseinfo(studyinfo);
+				}
+			}
+		}
+	}
 }

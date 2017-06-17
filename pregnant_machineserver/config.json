@@ -7,7 +7,7 @@
     "dialect":"mysql",
     "poolsize":3,
     "listen":8097,
-    "sqldebug":false,
+    "sqldebug":true,
     "redisAdress":"127.0.0.1",
     "serverAdress":"http://127.0.0.1",
     "wechatServerAdress":"http://127.0.0.1:8090",
