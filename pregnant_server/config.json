@@ -1,11 +1,11 @@
 {
-    "dbaddr":"localhost",
+    "dbaddr":"121.40.254.174",
     "port":"3306",
     "user":"root",
-    "pass":"zhaowen",
+    "pass":"2932615qian",
     "dbname":"yxdDB",
     "dialect":"mysql",
     "poolsize":5,
     "listen":8092,
-    "wx_server_address": "http://localhost"
+    "wx_server_address": "http://192.168.18.216"
 }

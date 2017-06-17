@@ -150,7 +150,7 @@ export function updateInfo ({commit, state}, data) {
 //取用户足部报告
 export function getFootRecord ({commit, state}, data) {
   var self = data.self;
-  self.$http.post(g.machineServerAddress + '/api/getreport', data.info)
+  self.$http.post(serverAddress + '/api/getreport', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()

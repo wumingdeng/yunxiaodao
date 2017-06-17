@@ -1,5 +1,5 @@
-var express=require('express');
-var user_router=express.Router();
+var express = require('express');
+var user_router = express.Router();
 var db = require('../models')
 var mem = require('../memory')
 var g = require('../global')
@@ -9,10 +9,10 @@ function getWeek(lastPeriod, now) {
     if (now) {
         now = now.getTime()
     } else {
-        now =  new Date().getTime();
+        now = new Date().getTime();
     }
     var week = now - lastPeriod.getTime();
-    week = Math.floor(week/(7*24*3600*1000)) + 1
+    week = Math.floor(week / (7 * 24 * 3600 * 1000)) + 1
     return week;
 }
 
@@ -42,8 +42,8 @@ function getStandardWeight(week, weight, shape, isSingle) {
     }
     var minWeight = weight + minRate * week;
     var maxWeight = weight + g.earlyAdd + maxRate * week;
-    return  {
-        value: minWeight + 'kg-' + maxWeight+ 'kg',
+    return {
+        value: minWeight + 'kg-' + maxWeight + 'kg',
         min: minWeight,
         max: maxWeight
     }
@@ -52,7 +52,7 @@ function getStandardWeight(week, weight, shape, isSingle) {
 //计算体型
 function getShape(weight, height) {
     var config = g.weightStandard;
-    var result = weight / (height*height/10000);
+    var result = weight / (height * height / 10000);
     console.log(result);
     for (var i = 0; i < config.length; ++i) {
         if (result >= config[i].min && result < config[i].max) {
@@ -62,62 +62,91 @@ function getShape(weight, height) {
     return -1
 }
 
+function getWeightSize(result){
+    switch (result) {
+        case g.weightStatus.skinny:
+            return 0
+        case g.weightStatus.fat:
+            return 2
+        case g.weightStatus.normal:
+            return 1
+        default:
+            return 0
+    }
+}
 //取体重提示和小贴士
-function getWeightTipInfo(week,result) {
-    var tipInfo;
+function getWeightTipInfo(week, result) {
+    var tipInfo={};
+    var diet={};
     var tip = mem.m.weightAdvice_configs
-    for(var i = 0 in tip) {
-        if (week >= tip[i].minWeek && week <= tip[i].maxWeek) {
-            if (result == g.weightStatus.skinny) {
-                tipInfo = tip[i].skinny
-            } else if (result == g.weightStatus.fat) {
-                tipInfo = tip[i].fat
-            } else {
-                tipInfo = tip[i].normal
-            }
-            break
+    var w_size = getWeightSize(result)
+    for (var i = 0 in tip) {
+        if (week >= tip[i].minWeek && week <= tip[i].maxWeek && w_size==tip[i].weight_size && tip[i].type==1) {
+            // if (result == g.weightStatus.skinny) {
+            //     tipInfo = tip[i].skinny
+            // } else if (result == g.weightStatus.fat) {
+            //     tipInfo = tip[i].fat
+            // } else {
+            //     tipInfo = tip[i].normal
+            // }
+            tipInfo.con_sug = tip[i].con_sug
+            tipInfo.con_diet = tip[i].con_diet
+            end = true
+        }else if(week >= tip[i].minWeek && week <= tip[i].maxWeek && tip[i].type==0){
+            diet.con_sug=tip[i].con_sug
+            diet.con_diet=tip[i].con_diet
+            diet.con_sign=tip[i].con_sign
+        }
+        if(tipInfo.con_sug && diet.con_sug){
+            break;
         }
     }
+    
 
     //取饮食建议
-    var diet = mem.m.weight_diet_configs[week] && mem.m.weight_diet_configs[week].content || ''
+    // var diet = mem.m.weight_diet_configs[week] && mem.m.weight_diet_configs[week].content || ''
+
     return {
         tip: tipInfo,
         diet: diet
     }
 }
 
-user_router.route('/quickloginwxUser').post(function(req,res){
+user_router.route('/quickloginwxUser').post(function (req, res) {
     var wxid = req.body.wxid || ''
-    if(wxid === ''){
-        res.json({err:g.errorCode.WRONG_PARAM})
-    }else{
-        db.users.findOne({where:{'wxid':wxid}}).then(function(data){
-            if(data){
-                if(citys[data.dataValues['city']]!==undefined){
+    if (wxid === '') {
+        res.json({ err: g.errorCode.WRONG_PARAM })
+    } else {
+        db.users.findOne({ where: { 'wxid': wxid } }).then(function (data) {
+            if (data) {
+                if (citys[data.dataValues['city']] !== undefined) {
                     // data.dataValues['city'] = citys[data.dataValues['city']]
                 }
                 console.log('login success')
-                res.json({ok:data.dataValues})
-            }else{
+                res.json({ ok: data.dataValues })
+            } else {
                 console.log('login fail')
-                res.json({err:g.errorCode.WRONG_USER_MISSING})
+                res.json({ err: g.errorCode.WRONG_USER_MISSING })
             }
         })
     }
 });
 
-user_router.route('/getWeightInfo').post(function(req, res) {
+user_router.route('/getWeightInfo').post(function (req, res) {
     var wxid = req.body.wxid || ''
     if (wxid == '') {
-        res.json({err:g.errorCode.WRONG_PARAM})
+        res.json({ err: g.errorCode.WRONG_PARAM })
     } else {
-        db.users.findOne({where:{'wxid':wxid}}).then(function(data){
+        db.users.findOne({ where: { 'wxid': wxid } }).then(function (data) {
             if (data) {
-                db.weight_records.findOne({where:{'userid': wxid},order:'recordDate DESC'}).then(function(wdata){
+                db.weight_records.findOne({ where: { 'userid': wxid }, order: 'recordDate DESC' }).then(function (wdata) {
                     var lastPeriod = data.dataValues.lastPeriod;
+                    if (!lastPeriod) {  //没有末次月经时间
+                        res.json({ok:0})
+                        return
+                    }
                     var currentWeek = getWeek(lastPeriod);  //取当前周数
-                    var currentStandard = getStandardWeight(currentWeek, data.dataValues.weight ,data.dataValues.shape, data.dataValues.isSingle).value;  //取当前标准体重
+                    var currentStandard = getStandardWeight(currentWeek, data.dataValues.weight, data.dataValues.shape, data.dataValues.isSingle).value;  //取当前标准体重
                     //取对应提示
                     var info = getWeightTipInfo(currentWeek, data.result)
 
@@ -127,38 +156,38 @@ user_router.route('/getWeightInfo').post(function(req, res) {
                         wdata.dataValues.diet = info.diet;   //饮食提示
                         wdata.dataValues.tip = info.tip; //体重提示
                         console.log('get weightRecord');
-                        res.json({ok:wdata.dataValues})
+                        res.json({ ok: wdata.dataValues })
                     } else {
                         var resData = {
                             currentWeek: currentWeek,
                             currentStandard: currentStandard
                         }
                         console.log('no weightRecord');
-                        res.json({ok:resData})
+                        res.json({ ok: resData })
                     }
-                })               
+                })
             } else {
                 //没数据
-                res.json({ok:0})
+                res.json({ ok: 0 })
             }
         })
 
     }
 })
 
-user_router.route('/fillWeight').post(function(req, res) {
+user_router.route('/fillWeight').post(function (req, res) {
     var wxid = req.body.wxid || ''
     var weight = req.body.weight || ''
     var hospital_no = req.body.hospital_no || ''
     if (wxid == '' || weight == '' || typeof Number(weight) != 'number') {
-        res.json({err:g.errorCode.WRONG_PARAM})
+        res.json({ err: g.errorCode.WRONG_PARAM })
     } else {
         //取出最新的一条数据 如果是当天存的 就覆盖掉
-        var newRecord = {weight:weight,recordDate:new Date()};
+        var newRecord = { weight: weight, recordDate: new Date() };
         if (hospital_no != '') {
             newRecord.hospital = hospital_no
         }
-        db.users.findOne({where:{'wxid':wxid}}).then(function(udata){
+        db.users.findOne({ where: { 'wxid': wxid } }).then(function (udata) {
             //计算周数
             if (udata) {
                 //根据算法 得出体重数据 存入体重数据表中
@@ -167,9 +196,9 @@ user_router.route('/fillWeight').post(function(req, res) {
                 var currentWeek = getWeek(lastPeriod);  //取当前周数
                 newRecord.userid = wxid;
                 newRecord.week = currentWeek;
-                var standard = getStandardWeight(currentWeek, udata.dataValues.weight ,udata.dataValues.shape, udata.dataValues.isSingle);
+                var standard = getStandardWeight(currentWeek, udata.dataValues.weight, udata.dataValues.shape, udata.dataValues.isSingle);
                 newRecord.standard = standard.value
-                var result  
+                var result
                 if (weight < standard.min) {
                     result = g.weightStatus.skinny;
                 } else if (weight > standard.max) {
@@ -181,52 +210,52 @@ user_router.route('/fillWeight').post(function(req, res) {
 
                 // console.log(newRecord)
                 db.weight_records.update(newRecord, {
-                    where:[
-                        {userid:wxid},
-                        db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')),'=',db.sequelize.fn('TO_DAYS',new Date()))
+                    where: [
+                        { userid: wxid },
+                        db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')), '=', db.sequelize.fn('TO_DAYS', new Date()))
                     ]
-                }).then(function(data){
+                }).then(function (data) {
                     console.log(data);
                     if (data[0] != 0) {
                         console.log('更新体重数据')
                         newRecord.recordDate = newRecord.recordDate.toLocaleDateString()
-                        res.json({ok:newRecord})
+                        res.json({ ok: newRecord })
                     } else {
-                        db.weight_records.create(newRecord).then(function() {
+                        db.weight_records.create(newRecord).then(function () {
                             console.log('创建体重数据')
-                                            //取对应提示
-                            var info = getWeightTipInfo(currentWeek,result)
+                            //取对应提示
+                            var info = getWeightTipInfo(currentWeek, result)
                             newRecord.tip = info.tip;
                             newRecord.diet = info.diet;
-                            res.json({ok:newRecord})
-                        }, function(err) {
+                            res.json({ ok: newRecord })
+                        }, function (err) {
                             console.log(err)
                             console.log('不能创建数据。。')
-                            res.json({ok:0})
+                            res.json({ ok: 0 })
                         })
                     }
                 });
             } else {
-                res.json({ok:0})
+                res.json({ ok: 0 })
             }
         })
     }
 })
 
 //取用户体重图表的数据
-user_router.route('/getWeightChart').post(function(req, res) {
+user_router.route('/getWeightChart').post(function (req, res) {
     var wxid = req.body.wxid || ''
     if (wxid == '') {
-        res.json({err:g.errorCode.WRONG_PARAM})
+        res.json({ err: g.errorCode.WRONG_PARAM })
     } else {
         db.weight_records.findAll({
-            where:{userid: wxid}
-        }).then(function(records) {
+            where: { userid: wxid }
+        }).then(function (records) {
             if (records) {
                 //每周取一条体重最大的
                 var result = [];
                 var temp = {}
-                for(var i = 0; i<records.length; i++){
+                for (var i = 0; i < records.length; i++) {
                     var rec = records[i];
                     var nowWeight
                     if (temp[rec.week]) {
@@ -241,72 +270,72 @@ user_router.route('/getWeightChart').post(function(req, res) {
                 for (var item in temp) {
                     //只取体重和周数
                     var data = {
-                        week:temp[item].week,
-                        weight:temp[item].weight
+                        week: temp[item].week,
+                        weight: temp[item].weight
                     }
                     if (data.week >= 0) {
                         result.push(data)
                     }
                 }
-                res.json({ok:result})
+                res.json({ ok: result })
             } else {
-                res.json({ok:0})
+                res.json({ ok: 0 })
             }
         })
     }
 })
 
 //取用户体重记录
-user_router.route('/getWeightData').post(function(req, res) {
-    var wxid  = req.body.wxid || 0
+user_router.route('/getWeightData').post(function (req, res) {
+    var wxid = req.body.wxid || 0
     var offset = req.body.offset || 0
     var limit = req.body.limit || 0
-    if(wxid === 0){
-        res.json({err:g.errorCode.WRONG_PARAM})
-    }else{
-        db.weight_records.findAll({order:'recordDate DESC',offset:offset,limit:limit,where:{'userid':wxid, week:{$gt:0}}}).then(function(records){
+    if (wxid === 0) {
+        res.json({ err: g.errorCode.WRONG_PARAM })
+    } else {
+        db.weight_records.findAll({ order: 'recordDate DESC', offset: offset, limit: limit, where: { 'userid': wxid, week: { $gt: 0 } } }).then(function (records) {
             if (records) {
-                res.json({ok:records})
+                res.json({ ok: records })
             } else {
-                res.json({ok:0})
+                res.json({ ok: 0 })
             }
         })
     }
 })
 
 //保存用户资料
-user_router.route('/updateInfo').post(function(req, res) {
-    var wxid  = req.body.wxid || 0
+user_router.route('/updateInfo').post(function (req, res) {
+    var wxid = req.body.wxid || ''
     var height = req.body.height || 0
     var weight = req.body.weight || 0
     var lastPeriod = req.body.lastPeriod || 0
     var isSingle = req.body.isSingle || 0
-    if(wxid === 0 || height == 0 || weight == 0 || lastPeriod == 0){
-        res.json({err:g.errorCode.WRONG_PARAM})
-    }else{
+    if (wxid === 0 || height == 0 || weight == 0 || lastPeriod == 0) {
+        res.json({ err: g.errorCode.WRONG_PARAM })
+    } else {
         //TODO 验证参数
         //计算体型
-        var shape = getShape(weight,height);
+        var shape = getShape(weight, height);
         var newInfo = {
-            height: height, 
-            weight: weight, 
+            height: height,
+            weight: weight,
             shape: shape,
-            lastPeriod: new Date(lastPeriod), 
+            lastPeriod: new Date(lastPeriod),
             isSingle: isSingle
         };
         db.users.update(
             newInfo,
-            {where:{wxid:wxid}}
-        ).then(function(data){
+            { where: { wxid: wxid } }
+        ).then(function (data) {
             if (data) {
                 //更新体重记录
-                db.weight_records.findAll({where:{userid: wxid}}).then(function(records){
-                    for(var i = 0;i < records.length; i++){
+                db.weight_records.findAll({ where: { userid: wxid } }).then(function (records) {
+                    for (var i = 0; i < records.length; i++) {
                         var record = records[i];
                         var newRecord = {}
-                        var currentWeek = getWeek(new Date(lastPeriod),record.recordDate)
+                        var currentWeek = getWeek(new Date(lastPeriod), record.recordDate)
                         newRecord.week = currentWeek
-                        var standard = getStandardWeight(currentWeek, weight , shape, isSingle);
+                        var standard = getStandardWeight(currentWeek, weight, shape, isSingle);
                         newRecord.standard = standard.value
                         var result
                         if (record.weight < standard.min) {
@@ -320,59 +349,163 @@ user_router.route('/updateInfo').post(function(req, res) {
                         //取对应提示
                         var tipInfo;
                         var tip = mem.m.weightAdvice_configs
-                        for(var j = 0 in tip) {
-                            if (currentWeek >= tip[j].minWeek && currentWeek <= tip[j].maxWeek) {
-                                if (result ==g.weightStatus.skinny) {
-                                    tipInfo = tip[j].skinny
-                                } else if (result == g.weightStatus.fat) {
-                                    tipInfo = tip[j].fat
-                                } else {
-                                    tipInfo = tip[j].normal
-                                }
+                        var w_size = getWeightSize(result)
+                        for (var j = 0 in tip) {
+                            if (week >= tip[i].minWeek && week <= tip[i].maxWeek && w_size==tip[i].weight_size && tip[i].type==1) {
+                                tipInfo.con_sug = tip[i].con_sug
+                                tipInfo.con_diet = tip[i].con_diet
                                 break
                             }
                         }
                         newRecord.tip = tipInfo
                         db.weight_records.update(
                             newRecord,
-                            {where:{id: record.id}}
-                        ).then(function(){
+                            { where: { id: record.id } }
+                        ).then(function () {
                             console.log('更新记录')
-                        },function(err){
+                        }, function (err) {
                             console.log(err)
                         })
                     }
                 })
-                res.json({ok: newInfo});
+                res.json({ ok: newInfo });
             }
         })
     }
 })
 
-//获取用户最新的一次足部扫描报告
-user_router.route('/getFootRecord').post(function(req, res) {
-    var wxid  = req.body.wxid || 0
-    var rid  = req.body.rid || 0
-    if(wxid === 0){
-        res.json({err:g.errorCode.WRONG_PARAM})
-    } else {
-        var cond = {'userid': wxid}
-        if (rid) {
-            cond.rid = rid
+// 用戶最新報告
+user_router.route('/get_user_latest_report').post(function(req,res){
+    console.log('get_user_latest_report at:'+Date.now())
+    var openid = req.body.openid || ''
+     if(openid === ''){
+        res.json({error:g.errorCode.WRONG_PARAM})
+    }else{
+        getLatestReport(openid,res)
+   }
+})
+
+function getLatestReport(openid,res){
+    // db.yxd_basicinfos.findAndCountAll({attributes: ['mac_id','open_id','card_id','user_id','date_server',
+    //     'name','birth','date_yunfu','hospital_name','doctor_name'],
+    //     where:{open_id:openid},order: db.sequelize.literal('ID DESC'),limit:1}).then(function(records){
+    //         // if(records.length>0){
+    //         //     res.json({r:records[0]})
+    //         // }else{
+    //         //     res.json({r:{}})
+    //         // }
+    //         res.json({r:records})
+    // }).catch(function(err){
+    //     res.json({error:g.errorCode.WRONG_SQL})
+    // })
+    var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,yb.date_server,
+        ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
+        ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
+        ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
+        yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.open_id=? order by yb.id desc limit 1`
+    db.sequelize.query(query, { replacements: [openid], 
+        type: db.sequelize.QueryTypes.SELECT }
+        ).then(function(records){
+            //取足部建议
+            if(records && records.length > 0){
+                // console.log(records)
+                var record = records[0]
+                db.users.findOne({where:{'wxid':openid}}).then(function(data){
+                    if(data){
+                        // console.log(data.dataValues.lastPeriod)
+                        var lastPeriod = data.dataValues.lastPeriod;
+                        if (!lastPeriod) {  //没有末次月经时间
+                            res.json({data:record})
+                            return
+                        }
+                        var currentWeek = getWeek(lastPeriod);  //取当前周数
+                        var footknowledges = mem.m.footknowledge_configs
+                        for (var i in footknowledges) {
+                            var fData = footknowledges[i]
+                            if (fData.minWeek <= currentWeek && fData.maxWeek >= currentWeek) {
+                                record.footknowledge = fData.content;
+                                break;
+                            }
+                        }
+                        var footTypeAdvice = mem.m.footType_advice_configs
+                        // console.log(record)
+                        for (var i in footTypeAdvice) {
+                            var faData = footTypeAdvice[i]
+                            var fy = record.left_foot_status == "正常足弓" ? record.right_foot_status : record.left_foot_status
+
+                            if (faData.minWeek <= currentWeek && faData.maxWeek >= currentWeek && fy == faData.footType ) {
+                                record.footAdvice = faData.content;
+                            }
+                        }
+                        res.json({data:records})
+                    }
+                })
+            }else{
+                res.json({data:[]})
+            }
+        }).catch(function(err){
+            res.json({error:g.errorCode.WRONG_SQL})
+    })
+}
+
+// 報告細節,按ID取
+user_router.route('/getreport').post(function(req,res){
+    console.log('getreport at:'+Date.now())
+    var report_id = req.body.rid || ''
+    var openid = req.body.openid || ''
+    if(report_id==='' && openid===''){
+        res.json({error:g.errorCode.WRONG_PARAM})
+    }else{
+        if(report_id===''){
+            getLatestReport(openid,res)
+        }else{
+            var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,yb.date_server,
+                ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
+                ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
+                ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
+                yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.mac_id=?`
+            db.sequelize.query(query, { replacements: [report_id], 
+                type: db.sequelize.QueryTypes.SELECT }
+                ).then(function(records){
+                if(records){
+                    var record = records[0]
+                    //取足部建议
+                    db.users.findOne({where:{'wxid':openid}}).then(function(data){
+                        if(data){
+                            var lastPeriod = data.dataValues.lastPeriod;
+                            if (!lastPeriod) {  //没有末次月经时间
+                                res.json({data:record})
+                                return
+                            }
+                            var currentWeek = getWeek(lastPeriod);  //取当前周数
+                            var footknowledges = mem.m.footknowledge_configs
+                            for (var i in footknowledges) {
+                                var fData = footknowledges[i]
+                                if (fData.minWeek <= currentWeek && fData.maxWeek >= currentWeek) {
+                                    record.footknowledge = fData.content;
+                                    break;
+                                }
+                            }
+                            var footTypeAdvice = mem.m.footType_advice_configs
+                            for (var i in footTypeAdvice) {
+                                var faData = footTypeAdvice[i]
+                                var fy = record.dataValues.left_foot_status == "正常足弓" ? record.dataValues.right_foot_status : record.dataValues.left_foot_status
+                                if (faData.minWeek <= currentWeek && faData.maxWeek >= currentWeek && fy == faData.footType ) {
+                                    record.footAdvice = faData.content;
+                                }
+                            }
+                            res.json({data:records})
+                        }
+                    })
+                }else{
+                    res.json({data:[]})
+                }
+            }).catch(function(err){
+                res.json({error:g.errorCode.WRONG_SQL})
+            })
         }
-        db.foot_records.findOne({
-            where:cond,
-            order:'recordDate DESC'
-        }).then(function(record) {
-            if (record) {
-                res.json({ok:record})
-            } else {
-                res.json({ok: 0})
-            }
-        })
     }
 })
 
 
-
-module.exports=user_router;
+module.exports = user_router;

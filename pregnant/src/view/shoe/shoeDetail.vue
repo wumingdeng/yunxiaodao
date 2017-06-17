@@ -21,8 +21,17 @@
   			<f7-card-content style="">
           <img 
             style="width:100%; display:block;" 
-            v-for="n in productData.introNum" 
-            :src="getImgSrc(n)">
+            v-for="(n,index) in productData.introNum" 
+            :src="getImgSrc(n)"
+            @click="openPhotoBrowser(index)"
+            >
+          <f7-photo-browser
+            ref="pb"
+            :photos="photos"
+            backLinkText=""
+            ofText="/"
+            loop="true"
+          ></f7-photo-browser>
   			</f7-card-content>
   		</f7-card>
 
@@ -68,19 +77,18 @@
     		} else {
     			return []
     		}
-    	}
+    	},
+      photos() {
+        var pArr = []
+        for (var i = 1; i <= this.productData.introNum; ++i) {
+          pArr.push("static/assets/shoe/product/intro_p" + this.productData.pid + "/" + i +".jpg")
+        }
+        return pArr
+      }
     },
     methods:{
-      onImgNum() {
-        // fs
-        // .readdirSync(__dirname)
-        // .filter(function(file) {
-        //   return (file.indexOf('.') !== 0) && (file.slice(-4) === '.jpg');
-        // })
-        // .forEach(function(file) {
-        //   console.log('hehehe')
-
-        // });
+      openPhotoBrowser: function (index) {
+        this.$refs.pb.open(index)
       },
       onClickBuy() {
         this.pickerOpened = true;

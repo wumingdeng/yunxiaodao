@@ -779,3 +779,54 @@ CREATE TABLE `weight_diet_configs` (
   `content` text COMMENT '内容',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+# Dump of table footknowledge_configs
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `footknowledge_configs`;
+
+CREATE TABLE `footknowledge_configs` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `minWeek` int(11) DEFAULT NULL,
+  `maxWeek` int(11) DEFAULT NULL,
+  `content` text COMMENT '内容',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `footknowledge_configs` WRITE;
+/*!40000 ALTER TABLE `footknowledge_configs` DISABLE KEYS */;
+
+INSERT INTO `footknowledge_configs` (`id`, `minWeek`, `maxWeek`, `content`)
+VALUES
+  (1,1,40,'你知道吗？ 巴拉巴拉。。。。');
+
+/*!40000 ALTER TABLE `footknowledge_configs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table footType_advice_configs
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `footType_advice_configs`;
+
+CREATE TABLE `footType_advice_configs` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `minWeek` int(11) DEFAULT NULL COMMENT '孕周范围',
+  `maxWeek` int(11) DEFAULT NULL COMMENT '孕周范围',
+  `footType` varchar(8) DEFAULT NULL COMMENT '足型(正常、扁平、高弓)',
+  `content` text COMMENT '内容',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `footType_advice_configs` WRITE;
+/*!40000 ALTER TABLE `footType_advice_configs` DISABLE KEYS */;
+
+INSERT INTO `footType_advice_configs` (`id`, `minWeek`, `maxWeek`, `footType`, `content`)
+VALUES
+  (1,1,40,'正常','在光滑的地上摩擦'),
+  (2,1,40,'扁平','扭动腰肢增加阻力'),
+  (3,1,40,'高弓','摔倒时请面带微笑');
+
+/*!40000 ALTER TABLE `footType_advice_configs` ENABLE KEYS */;
+UNLOCK TABLES;

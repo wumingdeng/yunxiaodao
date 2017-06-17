@@ -24,8 +24,11 @@
 
 
 			// this.$store.commit('GET_WXID',wxid)
-
-
+			// debugger
+			var isTest = process.env.NODE_ENV == 'development'
+			if (isTest) {
+				code = 'heheda'
+			}
 			if (!this.$store.state.isLogin) {
 				if (code) {
 					//登录
@@ -49,7 +52,11 @@
 			        			}
 			        		});
 			        	} else {
-			        		self.$router.push('/' + page);
+			        		if (isTest) {
+			        			self.$router.go(-1)
+			        		} else {
+			        			self.$router.push('/' + page);
+			        		}
 			        	}
 			        } else if (res.body.err == 14) {
 			        	//授权失败

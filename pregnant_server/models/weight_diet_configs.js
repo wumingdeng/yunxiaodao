@@ -1,8 +1,10 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var weight_diet_configs = sequelize.define('weight_diet_configs', {
-    week: DataTypes.INTEGER,
-    content: DataTypes.STRING
+    minweek: DataTypes.INTEGER,
+    maxweek: DataTypes.INTEGER,
+    con_diet:DataTypes.TEXT,
+    con_sug:DataTypes.TEXT
   }, {
        timestamps: false
   },{

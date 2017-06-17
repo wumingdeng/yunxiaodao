@@ -1,7 +1,10 @@
 <template>
 	<f7-page name="footPage">
 		<f7-card>
-			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>足部健康评测报告</span><span style="font-size:16px;">  {{reportDate}}</span></div></f7-card-header>
+		
+			<f7-card-header><p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
+            <span style='font-family:hcpfont;'>*</span>
+            &nbsp;&nbsp;足部健康评测报告</p><span style="font-size:16px;">  {{reportDate}}</span></div></f7-card-header>
 <!-- 			<f7-card-header>
 				<img class="iconTitle" src='static/assets/icon/icon_title.png'></img>
 				<span>足部健康评测报告</span>
@@ -47,18 +50,25 @@
 		</f7-card>
 
 		<f7-card>			
-			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>足型判断</span></div></f7-card-header>
+			<f7-card-header>
+			<p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
+            <span style='font-family:hcpfont;'>*</span>
+            &nbsp;&nbsp;足型判断及建议</p></f7-card-header>
 <!-- 			<f7-card-header>
 				<img class="iconTitle" src='static/assets/icon/icon_title.png'></img>
 				<span>足型判断</span>
 			</f7-card-header> -->
 			<f7-card-content style="height:90px;">
-				{{footData.footJudgment}}
+				<span>足弓类型:{{footType}}</span>
+				<span style="float:right;margin-right:30px;">推荐鞋码:{{footSize}}</span>
+				<p>{{footData.footAdvice}}</p>
 			</f7-card-content>
 		</f7-card>
 
-		<f7-card>
-			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>建议鞋型</span></div></f7-card-header>
+		<f7-card v-if="false">
+			<f7-card-header><p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
+            <span style='font-family:hcpfont;'>*</span>
+            &nbsp;&nbsp;建议鞋型</p></f7-card-header>
 <!-- 			<f7-card-header>
 				<img class="iconTitle" src='static/assets/icon/icon_title.png'></img>
 				<span>建议鞋型</span>
@@ -85,15 +95,20 @@
 		</f7-card>
 
 		<f7-card>
-			<f7-card-header><div style='margin-left:10px;font-size:17px'><li class='ion-pricetag' style='color:#fa7190;float:left'/><span style='margin-left:10px;color:#000000;font-weight:bold'>足部健康知识</span></div></f7-card-header>
+			<f7-card-header>
+			<p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
+            <span style='font-family:hcpfont;'>*</span>
+            &nbsp;&nbsp;足型判断及建议</p>
+			</f7-card-header>
 <!-- 			<f7-card-header>
 				<img class="iconTitle" src='static/assets/icon/icon_title.png'></img>
 				<span>足部健康知识</span>
 			</f7-card-header> -->
 			<f7-card-content style="height:90px;">
-				{{footData.footKnowledge}}
+				{{footData.footknowledge}}
 			</f7-card-content>
 		</f7-card>
+		<p style="margin:5px auto;width:40%;"><f7-button fill style="background-color:#fa7699;height:35px;line-height:35px;" @click="$router.push('/shoeDetail')">选一双合适的孕妇鞋</f7-button></p>
 	</f7-page>
 </template>
 
@@ -104,9 +119,13 @@
 			return {
 				footData:{
 					suggestShoe:5,
+					left_foot_size:38,
+					right_foot_size:39,
+					left_foot_status:'不正常',
+					right_foot_status:'正常'
 				},
-				dataName:['足长','足宽','鞋码','型宽','足型'],
-				valueName:['length','width','foot_size','foot_width','foot_status'],
+				dataName:['足长','足宽','型宽'],
+				valueName:['length','width','foot_width'],
 				shoeType:['基础功能型','加强缓震型', '控制型', '超级稳定型', '保胎孕妇鞋']
 			}
 		},
@@ -120,6 +139,13 @@
     		} else {
     			return ''
     		}
+    	},
+    	footType() {
+    		var fType = this.footData.left_foot_status == '正常足弓' ? this.footData.right_foot_status : this.footData.left_foot_status
+    		return fType;
+    	},
+    	footSize() {
+    		return Math.max(this.footData.left_foot_size,this.footData.right_foot_size) + '码'
     	}
     },
 		mounted() {
@@ -157,7 +183,7 @@
 		float:left;
 	}
 	.border {
-		height:180px;
+		height:150px;
 		/*box-shadow: 0 1px 2px rgba(0,0,0,.3);*/
 		background-color: #f6f6f6;
 	}
