@@ -42,6 +42,8 @@ function getStandardWeight(week, weight, shape, isSingle) {
     }
     var minWeight = weight + minRate * week;
     var maxWeight = weight + g.earlyAdd + maxRate * week;
+    minWeight = minWeight.toFixed(2);
+    maxWeight = maxWeight.toFixed(2);
     return {
         value: minWeight + 'kg-' + maxWeight + 'kg',
         min: minWeight,

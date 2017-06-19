@@ -138,7 +138,15 @@ export default {
               if (res.body.ok) {
                 self.weightInfo = { ...self.weightInfo, ...res.body.ok } //覆盖原数据
                 self.haveData = true;
-                document.getElementById("inputWeight").value = ''
+                self.$nextTick(function() {
+                  document.getElementById("inputWeight").value = ''
+                  document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
+                  document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
+                  
+                  document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
+                  document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+                  document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
+                })
               } else {
 
               }
