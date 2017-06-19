@@ -1,6 +1,10 @@
 const errorTitle = 'error'
 const emptyInput = '输入不能为空'
-const webConfig = require('../../static/webConfig')
+var webConfig
+if (process.env.NODE_ENV == 'development')
+  webConfig = require('../../static/webConfig_local')
+else   
+  webConfig = require('../../static/webConfig')
 export const ERROR_EMPTY_INPUT = 1
 export const ERROR_MSG = {
   1: emptyInput

@@ -108,7 +108,7 @@
 				{{footData.footknowledge}}
 			</f7-card-content>
 		</f7-card>
-		<p style="margin:5px auto;width:40%;"><f7-button fill style="background-color:#fa7699;height:35px;line-height:35px;" @click="$router.push('/shoeDetail')">选一双合适的孕妇鞋</f7-button></p>
+		<p style="margin:5px auto;width:50%;"><f7-button fill style="background-color:#fa7699;height:35px;line-height:35px;" @click="$router.push('/shoeDetail')">选一双合适的孕妇鞋</f7-button></p>
 	</f7-page>
 </template>
 

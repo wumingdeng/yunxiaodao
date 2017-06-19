@@ -15,6 +15,10 @@ var crypto = require('crypto');
 
 var route_table = require('./routes/routeTable');
 
+// xss Protection
+var helmet = require('helmet');
+app.use(helmet()); 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -26,6 +30,14 @@ app.all('*', function(req, res, next) {
     next();
 });
 
+
+// middleware after body parsed
+// var decrypt = require('./utils/decryptMiddleware');
+// app.use(decrypt);
+
+var authToken = require('./utils/authTokenMiddleware')
+app.use(authToken);
+
 // error handler
 app.use(function(err, req, res, next) {
   console.error(err.stack);
@@ -36,6 +48,7 @@ app.use(function(err, req, res, next) {
 for(var key in route_table){
     app.use('/api',route_table[key]);
 }
+
 
 var server = app.listen(8092, function () {
   var host = server.address().address;
