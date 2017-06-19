@@ -77,38 +77,37 @@ function getWeightSize(result){
 //取体重提示和小贴士
 function getWeightTipInfo(week, result) {
     var tipInfo={};
-    var diet={};
+    var dietInfo={};
     var tip = mem.m.weightAdvice_configs
     var w_size = getWeightSize(result)
     for (var i = 0 in tip) {
-        if (week >= tip[i].minWeek && week <= tip[i].maxWeek && w_size==tip[i].weight_size && tip[i].type==1) {
-            // if (result == g.weightStatus.skinny) {
-            //     tipInfo = tip[i].skinny
-            // } else if (result == g.weightStatus.fat) {
-            //     tipInfo = tip[i].fat
-            // } else {
-            //     tipInfo = tip[i].normal
-            // }
+        if (week >= tip[i].minweek && week <= tip[i].maxweek && w_size==tip[i].type) {
             tipInfo.con_sug = tip[i].con_sug
             tipInfo.con_diet = tip[i].con_diet
-            end = true
-        }else if(week >= tip[i].minWeek && week <= tip[i].maxWeek && tip[i].type==0){
-            diet.con_sug=tip[i].con_sug
-            diet.con_diet=tip[i].con_diet
-            diet.con_sign=tip[i].con_sign
-        }
-        if(tipInfo.con_sug && diet.con_sug){
             break;
         }
     }
     
 
     //取饮食建议
-    // var diet = mem.m.weight_diet_configs[week] && mem.m.weight_diet_configs[week].content || ''
+    var diets = mem.m.weight_diet_configs
+     for (var idx in diets) {
+        var diet = diets[idx]
+        if (week >= diet.minweek && week <= diet.maxweek) {
+            if(diet.type == 0){
+                dietInfo.key = diet.con_sug
+            }else if(diet.type == 1){
+                dietInfo.eat = diet.con_sug
+            }else if(diet.type == 2){
+                dietInfo.sport = diet.con_sug
+            }
+        }
+        if(dietInfo.key && dietInfo.eat && dietInfo.sport){break;}
+    }
 
     return {
         tip: tipInfo,
-        diet: diet
+        diet: dietInfo
     }
 }
 
@@ -287,7 +286,7 @@ user_router.route('/getWeightChart').post(function (req, res) {
 
 //取用户体重记录
 user_router.route('/getWeightData').post(function (req, res) {
-    var wxid = req.body.wxid || 0
+    var wxid = req.body.wxid || ''
     var offset = req.body.offset || 0
     var limit = req.body.limit || 0
     if (wxid === 0) {
@@ -351,7 +350,7 @@ user_router.route('/updateInfo').post(function (req, res) {
                         var tip = mem.m.weightAdvice_configs
                         var w_size = getWeightSize(result)
                         for (var j = 0 in tip) {
-                            if (week >= tip[i].minWeek && week <= tip[i].maxWeek && w_size==tip[i].weight_size && tip[i].type==1) {
+                            if (week >= tip[i].minWeek && week <= tip[i].maxWeek && w_size==tip[i].type) {
                                 tipInfo.con_sug = tip[i].con_sug
                                 tipInfo.con_diet = tip[i].con_diet
                                 break

@@ -51,7 +51,7 @@ var mod = {
                         }
                         db.weight_diet_configs.findAll().then(function (data6) {
                             for (var i = 0; i < data6.length; i++) {
-                                m.weight_diet_configs[data6[i].week] = data6[i].dataValues
+                                m.weight_diet_configs[data6[i].id] = data6[i].dataValues
                             }
                             db.footknowledge_configs.findAll().then(function(data7) {
                                 for(var i = 0;i<data7.length;i++){
