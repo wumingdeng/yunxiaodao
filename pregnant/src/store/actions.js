@@ -16,9 +16,10 @@ function onErrorRefresh(vue,err) {
 }
 export function quickloginwxUser ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   console.log(self)
-  // self.$http.post(serverAddress + '/api/quickloginwxUser', data.info)
-  self.$http.post(g.wechatServerAddress + '/api/auth', data.info)
+  self.$http.post(serverAddress + '/api/quickloginwxUser', data.info)
+  // self.$http.post(g.wechatServerAddress + '/api/auth', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -41,6 +42,7 @@ export function quickloginwxUser ({commit, state}, data) {
 
 export function getWeightInfo ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   console.log(self)
   self.$http.post(serverAddress + '/api/getWeightInfo', data.info)
     .then((response) => {
@@ -62,6 +64,7 @@ export function getWeightInfo ({commit, state}, data) {
 
 export function fillWeight ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   console.log(self)
   self.$http.post(serverAddress + '/api/fillWeight', data.info)
     .then((response) => {
@@ -84,6 +87,7 @@ export function fillWeight ({commit, state}, data) {
 //取体重图表数据
 export function getWeightChart ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   console.log(self)
   self.$http.post(serverAddress + '/api/getWeightChart', data.info)
     .then((response) => {
@@ -106,6 +110,7 @@ export function getWeightChart ({commit, state}, data) {
 //取体重记录
 export function getWeightData ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   console.log(self)
   self.$http.post(serverAddress + '/api/getWeightData', data.info)
     .then((response) => {
@@ -128,6 +133,7 @@ export function getWeightData ({commit, state}, data) {
 //保存用户资料
 export function updateInfo ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   console.log(self)
   self.$http.post(serverAddress + '/api/updateInfo', data.info)
     .then((response) => {
@@ -150,6 +156,7 @@ export function updateInfo ({commit, state}, data) {
 //取用户足部报告
 export function getFootRecord ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   self.$http.post(serverAddress + '/api/getreport', data.info)
     .then((response) => {
       // success callback
@@ -193,6 +200,7 @@ export function getHomeData ({commit, state},data) {
 
 export function getProductDetail ({commit, state},data) {
   var self = data.self;
+  // data.info.token = Global.s.state.token  //带上token
   var next = data.callback;
   self.http.post(serverAddress + '/api/getProductDetail', data.info)
     .then((response) => {
@@ -214,6 +222,7 @@ export function getProductDetail ({commit, state},data) {
 
 export function ordermake ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   self.$http.post(serverAddress + '/api/ordermake', data.info)
     .then((response) => {
       // success callback
@@ -237,6 +246,7 @@ export function ordermake ({commit, state}, data) {
 //取订单
 export function orderlistUser ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   self.$http.post(serverAddress + '/api/orderlistUser', data.info)
     .then((response) => {
       // success callback
@@ -258,6 +268,7 @@ export function orderlistUser ({commit, state}, data) {
 //取消订单
 export function ordercancel ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   self.$http.post(serverAddress + '/api/ordercancel', data.info)
     .then((response) => {
       // success callback
@@ -279,6 +290,7 @@ export function ordercancel ({commit, state}, data) {
 //取物流信息
 export function getLogistics ({commit, state}, data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   self.$http.post(g.adminServerAddress + '/api/getExpInfo', data.info)
     .then((response) => {
       // success callback
@@ -299,6 +311,7 @@ export function getLogistics ({commit, state}, data) {
 //微信sdk认证
 export function signature ({commit, state},data) {
   var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
   self.http.post(g.wechatServerAddress+'/api/signature',data.info)
     .then((response) => {
       // success callback

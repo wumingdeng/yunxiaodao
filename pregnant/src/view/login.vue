@@ -44,6 +44,7 @@
 							if (res.body.ok) {
 			        	self.$store.commit('USERINFO',res.body.ok);
 			        	self.$store.commit('GET_WXID',res.body.ok.wxid);
+			        	self.$store.state.token = res.body.token;
 		        		if (isTest) {
 		        			self.$router.go(-1)
 		        		} else {
@@ -65,7 +66,12 @@
 					return
 				}
 			} else {
-      	this.$router.push('/' + page);
+				//关闭页面
+				if (WeixinJSBridge) {
+					WeixinJSBridge.invoke("closeWindow")
+				} else {
+      		this.$router.push('/' + page);
+				}
 			}
 		}
 	}

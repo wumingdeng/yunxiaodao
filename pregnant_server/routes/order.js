@@ -10,7 +10,7 @@ var tpl = require('../template.json')
 
 //创建订单
 order_router.route('/ordermake').post(function(req,res){
-    var wxid = req.body.wxid || ''
+    var wxid = req.decoded.wxid || ''
     var contact = req.body.contact || ''
     var gender = req.body.gender || 0
     var tel = req.body.tel
@@ -73,7 +73,7 @@ order_router.route('/ordermake').post(function(req,res){
 
 // 订单支付成功回调
 order_router.route('/orderpay').post(function(req,res){
-    // var wxid = req.body.wxid || ''
+    // var wxid = req.decoded.wxid || ''
     var oid  = req.body.oid || 0
     if(oid === 0){
         res.json({err:g.errorCode.WRONG_PARAM})
@@ -157,7 +157,7 @@ order_router.route('/orderlistUser').post(function(req,res){
 // 用户取消订单
 order_router.route('/ordercancel').post(function(req,res){
     var oid  = req.body.oid || 0
-    var wxid = req.body.wxid || ''
+    var wxid = req.decoded.wxid || ''
     if(oid === 0){
         res.json({err:g.errorCode.WRONG_PARAM})
         return

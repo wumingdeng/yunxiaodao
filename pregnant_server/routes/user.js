@@ -4,6 +4,9 @@ var db = require('../models')
 var mem = require('../memory')
 var g = require('../global')
 var citys = require('../citys.json')
+var utils = require('../utils')
+var cfg = require('../config.json')
+var jwt = require('jsonwebtoken');
 
 function getWeek(lastPeriod, now) {
     if (now) {
@@ -114,27 +117,32 @@ function getWeightTipInfo(week, result) {
 }
 
 user_router.route('/quickloginwxUser').post(function (req, res) {
-    var wxid = req.body.wxid || ''
-    if (wxid === '') {
+    var code = req.body.code || ''
+    if (code === '') {
         res.json({ err: g.errorCode.WRONG_PARAM })
     } else {
-        db.users.findOne({ where: { 'wxid': wxid } }).then(function (data) {
-            if (data) {
-                if (citys[data.dataValues['city']] !== undefined) {
-                    // data.dataValues['city'] = citys[data.dataValues['city']]
-                }
-                console.log('login success')
-                res.json({ ok: data.dataValues })
+        //去微信服务端登录。。。
+        utils.authFromWxServer({
+            code:code
+        },function(err, response, data) {
+            if (data.ok) {
+                jwt.sign({ wxid: data.ok.wxid }, cfg.secret, function(err, token) { 
+                    data.token = token
+                    res.json(data)
+                });
             } else {
-                console.log('login fail')
-                res.json({ err: g.errorCode.WRONG_USER_MISSING })
+                res.json(data)
             }
         })
     }
 });
 
 user_router.route('/getWeightInfo').post(function (req, res) {
-    var wxid = req.body.wxid || ''
+    console.log('token:' + req.decoded.wxid);
+    for(i in req.decoded) {
+        console.log("key:" + i + "  " + "value:" + req.decoded[i]);
+    }
+    var wxid = req.decoded.wxid || ''
     if (wxid == '') {
         res.json({ err: g.errorCode.WRONG_PARAM })
     } else {
@@ -177,7 +185,7 @@ user_router.route('/getWeightInfo').post(function (req, res) {
 })
 
 user_router.route('/fillWeight').post(function (req, res) {
-    var wxid = req.body.wxid || ''
+    var wxid = req.decoded.wxid || ''
     var weight = req.body.weight || ''
     var hospital_no = req.body.hospital_no || ''
     if (wxid == '' || weight == '' || typeof Number(weight) != 'number') {
@@ -245,7 +253,7 @@ user_router.route('/fillWeight').post(function (req, res) {
 
 //取用户体重图表的数据
 user_router.route('/getWeightChart').post(function (req, res) {
-    var wxid = req.body.wxid || ''
+    var wxid = req.decoded.wxid || ''
     if (wxid == '') {
         res.json({ err: g.errorCode.WRONG_PARAM })
     } else {
@@ -288,7 +296,7 @@ user_router.route('/getWeightChart').post(function (req, res) {
 
 //取用户体重记录
 user_router.route('/getWeightData').post(function (req, res) {
-    var wxid = req.body.wxid || ''
+    var wxid = req.decoded.wxid || ''
     var offset = req.body.offset || 0
     var limit = req.body.limit || 0
     if (wxid === 0) {
@@ -306,7 +314,7 @@ user_router.route('/getWeightData').post(function (req, res) {
 
 //保存用户资料
 user_router.route('/updateInfo').post(function (req, res) {
-    var wxid = req.body.wxid || ''
+    var wxid = req.decoded.wxid || ''
     var height = req.body.height || 0
     var weight = req.body.weight || 0
     var lastPeriod = req.body.lastPeriod || 0
