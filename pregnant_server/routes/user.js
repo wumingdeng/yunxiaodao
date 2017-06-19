@@ -367,18 +367,7 @@ user_router.route('/updateInfo').post(function (req, res) {
                             result = g.weightStatus.normal
                         }
                         newRecord.result = result
-                        //取对应提示
-                        var tipInfo;
-                        var tip = mem.m.weightAdvice_configs
-                        var w_size = getWeightSize(result)
-                        for (var j = 0 in tip) {
-                            if (week >= tip[i].minWeek && week <= tip[i].maxWeek && w_size==tip[i].type) {
-                                tipInfo.con_sug = tip[i].con_sug
-                                tipInfo.con_diet = tip[i].con_diet
-                                break
-                            }
-                        }
-                        newRecord.tip = tipInfo
+                        
                         db.weight_records.update(
                             newRecord,
                             { where: { id: record.id } }
