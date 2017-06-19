@@ -140,7 +140,10 @@ user_router.route('/getWeightInfo').post(function (req, res) {
             if (data) {
                 db.weight_records.findOne({ where: { 'userid': wxid }, order: 'recordDate DESC' }).then(function (wdata) {
                     var lastPeriod = data.dataValues.lastPeriod;
-                    console.log(lastPeriod)
+                    if (!lastPeriod) {  //没有末次月经时间
+                        res.json({ok:0})
+                        return
+                    }
                     var currentWeek = getWeek(lastPeriod);  //取当前周数
                     var currentStandard = getStandardWeight(currentWeek, data.dataValues.weight, data.dataValues.shape, data.dataValues.isSingle).value;  //取当前标准体重
                     //取对应提示
@@ -403,11 +406,12 @@ function getLatestReport(openid,res){
         type: db.sequelize.QueryTypes.SELECT }
         ).then(function(records){
             //取足部建议
-            if(records){
+            if(records && records.length > 0){
+                // console.log(records)
                 var record = records[0]
                 db.users.findOne({where:{'wxid':openid}}).then(function(data){
                     if(data){
-                        console.log(data.dataValues.lastPeriod)
+                        // console.log(data.dataValues.lastPeriod)
                         var lastPeriod = data.dataValues.lastPeriod;
                         if (!lastPeriod) {  //没有末次月经时间
                             res.json({data:record})
@@ -417,22 +421,18 @@ function getLatestReport(openid,res){
                         var footknowledges = mem.m.footknowledge_configs
                         for (var i in footknowledges) {
                             var fData = footknowledges[i]
-                                    console.log(fData)
                             if (fData.minWeek <= currentWeek && fData.maxWeek >= currentWeek) {
                                 record.footknowledge = fData.content;
                                 break;
                             }
                         }
                         var footTypeAdvice = mem.m.footType_advice_configs
-                        console.log(record)
+                        // console.log(record)
                         for (var i in footTypeAdvice) {
                             var faData = footTypeAdvice[i]
                             var fy = record.left_foot_status == "正常足弓" ? record.right_foot_status : record.left_foot_status
-                            
-                            console.log(fy)
-                                    console.log(faData)
+
                             if (faData.minWeek <= currentWeek && faData.maxWeek >= currentWeek && fy == faData.footType ) {
-                                console.log('get it')
                                 record.footAdvice = faData.content;
                             }
                         }

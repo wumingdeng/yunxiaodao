@@ -70,6 +70,9 @@ public class FootStudyService {
 	public boolean addCardInfo(String open_id,String card_id,String name,String sex,String born,String nation,String address){
 		return dao.addCardInfo(open_id, card_id, name, sex, born, nation, address);
 	}
+	public synchronized boolean sendWeightBaseinfo(FootStudyInfo info){
+		return dao.sendWeightBaseinfo(info);
+	}
 //	//获取微信中控accessToken
 //	public String getAppAccessToken(String appname){
 //		return dao.getAppAccessToken(appname);

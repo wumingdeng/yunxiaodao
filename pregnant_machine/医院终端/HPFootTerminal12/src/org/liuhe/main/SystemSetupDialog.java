@@ -550,7 +550,7 @@ public class SystemSetupDialog {
 				JOptionPane.showMessageDialog(dialog,"保存基本扫描设置成功。","提示",JOptionPane.INFORMATION_MESSAGE);
 			}
 			else if(e.getSource()==button_scan_high){				//选择高级扫描配置
-				ScanConfigDialog configDialog = new ScanConfigDialog(dialog,scanConfig,analyseConfig);
+				ScanConfigDialog configDialog = new ScanConfigDialog(dialog,scanConfig,analyseConfig,serverConfig);
 				configDialog.create_config_pane();
 			}
 			else if(e.getSource()==button_scan_adjust){				//选择扫描校正

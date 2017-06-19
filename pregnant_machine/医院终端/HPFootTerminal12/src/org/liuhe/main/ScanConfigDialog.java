@@ -43,6 +43,7 @@ import javax.swing.event.DocumentListener;
 
 import org.liuhe.algorithm.config.AnalyseConfig;
 import org.liuhe.algorithm.config.ScanConfig;
+import org.liuhe.algorithm.config.ServerConfig;
 import org.liuhe.algorithm.scan.AcquireHelper;
 import org.liuhe.background.pane.BackConfigPane;
 import org.liuhe.background.pane.BackInfoPane;
@@ -59,6 +60,7 @@ import com.sun.awt.AWTUtilities;
 public class ScanConfigDialog {
 	private JDialog dialog;							//父面板
 	private ScanConfig scanConfig;					//高级扫描配置参数
+	private ServerConfig serverConfig;
 	private AnalyseConfig analyseConfig;
 	
 	private JDialog parent_dialog;
@@ -120,10 +122,11 @@ public class ScanConfigDialog {
 	private Foot_Algo foot_algo;					//显示算法模拟
 	boolean isAlgo = false;							//是否为算法界面，判断位。
 	
-	public ScanConfigDialog(JDialog dialog,ScanConfig scan_config,AnalyseConfig analyse_config){
+	public ScanConfigDialog(JDialog dialog,ScanConfig scan_config,AnalyseConfig analyse_config,ServerConfig serverConfig){
 		this.parent_dialog = dialog;
 		this.scanConfig = scan_config;
 		this.analyseConfig = analyse_config;
+		this.serverConfig = serverConfig;
 		parent_dialog.setEnabled(false);
 	}
 	public void create_config_pane(){
@@ -659,7 +662,16 @@ public class ScanConfigDialog {
 					public void run(){
 						foot_scan.scanImage();
 						AcquireHelper acquire = new AcquireHelper(scanConfig);
-						boolean success = acquire.startAcquireOne(System.getProperty("user.dir")+"\\picture\\scan_back.jpg");
+						int k = serverConfig.getMachine_kind();
+						boolean success;
+						if(k==ServerConfig.MACHINE_KIND_A3){
+							success = acquire.startAcquireOne(System.getProperty("user.dir")+"\\picture\\scan_back.jpg");
+						}else if(k == ServerConfig.MACHINE_KIND_A4){
+							success = acquire.startAcquireOneDir(MainJFrame.scanExternProgramDir,System.getProperty("user.dir")+"\\picture\\scan_back.jpg");
+						}else{
+							success = acquire.startAcquireOne(System.getProperty("user.dir")+"\\picture\\scan_back.jpg");
+						}
+//						boolean success = acquire.startAcquireOne(System.getProperty("user.dir")+"\\picture\\scan_back.jpg");
 						if(success){
 							foot_scan.first_paint = true;
 							foot_scan.setOrigBorder((Integer)spinner_top.getValue(),(Integer)spinner_b02.getValue(),(Integer)spinner_b03.getValue(),

@@ -151,12 +151,12 @@ tour_router.route('/serverdata').post(function(req,res){
                 //判断是否需要扫描脚型
                 var query=`select DATE_ADD(date_server, INTERVAL ? DAY) as date from yxd_basicinfos where `
                 if(req.body.open_id !== undefined && req.body.card_id !== undefined){
-                    query+='(open_id='+req.body.open_id+' or card_id='+req.body.card_id+');'
+                    query+='(open_id=\''+req.body.open_id+'\' or card_id=\''+req.body.card_id+'\')'
                 }else{
                     if(req.body.open_id){
-                        query+='open_id='+req.body.open_id
+                        query+='open_id=\''+req.body.open_id+'\''
                     }else{
-                        query+='card_id='+req.body.card_id
+                        query+='card_id=\''+req.body.card_id+'\''
                     }
                 }
                 query+= " order by date_server desc limit 1";
@@ -174,6 +174,66 @@ tour_router.route('/serverdata').post(function(req,res){
                     }else{
                         res.json({"errcode":0,"errmsg":"true"})
                     }
+                })
+            }else if(req.body.w !== undefined){
+                var infos = JSON.parse(req.body.data)
+                var now = new Date()
+                var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString().replace('AM','').replace('PM','')
+                db.yxd_basicinfos.create({date_server:date_server,mac_id:infos.mac_id,weight:infos.weight,
+                    open_id:infos.open_id,card_id:infos.card_id,view_type:2,hospital_no:infos.hospital_no,hospital_name:infos.hospital_name,
+                    doctor_name:infos.doctor_name,user_id:infos.user_id,doctor_id:infos.doctor_id}).then(function(dta){
+                    db.yxd_parameters.create({id:dta.id,mac_id:infos.mac_id}).then(function(){
+                        db.yxd_suggestions.create({id:dta.id,mac_id:infos.mac_id}).then(function(){
+                            db.yxd_pictures.create({id:dta.id,mac_id:infos.mac_id}).then(function(){
+                                db.yxd_references.create({id:dta.id,mac_id:infos.mac_id}).then(function(){
+                                    //更新该open_id下的档案总数
+                                    if(infos.open_id!=='null'){
+                                        var query=`select count(id) as amount from yxd_basicinfos where open_id=?`
+                                        db.sequelize.query(query, { replacements: [infos.open_id], 
+                                            type: db.sequelize.QueryTypes.SELECT }
+                                        ).then(function(records){
+                                            if(records.length>0){
+                                                db.users.update({file_amount:records[0].amount},{where:{wxid:infos.open_id}}).then(function(){
+
+                                                })
+                                            }
+                                        })
+                                    }
+                                    // 發送給業務服務器
+                                    var options2 = {
+                                        headers: {"Connection": "close"},
+                                        url: cfg.logicOutAdress+'/api/fillWeight',
+                                        method: 'POST',
+                                        json:true,
+                                        body: {wxid:infos.open_id,weight:infos.weight,hospital_no:infos.hospital_name}
+                                    }
+                                    request(options2, function(error2, response2, data2){
+                                    })
+                                    res.json({"errcode":0,"errmsg":"新增脚型数据成功"})
+                                }).catch(function(err){
+                                    db.yxd_pictures.destroy({where:{id:dta.id}})
+                                    db.yxd_basicinfos.destroy({where:{id:dta.id}})
+                                    db.yxd_suggestions.destroy({where:{id:dta.id}})
+                                    db.yxd_parameters.destroy({where:{id:dta.id}})
+                                    res.json({"errcode":1,"errmsg":"添加脚型数据reference失败！"})
+                                })
+                            }).catch(function(err){
+                                db.yxd_basicinfos.destroy({where:{id:dta.id}})
+                                db.yxd_suggestions.destroy({where:{id:dta.id}})
+                                db.yxd_parameters.destroy({where:{id:dta.id}})
+                                res.json({"errcode":1,"errmsg":"添加脚型数据picture失败！"})
+                            })
+                        }).catch(function(err){
+                            db.yxd_basicinfos.destroy({where:{id:dta.id}})
+                            db.yxd_parameters.destroy({where:{id:dta.id}})
+                            res.json({"errcode":1,"errmsg":"添加脚型数据suggestion失败！"})
+                        })
+                    }).catch(function(err){
+                            db.yxd_basicinfos.destroy({where:{id:dta.id}})
+                        res.json({"errcode":1,"errmsg":"添加脚型数据parameter失败！"})
+                    })
+                }).catch(function(err){
+                    res.json({"errcode":1,"errmsg":"添加脚型数据basicinfo失败！"+err})
                 })
             }else if(req.body.oper!==undefined){
                 if(req.body.oper==='add'){
@@ -379,6 +439,8 @@ tour_router.route('/serverdata').post(function(req,res){
                         db.yxd_reference.destroy({where:{id:record_id}})
                     }
                     res.json({"errcode":0,"errmsg":"删除脚型数据成功"})
+                }else{
+                    res.json({"errcode":2,"errmsg":"成功连接接口服务器"})
                 }
             }else{
                 res.json({"errcode":2,"errmsg":"成功连接接口服务器"})
@@ -555,7 +617,7 @@ tour_router.route('/yxd3').post(function(req,res){
                             "clinic_url":cfg.serverAdress+':'+cfg.listen+"/api/serverclinic",
                             "upload_url":cfg.serverAdress+':'+cfg.listen+"/serverftp4",
                             "data_url":cfg.serverAdress+':'+cfg.listen+"/api/serverdata",
-                            "space_day":"0","app_name":"yxd","errcode":0,"errmsg":"ok2"})
+                            "space_day":"30","app_name":"yxd","errcode":0,"errmsg":"ok2"})
                     }else{
                         res.json({"errcode":2,"errmsg":"成功连接数据服务器"})
                     }
