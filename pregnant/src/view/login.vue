@@ -15,8 +15,10 @@
 		mounted() {
 			//验证登录
 			// var wxid = this.$route.query.wxid;
+			console.log('授权code:' + this.$route.query.code)
 			var code = this.$route.query.code || localStorage.code;
-			var page = this.$route.query.page;	//跳转的页面
+			var page = this.$route.query.page || localStorage.page;	//跳转的页面
+			if (page == "undefined") page = 'shoeDetail'
 			var rid = this.$route.query.rid	//足部报告id
 			// var oid = this.$route.query.oid;
 			localStorage.code = code;
@@ -24,13 +26,12 @@
 
 
 			// this.$store.commit('GET_WXID',wxid)
-			// debugger
 			var isTest = process.env.NODE_ENV == 'development'
 			if (isTest) {
 				code = 'heheda'
 			}
 			if (!this.$store.state.isLogin) {
-				if (code) {
+				if (code && code != 'undefined') {
 					//登录
 					console.log('yanzheg...')
 					this.$store.commit("LOADING",true)
@@ -43,21 +44,16 @@
 							if (res.body.ok) {
 			        	self.$store.commit('USERINFO',res.body.ok);
 			        	self.$store.commit('GET_WXID',res.body.ok.wxid);
-			        	if (page == 'foot' && rid) {
+		        		if (isTest) {
+		        			self.$router.go(-1)
+		        		} else {
 			        		self.$router.push({
-			        			path:'/' + page,
+			        			path:'/' + page,	//默认跳到卖鞋页
 			        			query:{
-			        				rid:rid,
-			        				wxid:wxid
+			        				rid: rid
 			        			}
 			        		});
-			        	} else {
-			        		if (isTest) {
-			        			self.$router.go(-1)
-			        		} else {
-			        			self.$router.push('/' + page);
-			        		}
-			        	}
+		        		}
 			        } else if (res.body.err == 14) {
 			        	//授权失败
 								wxAuth.auth();

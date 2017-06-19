@@ -26,7 +26,7 @@ var browser = {
 
 export default {
   // debugServerAddress: 'http://192.168.18.216:8092',
-  debugServerAddress: 'http://192.168.18.165:8092',
+  debugServerAddress: webConfig.debugServerAddress,
   // serverAddress: 'http://yzxs.sujudao.com:8092',
   serverAddress: webConfig.serverAddress,
   adminServerAddress: webConfig.adminServerAddress,

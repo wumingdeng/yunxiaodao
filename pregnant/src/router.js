@@ -4,6 +4,7 @@ Vue.use(VueRouter)
 import Login from '@/view/login'
 import Check from '@/view/check/Check'
 import Record from '@/view/check/Record'
+import Cycle from '@/view/check/Cycle'
 import UserInfo from '@/view/UserInfo'
 import Foot from '@/view/foot/Foot'
 import shoeHome from '@/view/shoe/shoeHome'
@@ -30,10 +31,18 @@ var routes = [
     component: Check, 
     name: 'check',
     meta: { 
-      auth: true,
+      // auth: true,
       share: true
     }
 	},
+  {
+    path: '/cycle',
+    component: Cycle, 
+    name: 'Cycle',
+    meta: { 
+      share: true
+    }
+  },
 	{
     path: '/record',
     component: Record,
@@ -45,7 +54,7 @@ var routes = [
     path: '/userInfo',
     component: UserInfo,
     meta: { 
-      auth: true,
+      // auth: true,
       share: false
     }
   },
@@ -116,8 +125,6 @@ router.beforeEach((to, from, next) => {
         path: '/',
         query: { 
           redirect: to.fullPath,
-          wxid:localStorage.wxid,
-          type:localStorage.type,
           oid:localStorage.oid
         }
       })
@@ -130,76 +137,13 @@ router.beforeEach((to, from, next) => {
 })
 
 import wxApi from './utils/wxApi.js'
-import cfg from '../static/webConfig.json'
 router.afterEach(route => {
     if (process.env.NODE_ENV == 'development') return;
 
-    window.setTimeout(wxApi.init,10)  //加个延时 要不location.href 还是旧的路由
-    // wxApi.init();
-    wx.ready(function(){
-      console.log('app.vue wxapi ready')
-      if (route.meta.share) { //页面是否可分享
-        //设置分享功能
-        console.log('set share..')
-        setWxConfig()
-      } else {
-        // hideMenu(['menuItem:share:appMessage','menuItem:share:timeline'])
-        console.log('hide all...')
-        wx.hideOptionMenu();
-      }
-    });
+    localStorage.page = route.fullPath.substring(1); //保存当前路由 刷新的时候用
+    window.setTimeout(wxApi.init.bind(this,route.meta.share),50)  //加个延时 要不location.href 还是旧的路由
+    
 })
 
-function shareAppMessage(link) {
-  var url = cfg.webAddress
-  var route = location.href.split('#')[0].substring(url.length + 1)
-  url = url + '/?page=' + route;
-  console.log('link:' + url)
-  wx.onMenuShareAppMessage({
-    title: '快来孕小岛看看～！', // 分享标题
-    desc: '这是一个分享页', // 分享描述
-    link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-    imgUrl: '', // 分享图标
-    type: '', // 分享类型,music、video或link，不填默认为link
-    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-    success: function () { 
-        // 用户确认分享后执行的回调函数
-    },
-    cancel: function () { 
-        // 用户取消分享后执行的回调函数
-    }
-  });
-}
-function shareTimeline(link) { 
-  var url = cfg.webAddress
-  var route = location.href.split('#')[0].substring(url.length + 1)
-  url = url + '/?page=' + route;
-  console.log('link timeline:' + url)
-  wx.onMenuShareTimeline({
-      title: '快来孕小岛看看～！', // 分享标题
-      link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-      imgUrl: '', // 分享图标
-      success: function () { 
-          // 用户确认分享后执行的回调函数
-      },
-      cancel: function () { 
-          // 用户取消分享后执行的回调函数
-      }
-  });
-}
-function hideMenu(arr) {
-  console.log('隐藏部分菜单')
-  arr = arr || []
-  arr = arr.concat(["menuItem:share:qq","menuItem:share:QZone","menuItem:readMode"]);
-  wx.hideMenuItems({
-      menuList: arr // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
-  });
-}
-function setWxConfig() {
-  wx.showOptionMenu();
-  shareAppMessage();
-  shareTimeline();
-  hideMenu()
-}
 
 export default router

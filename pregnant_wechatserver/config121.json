@@ -1,11 +1,11 @@
 {
     "sqlDebug":false,
     "debug":true,
-    "testUser":"orzDvv0yDNiYzvwT0v7nyUB8Ek3I",
+    "testUser":"onmcQ08YlxYrpJYJgc7lJVIXAkt4",
     "dbaddr":"localhost",
     "port":"3306",
     "user":"root",
-    "pass":"zhaowen",
+    "pass":"2932615qian",
     "dbname":"yxdDB",
     "dialect":"mysql",
     "poolsize":5,

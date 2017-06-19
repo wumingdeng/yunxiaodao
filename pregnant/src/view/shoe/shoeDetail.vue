@@ -30,7 +30,10 @@
             :photos="photos"
             backLinkText=""
             ofText="/"
-            loop="true"
+            :loop=true
+            :exposition=false
+            :expositionHideCaptions=false
+            @click="onClickPB"
           ></f7-photo-browser>
   			</f7-card-content>
   		</f7-card>
@@ -87,8 +90,13 @@
       }
     },
     methods:{
-      openPhotoBrowser: function (index) {
+      openPhotoBrowser(index) {
         this.$refs.pb.open(index)
+        this.$refs.pb.enableExposition()
+      },
+      onClickPB(swiper,event) {
+        this.$nextTick(this.$refs.pb.close)
+        // setTimeout(this.$refs.pb.close,0)
       },
       onClickBuy() {
         this.pickerOpened = true;

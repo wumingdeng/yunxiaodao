@@ -36,10 +36,17 @@ common_router.route('/getProductDetail').post(function(req,res){
 
 
 common_router.route('/freshConfig').get(function(req,res){
-    console.log("fuck you")
-    mem.f.reloadWeightConfig()
-    console.log("_______")
+    mem.f.InitDbMemory()
     res.json({ok:0});
 });
+
+//取体检周期配置
+common_router.route('/getCheckCycle').get(function(req,res){
+    if (mem.m.check_cycle_configs) {
+        res.json({data:mem.m.check_cycle_configs})
+    } else {
+        res.json({data:[]})
+    }
+})
 
 module.exports=common_router;
