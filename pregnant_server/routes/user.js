@@ -184,10 +184,22 @@ user_router.route('/getWeightInfo').post(function (req, res) {
     }
 })
 
+//终端机调用。。。
 user_router.route('/fillWeight').post(function (req, res) {
+    var wxid = req.body.wxid || ''
+    var weight = req.body.weight || ''
+    var hospital_no = req.body.hospital_no || ''
+    fillWeight(res,wxid,weight,hospital_no)
+})
+
+//用户调用
+user_router.route('/userFillWeight').post(function (req, res) {
     var wxid = req.decoded.wxid || ''
     var weight = req.body.weight || ''
     var hospital_no = req.body.hospital_no || ''
+    fillWeight(res,wxid,weight,hospital_no)
+})
+function fillWeight(res,wxid,weight,hospital_no) {
     if (wxid == '' || weight == '' || typeof Number(weight) != 'number') {
         res.json({ err: g.errorCode.WRONG_PARAM })
     } else {
@@ -249,7 +261,7 @@ user_router.route('/fillWeight').post(function (req, res) {
             }
         })
     }
-})
+}
 
 //取用户体重图表的数据
 user_router.route('/getWeightChart').post(function (req, res) {

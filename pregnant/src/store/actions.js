@@ -66,7 +66,7 @@ export function fillWeight ({commit, state}, data) {
   var self = data.self;
   data.info.token = self.$store.state.token  //带上token
   console.log(self)
-  self.$http.post(serverAddress + '/api/fillWeight', data.info)
+  self.$http.post(serverAddress + '/api/userFillWeight', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()
@@ -311,7 +311,6 @@ export function getLogistics ({commit, state}, data) {
 //微信sdk认证
 export function signature ({commit, state},data) {
   var self = data.self;
-  data.info.token = self.$store.state.token  //带上token
   self.http.post(g.wechatServerAddress+'/api/signature',data.info)
     .then((response) => {
       // success callback
