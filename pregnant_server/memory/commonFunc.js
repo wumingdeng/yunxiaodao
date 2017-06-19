@@ -60,7 +60,12 @@ var mod = {
                                 db.footType_advice_configs.findAll().then(function(data8) {
                                     for(var i = 0;i<data8.length;i++){
                                         m.footType_advice_configs[data8[i].id] = data8[i].dataValues
-                                    }                                   
+                                    }   
+                                    db.check_cycle_configs.findAll().then(function(data9) {
+                                        for(var i = 0;i<data9.length;i++){
+                                            m.check_cycle_configs[data9[i].id] = data9[i].dataValues
+                                        }   
+                                    })                                
                                 })
                             })
                         })

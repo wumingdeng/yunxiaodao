@@ -9,8 +9,8 @@ if (process.env.NODE_ENV == 'development') {
 }
 
 function onErrorRefresh(vue,err) {
-  vue.$f7.params.modalButtonOk = '刷新'
-  vue.$f7.alert('error',err || '刷新重试',()=>{
+  // vue.$f7.params.modalButtonOk = '刷新'
+  alert(err || '刷新重试',()=>{
     // window.location.reload(); 
   })
 }
@@ -302,6 +302,27 @@ export function signature ({commit, state},data) {
   self.http.post(g.wechatServerAddress+'/api/signature',data.info)
     .then((response) => {
       // success callback
+      console.log(response)
+      if(response.body.err){
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
+//取体检日期配置
+export function getCheckCycle ({commit, state},data) {
+  var self = data.self;
+  self.$http.get(g.serverAddress+'/api/getCheckCycle')
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
         // self.$f7.alert('',response.body.err)

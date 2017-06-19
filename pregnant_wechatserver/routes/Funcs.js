@@ -98,7 +98,7 @@ tour_router.route('/footReport').post(function(req,res){
             value:'请您点击查看'
         }
     }
-    var url = cfg.webAddress + '/?wxid=' + wxid + '&type=1&page=foot&rid=' + rid;
+    var url = cfg.webAddress + '/?page=foot&rid=' + rid;
     utils.wechat_f.sendToUser(wxid,tid,data,url)
     res.json({ok:1})
 })

@@ -118,11 +118,7 @@
 		data() {
 			return {
 				footData:{
-					suggestShoe:5,
-					left_foot_size:38,
-					right_foot_size:39,
-					left_foot_status:'不正常',
-					right_foot_status:'正常'
+					suggestShoe:5
 				},
 				dataName:['足长','足宽','型宽'],
 				valueName:['length','width','foot_width'],
