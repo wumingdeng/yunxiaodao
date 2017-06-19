@@ -40,16 +40,27 @@
     </f7-card>
     <f7-card v-if='haveData'>
       <f7-card-content clase='p-title'>
+        <section label="Copyright ? 2017 playhudong All Rights Reserved." style="border:none;border-style:none;width: 100%;text-align:center;margin:0.5em auto;" id="shifu_lin_008" donone="shifuMouseDownPayStyle(&#39;shifu_lin_008&#39;)">
+          <section class="xhr" style="display: inline-block; padding: 0.2em 1em; background: rgb(254, 67, 101); color: rgb(255, 255, 255); box-shadow: rgb(153, 153, 153) 2px 3px 5px; border-radius: 10px 0px;">
+            <p style="margin:0">
+              <strong>
+                <span style="font-size: 18px;">体重管理评估</span>
+              </strong>
+            </p>
+          </section>
+        </section>
         <p>
           <custitle :name='"最新体重报告"'></custitle>
           <p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{weightInfo.weight}}kg {{recordDate}}</p>
-          
+  
           <custitle :name='"目前体重情况"'></custitle>
           <p>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; {{weightInfo.result}}</p>
-          
+  
           <custitle :name='"建议体重范围"'></custitle>
           <p> &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; {{weightInfo.standard}}</p>
+          <custitle :name='"体重管理建议"'></custitle>
           <div v-if='haveData' id='w_sug'></div>
+          <custitle :name='"饮食注意事项"'></custitle>
           <div v-if='haveData' id='w_diet'></div>
       </f7-card-content>
     </f7-card>
@@ -132,11 +143,11 @@ export default {
               if (res.body.ok) {
                 self.weightInfo = { ...self.weightInfo, ...res.body.ok } //覆盖原数据
                 self.haveData = true;
-                self.$nextTick(function() {
+                self.$nextTick(function () {
                   document.getElementById("inputWeight").value = ''
                   document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
                   document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
-                  
+
                   document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
                   document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
                   document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
