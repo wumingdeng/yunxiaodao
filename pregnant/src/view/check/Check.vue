@@ -1,98 +1,83 @@
 <template>
   <f7-page>
-    <!--     <f7-navbar sliding style='border-radius:1px;height:60px;background-color:#1f2d3d;color:#ffffff'>
-          <f7-nav-left>
-              <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
-          </f7-nav-left>
-          <f7-nav-center sliding title="体重管理"></f7-nav-center>
-          <f7-nav-right></f7-nav-right>
-      </f7-navbar> -->
-    <f7-page>
-      <f7-card>
-        <f7-card-content style='text-align: center;'>
-          <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -59px 42px'>!</div>
-          <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
-          <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
-          <p>
-            <f7-grid>
-              <f7-col>
-                <f7-button class='cusBtn' big fill @click="$router.push('/userInfo')">
-                  <div style='font-family:hcpfont;font-size:20px;float:left;margin:5px 5px'>%</div>
-                  <span style='margin-right:10px'>个人资料</span>
-                </f7-button>
-              </f7-col>
-              <f7-col>
-                <f7-button class='cusBtn' big fill @click="$router.push('/record')">
-                  <div style='font-family:hcpfont;font-size:20px;float:left;margin:5px 5px'>@</div>
-                  <span style='margin-right:5px'>历史记录</span>
-                </f7-button>
-              </f7-col>
-            </f7-grid>
-          </p>
-        </f7-card-content>
-      </f7-card>
-      <f7-card>
-        <f7-card-content>
-          <f7-list form>
-            <f7-list-item>
-              <f7-label style='width:27%'>当前体重:</f7-label>
-              <div style='width:25%'>
-                <input id="inputWeight" style='text-align:center;background-color:#f0f0f0;height:30px;border-radius:1px' type="number" placeholder="">
-              </div>
-              <span style="width:10%">kg</span>
-              <f7-button style='width:30%;font-size:17px' class='cusBtn' fill @click='onFillWeight'>评估</f7-button>
-            </f7-list-item>
-          </f7-list>
-        </f7-card-content>
-      </f7-card>
-      <f7-card v-if='haveData'>
-        <f7-card-content clase='p-title'>
-          <p>
-            <span style='font-weight:bold'>最新体重结果</span> : {{weightInfo.weight}}kg {{recordDate}}</p>
-          <p>
-            <span style='font-weight:bold'>目前体重情况</span> : {{weightInfo.result}}</p>
-          <p>
-            <span style='font-weight:bold'>建议体重范围</span> : {{weightInfo.standard}}</p>
-          <p>
-            <span style='font-weight:bold'>体重管理建议</span> :</p>
-            <div id='w_sug'></div>
-          <p>
-            <span style='font-weight:bold'>{{weightInfo.result}}准妈妈饮食要注意下面几点</span> :</p>
-            <div id='w_diet'></div>
-        </f7-card-content>
-      </f7-card>
-      <f7-card v-else>
-        <f7-card-content>
-          <p>暂无数据</p>
-        </f7-card-content>
-      </f7-card>
-      <f7-card v-if='haveData'>
-        <f7-card-header>
-          <p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
-            <span style='font-family:hcpfont;'>(</span>
-            &nbsp;&nbsp;产检贴士</p>
-        </f7-card-header>
-        <f7-card-content></f7-card-content>
-      </f7-card>
-      <f7-card v-if='haveData'>
-        <f7-card-header>
-          <p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
-            <span style='font-family:hcpfont;'>(</span>
-            &nbsp;&nbsp;关键词</p>
-        </f7-card-header>
-        <f7-card-content><div id='g_sign'></div></f7-card-content>
-      </f7-card>
-      <f7-card v-if='haveData'>
-        <f7-card-header>
-          <p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
-            <span style='font-family:hcpfont;'>(</span>
-            &nbsp;&nbsp;下一阶体重管理建议</p>
-        </f7-card-header>
-        <f7-card-content>
-          A.饮食:<br><div id='g_diet'><br>B.运动:<br></div><div id='g_sug'></div>
-        </f7-card-content>
-      </f7-card>
-    </f7-page>
+    <f7-card>
+      <f7-card-content style='text-align: center;'>
+        <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -59px 42px'>!</div>
+        <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
+        <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
+        <p>
+          <f7-grid>
+            <f7-col>
+              <f7-button class='cusBtn' big fill @click="$router.push('/userInfo')">
+                <div style='font-family:hcpfont;font-size:20px;float:left;margin:5px 5px'>%</div>
+                <span style='margin-right:10px'>个人资料</span>
+              </f7-button>
+            </f7-col>
+            <f7-col>
+              <f7-button class='cusBtn' big fill @click="$router.push('/record')">
+                <div style='font-family:hcpfont;font-size:20px;float:left;margin:5px 5px'>@</div>
+                <span style='margin-right:5px'>历史记录</span>
+              </f7-button>
+            </f7-col>
+          </f7-grid>
+        </p>
+      </f7-card-content>
+    </f7-card>
+    <f7-card>
+      <f7-card-content>
+        <f7-list form>
+          <f7-list-item>
+            <f7-label style='width:27%'>当前体重:</f7-label>
+            <div style='width:25%'>
+              <input id="inputWeight" style='text-align:center;background-color:#f0f0f0;height:30px;border-radius:1px' type="number" placeholder="">
+            </div>
+            <span style="width:10%">kg</span>
+            <f7-button style='width:30%;font-size:17px' class='cusBtn' fill @click='onFillWeight'>评估</f7-button>
+          </f7-list-item>
+        </f7-list>
+      </f7-card-content>
+    </f7-card>
+    <f7-card v-if='haveData'>
+      <f7-card-content clase='p-title'>
+        <p>
+          <span style='font-weight:bold'>最新体重结果</span> : {{weightInfo.weight}}kg {{recordDate}}</p>
+        <p>
+          <span style='font-weight:bold'>目前体重情况</span> : {{weightInfo.result}}</p>
+        <p>
+          <span style='font-weight:bold'>建议体重范围</span> : {{weightInfo.standard}}</p>
+        <p>
+        <div id='w_sug'></div>
+        <div id='w_diet'></div>
+      </f7-card-content>
+    </f7-card>
+    <f7-card v-else>
+      <f7-card-content>
+        <p>暂无数据</p>
+      </f7-card-content>
+    </f7-card>
+    <f7-card v-if='haveData'>
+      <f7-card-header>
+        <p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
+          <span style='font-family:hcpfont;'>(</span>
+          &nbsp;&nbsp;产检贴士</p>
+      </f7-card-header>
+      <f7-card-content></f7-card-content>
+    </f7-card>
+     <f7-card v-if='haveData'>
+      <f7-card-content>
+         <div id='g_sign'></div>
+      </f7-card-content>
+    </f7-card>
+     <f7-card v-if='haveData'>
+      <f7-card-content>
+         <div id='g_diet'></div>
+      </f7-card-content>
+    </f7-card>
+     <f7-card v-if='haveData'>
+      <f7-card-content>
+         <div id='g_sport'></div>
+      </f7-card-content>
+    </f7-card>
   </f7-page>
 </template>
 <script>
@@ -183,11 +168,13 @@ export default {
           console.log('没有体重信息')
         } else {
         }
+        
         document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
         document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
-        document.getElementById("g_diet").innerHTML = self.weightInfo.diet.con_diet
-        document.getElementById("g_sug").innerHTML = self.weightInfo.diet.con_sug
-        document.getElementById("g_sign").innerHTML = self.weightInfo.diet.con_sign
+
+        document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
+        document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+        document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
       }
     })
 

@@ -1,13 +1,11 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var weightAdvice_configs = sequelize.define('weightAdvice_configs', {
-    minWeek: DataTypes.INTEGER,
-    maxWeek: DataTypes.INTEGER,
-    weight_size: DataTypes.INTEGER, //体重评估结果
+    minweek: DataTypes.INTEGER,
+    maxweek: DataTypes.INTEGER,
     type: DataTypes.INTEGER,
     con_diet: DataTypes.TEXT, //饮食注意
     con_sug: DataTypes.TEXT, //建议
-    con_sign: DataTypes.TEXT, //建议
   }, {
        timestamps: false
   },{

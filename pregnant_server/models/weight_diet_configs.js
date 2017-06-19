@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
   var weight_diet_configs = sequelize.define('weight_diet_configs', {
     minweek: DataTypes.INTEGER,
     maxweek: DataTypes.INTEGER,
-    con_diet:DataTypes.TEXT,
+    type: DataTypes.INTEGER,
     con_sug:DataTypes.TEXT
   }, {
        timestamps: false
