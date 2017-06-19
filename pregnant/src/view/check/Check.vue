@@ -40,7 +40,7 @@
     </f7-card>
     <f7-card v-if='haveData'>
       <f7-card-content clase='p-title'>
-        <section label="Copyright ? 2017 playhudong All Rights Reserved." style="border:none;border-style:none;width: 100%;text-align:center;margin:0.5em auto;" id="shifu_lin_008" donone="shifuMouseDownPayStyle(&#39;shifu_lin_008&#39;)">
+        <section label="Copyright ? 2017 playhudong All Rights Reserved." style="border:none;border-style:none;width: 100%;text-align:center;margin:-0.6em auto auto 0px;" id="shifu_lin_008" donone="shifuMouseDownPayStyle(&#39;shifu_lin_008&#39;)">
           <section class="xhr" style="display: inline-block; padding: 0.2em 1em; background: rgb(254, 67, 101); color: rgb(255, 255, 255); box-shadow: rgb(153, 153, 153) 2px 3px 5px; border-radius: 10px 0px;">
             <p style="margin:0">
               <strong>
@@ -49,19 +49,14 @@
             </p>
           </section>
         </section>
-        <p>
-          <custitle :name='"最新体重报告"'></custitle>
-          <p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{weightInfo.weight}}kg {{recordDate}}</p>
-  
-          <custitle :name='"目前体重情况"'></custitle>
-          <p>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; {{weightInfo.result}}</p>
-  
-          <custitle :name='"建议体重范围"'></custitle>
-          <p> &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; {{weightInfo.standard}}</p>
-          <custitle :name='"体重管理建议"'></custitle>
-          <div v-if='haveData' id='w_sug'></div>
-          <custitle :name='"饮食注意事项"'></custitle>
-          <div v-if='haveData' id='w_diet'></div>
+        <custitle :name='"最新体重报告"'></custitle>
+        <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg {{recordDate}}</p>
+        <custitle :name='"目前体重情况"'></custitle>
+        <p style='font-size:16px'>&nbsp; &nbsp; &nbsp;{{weightInfo.result}}</p>
+        <custitle :name='"体重管理建议"'></custitle>
+        <div style='font-size:16px' v-if='haveData' id='w_sug'></div>
+        <custitle :name='"饮食注意事项"'></custitle>
+        <div v-if='haveData' id='w_diet'></div>
       </f7-card-content>
     </f7-card>
     <f7-card v-else>

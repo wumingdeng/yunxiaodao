@@ -9,7 +9,7 @@
             </section>
             <section style="border-bottom:3px solid transparent;border-left:3px solid #666;margin-top: -3px;float:right;"></section>
         </section>
-        <section style="display:inline-block;vertical-align: middle;background:#eee;margin-left:-3em;font-size:0.875em;line-height:1.5;padding:0.5em 1em 0.5em 3em;">
+        <section style="display:inline-block;vertical-align: middle;background:#eee;margin-left:-3.2em;font-size:0.875em;line-height:1.5;padding:0.5em 1em 0.5em 3em;">
             <p style="margin:0;">
             <span style="font-size: 16px;">{{name}}</span>
             </p>
