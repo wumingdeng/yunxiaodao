@@ -46,7 +46,7 @@
           </section>
         </section>
         <custitle :name='"最新体重报告"'></custitle>
-        <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg 于{{recordDate}}</p>
+        <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg 于 {{recordDate}}</p>
         <custitle :name='"目前体重情况"'></custitle>
         <p style='font-size:16px'>&nbsp; &nbsp; &nbsp;{{weightInfo.result}}, 建议体重: {{weightInfo.standard}}</p>
         <custitle :name='"体重管理建议"'></custitle>
