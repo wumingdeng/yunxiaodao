@@ -46,8 +46,8 @@
         <p>
           <span style='font-weight:bold'>建议体重范围</span> : {{weightInfo.standard}}</p>
         <p>
-        <div id='w_sug'></div>
-        <div id='w_diet'></div>
+          <div v-if='haveData' id='w_sug'></div>
+          <div v-if='haveData' id='w_diet'></div>
       </f7-card-content>
     </f7-card>
     <f7-card v-else>
@@ -63,19 +63,19 @@
       </f7-card-header>
       <f7-card-content></f7-card-content>
     </f7-card>
-     <f7-card v-if='haveData'>
+    <f7-card v-if='haveData'>
       <f7-card-content>
-         <div id='g_sign'></div>
+        <div id='g_sign'></div>
       </f7-card-content>
     </f7-card>
-     <f7-card v-if='haveData'>
+    <f7-card v-if='haveData'>
       <f7-card-content>
-         <div id='g_diet'></div>
+        <div id='g_diet'></div>
       </f7-card-content>
     </f7-card>
-     <f7-card v-if='haveData'>
+    <f7-card v-if='haveData'>
       <f7-card-content>
-         <div id='g_sport'></div>
+        <div id='g_sport'></div>
       </f7-card-content>
     </f7-card>
   </f7-page>
@@ -167,14 +167,14 @@ export default {
           self.haveData = false;
           console.log('没有体重信息')
         } else {
+            document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
+            document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
+            
+            document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
+            document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+            document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
         }
-        
-        document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
-        document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
 
-        document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
-        document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
-        document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
       }
     })
 
