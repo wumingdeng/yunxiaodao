@@ -2,9 +2,7 @@
   <f7-page>
     <f7-card>
       <f7-card-content style='text-align: center;'>
-        <img src="static/assets/checkDate.png" 
-          style="width:18%;position:absolute;top:-1px;right:10px;"
-          @click.prevent.stop="$router.push('/cycle')">
+        <img src="static/assets/checkDate.png" style="width:18%;position:absolute;top:-1px;right:10px;" @click.prevent.stop="$router.push('/cycle')">
         <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -59px 42px'>!</div>
         <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
         <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
@@ -43,12 +41,14 @@
     <f7-card v-if='haveData'>
       <f7-card-content clase='p-title'>
         <p>
-          <span style='font-weight:bold'>最新体重结果</span> : {{weightInfo.weight}}kg {{recordDate}}</p>
-        <p>
-          <span style='font-weight:bold'>目前体重情况</span> : {{weightInfo.result}}</p>
-        <p>
-          <span style='font-weight:bold'>建议体重范围</span> : {{weightInfo.standard}}</p>
-        <p>
+          <custitle :name='"最新体重报告"'></custitle>
+          <p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{weightInfo.weight}}kg {{recordDate}}</p>
+          
+          <custitle :name='"目前体重情况"'></custitle>
+          <p>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; {{weightInfo.result}}</p>
+          
+          <custitle :name='"建议体重范围"'></custitle>
+          <p> &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; {{weightInfo.standard}}</p>
           <div v-if='haveData' id='w_sug'></div>
           <div v-if='haveData' id='w_diet'></div>
       </f7-card-content>
@@ -57,14 +57,6 @@
       <f7-card-content>
         <p>暂无数据</p>
       </f7-card-content>
-    </f7-card>
-    <f7-card v-if='haveData'>
-      <f7-card-header>
-        <p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
-          <span style='font-family:hcpfont;'>(</span>
-          &nbsp;&nbsp;产检贴士</p>
-      </f7-card-header>
-      <f7-card-content></f7-card-content>
     </f7-card>
     <f7-card v-if='haveData'>
       <f7-card-content>
@@ -84,6 +76,7 @@
   </f7-page>
 </template>
 <script>
+import custitle from '../../components/title'
 export default {
   name: 'check',
   data() {
@@ -95,9 +88,10 @@ export default {
       testTip: ''
     }
   },
-
+  components: {
+    'custitle': custitle
+  },
   computed: {
-
     adviseWeight() {
       var weight = this.weightInfo.standard
       if (weight) {
@@ -170,12 +164,12 @@ export default {
           self.haveData = false;
           console.log('没有体重信息')
         } else {
-            document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
-            document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
-            
-            document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
-            document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
-            document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
+          document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
+          document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
+
+          document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
+          document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+          document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
         }
 
       }
