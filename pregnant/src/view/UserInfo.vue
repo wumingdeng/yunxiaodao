@@ -137,7 +137,8 @@
 	          self.$store.commit('USERINFO',info);
 	          //返回
 	          self.$f7.alert('','保存成功',()=>{
-	          	self.$router.go(-1);
+              debugger
+	          	self.$router.push('/check');
 	          })
   				}
 				})
