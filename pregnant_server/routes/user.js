@@ -138,10 +138,10 @@ user_router.route('/quickloginwxUser').post(function (req, res) {
 });
 
 user_router.route('/getWeightInfo').post(function (req, res) {
-    console.log('token:' + req.decoded.wxid);
-    for(i in req.decoded) {
-        console.log("key:" + i + "  " + "value:" + req.decoded[i]);
-    }
+    // console.log('token:' + req.decoded.wxid);
+    // for(i in req.decoded) {
+    //     console.log("key:" + i + "  " + "value:" + req.decoded[i]);
+    // }
     var wxid = req.decoded.wxid || ''
     if (wxid == '') {
         res.json({ err: g.errorCode.WRONG_PARAM })

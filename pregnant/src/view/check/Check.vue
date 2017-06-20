@@ -2,7 +2,7 @@
   <f7-page>
     <f7-card>
       <f7-card-content style='text-align: center;'>
-        <img src="static/assets/checkDate.png" style="width:18%;position:absolute;top:-1px;right:10px;" @click.prevent.stop="$router.push('/cycle')">
+        <img src="static/assets/checkDate.png" style="width:18%;position:absolute;top:-4px;right:10px;" @click.prevent.stop="$router.push('/cycle')">
         <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -59px 42px'>!</div>
         <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
         <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>

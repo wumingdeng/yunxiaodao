@@ -38,6 +38,9 @@ app.all('*', function(req, res, next) {
 var authToken = require('./utils/authTokenMiddleware')
 app.use(authToken);
 
+var userBehavior = require('./utils/userBehaviorMiddleware')
+app.use(userBehavior);
+
 // error handler
 app.use(function(err, req, res, next) {
   console.error(err.stack);
