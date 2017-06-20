@@ -189,15 +189,15 @@ export default {
   beforeRouteEnter(to, from, next) {
     // console.log('before...')
     // console.log(window.Global.s.state)
-    // var userInfo = window.Global.s.state.userinfo
-    // if (!userInfo.height || !userInfo.weight || !userInfo.lastPeriod) {
-    //   next({
-    //     path:'/userInfo',
-    //     query:{
-    //       isNecessary:true
-    //     }
-    //   })
-    // }
+    var userInfo = window.Global.s.state.userinfo
+    if (!userInfo.height || !userInfo.weight || !userInfo.lastPeriod) {
+      next({
+        path:'/userInfo',
+        query:{
+          isNecessary:true
+        }
+      })
+    }
     next();
   }
 }
