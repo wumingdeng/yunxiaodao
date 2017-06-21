@@ -28,7 +28,7 @@
       <f7-card-content>
         <f7-list form>
           <f7-list-item>
-            <f7-label style='width:27%'>当前体重:</f7-label>
+            <f7-label style='width:5em'>当前体重:</f7-label>
             <div style='width:25%'>
               <input id="inputWeight" style='text-align:center;background-color:#f0f0f0;height:30px;border-radius:1px' type="number" placeholder="">
             </div>
