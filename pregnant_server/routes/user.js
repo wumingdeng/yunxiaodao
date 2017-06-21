@@ -93,7 +93,6 @@ function getWeightTipInfo(week, result) {
         }
     }
     
-
     //取饮食建议
     var diets = mem.m.weight_diet_configs
      for (var idx in diets) {
@@ -157,14 +156,12 @@ user_router.route('/getWeightInfo').post(function (req, res) {
                     var currentWeek = getWeek(lastPeriod);  //取当前周数
                     var currentStandard = getStandardWeight(currentWeek, data.dataValues.weight, data.dataValues.shape, data.dataValues.isSingle).value;  //取当前标准体重
                     //取对应提示
-                    var info = getWeightTipInfo(currentWeek, data.result)
-
+                    var info = getWeightTipInfo(currentWeek, wdata.result)
                     if (wdata) {
                         wdata.dataValues.currentWeek = currentWeek;
                         wdata.dataValues.currentStandard = currentStandard;
                         wdata.dataValues.diet = info.diet;   //饮食提示
                         wdata.dataValues.tip = info.tip; //体重提示
-                        console.log('get weightRecord');
                         res.json({ ok: wdata.dataValues })
                     } else {
                         var resData = {
