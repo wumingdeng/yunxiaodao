@@ -40,11 +40,14 @@
     </f7-card>
     <f7-card v-if='haveData'>
       <f7-card-content clase='p-title'>
-        <section id="shifu_t_018" donone="shifuMouseDown(&#39;shifu_t_018&#39;)" style="margin-top: 1em; padding: 0.5em 0px; white-space: normal; border-right: none; border-bottom: none; border-left: none; border-image: initial; border-top: 1px solid rgb(204, 204, 204); display: block; font-size: 1em; font-family: inherit; font-style: normal; font-weight: inherit; text-decoration: inherit;">
-          <section style="margin-top: -1.2em; text-align: center; padding: 0px; border: none; line-height: 1.4;">
-            <span style="background-color: rgb(255, 255, 255); font-size: 18px;">&nbsp; 体重管理评估 &nbsp;</span>
-          </section>
-        </section>
+        <div style='position:relative'>
+        <p style="text-align: center;position:absolute;left:0;top:10;right:0;bottom:0;font-size:18px">
+          体重管理评估
+        </p>
+       <p style="text-align: center;">
+          <img src="http://7xo6kd.com1.z0.glb.clouddn.com/upload-ueditor-image-20170621-1498017014725097347.jpg" style='width:100%' title="http://7xo6kd.com1.z0.glb.clouddn.com/upload-ueditor-image-20170621-1498017014725097347.jpg" alt="pingu.jpg"/>
+      </p>
+        </div>
         <custitle :name='"最新体重报告"'></custitle>
         <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg 于 {{recordDate}}</p>
         <custitle :name='"目前体重情况"'></custitle>
