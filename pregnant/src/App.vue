@@ -4,7 +4,7 @@
     >
       <span style="height:100%;vertical-align:middle;display:inline-block;"></span>
       <div style="vertical-align:middle;display:inline-block;">
-        <img style="vertical-align:middle;" src="static/assets/loading.gif">
+        <img style="vertical-align:middle;" :src=loadingImg></img>
         <p style="display:block;margin-top:0">载入中...</p>
       </div>
       </img>
@@ -32,6 +32,9 @@
         computed:{
           showLoading() {
             return Global.s.state.isloading
+          },
+          loadingImg() {
+            return "static/assets/loading.gif"+Global.verStr
           }
         }
     }
