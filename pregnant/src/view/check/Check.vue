@@ -41,11 +41,11 @@
     <f7-card v-if='haveData'>
       <f7-card-content clase='p-title'>
         <div style='position:relative'>
-        <p style="text-align: center;position:absolute;left:0;top:10;right:0;bottom:0;font-size:18px">
+        <p style="text-align: center;position:absolute;left:0;top:-0.5em;right:0;font-size:18px;font-weight:bold;">
           体重管理评估
         </p>
        <p style="text-align: center;">
-          <img src="http://7xo6kd.com1.z0.glb.clouddn.com/upload-ueditor-image-20170621-1498017014725097347.jpg" style='width:100%' title="http://7xo6kd.com1.z0.glb.clouddn.com/upload-ueditor-image-20170621-1498017014725097347.jpg" alt="pingu.jpg"/>
+          <img src="static/assets/weight_title.jpg" style='width:100%'/>
       </p>
         </div>
         <custitle :name='"最新体重报告"'></custitle>
