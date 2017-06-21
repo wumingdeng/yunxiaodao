@@ -21,6 +21,9 @@ Global.s = store
 Global.Vue = Vue
 Vue.config.productionTip = false
 
+import cfg from '../static/webConfig.json'
+Global.verStr = '?version=' + cfg.version
+
 /* eslint-disable no-new */
 Global.v = new Vue({
   el: '#app',

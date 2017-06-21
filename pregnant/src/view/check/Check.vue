@@ -221,7 +221,7 @@ export default {
 }
 
 .cusBtn {
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: #fa7699;
   height: 35px;
   line-height: 32px;
