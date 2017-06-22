@@ -108,7 +108,6 @@ function getWeightTipInfo(week, result) {
         }
         if(dietInfo.key && dietInfo.eat && dietInfo.sport){break;}
     }
-
     return {
         tip: tipInfo,
         diet: dietInfo
@@ -226,6 +225,8 @@ function fillWeight(res,wxid,weight,hospital_no) {
                 }
                 newRecord.result = result
 
+                
+
                 // console.log(newRecord)
                 db.weight_records.update(newRecord, {
                     where: [
@@ -233,7 +234,9 @@ function fillWeight(res,wxid,weight,hospital_no) {
                         db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')), '=', db.sequelize.fn('TO_DAYS', new Date()))
                     ]
                 }).then(function (data) {
-                    console.log(data);
+                    var info = getWeightTipInfo(currentWeek, result)
+                    newRecord.tip = info.tip;
+                    newRecord.diet = info.diet;
                     if (data[0] != 0) {
                         console.log('更新体重数据')
                         newRecord.recordDate = newRecord.recordDate.toLocaleDateString()
@@ -242,9 +245,7 @@ function fillWeight(res,wxid,weight,hospital_no) {
                         db.weight_records.create(newRecord).then(function () {
                             console.log('创建体重数据')
                             //取对应提示
-                            var info = getWeightTipInfo(currentWeek, result)
-                            newRecord.tip = info.tip;
-                            newRecord.diet = info.diet;
+                            
                             res.json({ ok: newRecord })
                         }, function (err) {
                             console.log(err)

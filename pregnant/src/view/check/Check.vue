@@ -3,8 +3,12 @@
     <f7-card>
       <f7-card-content style='text-align: center;'>
         <img src="static/assets/checkDate.png" style="width:18%;position:absolute;top:-4px;right:10px;" @click.prevent.stop="$router.push('/cycle')">
-        <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -59px 42px'>!</div>
-        <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
+  
+        <div style='position:relative'>
+          <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -1.67em 1.2em'>!</div>
+          <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
+        </div>
+  
         <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
         <p>
           <f7-grid>
@@ -40,22 +44,20 @@
     </f7-card>
     <f7-card v-if='haveData'>
       <f7-card-content clase='p-title'>
-        <div style='position:relative'>
-        <p style="text-align: center;position:absolute;left:0;top:-0.5em;right:0;font-size:18px;font-weight:bold;">
-          体重管理评估
-        </p>
-       <p style="text-align: center;">
-          <img src="static/assets/weight_title.jpg" style='width:100%'/>
-      </p>
+        <div style='position:relative;top:-0.5em'>
+          <p style="text-align: center;position:absolute;left:0;top:-0.75em;right:0;font-size:18px;font-weight:bold;">体重管理评估</p>
+          <p style="text-align: center">
+            <img src="static/assets/weight_title.jpg" style='width:100%' />
+          </p>
         </div>
         <custitle :name='"最新体重报告"'></custitle>
         <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg 于 {{recordDate}}</p>
         <custitle :name='"目前体重情况"'></custitle>
         <p style='font-size:16px'>&nbsp; &nbsp; &nbsp;{{weightInfo.result}}, 建议体重: {{weightInfo.standard}}</p>
         <custitle :name='"体重管理建议"'></custitle>
-        <div style='font-size:16px' v-if='haveData' id='w_sug'></div>
+        <div style='font-size:16px' v-if='haveData&&overStandard' id='w_sug'></div>
         <custitle :name='"饮食注意事项"'></custitle>
-        <div v-if='haveData' id='w_diet'></div>
+        <div v-if='haveData&&overStandard' id='w_diet'></div>
       </f7-card-content>
     </f7-card>
     <f7-card v-else>
@@ -63,17 +65,17 @@
         <p>暂无数据</p>
       </f7-card-content>
     </f7-card>
-    <f7-card v-if='haveData'>
+    <f7-card v-if='haveData&&overStandard'>
       <f7-card-content>
         <div id='g_sign'></div>
       </f7-card-content>
     </f7-card>
-    <f7-card v-if='haveData'>
+    <f7-card v-if='haveData&&havaDiet&&overStandard'>
       <f7-card-content>
         <div id='g_diet'></div>
       </f7-card-content>
     </f7-card>
-    <f7-card v-if='haveData'>
+    <f7-card v-if='haveData&&overStandard'>
       <f7-card-content>
         <div id='g_sport'></div>
       </f7-card-content>
@@ -89,6 +91,7 @@ export default {
       columnStyle: 'border: 1px solid #e5e5e5; padding:5px; text-align: center',
       msg: 'Welcome to Check Page',
       haveData: true,
+      havaDiet: true,
       weightInfo: {},
       testTip: ''
     }
@@ -113,6 +116,9 @@ export default {
       } else {
         return ''
       }
+    },
+    overStandard(){
+      return this.weightInfo.currentWeek<=40
     }
   },
 
@@ -143,8 +149,13 @@ export default {
                   document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
 
                   document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
+                 
                   document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+                  if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
+                    self.havaDiet = false
+                  }
                   document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
+                  
                 })
               } else {
 
@@ -177,14 +188,19 @@ export default {
           self.haveData = false;
           console.log('没有体重信息')
         } else {
+          self.$nextTick(function () {
           document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
           document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
 
           document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
+         
           document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+          if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
+            self.havaDiet = false
+          }
           document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
+          })
         }
-
       }
     })
 
@@ -195,9 +211,9 @@ export default {
     var userInfo = window.Global.s.state.userinfo
     if (!userInfo.height || !userInfo.weight || !userInfo.lastPeriod) {
       next({
-        path:'/userInfo',
-        query:{
-          isNecessary:true
+        path: '/userInfo',
+        query: {
+          isNecessary: true
         }
       })
     }
