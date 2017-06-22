@@ -226,6 +226,10 @@ function fillWeight(res,wxid,weight,hospital_no) {
                 }
                 newRecord.result = result
 
+                var info = getWeightTipInfo(currentWeek, result)
+                newRecord.tip = info.tip;
+                newRecord.diet = info.diet;
+
                 // console.log(newRecord)
                 db.weight_records.update(newRecord, {
                     where: [
@@ -242,9 +246,7 @@ function fillWeight(res,wxid,weight,hospital_no) {
                         db.weight_records.create(newRecord).then(function () {
                             console.log('创建体重数据')
                             //取对应提示
-                            var info = getWeightTipInfo(currentWeek, result)
-                            newRecord.tip = info.tip;
-                            newRecord.diet = info.diet;
+                            
                             res.json({ ok: newRecord })
                         }, function (err) {
                             console.log(err)
