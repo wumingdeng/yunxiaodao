@@ -8,5 +8,6 @@
     "poolsize":5,
     "listen":8092,
     "secret":"czwheheda",
+    "expiresIn":60,
     "wx_server_address": "http://localhost:8090"
 }

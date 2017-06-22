@@ -124,7 +124,7 @@
 
     		//结果保存到服务端
   			var info = {
-  				wxid:this.$store.state.wxid,
+  				// wxid:this.$store.state.wxid,
   				height:document.getElementById("heightInput").value,
   				weight:document.getElementById("weightInput").value,
   				isSingle:this.$data.radio_0?1:0,

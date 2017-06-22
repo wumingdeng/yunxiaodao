@@ -125,7 +125,7 @@ user_router.route('/quickloginwxUser').post(function (req, res) {
             code:code
         },function(err, response, data) {
             if (data.ok) {
-                jwt.sign({ wxid: data.ok.wxid }, cfg.secret, function(err, token) { 
+                jwt.sign({ wxid: data.ok.wxid }, cfg.secret, { expiresIn: cfg.expiresIn},function(err, token) { 
                     data.token = token
                     res.json(data)
                 });
@@ -384,7 +384,7 @@ user_router.route('/updateInfo').post(function (req, res) {
 // 用戶最新報告
 user_router.route('/get_user_latest_report').post(function(req,res){
     console.log('get_user_latest_report at:'+Date.now())
-    var openid = req.body.openid || ''
+    var openid = req.decoded.wxid || ''
      if(openid === ''){
         res.json({error:g.errorCode.WRONG_PARAM})
     }else{
@@ -459,7 +459,7 @@ function getLatestReport(openid,res){
 user_router.route('/getreport').post(function(req,res){
     console.log('getreport at:'+Date.now())
     var report_id = req.body.rid || ''
-    var openid = req.body.openid || ''
+    var openid = req.decoded.wxid || ''
     if(report_id==='' && openid===''){
         res.json({error:g.errorCode.WRONG_PARAM})
     }else{

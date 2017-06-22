@@ -52,7 +52,7 @@ function verifyToken(req,res,next){
         // verifies secret and checks exp
         jwt.verify(token, cfg.secret, function(err, decoded) {      
             if (err) {
-                res.json({ success: false, message: 'Failed to authenticate token.' }); 
+                res.json({ err: 99, success: false, message: 'Failed to authenticate token.' }); 
             } else {
                 // if everything is good, save to request for use in other routes
                 req.decoded = decoded;
