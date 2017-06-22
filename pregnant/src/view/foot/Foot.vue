@@ -1,5 +1,5 @@
 <template>
-	<f7-page name="footPage">
+	<f7-page name="footPage" v-if="haveDate">
 		<f7-card>
 		
 			<f7-card-header><p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
@@ -117,6 +117,7 @@
 	export default {
 		data() {
 			return {
+				haveDate:false,
 				footData:{
 					suggestShoe:5
 				},
@@ -156,8 +157,16 @@
 				},
 				callback(self,res) {
 					if (res.body.error || res.body.data.length == 0) {
-						self.$f7.alert("",'您还没有足部健康记录')
+						self.$f7.alert("",'您还没有足部健康记录',function() {
+							//关闭页面
+							if (typeof WeixinJSBridge != "undefined") {
+								WeixinJSBridge.invoke("closeWindow")
+							} else {
+			      		// self.$router.push('/' + page);
+							}
+						})
 					} else {
+						self.haveDate = true;
 						self.footData = res.body.data[0]
 						self.footData.left_length = self.footData.left_length.toFixed() + 'mm'
 						self.footData.right_length = self.footData.right_length.toFixed() + 'mm'
