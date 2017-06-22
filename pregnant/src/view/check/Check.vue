@@ -93,7 +93,6 @@ export default {
       haveData: true,
       havaDiet: true,
       weightInfo: {},
-      overStandard:true,
       testTip: ''
     }
   },
@@ -117,14 +116,13 @@ export default {
       } else {
         return ''
       }
+    },
+    overStandard(){
+      return this.weightInfo.currentWeek<=40
     }
   },
 
   methods: {
-    //是否超出正常的孕周
-    sortOverStandard:function(){
-      this.overStandard = this.weightInfo.currentWeek<=40
-    },
     onFillWeight() {
       var weight = document.getElementById("inputWeight").value;
       var isSend = false
@@ -145,7 +143,6 @@ export default {
               if (res.body.ok) {
                 self.weightInfo = { ...self.weightInfo, ...res.body.ok } //覆盖原数据
                 self.haveData = true;
-                self.sortOverStandard()
                 self.$nextTick(function () {
                   document.getElementById("inputWeight").value = ''
                   document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
@@ -191,7 +188,6 @@ export default {
           self.haveData = false;
           console.log('没有体重信息')
         } else {
-          self.sortOverStandard()
           self.$nextTick(function () {
           document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
           document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
