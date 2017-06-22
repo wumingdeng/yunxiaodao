@@ -136,7 +136,7 @@ export default {
           this.$store.dispatch('fillWeight', {
             self: this,
             info: {
-              wxid: this.$store.state.wxid,
+              // wxid: this.$store.state.wxid,
               weight: weight
             },
             callback: function (self, res) {
@@ -180,7 +180,7 @@ export default {
     this.$store.dispatch('getWeightInfo', {
       self: this,
       info: {
-        wxid: this.$store.state.wxid
+        // wxid: this.$store.state.wxid
       },
       callback: function (self, res) {
         self.weightInfo = res.body.ok

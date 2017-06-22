@@ -14,6 +14,15 @@ function onErrorRefresh(vue,err) {
     // window.location.reload(); 
   })
 }
+
+function onErrorHandler(errCode) {
+  if (errCode == 99) {
+    //token过期了
+    Global.s.state.isLogin = false; //重新登录
+    Global.v.$router.push('/')
+  }
+}
+
 export function quickloginwxUser ({commit, state}, data) {
   var self = data.self;
   data.info.token = self.$store.state.token  //带上token
@@ -50,6 +59,7 @@ export function getWeightInfo ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
         // self.$router.push('/useWX')
       }else{
         if (data.callback) {
@@ -72,6 +82,7 @@ export function fillWeight ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (data.callback) {
@@ -95,6 +106,7 @@ export function getWeightChart ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (data.callback) {
@@ -118,6 +130,7 @@ export function getWeightData ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (data.callback) {
@@ -141,6 +154,7 @@ export function updateInfo ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (data.callback) {
@@ -163,6 +177,7 @@ export function getFootRecord ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (data.callback) {
@@ -183,7 +198,7 @@ export function getHomeData ({commit, state},data) {
       // success callback
       console.log(response)
       if(response.body.err){
-        self.$f7.alert('',response.body.err)
+        onErrorHandler(response.body.err)
       } else {
         if (next) {
           commit("SWIPEDATA",response.body.swipe);
@@ -207,6 +222,7 @@ export function getProductDetail ({commit, state},data) {
       // success callback
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (next) {
@@ -229,6 +245,7 @@ export function ordermake ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (data.callback) {
@@ -253,6 +270,7 @@ export function orderlistUser ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (data.callback) {
@@ -275,6 +293,7 @@ export function ordercancel ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (data.callback) {
@@ -297,6 +316,7 @@ export function getLogistics ({commit, state}, data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
 
       }else{
         if (data.callback) {
@@ -316,6 +336,7 @@ export function signature ({commit, state},data) {
       // success callback
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
         // self.$f7.alert('',response.body.err)
       }else{
         if (data.callback) {
@@ -337,6 +358,7 @@ export function getCheckCycle ({commit, state},data) {
       self.$f7.hidePreloader()
       console.log(response)
       if(response.body.err){
+        onErrorHandler(response.body.err)
         // self.$f7.alert('',response.body.err)
       }else{
         if (data.callback) {

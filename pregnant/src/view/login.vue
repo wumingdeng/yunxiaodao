@@ -24,7 +24,6 @@
 			localStorage.code = code;
 			localStorage.page = page;
 
-
 			// this.$store.commit('GET_WXID',wxid)
 			var isTest = process.env.NODE_ENV == 'development'
 			if (isTest) {

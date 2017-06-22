@@ -216,7 +216,7 @@
         this.$store.dispatch('getWeightChart',{
           self:this,
           info:{
-            wxid:this.$store.state.wxid
+            // wxid:this.$store.state.wxid
           },
           callback(self,res) {
             if (res.body.ok != 0) {

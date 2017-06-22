@@ -86,7 +86,7 @@
 					this.$store.dispatch('ordercancel',{
 						self:this,
 						info:{
-							wxid:this.$store.state.userinfo.wxid,
+							// wxid:this.$store.state.userinfo.wxid,
 							oid:this.orderData.id
 						},
 						callback:function(self,res) {

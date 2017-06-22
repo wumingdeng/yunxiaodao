@@ -39,7 +39,9 @@ var webpackConfig = merge(baseWebpackConfig, {
         pure_getters: true,
         unsafe: true,
         unsafe_comps: true,
-        screw_ie8: true
+        screw_ie8: true,
+        drop_debugger: true,
+        drop_console: true  //去掉console.log
       },
       output: {
         comments: false,
