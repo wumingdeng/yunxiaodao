@@ -235,18 +235,19 @@ function fillWeight(res,wxid,weight,hospital_no) {
                     ]
                 }).then(function (data) {
                     var info = getWeightTipInfo(currentWeek, result)
-                    newRecord.tip = info.tip;
-                    newRecord.diet = info.diet;
+                    var tempRecord = Object.assign({},newRecord)
+                    tempRecord.tip = info.tip;
+                    tempRecord.diet = info.diet;
                     if (data[0] != 0) {
                         console.log('更新体重数据')
-                        newRecord.recordDate = newRecord.recordDate.toLocaleDateString()
-                        res.json({ ok: newRecord })
+                        // tempRecord.recordDate = newRecord.recordDate.toLocaleDateString()
+                        res.json({ ok: tempRecord })
                     } else {
                         db.weight_records.create(newRecord).then(function () {
                             console.log('创建体重数据')
                             //取对应提示
                             
-                            res.json({ ok: newRecord })
+                            res.json({ ok: tempRecord })
                         }, function (err) {
                             console.log(err)
                             console.log('不能创建数据。。')
