@@ -41,12 +41,12 @@
     <f7-card v-if='haveData'>
       <f7-card-content clase='p-title'>
         <div style='position:relative'>
-        <p style="text-align: center;position:absolute;left:0;top:-0.5em;right:0;font-size:18px;font-weight:bold;">
-          体重管理评估
-        </p>
-       <p style="text-align: center;">
-          <img src="static/assets/weight_title.jpg" style='width:100%'/>
-      </p>
+          <p style="text-align: center;position:absolute;left:0;top:-0.5em;right:0;font-size:18px;font-weight:bold;">
+            体重管理评估
+          </p>
+          <p style="text-align: center;">
+            <img src="static/assets/weight_title.jpg" style='width:100%' />
+          </p>
         </div>
         <custitle :name='"最新体重报告"'></custitle>
         <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg 于 {{recordDate}}</p>
@@ -68,7 +68,7 @@
         <div id='g_sign'></div>
       </f7-card-content>
     </f7-card>
-    <f7-card v-if='haveData'>
+    <f7-card v-if='haveData&&havaDiet'>
       <f7-card-content>
         <div id='g_diet'></div>
       </f7-card-content>
@@ -89,6 +89,7 @@ export default {
       columnStyle: 'border: 1px solid #e5e5e5; padding:5px; text-align: center',
       msg: 'Welcome to Check Page',
       haveData: true,
+      havaDiet: true,
       weightInfo: {},
       testTip: ''
     }
@@ -144,6 +145,9 @@ export default {
 
                   document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
                   document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+                  if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
+                    self.havaDiet = false
+                  }
                   document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
                 })
               } else {
@@ -182,9 +186,11 @@ export default {
 
           document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
           document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+          if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
+            self.havaDiet = false
+          }
           document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
         }
-
       }
     })
 
@@ -195,9 +201,9 @@ export default {
     var userInfo = window.Global.s.state.userinfo
     if (!userInfo.height || !userInfo.weight || !userInfo.lastPeriod) {
       next({
-        path:'/userInfo',
-        query:{
-          isNecessary:true
+        path: '/userInfo',
+        query: {
+          isNecessary: true
         }
       })
     }
