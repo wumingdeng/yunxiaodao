@@ -1,0 +1,23 @@
+{
+    "sqlDebug":false,
+    "debug":false,
+    "dbaddr":"rm-uf69s8s842x45880m.mysql.rds.aliyuncs.com",
+    "port":"3306",
+    "user":"yxdyfx",
+    "pass":"asdjkwc%&Uldsfa",
+    "dbname":"yxdyfx",
+    "dialect":"mysql",
+    "poolsize":5,
+    "listen":81,
+    "appid":"wxba0f041233312218",
+    "mchid":"1411290602",
+    "pfx":"",
+    "appsec":"3c760041f19d25152da1c1be8b826ce9",
+    "token":"yxd180yfx",
+    "encodingAESKey":"",
+    "partnerKey": "dfanvojsdfg83413jacmzxvgjrf8743r",
+    "authCodeAddress":"http://180yxd.sujudao.com/api/auth",
+    "webAddress":"http://180yxd.sujudao.com:8001/yxd",
+    "wechatServerAddress":"http://180yxd.sujudao.com/api/payResult",
+    "redisAdress":"127.0.0.1"
+}
