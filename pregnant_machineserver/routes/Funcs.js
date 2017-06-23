@@ -48,7 +48,7 @@ tour_router.route('/userinfo').post(function(req,res){
             if(req.body.idType!==undefined && req.body.idValue!==undefined){
                 db.users.findOne({where:{wxid:req.body.idValue}}).then(function(data){
                     if(data){
-                        var result={id:data.id,open_id:data.wxid,card_id:data.card_id,name:data.name,nation:data.nation,
+                        var result={id:data.id,open_id:data.wxid,card_id:data.card_id,name:data.real_name,nation:data.nation,
                             district:data.district,province:data.province,city:data.city,
                             county:data.county,height:data.height,weight:data.weight,
                             "errcode":0,"errmsg":"ok"
@@ -61,7 +61,7 @@ tour_router.route('/userinfo').post(function(req,res){
                         result.date_birth = data.date_birth || ''
                         result.date_yunfu = data.lastPeriod || ''
                         var query=`select yxd_basicinfos.id,yxd_parameters.left_length,yxd_parameters.right_length,yxd_parameters.left_width,yxd_parameters.right_width 
-                        from yxd_basicinfos,yxd_parameters where yxd_parameters.id = yxd_basicinfos.id and yxd_basicinfos.open_id=? 
+                        from yxd_basicinfos,yxd_parameters where yxd_parameters.id = yxd_basicinfos.id and yxd_basicinfos.open_id=? and yxd_basicinfos.view_type=1 
                         order by yxd_basicinfos.id desc limit 1;`
                         db.sequelize.query(query, { replacements: [req.body.idValue], 
                             type: db.sequelize.QueryTypes.SELECT }
@@ -108,7 +108,7 @@ tour_router.route('/userinfo').post(function(req,res){
                 if(sex === '男'){
                     sexNumber=1
                 }
-                db.users.update({name:req.body.name,date_birth:req.body.date_birth,card_id:req.body.card_id
+                db.users.update({real_name:req.body.name,date_birth:req.body.date_birth,card_id:req.body.card_id
                     ,nation:req.body.nation,address:req.body.address,gender:sexNumber,},{where:{wxid:req.body.open_id}}).then(function(){
                     res.json({"errcode":0,"errmsg":"ok"})
                 }).catch(function(err){
@@ -617,7 +617,8 @@ tour_router.route('/yxd3').post(function(req,res){
                             "clinic_url":cfg.serverAdress+':'+cfg.listen+"/api/serverclinic",
                             "upload_url":cfg.serverAdress+':'+cfg.listen+"/serverftp4",
                             "data_url":cfg.serverAdress+':'+cfg.listen+"/api/serverdata",
-                            "space_day":"30","app_name":"yxd","errcode":0,"errmsg":"ok2"})
+                            "space_day":"0",//"space_day":"30",
+                            "app_name":"yxd","errcode":0,"errmsg":"ok2"})
                     }else{
                         res.json({"errcode":2,"errmsg":"成功连接数据服务器"})
                     }
