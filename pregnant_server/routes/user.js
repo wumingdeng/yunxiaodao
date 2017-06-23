@@ -155,8 +155,8 @@ user_router.route('/getWeightInfo').post(function (req, res) {
                     var currentWeek = getWeek(lastPeriod);  //取当前周数
                     var currentStandard = getStandardWeight(currentWeek, data.dataValues.weight, data.dataValues.shape, data.dataValues.isSingle).value;  //取当前标准体重
                     //取对应提示
-                    var info = getWeightTipInfo(currentWeek, wdata.result)
                     if (wdata) {
+                        var info = getWeightTipInfo(currentWeek, wdata.result)
                         wdata.dataValues.currentWeek = currentWeek;
                         wdata.dataValues.currentStandard = currentStandard;
                         wdata.dataValues.diet = info.diet;   //饮食提示
