@@ -254,6 +254,7 @@ CREATE TABLE `users` (
 `user_email`  varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `user_date`  date NULL DEFAULT NULL ,
 `doctor_id`  int(11) NULL DEFAULT '-1' COMMENT '所屬醫生' ,
+`real_name`  varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份證名字' ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB

@@ -31,7 +31,8 @@ module.exports = function(sequelize, DataTypes) {
     // date_yunfu:DataTypes.STRING,
     user_email:DataTypes.STRING,//注册邮箱
     user_date:DataTypes.BIGINT,//注册时间
-    doctor_id:DataTypes.INTEGER// 所屬醫生ID
+    doctor_id:DataTypes.INTEGER,// 所屬醫生ID
+    real_name:DataTypes.STRING
   },{
        timestamps: false
   }, {
