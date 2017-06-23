@@ -1,9 +1,11 @@
 <template>
   <f7-page>
+
+        <span style="width:18%;position:absolute;top:7px;right:20px;z-index:100" @click="$router.push('/cycle')">
+          <img style="width:100%" src="static/assets/checkDate.png">
+        </span>
     <f7-card>
       <f7-card-content style='text-align: center;'>
-        <img src="static/assets/checkDate.png" style="width:18%;position:absolute;top:-4px;right:10px;" @click.prevent.stop="$router.push('/cycle')">
-  
         <div style='position:relative'>
           <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -1.67em 1.2em'>!</div>
           <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
@@ -175,7 +177,6 @@ export default {
   },
   mounted() {
     //取体重数据
-
     console.log(this.$store.state.wxid)
     this.$store.dispatch('getWeightInfo', {
       self: this,

@@ -24,6 +24,10 @@ Vue.config.productionTip = false
 import cfg from '../static/webConfig.json'
 Global.verStr = '?version=' + cfg.version
 
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload)
+
 /* eslint-disable no-new */
 Global.v = new Vue({
   el: '#app',
