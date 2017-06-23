@@ -395,6 +395,7 @@ CREATE TABLE `yxd_basicinfos` (
 `doctor_name`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医生名称' ,
 `doctor_id`  int(11) NULL DEFAULT NULL ,
 `status`  tinyint(4) NOT NULL DEFAULT 0 COMMENT '相關醫生是否已經打開過' ,
+`view_type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '檢查類型1-有足部掃描和體重,2衹有體重記錄' ,
 PRIMARY KEY (`id`),
 UNIQUE INDEX `mac_id` (`mac_id`) USING BTREE 
 )
