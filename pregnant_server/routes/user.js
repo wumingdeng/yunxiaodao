@@ -155,8 +155,8 @@ user_router.route('/getWeightInfo').post(function (req, res) {
                     var currentWeek = getWeek(lastPeriod);  //取当前周数
                     var currentStandard = getStandardWeight(currentWeek, data.dataValues.weight, data.dataValues.shape, data.dataValues.isSingle).value;  //取当前标准体重
                     //取对应提示
-                    var info = getWeightTipInfo(currentWeek, wdata.result)
                     if (wdata) {
+                        var info = getWeightTipInfo(currentWeek, wdata.result)
                         wdata.dataValues.currentWeek = currentWeek;
                         wdata.dataValues.currentStandard = currentStandard;
                         wdata.dataValues.diet = info.diet;   //饮食提示
@@ -465,7 +465,7 @@ user_router.route('/getreport').post(function(req,res){
     if(report_id==='' && openid===''){
         res.json({error:g.errorCode.WRONG_PARAM})
     }else{
-        if(report_id===''){
+        if(report_id==='' || report_id=="null" || report_id=="undefined" || report_id == null){
             getLatestReport(openid,res)
         }else{
             var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,yb.date_server,

@@ -124,7 +124,7 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/',
         query: { 
-          redirect: to.fullPath,
+          // page: to.fullPath.substring(1),
           oid:localStorage.oid
         }
       })
@@ -138,9 +138,10 @@ router.beforeEach((to, from, next) => {
 
 import wxApi from './utils/wxApi.js'
 router.afterEach(route => {
+    var currentPage = route.fullPath.substring(1)
+    if (currentPage && currentPage.substring(0,1) != '?') //当跳转到根路径时不记录
+      localStorage.page = route.fullPath.substring(1); //保存当前路由 刷新的时候用
     if (process.env.NODE_ENV == 'development') return;
-
-    localStorage.page = route.fullPath.substring(1); //保存当前路由 刷新的时候用
     window.setTimeout(wxApi.init.bind(this,route.meta.share),50)  //加个延时 要不location.href 还是旧的路由
     
 })

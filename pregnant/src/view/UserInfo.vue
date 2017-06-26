@@ -2,7 +2,7 @@
 	<f7-page navbar-through>
     <f7-navbar sliding>
       <f7-nav-left v-if="!isNecessary">
-          <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
+          <f7-link icon="icon-back color-black" @click="$router.push('/check')"></f7-link>
       </f7-nav-left>
       <f7-nav-center sliding title="个人资料"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
