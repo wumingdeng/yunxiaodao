@@ -2504,9 +2504,9 @@ public class MainJFrame extends JFrame{
 						printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());
 						printUtil.printpaper();
 						boolean ok = printUtil.genReport();
-//						if(ok){
-//							printUtil.doPrintReport(ServerConfig.reportPrinterName);
-//						}
+						if(ok){
+							printUtil.doPrintReport(ServerConfig.reportPrinterName);
+						}
 					}
 					button_oper.setTitle("返回首页");
 					timerLabel.setText("5 秒后，自动返回");
