@@ -199,6 +199,7 @@ function fillWeight(res,wxid,weight,hospital_no) {
     if (wxid == '' || weight == '' || typeof Number(weight) != 'number') {
         res.json({ err: g.errorCode.WRONG_PARAM })
     } else {
+        weight = Number(weight)
         //取出最新的一条数据 如果是当天存的 就覆盖掉
         var newRecord = { weight: weight, recordDate: new Date() };
         if (hospital_no != '') {
@@ -328,6 +329,7 @@ user_router.route('/updateInfo').post(function (req, res) {
     var wxid = req.decoded.wxid || ''
     var height = req.body.height || 0
     var weight = req.body.weight || 0
+    weight = Number(weight);
     var lastPeriod = req.body.lastPeriod || 0
     var isSingle = req.body.isSingle || 0
     if (wxid === 0 || height == 0 || weight == 0 || lastPeriod == 0) {
@@ -447,6 +449,8 @@ function getLatestReport(openid,res){
                             }
                         }
                         res.json({data:records})
+                    } else {
+                        res.json({data:[]})
                     }
                 })
             }else{
