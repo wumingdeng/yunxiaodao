@@ -53,11 +53,11 @@
         <custitle :name='"最新体重报告"'></custitle>
         <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg 于 {{recordDate}}</p>
         <custitle :name='"目前体重情况"'></custitle>
-        <p style='font-size:16px'>&nbsp; &nbsp; &nbsp;{{weightInfo.result}}, 建议体重: {{weightInfo.standard}}</p>
+        <p style='font-size:16px'>&nbsp; &nbsp; &nbsp;{{weightInfo.result}}: 建议体重: {{weightInfo.standard}}</p>
         <custitle :name='"体重管理建议"'></custitle>
-        <div style='font-size:16px' v-if='haveData&&overStandard' id='w_sug'></div>
+        <div style='font-size:16px;margin-left: 23px;' v-if='overStandard' id='w_sug'></div>
         <custitle :name='"饮食注意事项"'></custitle>
-        <div v-if='haveData&&overStandard' id='w_diet'></div>
+        <div v-if='overStandard' id='w_diet'></div>
       </f7-card-content>
     </f7-card>
     <f7-card v-else>
