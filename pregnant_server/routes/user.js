@@ -465,7 +465,7 @@ user_router.route('/getreport').post(function(req,res){
     if(report_id==='' && openid===''){
         res.json({error:g.errorCode.WRONG_PARAM})
     }else{
-        if(report_id===''){
+        if(report_id==='' || report_id=="null" || report_id=="undefined" || report_id == null){
             getLatestReport(openid,res)
         }else{
             var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,yb.date_server,

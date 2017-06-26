@@ -138,13 +138,13 @@ export default {
 	},
 	mounted() {
 		//取数据
-		var wxid = this.$route.query.wxid || this.$store.state.wxid;
 		var rid = this.$route.query.rid;
+		console.log("rid:" + rid)
 		this.$store.dispatch('getFootRecord', {
 			self: this,
 			info: {
 				rid: rid,
-				openid: wxid
+				// openid: wxid
 			},
 			callback(self, res) {
 				if (res.body.error || res.body.data.length == 0) {
@@ -185,7 +185,7 @@ export default {
 }
 
 .border {
-	height: 150px;
+	height: 180px;
 	/*box-shadow: 0 1px 2px rgba(0,0,0,.3);*/
 	background-color: #f6f6f6;
 }

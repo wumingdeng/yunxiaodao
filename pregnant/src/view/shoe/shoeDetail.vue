@@ -22,7 +22,7 @@
           <img 
             style="width:100%; display:block;" 
             v-for="(n,index) in productData.introNum" 
-            :src="getImgSrc(n)"
+            v-lazy="getImgSrc(n)"
             @click="openPhotoBrowser(index)"
             >
           <f7-photo-browser
