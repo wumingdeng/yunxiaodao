@@ -23,6 +23,7 @@ public class FootStudyInfo {
 	private String subscribe_time_str;			//关注时间YYYY-MM-DD HH:MM:SS
 	private int subscribe_status;				//关注状态：1表示已关注；0表示未关注或取消关注
 	private int file_amount;					//该微信号关联的脚型档案总数
+	private boolean isSingle ;
 	
 	private String user_account;				//app用户名
 	private String user_pwd;					//app密码
@@ -44,6 +45,13 @@ public class FootStudyInfo {
 	private String clinic_status;
 	private String queue_num;
 	private String wait_num;
+	
+	public boolean isSingle() {
+		return this.isSingle;
+	}
+	public void setIsSingle(boolean is) {
+		this.isSingle=is;
+	}
 	
 	public String getHospital_no() {
 		return hospital_no;

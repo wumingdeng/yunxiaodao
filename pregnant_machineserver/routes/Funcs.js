@@ -50,7 +50,7 @@ tour_router.route('/userinfo').post(function(req,res){
                     if(data){
                         var result={id:data.id,open_id:data.wxid,card_id:data.card_id,name:data.real_name,nation:data.nation,
                             district:data.district,province:data.province,city:data.city,
-                            county:data.county,height:data.height,weight:data.weight,
+                            county:data.county,height:data.height,weight:data.weight,single:data.isSingle,
                             "errcode":0,"errmsg":"ok"
                         }
                         if(data.gender===1){
@@ -127,7 +127,11 @@ tour_router.route('/userinfo').post(function(req,res){
                     res.json({"errcode":3,"errmsg":"更新身高信息失败！"})
                 })
             }else if(req.body.open_id!==undefined && req.body.weight!==undefined){
-                db.users.update({weight:req.body.weight},{where:{wxid:req.body.open_id}}).then(function(){
+                var isSingle = 1
+                if(req.body.single !== undefined){
+                    isSingle = req.body.single
+                }
+                db.users.update({weight:req.body.weight,isSingle:isSingle},{where:{wxid:req.body.open_id}}).then(function(){
                     res.json({"errcode":0,"errmsg":"ok"})
                 }).catch(function(err){
                     res.json({"errcode":3,"errmsg":"更新孕前體重信息失败！"})

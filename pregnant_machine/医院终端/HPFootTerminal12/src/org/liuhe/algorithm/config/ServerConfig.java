@@ -32,20 +32,9 @@ public class ServerConfig {
 	private int machine_kind;
 	public static short MACHINE_KIND_A3=1;
 	public static short MACHINE_KIND_A4=2;
-	private String receiptPrinterName;
-	public String getReceiptPrinterName() {
-		return receiptPrinterName;
-	}
-	public void setReceiptPrinterName(String s) {
-		this.receiptPrinterName = s;
-	}
-	private String reportPrinterName;
-	public String getReportPrinterName() {
-		return reportPrinterName;
-	}
-	public void setReportPrinterName(String s) {
-		this.reportPrinterName = s;
-	}
+	public static String receiptPrinterName;
+	public static String reportPrinterName;
+
 	// modify by kael over
 	
 	private String wechatUrl;
@@ -100,15 +89,15 @@ public class ServerConfig {
 		setMachine_kind(Integer.parseInt(prop.getProperty("MACHINE_KIND")));
 		if(prop.containsKey("RECEIPT")){
 			if(prop.containsKey("REPORT")){
-				this.setReceiptPrinterName(prop.getProperty("RECEIPT"));
-				this.setReportPrinterName(prop.getProperty("REPORT"));
+				ServerConfig.receiptPrinterName = prop.getProperty("RECEIPT");
+				ServerConfig.reportPrinterName = prop.getProperty("REPORT");
 			}else{
-				this.setReceiptPrinterName(prop.getProperty("RECEIPT"));
-				this.setReportPrinterName("");
+				ServerConfig.receiptPrinterName = prop.getProperty("RECEIPT");
+				ServerConfig.reportPrinterName = "";
 			}
 		}else{
-			this.setReceiptPrinterName("");
-			this.setReportPrinterName("");
+			ServerConfig.receiptPrinterName = "";
+			ServerConfig.reportPrinterName = "";
 		}
 		
 		getServerPara();

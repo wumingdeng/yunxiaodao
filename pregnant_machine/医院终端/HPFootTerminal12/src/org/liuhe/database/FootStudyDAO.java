@@ -425,6 +425,15 @@ public class FootStudyDAO {
         	}else{
         		map.put("height", null);
         	}
+        	if(jsonObject.containsKey("single")){
+        		if(!jsonObject.getString("single").equals("")){
+            		map.put("single", jsonObject.getString("single"));
+            	}else{
+            		map.put("single", "1");
+            	}
+        	}else{
+        		map.put("single", "1");
+        	}
         	if(!jsonObject.getString("left_length").equals("")){
         		map.put("left_length", jsonObject.getString("left_length"));
         	}
@@ -497,8 +506,9 @@ public class FootStudyDAO {
 	}
 	
 	//添加孕前體重信息到userinfo
-	public boolean addWeight(String open_id, String weight){
-		String outputStr = "sign=liuhe&open_id="+open_id+"&weight="+weight;
+	public boolean addWeight(String open_id, String weight,boolean isSingle){
+		int single = isSingle?1:0;
+		String outputStr = "sign=liuhe&open_id="+open_id+"&weight="+weight+"&single="+single;
 		JSONObject jsonObject = HttpUtil.httpRequest(serverConfig.getUserinfoUrl(),"POST",outputStr);
 		if(jsonObject == null){
 			return false;

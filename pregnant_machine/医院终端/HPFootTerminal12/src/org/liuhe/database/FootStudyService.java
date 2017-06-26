@@ -63,8 +63,8 @@ public class FootStudyService {
 		return dao.addHeight(open_id, height);
 	}
 	//添加孕前體重信息到userinfo
-	public boolean addWeight(String open_id, String weight){
-		return dao.addWeight(open_id, weight);
+	public boolean addWeight(String open_id, String weight,boolean isSingle){
+		return dao.addWeight(open_id, weight,isSingle);
 	}
 	//添加身份证信息到userinfo
 	public boolean addCardInfo(String open_id,String card_id,String name,String sex,String born,String nation,String address){

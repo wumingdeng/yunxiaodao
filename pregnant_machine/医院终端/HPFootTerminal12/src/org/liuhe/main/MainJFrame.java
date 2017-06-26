@@ -24,13 +24,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -796,13 +796,14 @@ public class MainJFrame extends JFrame{
 		buttonPane.setOpaque(false);
 		buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 		beforeWeightCardPane.add(buttonPane, BorderLayout.CENTER);
-		
+			
 		beforeWeightBut = new RoundRectButton(" 确 定 ");
 		beforeWeightBut.setGenFont(new Font("黑体", Font.PLAIN+Font.BOLD, 26));
 		beforeWeightBut.setRoundAngle(50);
 		beforeWeightBut.setPreferredSize(new Dimension(160,50));
 		beforeWeightBut.addActionListener(action_listener);
 		buttonPane.add(beforeWeightBut);
+				
 		
 		JPanel jumpPane = new JPanel();
 		jumpPane.setOpaque(false);
@@ -1458,6 +1459,7 @@ public class MainJFrame extends JFrame{
 			// 确认身高采集 modify by kael
 			else if(button == beforeWeightBut){
 				String stature = beforeWeightPane.getStature();
+				boolean single = beforeWeightPane.getIsSingle();
 				if(stature.equals("")){
 					MessageDialog option = new MessageDialog(MainJFrame.this,"孕前体重数值不能为空！","提示",MessageDialog.WARNING_MESSAGE);
 					option.create_option();
@@ -1469,10 +1471,11 @@ public class MainJFrame extends JFrame{
 					return;
 				}
 				studyinfo.setWeight(stature);
+				studyinfo.setIsSingle(single);
 				if(studyinfo.getOpen_id() == null){
 					toIndentityPane();
 				}else{
-					sqlServer.addWeight(studyinfo.getOpen_id(), studyinfo.getWeight());
+					sqlServer.addWeight(studyinfo.getOpen_id(), studyinfo.getWeight(),single);
 					if(studyinfo.getName() == null){
 						toIndentityPane();
 					}else{
@@ -1905,6 +1908,11 @@ public class MainJFrame extends JFrame{
 							studyinfo.setDate_yunfu_str(userinfo.get("date_yunfu"));
 							studyinfo.setHeight(userinfo.get("height"));
 							studyinfo.setWeight(userinfo.get("weight"));
+							if(userinfo.containsKey("single")){
+								studyinfo.setIsSingle(userinfo.get("single").equals("1"));
+							}else{
+								studyinfo.setIsSingle(true);
+							}
 							left_foot_pane.setPredictData(userinfo.get("left_length"), userinfo.get("left_width"));
 							right_foot_pane.setPredictData(userinfo.get("right_length"), userinfo.get("right_width"));
 						}
@@ -2268,6 +2276,7 @@ public class MainJFrame extends JFrame{
 			button_oper.setTitle("正在打印");
 			String[] leftPara = left_foot_pane.getParaValue();
 			String[] rightPara = right_foot_pane.getParaValue();
+			printUtil.setReportFootParam(leftPara[4], leftPara[5],rightPara[4],rightPara[5]);
 			if(!isPost){
 				System.out.println("the first print in this record hint info");
 				studyinfo.setDate_host_str(DateUtil.dateToStr(new Date(),"yyyy-MM-dd HH:mm:ss"));
@@ -2491,7 +2500,13 @@ public class MainJFrame extends JFrame{
 						}else{
 							printUtil.setQrcode(null);
 						}
+						// todo
+						printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());
 						printUtil.printpaper();
+						boolean ok = printUtil.genReport();
+//						if(ok){
+//							printUtil.doPrintReport(ServerConfig.reportPrinterName);
+//						}
 					}
 					button_oper.setTitle("返回首页");
 					timerLabel.setText("5 秒后，自动返回");

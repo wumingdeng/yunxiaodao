@@ -14,8 +14,10 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import org.liuhe.background.pane.BackRoundPane;
 import org.liuhe.element.button.DeleteButton;
@@ -27,6 +29,7 @@ public class BeforePregnantWeightPane extends JPanel{
 	private ArrayList<FastLabel> fastList = null;
 	private RoundTextField stature_text = null;
 	private DeleteButton deleteBut = null;
+	private JCheckBox isSingle = null;
 	private Action_listener listener = new Action_listener();
 	
 	public BeforePregnantWeightPane(){
@@ -35,6 +38,14 @@ public class BeforePregnantWeightPane extends JPanel{
 	
 	public String getStature(){
 		return stature_text.getText();
+	}
+	
+	public boolean getIsSingle(){
+		if(isSingle==null){
+			return false;
+		}else{
+			return isSingle.isSelected();
+		}
 	}
 	public void initStature(){
 		stature_text.setText("");
@@ -153,6 +164,19 @@ public class BeforePregnantWeightPane extends JPanel{
 			numButton.setPreferredSize(new Dimension(50,50));
 			selfPane.add(numButton);
 		}
+		
+		JPanel downner = new JPanel();
+		downner.setOpaque(false);
+		downner.setLayout(new BorderLayout(0,0));
+		add(downner,BorderLayout.SOUTH);
+		Font f = new Font("微软雅黑",Font.PLAIN,26);
+		UIManager.put("CheckBox.font",f); 
+		isSingle = new JCheckBox("单胎");// 定义一个复选框
+		isSingle.setSelected(true);
+		isSingle.setHorizontalAlignment(JCheckBox.CENTER);
+		isSingle.setPreferredSize(new Dimension(100,50));
+		downner.add(isSingle);
+		 
 	}
 	
 	private class FastLabel extends JLabel implements MouseListener{
