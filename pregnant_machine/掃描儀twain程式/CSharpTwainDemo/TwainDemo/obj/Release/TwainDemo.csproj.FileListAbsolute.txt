@@ -1,8 +1,0 @@
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Release\TwainDemo.FrmDemo.resources
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Release\TwainDemo.Properties.Resources.resources
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Release\TwainDemo.csproj.GenerateResource.Cache
-D:\Downloads\CSharpTwainDemo\TwainDemo\bin\Release\TwainScanner.exe.config
-D:\Downloads\CSharpTwainDemo\TwainDemo\bin\Release\TwainScanner.exe
-D:\Downloads\CSharpTwainDemo\TwainDemo\bin\Release\TwainScanner.pdb
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Release\TwainScanner.exe
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Release\TwainScanner.pdb

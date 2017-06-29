@@ -9,7 +9,7 @@
     "listen":8097,
     "sqldebug":false,
     "redisAdress":"127.0.0.1",
-    "serverAdress":"http://127.0.0.1",
-    "wechatServerAdress":"http://127.0.0.1:8090",
+    "serverAdress":"http://192.168.18.111",
+    "wechatServerAdress":"http://192.168.18.111:8090",
     "logicOutAdress":"http://127.0.0.1:8092"
 }

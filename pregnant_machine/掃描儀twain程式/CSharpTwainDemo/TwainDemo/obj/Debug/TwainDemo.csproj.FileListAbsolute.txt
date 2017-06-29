@@ -1,8 +1,0 @@
-D:\Downloads\CSharpTwainDemo\TwainDemo\bin\Debug\TwainDemo.exe.config
-D:\Downloads\CSharpTwainDemo\TwainDemo\bin\Debug\TwainDemo.exe
-D:\Downloads\CSharpTwainDemo\TwainDemo\bin\Debug\TwainDemo.pdb
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Debug\TwainDemo.FrmDemo.resources
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Debug\TwainDemo.Properties.Resources.resources
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Debug\TwainDemo.csproj.GenerateResource.Cache
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Debug\TwainDemo.exe
-D:\Downloads\CSharpTwainDemo\TwainDemo\obj\Debug\TwainDemo.pdb
