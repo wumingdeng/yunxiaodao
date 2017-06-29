@@ -42,23 +42,30 @@
 		<f7-list form>
 			<f7-list-item>
 	      <f7-label>所在地区</f7-label>
-    		<chinaCity style="margin-left:5px;" v-model="cityInfo" :initInfo="cityInit" :test='87'></chinaCity>
+    		<!-- <chinaCity style="margin-left:5px;" v-model="cityInfo" :initInfo="cityInit" :test='87'></chinaCity> -->
+	      <f7-input id="inputLocation" type="text" readonly placeholder="点击选择所在地区" @click="onSelectArea" v-model="showArea"></f7-input>
 	    </f7-list-item>
 	    <f7-list-item>
-	      <f7-label>详细地址</f7-label>
-	      <f7-input id="inputAddress" type="textarea" placeholder="" v-model="$store.state.userinfo.address"></f7-input>
+				<f7-label style="margin-top:-65px;">详细地址</f7-label>
+				<div class="item-input">
+					<textarea id="inputAddress" style="margin:3px 0;border:1px solid #aaaaaa;padding-left:5px;" type="textarea" v-model="$store.state.userinfo.address"></textarea>
+				</div>
 	    </f7-list-item>
 	    <f7-list-item>
-	      <f7-label>备注</f7-label>
-	      <f7-input id="inputRemark" type="textarea" placeholder="" v-model="$store.state.remark"></f7-input>
+				<f7-label style="margin-top:-65px;">备注</f7-label>
+				<div class="item-input">
+					<textarea id="inputRemark" style="margin:3px 0;border:1px solid #aaaaaa;padding-left:5px;" type="textarea" v-model="$store.state.remark"></textarea>
+				</div>
+	      <!-- <f7-input id="inputRemark" type="textarea" placeholder="" v-model="$store.state.remark"></f7-input> -->
 	    </f7-list-item>	    
 		</f7-list>
 		<p style="width:90%;margin:-15px auto 0 auto;"><f7-button style="background-color:#fa7699" big fill @click="onSure">确定</f7-button></p>
+		 <vueArea :props-show="show" :props-result="result" v-on:result="areaResult"></vueArea>
 	</f7-page>
 </template>
 
 <script>
-	import chinaCity from '../../components/chinaCity'
+	import vueArea from 'vue-area'
 	export default {
 		name: 'address',
 		data() {
@@ -68,6 +75,19 @@
 				gender:null,
 				// tel:null,
 				// address:null
+				showArea:null,
+		    result: null,
+		    show: false
+			}
+		},
+		watch:{
+			result(newVal, oldVal) {
+				this.cityInfo = {
+					province: newVal.province.name,
+					city: newVal.city.name,
+					area: newVal.area.name
+				}
+				this.showArea = newVal.province.name + " " + newVal.city.name + " " + newVal.area.name
 			}
 		},
 		computed: {
@@ -80,9 +100,17 @@
 			}
 		},
 		components:{
-			'chinaCity':chinaCity
+			// 'chinaCity':chinaCity,
+			"vueArea":vueArea
 		},
 		methods:{
+	    areaResult: function(show, result){
+	        this.show = show
+	        this.result = result
+	    },
+	    onSelectArea() {
+	    	this.show = true;
+	    },
 			onGender(value) {
 				this.gender = value;
 				var userinfo = {}
@@ -133,13 +161,9 @@
 			//初始化数据
 			// this.contact = this.$store.state.userinfo && this.$store.state.userinfo.contact || ''
 			this.gender = this.$store.state.userinfo && this.$store.state.userinfo.gender || 0
-			// this.tel = this.$store.state.userinfo && this.$store.state.userinfo.tel || ''
-			// this.address = this.$store.state.userinfo && this.$store.state.userinfo.address || ''
-			// this.cityInit = {
-			// 	province: '福建',
-			// 	city: '福州'
-			// }
-
+			if (this.$store.state.userinfo.province && this.$store.state.userinfo.city && this.$store.state.userinfo.area) {
+				this.showArea = this.$store.state.userinfo.province + ' ' +  this.$store.state.userinfo.city + ' ' + this.$store.state.userinfo.area
+			}
 		}
 	}
 </script>
@@ -155,5 +179,9 @@
 	}
 	.list-block .item-title.label {
 		width: 25%;
+	}
+	#inputLocation ul {
+		margin-top: 0px;
+		margin-bottom: 0px;
 	}
 </style>

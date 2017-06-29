@@ -28,9 +28,9 @@
 
 		<f7-list form style="margin-top:-18px;">
 			<f7-list-item>
-				<f7-label style="width:20%;margin-top:-65px;">留言:</f7-label>
+				<f7-label style="width:20%;margin-top:-65px;">备注:</f7-label>
 				<div class="item-input">
-					<textarea style="padding:2px 5px;margin:12px 0;background-color:#eeeeee" type="textarea" readonly="readonly" v-model="$store.state.remark"></textarea>
+					<textarea style="padding:2px 5px;margin:12px 0;background-color:#eeeeee" type="textarea" readonly="readonly" v-model=orderRemark></textarea>
 				</div>
 				<!-- <f7-input readonly type='textarea' v-model="$store.state.remark"></f7-input> -->
 			</f7-list-item>
@@ -53,6 +53,12 @@
 			fullAddress() {
 				var info = this.$store.state.userinfo
 				return info.province + ' ' + info.city + ' ' + info.area + ' ' + info.address;
+			},
+			orderRemark() {
+				var remark = this.$store.state.remark
+				if (!remark || remark == '')
+					return '无'
+				return this.$store.state.remark
 			}
 		},
 		methods:{

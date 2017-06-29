@@ -114,6 +114,16 @@ function getWeightTipInfo(week, result) {
     }
 }
 
+// user_router.route('/getBehavior').get(function (req, res) {
+//     db.user_behaviors.findOne({userid:"o6rXewG_WxyiS2ltJPbvWI15_cJw"}).then(function(data) {
+//         if (data) {
+//             res.json({data:data})
+//         } else {
+//             res.json({err:0});
+//         }
+//     })
+// })
+
 user_router.route('/quickloginwxUser').post(function (req, res) {
     var code = req.body.code || ''
     if (code === '') {

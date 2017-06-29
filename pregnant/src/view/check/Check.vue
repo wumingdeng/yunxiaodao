@@ -1,5 +1,5 @@
 <template>
-  <f7-page>
+  <f7-page v-show="showPage">
 
         <span style="width:18%;position:absolute;top:7px;right:20px;z-index:100" @click="$router.push('/cycle')">
           <img style="width:100%" src="static/assets/checkDate.png">
@@ -93,6 +93,7 @@ export default {
       columnStyle: 'border: 1px solid #e5e5e5; padding:5px; text-align: center',
       msg: 'Welcome to Check Page',
       haveData: true,
+      showPage:false,
       havaDiet: true,
       weightInfo: {},
       testTip: ''
@@ -112,7 +113,7 @@ export default {
       }
     },
     recordDate() {
-      var date = this.weightInfo.recordDate
+      var date = new Date(this.weightInfo.recordDate).toLocaleString()
       if (date) {
         return date.substring(0, 10)
       } else {
@@ -135,6 +136,7 @@ export default {
             return
           }
           isSend = true;
+          this.$f7.showPreloader()
           this.$store.dispatch('fillWeight', {
             self: this,
             info: {
@@ -174,6 +176,7 @@ export default {
   },
   beforeCreate() {
     document.title = '体重管理'
+    this.$store.commit("LOADING",true)
   },
   mounted() {
     //取体重数据
@@ -184,6 +187,8 @@ export default {
         // wxid: this.$store.state.wxid
       },
       callback: function (self, res) {
+        self.showPage = true;
+        self.$store.state.isloading = false;
         self.weightInfo = res.body.ok
         if (!res.body.ok.id) {
           self.haveData = false;
