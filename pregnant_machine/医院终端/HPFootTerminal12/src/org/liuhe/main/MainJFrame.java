@@ -1517,6 +1517,35 @@ public class MainJFrame extends JFrame{
 			}
 			// 触发扫描面板按钮
 			else if(button == button_oper){
+				// test print function code section
+//				if(printUtil.havePrint() != null){
+//					if(Integer.parseInt(serverConfig.getMachine_type()) >= 2){
+//						printUtil.setCinicInfo(studyinfo.getClinic_dept()+"  "+studyinfo.getQueue_num(), studyinfo.getWait_num());
+//					}else{
+//						printUtil.setCinicInfo(null, null);
+//					}
+//					String[] para = {studyinfo.getHeight(),studyinfo.getWeight()
+//							,studyinfo.getLeft_length(),studyinfo.getRight_length()
+//							,studyinfo.getLeft_width(),studyinfo.getRight_width(),
+//							studyinfo.getLeft_length_725(),studyinfo.getRight_length_725(),
+//							studyinfo.getLeft_foot_status(),studyinfo.getRight_foot_status()};
+//					printUtil.setFeetPara(para);
+//					printUtil.setFeetPara(new String[]{"164.5","53.3","241.36","240.12","90.20","91.13","156.31","156.96","扁平趋势","正常足弓"});
+//					if(studyinfo.getOpen_id() == null){
+//						printUtil.setQrcode(qrcodePane.getImagePath());
+//						qrcodeArr.remove(0);
+//					}else{
+//						printUtil.setQrcode(null);
+//					}
+//					// todo
+//					printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());
+//					printUtil.setReportFootParam("正常足弓", "任何忽视都可能造成脚部畸形。不要长时间负重或站立，保护足弓。注意营养均衡，避免体重超标，压迫足弓。多参加体育、舞蹈等活动，锻炼脚部肌肉。", "正常足弓", "任何忽视都可能造成脚部畸形。不要长时间负重或站立，保护足弓。注意营养均衡，避免体重超标，压迫足弓。多参加体育、舞蹈等活动，锻炼脚部肌肉。");
+//					printUtil.printpaper();
+//					boolean ok = printUtil.genReport();
+//					if(ok){
+//						printUtil.doPrintReportExtern(ServerConfig.reportPrinterName);
+//					}
+//				}
 				if(!button_oper.getTitle().equals("正在检测")&&!button_oper.getTitle().equals("正在打印")){
 					if(button_oper.getTitle().equals("开始检测")||button_oper.getTitle().equals("请 重 试")){
 						scanFeetThread = new ScanFeetThread();
@@ -2501,11 +2530,14 @@ public class MainJFrame extends JFrame{
 							printUtil.setQrcode(null);
 						}
 						// todo
-						printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());
 						printUtil.printpaper();
-						boolean ok = printUtil.genReport();
-						if(ok){
-							printUtil.doPrintReport(ServerConfig.reportPrinterName);
+						if(ServerConfig.reportPrinterName.length()>0){
+							printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());
+							boolean ok = printUtil.genReport();
+							if(ok){
+//								printUtil.doPrintReport(ServerConfig.reportPrinterName);
+								printUtil.doPrintReportExtern(ServerConfig.reportPrinterName);
+							}
 						}
 					}
 					button_oper.setTitle("返回首页");

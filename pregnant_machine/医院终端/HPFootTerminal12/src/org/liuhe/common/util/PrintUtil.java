@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +50,10 @@ import com.itextpdf.text.pdf.PdfStamper;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar; 
+
+import javax.print.attribute.DocAttributeSet;
+import javax.print.attribute.HashDocAttributeSet;
+import javax.print.attribute.HashPrintRequestAttributeSet;
 
 class WeightRate{
 	public double rateMin;
@@ -395,6 +400,46 @@ public class PrintUtil implements Printable{
 		 }
 	}
 	
+	public void doPrintReportExtern(String reportPrinterName){
+		if(reportPrinterName.length()<=0){
+			return;
+		}
+		// check printer is exist or not
+		DocFlavor fileFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
+		PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+		aset.add(MediaSizeName.ISO_A4);//A4纸张
+		PrintService[] services = PrintServiceLookup.lookupPrintServices(fileFormat, null);
+		boolean printerExist = false;
+		if(services.length > 1){
+			for(int i=0;i<services.length;i++){
+				if(services[i].getName().equals(reportPrinterName)){
+					printerExist = true;
+					break;
+				}
+			}
+		}
+		if(!printerExist){
+			return;
+		}
+		String fileName = MainJFrame.scanExternProgramDir+"current_report.pdf";
+		String externProgramName = MainJFrame.scanExternProgramDir+"\\SumatraPDF\\SumatraPDF.exe";
+		String externProgramNeededDllName = MainJFrame.scanExternProgramDir+"\\SumatraPDF\\libmupdf.dll";
+		File fileexternProgram = new File(externProgramName);
+		File fileexternProgramNeededDll = new File(externProgramNeededDllName);
+		if(fileexternProgram.exists() && fileexternProgramNeededDll.exists()){
+			String cmd = MainJFrame.scanExternProgramDir+"startPrint.bat";
+			ProcessBuilder pb = new ProcessBuilder(cmd,MainJFrame.scanExternProgramDir,reportPrinterName,fileName);
+			Process process;
+			try {
+				process = pb.start();
+				process.waitFor();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void doPrintReport(String reportPrinterName){
 		if(reportPrinterName.length()<=0){
 			return;
@@ -403,12 +448,12 @@ public class PrintUtil implements Printable{
 		DocFlavor fileFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
 		//生成一个打印属性设置对象
 		PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-		aset.add(new Copies(1));//Copies-打印份数5份
+//		aset.add(new Copies(1));//Copies-打印份数5份
 		aset.add(MediaSizeName.ISO_A4);//A4纸张
-		aset.add(Sides.ONE_SIDED);//双面打印
+//		aset.add(Sides.ONE_SIDED);//双面打印
 		//得到当前机器上所有已经安装的打印机
 		//传入的参数是文档格式跟打印属性，只有支持这个格式与属性的打印机才会被找到
-		PrintService[] services = PrintServiceLookup.lookupPrintServices(fileFormat, aset);
+		PrintService[] services = PrintServiceLookup.lookupPrintServices(fileFormat, null);
 		if(services.length > 1){
 			//得到一个文件的输入流
 			FileInputStream fiStream = null;
@@ -420,16 +465,18 @@ public class PrintUtil implements Printable{
 			    return;
 			 }
 			//得到要打印的文档类DOC
-			Doc myDoc = new SimpleDoc(fiStream, fileFormat, null);  
+			DocAttributeSet das = new HashDocAttributeSet();
+			Doc myDoc = new SimpleDoc(fiStream, fileFormat, das);  
 			for(int i=0;i<services.length;i++){
 				if(services[i].getName().equals(reportPrinterName)){
 					//用打印服务生成一个文档打印任务，这里用的是第一个服务
 				    //也可以进行筛选，services[i].getName()可以得到打印机名称，可用名称进行比较得到自己想要的打印机
 					DocPrintJob job = services[i].createPrintJob();
 			        try {
-			            //最后一步，执行打印文档任务，传入的参数是Doc文档类，与属性(5份，双面,A4)
+			            //最后一步，执行打印文档任务，传入的参数是Doc文档类，与属性(1份，单面,A4)
 			            job.print(myDoc, aset);//成功后电脑会提示已有文档添加到打印队列
-			        } catch (PrintException pe) {}
+			        } catch (PrintException pe) {
+			        }
 			        break;
 				}
 			}
@@ -449,22 +496,15 @@ public class PrintUtil implements Printable{
 //		util.printpaper();
 		
 		HashAttributeSet hs = new HashAttributeSet();  
-		  
-	    String printerName="Microsoft Print to PDF";  
-	  
+	    String printerName="SK58";  
 	    hs.add(new PrinterName(printerName,null));  
 	    PrintService[] pss = PrintServiceLookup.lookupPrintServices(null, hs); 
 	    if(pss.length==0)  
-	    	  
 	    {  
-	  
 	      System.out.println("无法找到打印机:"+printerName);  
-	  
 	      return ;  
-	  
 	    } else{
 	    	PrinterJob printerJob = PrinterJob.getPrinterJob();
-	    	
 		    PageFormat pageFormat = new PageFormat();
 		    //pf.setOrientation(PageFormat.PORTRAIT);//设置成竖打
 		    Paper paper = new Paper();
@@ -480,14 +520,13 @@ public class PrintUtil implements Printable{
 			printerJob.setPageable(book);
 	    	 try {
 				printerJob.setPrintService(pss[0]);
-
 		         printerJob.print(); 
 			} catch (PrinterException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}   
 	    }
-		
+	    util.doPrintReport("HP LaserJet Professional P1108");
 //		PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
 //		for(int i=0;i<services.length;i++){
 //			System.out.println(services[i].getName());
