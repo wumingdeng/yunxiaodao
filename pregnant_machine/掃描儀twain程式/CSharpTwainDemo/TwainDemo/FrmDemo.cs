@@ -47,10 +47,17 @@ namespace TwainDemo
             mTwain.IsTwain2Enable = false;
             mTwain.OpenDSM();
             List<string> srclst = new List<string>();
+            int index = 0;
             for (int i = 0; i < mTwain.SourcesCount; i++)
             {
-                srclst.Add(mTwain.GetSourceProductName(i));
+                if (mTwain.GetSourceProductName(i).Equals(Program.machineName))
+                {
+                    srclst.Add(mTwain.GetSourceProductName(i));
+                    index = i;
+                }
             }
+            mTwain.SourceIndex = index;
+            mTwain.OpenDataSource();
             combo_Dev.DataSource = srclst;
             mTwain.EndXfer += twEndXfer;
 
@@ -109,8 +116,8 @@ namespace TwainDemo
         {
             try
             {
-                mTwain.SourceIndex = combo_Dev.SelectedIndex;
-                mTwain.OpenDataSource();
+                //mTwain.SourceIndex = combo_Dev.SelectedIndex;
+                //mTwain.OpenDataSource();
                 var _resolutions = mTwain.Capabilities.XResolution.Get();
                 List<string> dpilst = new List<string>();
                 for (var i = 0; i < _resolutions.Count; i++)
