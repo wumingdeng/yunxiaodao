@@ -159,7 +159,6 @@ tour_router.route('/create_menu').get(function(req,res){
 
 tour_router.route('/auth').post(function(req,res){
     var code = req.body.code
-    console.log('code:'+code)
     if (!code) {
         res.json({err:g.errorCode.WRONG_PARAM})
     }
@@ -181,14 +180,18 @@ tour_router.route('/auth').post(function(req,res){
                     db.users.findOne({where:{'wxid':openid}}).then(function(user){
                         if(user){
                             // console.log('用户已存在')
-                            db.users.update({headUrl:data.headimgurl,name:data.nickname},{where:{wxid:openid}}).then(function(){
-                                // to change redirect url
-                                // res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1&page=' + page);
+                            if (data.nickname || data.subscribe == 1) {
+                                db.users.update({headUrl:data.headimgurl || '',name:data.nickname || ''},{where:{wxid:openid}}).then(function(){
+                                    // to change redirect url
+                                    // res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1&page=' + page);
+                                    res.json({ok:user})
+                                })
+                            } else {
                                 res.json({ok:user})
-                            })
+                            }
                         }else{
                             // console.log('创建用户')
-                            db.users.create({wxid:openid,headUrl:data.headimgurl,name:data.nickname}).then(function(newUser){
+                            db.users.create({wxid:openid || '',headUrl:data.headimgurl || '',name:data.nickname || ''}).then(function(newUser){
                                 // to change redirect url
                                 // res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1$page=' + page);
                                 res.json({ok:newUser})
@@ -206,6 +209,7 @@ tour_router.route('/auth').post(function(req,res){
             })
         }
     },function(error){
+        console.log('auth code:'+code)   
         console.log(error);
         res.json({err:g.errorCode.WRONG_WXCHAT_AUTHFAILED});
     })

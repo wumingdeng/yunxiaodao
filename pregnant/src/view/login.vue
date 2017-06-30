@@ -15,17 +15,19 @@
 		mounted() {
 			//验证登录
 			// var wxid = this.$route.query.wxid;
-			console.log('授权code:' + this.$route.query.code)
-			console.log('page:' + this.$route.query.page)
-			console.log('rid:' + this.$route.query.rid)
+			// console.log('授权code:' + this.$route.query.code)
+			// if (this.$route.query.code) {
+			// 	alert(this.$route.query.code)
+			// 	return;
+			// }
+			// console.log('page:' + this.$route.query.page)
+			// console.log('rid:' + this.$route.query.rid)
 			var code = this.$route.query.code
 			var page = this.$route.query.page || localStorage.page;	//跳转的页面
 			if (page == "undefined") page = 'shoeDetail'
 			var rid = this.$route.query.rid || localStorage.rid	//足部报告id
 			if (rid == "undefined") rid = null;
 			// var oid = this.$route.query.oid;
-			console.log('page:' + page)
-			console.log('rid:' + rid)
 			// localStorage.code = code;
 			localStorage.page = page;
 			localStorage.rid = rid;
@@ -52,7 +54,6 @@
 		        		if (isTest) {
 		        			self.$router.go(-1)
 		        		} else {
-		        			console.log('tiao page:' + page)
 		        			if (page == 'foot' && rid) {
 				        		self.$router.push({
 				        			path:'/' + page,	//默认跳到卖鞋页

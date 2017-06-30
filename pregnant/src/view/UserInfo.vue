@@ -59,7 +59,7 @@
 				return this.$store.state.userinfo.height;
 			},
 			userLastPeroid() {
-        var last = this.$store.state.userinfo.lastPeriod;
+        var last = new Date(this.$store.state.userinfo.lastPeriod).toLocaleString()
         if (last) {
           last = last.substring(0,10)
           // last = last.replace(/\-/g,'/')

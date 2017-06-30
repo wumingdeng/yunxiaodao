@@ -62,6 +62,7 @@ var f = {
     
     getUserBrief:function(openid,cb,err){
         var reqUrl = 'https://api.weixin.qq.com/cgi-bin/user/info?';
+        // var reqUrl = 'https://api.weixin.qq.com/sns/userinfo?';
         var params = {
             access_token: cfg.access_token,
             openid: openid,
@@ -74,7 +75,9 @@ var f = {
         };
         request(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
+                console.log('取到用户信息:' + body)
                 var bodydata=JSON.parse(body);
+                console.log(bodydata.errmsg)
                 cb(bodydata)
             }else{
                 err()
