@@ -30,6 +30,7 @@ public class BeforePregnantWeightPane extends JPanel{
 	private RoundTextField stature_text = null;
 	private DeleteButton deleteBut = null;
 	private JCheckBox isSingle = null;
+	private JCheckBox isDouble = null;
 	private Action_listener listener = new Action_listener();
 	
 	public BeforePregnantWeightPane(){
@@ -167,16 +168,33 @@ public class BeforePregnantWeightPane extends JPanel{
 		
 		JPanel downner = new JPanel();
 		downner.setOpaque(false);
-		downner.setLayout(new BorderLayout(0,0));
+		downner.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
 		add(downner,BorderLayout.SOUTH);
 		Font f = new Font("微软雅黑",Font.PLAIN,26);
 		UIManager.put("CheckBox.font",f); 
+		
+		
+		
 		isSingle = new JCheckBox("单胎");// 定义一个复选框
 		isSingle.setSelected(true);
-		isSingle.setHorizontalAlignment(JCheckBox.CENTER);
-		isSingle.setPreferredSize(new Dimension(100,50));
+		isSingle.setHorizontalAlignment(JCheckBox.RIGHT);
+		isSingle.setPreferredSize(new Dimension(300,50));
+		isSingle.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				isDouble.setSelected(!isSingle.isSelected());
+			}
+		});
 		downner.add(isSingle);
-		 
+		isDouble = new JCheckBox("多胎");// 定义一个复选框
+		isDouble.setSelected(false);
+		isDouble.setHorizontalAlignment(JCheckBox.LEFT);
+		isDouble.setPreferredSize(new Dimension(300,50));
+		isDouble.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				isSingle.setSelected(!isDouble.isSelected());
+			}
+		});
+		downner.add(isDouble);
 	}
 	
 	private class FastLabel extends JLabel implements MouseListener{
