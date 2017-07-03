@@ -1358,7 +1358,7 @@ public class MainJFrame extends JFrame{
 				}
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(now_date);
-				cal.add(Calendar.DAY_OF_YEAR, -280);
+				cal.add(Calendar.DAY_OF_YEAR, -315);
 				Date before = cal.getTime();
 				if(before.getTime()>=period_date.getTime()){
 					MessageDialog option = new MessageDialog(MainJFrame.this,"请输入正确的末次月经时间！","提示",MessageDialog.WARNING_MESSAGE);
@@ -1550,6 +1550,7 @@ public class MainJFrame extends JFrame{
 					if(button_oper.getTitle().equals("开始检测")||button_oper.getTitle().equals("请 重 试")){
 						scanFeetThread = new ScanFeetThread();
 						scanFeetThread.start();
+						button_oper.setEnabled(false);
 					}else if(button_oper.getTitle().equals("返回首页")){
 						scanFeetThread.stopRequest();
 						initPara();
@@ -2211,6 +2212,7 @@ public class MainJFrame extends JFrame{
 							MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
 							option.create_option();
 							button_oper.setTitle("开始检测");
+							button_oper.setEnabled(true);
 							return ;
 						}
 						Float weight = hweightUtil.getWeight();
@@ -2219,6 +2221,7 @@ public class MainJFrame extends JFrame{
 							MessageDialog option = new MessageDialog(MainJFrame.this,"获取体重数据失败，请重试！","提示",MessageDialog.WARNING_MESSAGE);
 							option.create_option();
 							button_oper.setTitle("开始检测");
+							button_oper.setEnabled(true);
 							return ;
 						}
 						weight = weight + Float.parseFloat(hwConfig.getWeight());
@@ -2236,7 +2239,7 @@ public class MainJFrame extends JFrame{
 //					BufferedImage origImage = acquire.startAcquireOne();
 					// modify by kael
 					int k = serverConfig.getMachine_kind();
-					button_oper.setEnabled(false);
+//					button_oper.setEnabled(false);
 					BufferedImage origImage=null;
 					if(k==ServerConfig.MACHINE_KIND_A3){
 						origImage = acquire.startAcquireOne();
@@ -2511,6 +2514,7 @@ public class MainJFrame extends JFrame{
 //					}else{
 //						printQrcode.showUploaded();
 //					}
+//					button_oper.setEnabled(true);
 					if(printUtil.havePrint() != null){
 						if(Integer.parseInt(serverConfig.getMachine_type()) >= 2){
 							printUtil.setCinicInfo(studyinfo.getClinic_dept()+"  "+studyinfo.getQueue_num(), studyinfo.getWait_num());
@@ -2529,7 +2533,7 @@ public class MainJFrame extends JFrame{
 						}else{
 							printUtil.setQrcode(null);
 						}
-						// todo
+						// 
 						printUtil.printpaper();
 						if(ServerConfig.reportPrinterName.length()>0){
 							printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());

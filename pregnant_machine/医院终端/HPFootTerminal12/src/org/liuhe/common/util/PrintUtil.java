@@ -270,13 +270,20 @@ public class PrintUtil implements Printable{
 				return false;
 			}
 		    long weeks_long = ((now.getTime()-lastPeriod.getTime())/(7 * 24 * 3600 * 1000) + 1); 
-		    
-		    String leftLengthString = para[2].substring(0, para[2].indexOf("."))+"mm";
-			String rightLengthString = para[3].substring(0, para[3].indexOf("."))+"mm";
-			String leftWidthString = para[4].substring(0, para[4].indexOf("."))+"mm";
-			String rightWidthString = para[5].substring(0, para[5].indexOf("."))+"mm";
-			String leftArrowString = para[6].substring(0, para[6].indexOf("."))+"mm";
-			String rightArrowtring = para[7].substring(0, para[7].indexOf("."))+"mm";
+		    			
+		    int leftLengthIndex =  para[2].indexOf(".");
+			int rightLengthIndex =  para[3].indexOf(".");
+			int leftWidthIndex =  para[4].indexOf(".");
+			int rightWidthIndex =  para[5].indexOf(".");
+			int leftArrowIndex =  para[6].indexOf(".");
+			int rightArrowIndex =  para[7].indexOf(".");
+			
+			String leftLengthString = para[2].substring(0, leftLengthIndex<0?para[2].length():leftLengthIndex)+"mm";
+			String rightLengthString = para[3].substring(0, rightLengthIndex<0?para[3].length():rightLengthIndex);
+			String leftWidthString = para[4].substring(0, leftWidthIndex<0?para[4].length():leftWidthIndex)+"mm";
+			String rightWidthString = para[5].substring(0, rightWidthIndex<0?para[5].length():rightWidthIndex);
+			String leftArrowString = para[6].substring(0, leftArrowIndex<0?para[6].length():leftArrowIndex)+"mm";
+			String rightArrowtring = para[7].substring(0, rightArrowIndex<0?para[7].length():rightArrowIndex);
 			String leftStatusString = para[8].replaceAll("×ã¹­", "");
 			String rightStatusString = para[9].replaceAll("×ã¹­", "");
 		    
@@ -684,12 +691,19 @@ public class PrintUtil implements Printable{
 //					g2.drawString("×ó×ã¹­:"+para[6]+"mm ÓÒ×ã¹­:"+para[7]+"mm", 0, (float)(3*height+8));
 //					g2.drawString("×ó×ãÌ¬:"+para[8]+" ÓÒ×ãÌ¬:"+para[9], 0, (float)(4*height+10));
 					
-					String leftLengthString = para[2].substring(0, para[2].indexOf("."))+"mm";
-					String rightLengthString = para[3].substring(0, para[3].indexOf("."));
-					String leftWidthString = para[4].substring(0, para[4].indexOf("."))+"mm";
-					String rightWidthString = para[5].substring(0, para[5].indexOf("."));
-					String leftArrowString = para[6].substring(0, para[6].indexOf("."))+"mm";
-					String rightArrowtring = para[7].substring(0, para[7].indexOf("."));
+					int leftLengthIndex =  para[2].indexOf(".");
+					int rightLengthIndex =  para[3].indexOf(".");
+					int leftWidthIndex =  para[4].indexOf(".");
+					int rightWidthIndex =  para[5].indexOf(".");
+					int leftArrowIndex =  para[6].indexOf(".");
+					int rightArrowIndex =  para[7].indexOf(".");
+					
+					String leftLengthString = para[2].substring(0, leftLengthIndex<0?para[2].length():leftLengthIndex)+"mm";
+					String rightLengthString = para[3].substring(0, rightLengthIndex<0?para[3].length():rightLengthIndex);
+					String leftWidthString = para[4].substring(0, leftWidthIndex<0?para[4].length():leftWidthIndex)+"mm";
+					String rightWidthString = para[5].substring(0, rightWidthIndex<0?para[5].length():rightWidthIndex);
+					String leftArrowString = para[6].substring(0, leftArrowIndex<0?para[6].length():leftArrowIndex)+"mm";
+					String rightArrowtring = para[7].substring(0, rightArrowIndex<0?para[7].length():rightArrowIndex);
 					String leftStatusString = para[8].replaceAll("×ã¹­", "");
 					String rightStatusString = para[9].replaceAll("×ã¹­", "");
 					short totalLength=7;
