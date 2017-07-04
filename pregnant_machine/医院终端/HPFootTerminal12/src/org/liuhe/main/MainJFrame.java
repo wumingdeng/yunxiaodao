@@ -1425,7 +1425,7 @@ public class MainJFrame extends JFrame{
 					toBeforeWeighPane();
 				}else{
 					sqlServer.addHeight(studyinfo.getOpen_id(), studyinfo.getHeight());
-					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")){
+					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")||studyinfo.getWeight().equals("null")){
 						toBeforeWeighPane();
 					}else if(studyinfo.getName() == null){
 						toIndentityPane();
