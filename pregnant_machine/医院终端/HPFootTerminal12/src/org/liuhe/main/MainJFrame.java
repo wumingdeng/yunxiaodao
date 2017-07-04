@@ -1376,7 +1376,7 @@ public class MainJFrame extends JFrame{
 						toStaturePane();
 					}else if(studyinfo.getWeight()==null){
 						toBeforeWeighPane();
-					}else if(studyinfo.getName()==null){
+					}else if(studyinfo.getName()==null && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1396,7 +1396,7 @@ public class MainJFrame extends JFrame{
 					toStaturePane();
 				}else if(studyinfo.getWeight() == null){
 					toBeforeWeighPane();
-				}else if(studyinfo.getName() == null){
+				}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1427,7 +1427,7 @@ public class MainJFrame extends JFrame{
 					sqlServer.addHeight(studyinfo.getOpen_id(), studyinfo.getHeight());
 					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")||studyinfo.getWeight().equals("null")){
 						toBeforeWeighPane();
-					}else if(studyinfo.getName() == null){
+					}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1456,7 +1456,7 @@ public class MainJFrame extends JFrame{
 					}
 				}
 			}
-			// 确认身高采集 modify by kael
+			// 确认孕前體重采集 modify by kael
 			else if(button == beforeWeightBut){
 				String stature = beforeWeightPane.getStature();
 				boolean single = beforeWeightPane.getIsSingle();
@@ -1472,11 +1472,11 @@ public class MainJFrame extends JFrame{
 				}
 				studyinfo.setWeight(stature);
 				studyinfo.setIsSingle(single);
-				if(studyinfo.getOpen_id() == null){
+				if(studyinfo.getOpen_id() == null && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					sqlServer.addWeight(studyinfo.getOpen_id(), studyinfo.getWeight(),single);
-					if(studyinfo.getName() == null){
+					if(studyinfo.getName() == null && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1486,13 +1486,14 @@ public class MainJFrame extends JFrame{
 							toScanPane();
 						}
 					}
+					beforeWeightPane.reset();
 				}
 			}
-			// 跳过身高采集 modify by kael
+			// 跳过孕前體重采集 modify by kael
 			else if(button == jumpBeforeWeightBut){
-				if(studyinfo.getOpen_id() == null){
+				if(studyinfo.getOpen_id() == null && ServerConfig.showIdPage){
 					toIndentityPane();
-				}else if(studyinfo.getName() == null){
+				}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1970,7 +1971,7 @@ public class MainJFrame extends JFrame{
 							toStaturePane();
 						}else if(userinfo.get("weight") == null || userinfo.get("weight").equals("") || userinfo.get("weight").equals("null")){
 							toBeforeWeighPane();
-						}else if(userinfo.get("name") == null || userinfo.get("name").equals("") || userinfo.get("name").equals("null")){
+						}else if(ServerConfig.showIdPage && userinfo.get("name") == null || userinfo.get("name").equals("") || userinfo.get("name").equals("null")){
 							toIndentityPane();
 						}else{
 							// modify by kael

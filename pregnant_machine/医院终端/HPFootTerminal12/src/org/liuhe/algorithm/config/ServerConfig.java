@@ -34,7 +34,7 @@ public class ServerConfig {
 	public static short MACHINE_KIND_A4=2;
 	public static String receiptPrinterName;
 	public static String reportPrinterName;
-
+	public static boolean showIdPage;
 	// modify by kael over
 	
 	private String wechatUrl;
@@ -98,6 +98,11 @@ public class ServerConfig {
 		}else{
 			ServerConfig.receiptPrinterName = "";
 			ServerConfig.reportPrinterName = "";
+		}
+		if(prop.containsKey("SHOWID_PAGE")){
+			ServerConfig.showIdPage=Integer.parseInt(prop.getProperty("SHOWID_PAGE"))==1?true:false;
+		}else{
+			ServerConfig.showIdPage=false;
 		}
 		
 		getServerPara();

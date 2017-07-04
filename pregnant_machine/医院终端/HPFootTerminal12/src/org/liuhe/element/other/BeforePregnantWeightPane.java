@@ -40,7 +40,10 @@ public class BeforePregnantWeightPane extends JPanel{
 	public String getStature(){
 		return stature_text.getText();
 	}
-	
+	public void reset(){
+		isSingle.setSelected(true);
+		isDouble.setSelected(false);
+	}
 	public boolean getIsSingle(){
 		if(isSingle==null){
 			return false;
