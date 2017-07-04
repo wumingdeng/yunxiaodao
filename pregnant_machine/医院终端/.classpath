@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="HPFootTerminal12/lib/registry.jar"/>
 	<classpathentry kind="lib" path="HPFootTerminal12/lib/swing-layout-1.0.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="HPFootTerminal12/lib/itext5-itextpdf-5.5.11.jar"/>
 	<classpathentry kind="output" path="HPFootTerminal12/bin"/>
 </classpath>
