@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -2701,6 +2702,30 @@ public class MainJFrame extends JFrame{
 					studyinfo.setHospital_no(serverConfig.getHospital_no());
 					studyinfo.setHospital_name(serverConfig.getHospital_name());
 					sqlServer.sendWeightBaseinfo(studyinfo);
+					/*
+					Map<String, String> map = new HashMap<String,String>();
+					map = sqlServer.getLastReportInfo(openID);
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+					*/
 				}
 			}
 		}
