@@ -43,8 +43,16 @@ public class PeriodDayPane extends JPanel{
 	private boolean labelChange = false;
 	
 	public PeriodDayPane() {
-        this(new Date());
+        this(new Date(new Date().getTime() - 86400000));
     }
+	
+	public void initPara(){
+		select.setTime(new Date(new Date().getTime() - 86400000));
+		int year = select.get(Calendar.YEAR);
+		yearComboBox.setSelectedItem(year+"");
+		monthComboBox.setSelectedItem((select.get(Calendar.MONTH)+1)+"");
+		mainPane.updateDate();
+	}
     public PeriodDayPane(Date date){
     	select.setTime(date);
         initPanel();
