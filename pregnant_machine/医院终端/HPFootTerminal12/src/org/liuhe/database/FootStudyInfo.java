@@ -108,6 +108,20 @@ public class FootStudyInfo {
 		wait_num = waitNum;
 	}
 
+	private String current_weight;
+	public String getCurrentWeight() {
+		return current_weight;
+	}
+	public void setCurrentWeight(String weight) {
+		this.current_weight = weight;
+	}
+	public void setCurrentWeight_float(Float weight_float) {
+		if(weight_float==null){
+			current_weight = "";
+		}else{
+			current_weight = weight_float+"";
+		}
+	}
 	//身高体重
 	private String height;
 	private String weight;

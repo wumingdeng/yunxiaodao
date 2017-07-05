@@ -612,7 +612,7 @@ tour_router.route('/yxd3').post(function(req,res){
                 db.hospitals.findOne({where:{id:data.hospital_no}}).then(function(hos){
                     if(hos){
                         res.json({"hospital_no":hos.id,"machine_type":"2",
-                            "hospital_name":hos.name,"worktime":"23:00",
+                            "hospital_name":hos.name,"worktime":"23:00",//"hospital_scene":hos.scene_id,
                             "db_ip":"","db_port":"",
                             "db_name":"","db_user":"","db_psw":"",
                             "wechat_url":cfg.wechatServerAdress+"/api/accesstoken",

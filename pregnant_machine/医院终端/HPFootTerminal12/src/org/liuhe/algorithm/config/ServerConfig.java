@@ -24,6 +24,7 @@ public class ServerConfig {
 	
 	private String hospital_no;
 	private String hospital_name;
+	private int hospital_scene;
 	private String hospital_phone;
 	private String hospital_web;
 	private String machine_type;
@@ -49,9 +50,15 @@ public class ServerConfig {
 	private String appName;
 	
 	public ServerConfig(){
+		hospital_scene = 100001;
 		loadServerConfig();
 	}
-	
+	public int getHospitalScene() {
+		return this.hospital_scene;
+	}
+	public void setHospitalScene(int scene) {
+		this.hospital_scene = scene;
+	}
 	public String getServerUrl() {
 		return serverUrl;
 	}
@@ -268,6 +275,9 @@ public class ServerConfig {
 				int errcode = jsonObject.getInt("errcode");
 	            if(errcode == 0){
 	            	setAvailable(true);
+	            	if(jsonObject.containsKey("hospital_scene")){
+	            		setHospitalScene(jsonObject.getInt("hospital_scene"));
+	            	}
 	            	setMachine_type(jsonObject.getString("machine_type"));
 					setHospital_no(jsonObject.getString("hospital_no"));
 					setHospital_name(jsonObject.getString("hospital_name"));
