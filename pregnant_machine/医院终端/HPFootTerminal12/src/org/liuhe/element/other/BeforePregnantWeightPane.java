@@ -14,9 +14,11 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 
 import org.liuhe.background.pane.BackRoundPane;
@@ -29,8 +31,7 @@ public class BeforePregnantWeightPane extends JPanel{
 	private ArrayList<FastLabel> fastList = null;
 	private RoundTextField stature_text = null;
 	private DeleteButton deleteBut = null;
-	private JCheckBox isSingle = null;
-	private JCheckBox isDouble = null;
+	private JRadioButton single,many;
 	private Action_listener listener = new Action_listener();
 	
 	public BeforePregnantWeightPane(){
@@ -42,17 +43,17 @@ public class BeforePregnantWeightPane extends JPanel{
 	}
 	
 	public void initPara(){
-		if(isSingle!=null)
-			isSingle.setSelected(true);
-		if(isDouble!=null)
-			isDouble.setSelected(false);
+		if(single!=null)
+			single.setSelected(true);
+		if(many!=null)
+			many.setSelected(false);
 	}
 	
 	public boolean getIsSingle(){
-		if(isSingle==null){
+		if(single==null){
 			return false;
 		}else{
-			return isSingle.isSelected();
+			return single.isSelected();
 		}
 	}
 	public void initStature(){
@@ -81,10 +82,15 @@ public class BeforePregnantWeightPane extends JPanel{
 		stature_text.setEditable(false);
 		stature_text.setBackground(Color.WHITE);
 		stature_text.setForeground(new Color(40,40,40));
-		stature_text.setLeft(10);
+		
 		stature_text.setFont(new Font("微软雅黑", Font.PLAIN, 18));
 		stature_text.setPreferredSize(new Dimension(200,40));
 		textPane.add(stature_text);
+		
+		JLabel kgTitle = new JLabel("kg");
+		kgTitle.setFont(new Font("黑体", Font.PLAIN, 20));
+		textPane.add(kgTitle);
+		
 		
 		deleteBut = new DeleteButton();
 		deleteBut.setPreferredSize(new Dimension(50,40));
@@ -173,35 +179,29 @@ public class BeforePregnantWeightPane extends JPanel{
 			selfPane.add(numButton);
 		}
 		
+		/*
 		JPanel downner = new JPanel();
 		downner.setOpaque(false);
 		downner.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-		add(downner,BorderLayout.SOUTH);
-		Font f = new Font("微软雅黑",Font.PLAIN,26);
-		UIManager.put("CheckBox.font",f); 
+		add(textPane);
 		
 		
+		*/
 		
-		isSingle = new JCheckBox("单胎");// 定义一个复选框
-		isSingle.setSelected(true);
-		isSingle.setHorizontalAlignment(JCheckBox.RIGHT);
-		isSingle.setPreferredSize(new Dimension(300,50));
-		isSingle.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				isDouble.setSelected(!isSingle.isSelected());
-			}
-		});
-		downner.add(isSingle);
-		isDouble = new JCheckBox("多胎");// 定义一个复选框
-		isDouble.setSelected(false);
-		isDouble.setHorizontalAlignment(JCheckBox.LEFT);
-		isDouble.setPreferredSize(new Dimension(300,50));
-		isDouble.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				isSingle.setSelected(!isDouble.isSelected());
-			}
-		});
-		downner.add(isDouble);
+		ButtonGroup g = new ButtonGroup();
+		single = new JRadioButton("单胎",true);
+		single.setOpaque(false);
+		single.setFont(new Font("黑体",Font.PLAIN,20));
+		single.setHorizontalAlignment(JLabel.RIGHT);
+		single.setPreferredSize(new Dimension(100,40));
+		
+		many = new JRadioButton("多胎");
+		many.setFont(new Font("黑体",Font.PLAIN,20));
+		many.setOpaque(false);
+		g.add(single);
+		g.add(many);
+		textPane.add(single);
+		textPane.add(many);
 	}
 	
 	private class FastLabel extends JLabel implements MouseListener{
