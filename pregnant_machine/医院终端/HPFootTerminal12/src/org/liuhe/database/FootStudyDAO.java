@@ -76,7 +76,7 @@ public class FootStudyDAO {
         json = json+"\"clinic_type\":"+"\""+object.getClinic_type()+"\",";
         json = json+"\"user_id\":"+"\""+object.getUser_id()+"\",";//json = json+"\"user_id\":"+object.getUser_id()+",";
         json = json+"\"period\":"+"\""+object.getPeriod()+"\",";
-        json = json+"\"weight\":"+"\""+object.getWeight_float()+"\",";
+        json = json+"\"weight\":"+"\""+object.getCurrentWeight()+"\",";
         json = json+"\"doctor_id\":"+"\""+object.getCurrentDoctor_id()+"\"";
         json = json+"}";
 		return json;
@@ -107,7 +107,8 @@ public class FootStudyDAO {
 	        json = json+"\"country\":"+"\""+object.getCountry()+"\",";
 	        json = json+"\"nation\":"+"\""+object.getNation()+"\",";
 	        json = json+"\"height\":"+"\""+object.getHeight_float()+"\",";//json = json+"\"height\":"+object.getHeight_float()+",";
-	        json = json+"\"weight\":"+"\""+object.getWeight_float()+"\","; //json = json+"\"weight\":"+object.getWeight_float()+",";
+//	        json = json+"\"weight\":"+"\""+object.getWeight_float()+"\","; //json = json+"\"weight\":"+object.getWeight_float()+",";
+	        json = json+"\"weight\":"+"\""+object.getCurrentWeight()+"\",";
 	        json = json+"\"date_yunfu\":"+"\""+object.getDate_yunfu_str()+"\",";
 	        json = json+"\"hospital_no\":"+"\""+object.getHospital_no()+"\",";
 	        json = json+"\"hospital_name\":"+"\""+object.getHospital_name()+"\",";

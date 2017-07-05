@@ -279,11 +279,11 @@ public class PrintUtil implements Printable{
 			int rightArrowIndex =  para[7].indexOf(".");
 			
 			String leftLengthString = para[2].substring(0, leftLengthIndex<0?para[2].length():leftLengthIndex)+"mm";
-			String rightLengthString = para[3].substring(0, rightLengthIndex<0?para[3].length():rightLengthIndex);
+			String rightLengthString = para[3].substring(0, rightLengthIndex<0?para[3].length():rightLengthIndex)+"mm";
 			String leftWidthString = para[4].substring(0, leftWidthIndex<0?para[4].length():leftWidthIndex)+"mm";
-			String rightWidthString = para[5].substring(0, rightWidthIndex<0?para[5].length():rightWidthIndex);
+			String rightWidthString = para[5].substring(0, rightWidthIndex<0?para[5].length():rightWidthIndex)+"mm";
 			String leftArrowString = para[6].substring(0, leftArrowIndex<0?para[6].length():leftArrowIndex)+"mm";
-			String rightArrowtring = para[7].substring(0, rightArrowIndex<0?para[7].length():rightArrowIndex);
+			String rightArrowtring = para[7].substring(0, rightArrowIndex<0?para[7].length():rightArrowIndex)+"mm";
 			String leftStatusString = para[8].replaceAll("足弓", "");
 			String rightStatusString = para[9].replaceAll("足弓", "");
 		    
@@ -587,7 +587,7 @@ public class PrintUtil implements Printable{
 	    //计算点数：2.28*72=164.409449点(一英寸有72点)
 	    //纸张大小 A4的大小//A4(595 X 842)设置打印区域，其实0,0应该是72,72，因为A4纸的默认X,Y边距是72
 	    paper.setSize(590,840);
-	    paper.setImageableArea(15,5, 150,440);//144
+	    paper.setImageableArea(15,5, 150,370);//144
 	    pageFormat.setPaper(paper);
 	    Book book = new Book();
 		book.append(this, pageFormat);

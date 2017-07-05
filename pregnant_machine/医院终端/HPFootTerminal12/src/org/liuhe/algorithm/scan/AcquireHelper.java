@@ -20,6 +20,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.FileImageInputStream;
 
 import org.liuhe.algorithm.config.ScanConfig;
+import org.liuhe.main.MainJFrame;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -144,6 +145,8 @@ public  class AcquireHelper {
 			if(Boolean.parseBoolean(config.getScale_y())){
 				bufImage = OverturnFilter.turn_vertical(bufImage);
 			}
+			// done by kael for a3 printer 
+			saveJpgFile(bufImage,MainJFrame.scanExternProgramDir+"/Image/fin.jpg");
 			return bufImage;
 		}catch(Exception e1) {
 			e1.printStackTrace();
