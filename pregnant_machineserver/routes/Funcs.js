@@ -581,7 +581,7 @@ tour_router.route('/getreport').post(function(req,res){
     var openid = req.body.openid || ''
     if(report_id==='' && openid===''){
         res.json({error:g.errorCode.WRONG_PARAM})
-    }else{
+    }else{ 
         if(report_id===''){
             getLatestReport(openid,res)
         }else{
@@ -621,6 +621,7 @@ tour_router.route('/yxd3').post(function(req,res){
                             "clinic_url":cfg.serverAdress+':'+cfg.listen+"/api/serverclinic",
                             "upload_url":cfg.serverAdress+':'+cfg.listen+"/serverftp4",
                             "data_url":cfg.serverAdress+':'+cfg.listen+"/api/serverdata",
+                            "latestreport_url":cfg.serverAdress+':'+cfg.listen+"/api/get_user_latest_report",
                             "space_day":"0",//"space_day":"30",
                             "app_name":"yxd","errcode":0,"errmsg":"ok2"})
                     }else{
