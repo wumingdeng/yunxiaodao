@@ -6,9 +6,16 @@
         </span>
     <f7-card>
       <f7-card-content style='text-align: center;'>
-        <div style='position:relative'>
-          <div style='font-family:hcpfont;color:#fa7699;font-size:35px;position:absolute;left:0em;top:-0.2em;right:-1.7em'>!</div>
+        <div>
+          <h3 style="text-align:center;color:#fe4365;display:inline">恭喜您已怀孕 </h3>
+          <div style='display:inline;position:relative'>
+            <div style='font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:relative;top:11px; left:6px;'>!</div>
+            <h3 style="text-align:center;color:#fe4365;display:inline">{{weightInfo.currentWeek}}</h3>
+          </div>
+          <h3 style="text-align:center;color:#fe4365;display:inline">&nbsp; 周</h3>
+          <!--
           <h3 style="text-align:center;color:#fe4365">恭喜您已怀孕　{{weightInfo.currentWeek}}　周</h3>
+          -->
         </div>
   
         <p style="text-align:center;font-size:16px">本孕周建议体重：{{weightInfo.currentStandard}}</p>
@@ -167,7 +174,9 @@ export default {
                 self.weightInfo = { ...self.weightInfo, ...res.body.ok } //覆盖原数据
                 self.haveData = true;
                 self.$nextTick(function () {
+                  
                   document.getElementById("inputWeight").value = ''
+                  if(self.weightInfo.currentWeek>40) return 
                   document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug || ''
                   document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
@@ -214,6 +223,7 @@ export default {
           console.log('没有体重信息')
         } else {
           self.$nextTick(function () {
+            if(self.weightInfo.currentWeek>40) return 
           var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
           document.getElementById("w_sug").innerHTML = str || ''
           document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
