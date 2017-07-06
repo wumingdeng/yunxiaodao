@@ -2217,7 +2217,7 @@ public class MainJFrame extends JFrame{
 						}
 						if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 							System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
-							studyinfo.setCurrentWeight("0.0");
+//							studyinfo.setCurrentWeight("0.0");
 							hwLabel.setText("体重：0.0kg");
 							HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 							hweightUtil.doActionPerformed();
@@ -2765,9 +2765,9 @@ public class MainJFrame extends JFrame{
 		public void run() {
 			runThread = Thread.currentThread();
 			stopRequested = false;
+			HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 			while ( !stopRequested ) {
 				try{
-					HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 					boolean getWeightHardwareOk = hweightUtil.doActionPerformed();
 					if(getWeightHardwareOk){
 						int times = 0;
@@ -2797,7 +2797,7 @@ public class MainJFrame extends JFrame{
 					}
 					if(!stopRequested){
 						try {
-							Thread.sleep(17000);
+							Thread.sleep(7000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
