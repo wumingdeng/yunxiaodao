@@ -43,6 +43,7 @@
 </template>
 
 <script>
+  import moment from 'moment'
 	export default {
 		data() {
 			return {
@@ -59,9 +60,10 @@
 				return this.$store.state.userinfo.height;
 			},
 			userLastPeroid() {
-        var last = new Date(this.$store.state.userinfo.lastPeriod).toLocaleString()
+        // var last = new Date(this.$store.state.userinfo.lastPeriod).toLocaleDateString('yyyy-MM-dd')
+        var last = moment(this.$store.state.userinfo.lastPeriod).format("YYYY-MM-DD")
+        console.log(last)
         if (last) {
-          last = last.substring(0,10)
           // last = last.replace(/\-/g,'/')
           return last;
         }

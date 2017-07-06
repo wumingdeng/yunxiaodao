@@ -1,4 +1,5 @@
 {
+	"version":"0.1.2",
 	"serverAddress":"http://yzxs.sujudao.com:8092",
 	"adminServerAddress":"http://121.40.254.174:8101",
 	"machineServerAddress":"http://yzxs.sujudao.com:8097",

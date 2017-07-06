@@ -217,6 +217,7 @@ export function getProductDetail ({commit, state},data) {
   var self = data.self;
   // data.info.token = Global.s.state.token  //带上token
   var next = data.callback;
+  console.log(serverAddress);
   self.http.post(serverAddress + '/api/getProductDetail', data.info)
     .then((response) => {
       // success callback
@@ -240,6 +241,28 @@ export function ordermake ({commit, state}, data) {
   var self = data.self;
   data.info.token = self.$store.state.token  //带上token
   self.$http.post(serverAddress + '/api/ordermake', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      onErrorRefresh(self);
+    });
+}
+
+export function orderpay ({commit, state}, data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(serverAddress + '/api/orderpay', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()

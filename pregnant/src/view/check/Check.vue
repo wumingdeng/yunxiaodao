@@ -85,7 +85,8 @@
   </f7-page>
 </template>
 <script>
-import custitle from '../../components/title'
+  import custitle from '../../components/title'
+  import moment from 'moment'
 export default {
   name: 'check',
   data() {
@@ -113,9 +114,9 @@ export default {
       }
     },
     recordDate() {
-      var date = new Date(this.weightInfo.recordDate).toLocaleString()
-      if (date) {
-        return date.substring(0, 10)
+      if (this.weightInfo.recordDate) {
+        var date = moment(this.weightInfo.recordDate).format("YYYY-MM-DD")
+        return date
       } else {
         return ''
       }
@@ -130,6 +131,11 @@ export default {
       var weight = document.getElementById("inputWeight").value;
       var isSend = false
       if (weight != '') {
+        if (weight == 0) {
+          this.$f7.alert("","请输入大于0的数字哦!")
+          document.getElementById("inputWeight").value = ''
+          return
+        }
         this.$f7.confirm('', '您输入的体重为:' + weight + 'kg', () => {
           if (isSend) {
             document.getElementById("inputWeight").value = ''
@@ -149,16 +155,16 @@ export default {
                 self.haveData = true;
                 self.$nextTick(function () {
                   document.getElementById("inputWeight").value = ''
-                  document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
-                  document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
+                  document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug || ''
+                  document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
-                  document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
+                  document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
                  
-                  document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+                  document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
                   if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
                     self.havaDiet = false
                   }
-                  document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
+                  document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport || ''
                   
                 })
               } else {
@@ -195,16 +201,16 @@ export default {
           console.log('没有体重信息')
         } else {
           self.$nextTick(function () {
-          document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug
-          document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet
+          document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug || ''
+          document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
-          document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key
+          document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
          
-          document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat
+          document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
           if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
             self.havaDiet = false
           }
-          document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport
+          document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport || ''
           })
         }
       }

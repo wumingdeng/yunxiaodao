@@ -37,7 +37,7 @@
 		</f7-list>
 
   	<div class="pay_btnwrap">
-  	  <p class="wap">实付款：<span>￥</span><span id="total_fee">{{$store.state.productDetail.price}}元</span><a @click="onPay" id="payBtn" class="pay_btn">微信支付</a></p>
+  	  <p class="wap"><span style="margin-right:-12px;color:#000000">实付款：</span><span>￥</span><span id="total_fee">{{$store.state.productDetail.price}}元</span><a @click.once="onPay" id="payBtn" class="pay_btn">微信支付</a></p>
   	</div>
 	</f7-page>
 </template>
@@ -98,6 +98,16 @@
 		           "paySign":"70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名 
 						}
 						payargs = res.body;
+						if (payargs.err ) {
+							self.$f7.alert('','支付失败');
+					  	self.$router.push('/order');
+							return
+						}
+						if (typeof WeixinJSBridge == 'undefined') {
+							self.$f7.alert('','支付失败,请在微信中进行支付');
+					  	self.$router.push('/order');
+							return
+						}
 						WeixinJSBridge.invoke('getBrandWCPayRequest', payargs, function(res){
 							console.log(res)
 						  if(res.err_msg == "get_brand_wcpay_request:ok"){
@@ -105,7 +115,9 @@
 						    // alert("支付成功");
 						    // 这里可以跳转到订单完成页面向用户展示
 						  }else{
-						    alert('支付失败，请重试');
+						  	self.$f7.alert('','支付失败，请重试',function() {
+						  		self.$router.push('/order');
+						  	})
 						  }
 						});
 					}

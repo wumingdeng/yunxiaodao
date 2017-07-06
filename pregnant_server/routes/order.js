@@ -71,9 +71,8 @@ order_router.route('/ordermake').post(function(req,res){
     })
 });
 
-// 订单支付成功回调
+//支付已经生成的订单
 order_router.route('/orderpay').post(function(req,res){
-    // var wxid = req.decoded.wxid || ''
     var oid  = req.body.oid || 0
     if(oid === 0){
         res.json({err:g.errorCode.WRONG_PARAM})
@@ -81,46 +80,73 @@ order_router.route('/orderpay').post(function(req,res){
     }
     db.orders.findOne({where:{'id':oid}}).then(function(order){
         if(order){
-            mem.r.pub.del('pe:'+order.id+":"+order.userid)
-            // 根据选择进行下一步操作
-            if(order.valid == 0){
-                res.json({err:g.errorCode.WRONG_ORDER_NOT_EXIST})
-                return
-            }
-            if(order.status!=0){
-                res.json({err:g.errorCode.WRONG_ORDER_STATUS})
-                return
-            }
-            if(order.status==g.orderStatus.PAYED_ACCEPT_NOT_START){
-                res.json({err:g.errorCode.WRONG_ORDER_STATUS})
-                return
-            }
-            if(order.workerid == -1){
-                res.json({w:1})
-                return
-            }
-            // 更改订单状态
-            var ExpireSec = 0//mem.m.configs[0].orderWaitTime * 3600
-            if(order.workerid === 0){
-                // 系统派单
-                ExpireSec = mem.m.configs[0].workerTakeWaitTime * 3600
-            }else{
-                // 指定技师等待技师响应时间
-                ExpireSec = mem.m.configs[0].orderWaitTime * 3600
-            }
-            var waitend = Math.floor(Date.now()/1000) + ExpireSec
-            db.orders.update({status:1,payend:0,actualpay:order.needpay,valid:1,waitend:waitend},
-                {where:{'id':oid}}).then(function(){
-                    var haveServiceWorker = 
-                        getPropertyWorker(order.workerid,ExpireSec,order.id,order.service,order.geo)
-                    res.json({ok:1,data:haveServiceWorker})
-                }
-            )
-        }else{
-            res.json({err:g.errorCode.WRONG_ORDER_NOT_EXIST})
+            //支付请求
+            utils.sendPayToWxServer({
+                spbill_create_ip: req.ip.match(/\d+\.\d+\.\d+\.\d+/),
+                openid: order.userid,
+                out_trade_no: order.id,
+                body: order.shoeName,
+                total_fee:order.price * 100,
+                // total_fee:1,
+                trade_type: 'JSAPI'
+            }, function(err, response, payargs){
+                console.log('支付返回');
+                console.log(payargs);
+                res.json(payargs)
+            })
         }
     })
-});
+})
+// // 订单支付成功回调
+// order_router.route('/orderpay').post(function(req,res){
+//     // var wxid = req.decoded.wxid || ''
+//     var oid  = req.body.oid || 0
+//     if(oid === 0){
+//         res.json({err:g.errorCode.WRONG_PARAM})
+//         return
+//     }
+//     db.orders.findOne({where:{'id':oid}}).then(function(order){
+//         if(order){
+//             mem.r.pub.del('pe:'+order.id+":"+order.userid)
+//             // 根据选择进行下一步操作
+//             if(order.valid == 0){
+//                 res.json({err:g.errorCode.WRONG_ORDER_NOT_EXIST})
+//                 return
+//             }
+//             if(order.status!=0){
+//                 res.json({err:g.errorCode.WRONG_ORDER_STATUS})
+//                 return
+//             }
+//             if(order.status==g.orderStatus.PAYED_ACCEPT_NOT_START){
+//                 res.json({err:g.errorCode.WRONG_ORDER_STATUS})
+//                 return
+//             }
+//             if(order.workerid == -1){
+//                 res.json({w:1})
+//                 return
+//             }
+//             // 更改订单状态
+//             var ExpireSec = 0//mem.m.configs[0].orderWaitTime * 3600
+//             if(order.workerid === 0){
+//                 // 系统派单
+//                 ExpireSec = mem.m.configs[0].workerTakeWaitTime * 3600
+//             }else{
+//                 // 指定技师等待技师响应时间
+//                 ExpireSec = mem.m.configs[0].orderWaitTime * 3600
+//             }
+//             var waitend = Math.floor(Date.now()/1000) + ExpireSec
+//             db.orders.update({status:1,payend:0,actualpay:order.needpay,valid:1,waitend:waitend},
+//                 {where:{'id':oid}}).then(function(){
+//                     var haveServiceWorker = 
+//                         getPropertyWorker(order.workerid,ExpireSec,order.id,order.service,order.geo)
+//                     res.json({ok:1,data:haveServiceWorker})
+//                 }
+//             )
+//         }else{
+//             res.json({err:g.errorCode.WRONG_ORDER_NOT_EXIST})
+//         }
+//     })
+// });
 
 order_router.route('/orderlistUser').post(function(req,res){
     var uid  = req.body.uid || 0
@@ -145,8 +171,13 @@ order_router.route('/orderlistUser').post(function(req,res){
             order.forEach(function(item,index){ 
                 var sinfo = mem.m.products[item.shoeid]
                 item.dataValues.shoeName = sinfo.name;
-                item.dataValues.price = sinfo.price;
-                item.dataValues.smallPic = sinfo.smallPic
+                // item.dataValues.price = sinfo.price;
+                // item.dataValues.smallPic = sinfo.smallPic
+                if (sinfo.color && item.color) {
+                    var colorObj = JSON.parse(sinfo.color);
+                    // console.log(colorObj)
+                    item.dataValues.smallPic = colorObj[item.color] || '';
+                }
             });  
             res.json({w:order})
         })

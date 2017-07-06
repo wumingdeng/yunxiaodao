@@ -41,17 +41,17 @@ app.use(authToken);
 var userBehavior = require('./utils/userBehaviorMiddleware')
 app.use(userBehavior);
 
-// error handler
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
 // middleware register
 // api router
 for(var key in route_table){
     app.use('/api',route_table[key]);
 }
 
+// error handler
+app.use(function(err, req, res, next) {
+  console.log(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 var server = app.listen(8092, function () {
   var host = server.address().address;
@@ -64,5 +64,5 @@ process.on('uncaughtException', function (err) {
     //打印出错误
     console.log(err);
     //打印出错误的调用栈方便调试
-    console.log(err.stack)
+    // console.log(err.stack)
 });

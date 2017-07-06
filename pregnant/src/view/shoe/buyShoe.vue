@@ -109,13 +109,13 @@
   		},
   		colorArray() {
   			if (this.productDetail && this.productDetail.color) {
-          var colorArr = this.productDetail.color.split(',')
+          var colorArr = JSON.parse(this.productDetail.color)
           var tempArr = []
-          for(var i = 0; i < colorArr.length; ++i) {
-            var arr = colorArr[i].split(':');
+          for(var key in colorArr) {
+            var item = colorArr[key]
             var obj = {
-              color: arr[0],
-              img: arr[1]
+              color: key,
+              img: item
             }
             tempArr.push(obj);
           }

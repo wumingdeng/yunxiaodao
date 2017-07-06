@@ -5,26 +5,28 @@
 			<f7-card-header>
 				<p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
 					<span style='font-family:hcpfont;'>*</span>
-					&nbsp;&nbsp;足部健康评测报告</p>
-				<span style="font-size:16px;"> {{reportDate}}</span>
+					<span>&nbsp;&nbsp;足部健康评测报告</span>
+
+					<span style="font-size:16px;"> {{reportDate}}</span>
+				</p>
 				</div>
 			</f7-card-header>
 			<f7-card-content>
 				<f7-grid>
 					<f7-col>
-						<div class="border">
+						<div id="border" class="border" :style="imgHeight">
 							<div class="bTitle">
 								<img src='static/assets/icon/icon_foot.png'></img>
 								足型扫描
 							</div>
-							<div style="width:100%;height:150px;overflow:hidden;">
-								<img style="width:50%;float:left;" v-if="footData.left_urla" :src="footData.left_urla">
-								<img style="width:50%;float:left" v-if="footData.right_urla" :src="footData.right_urla">
+							<div id="imgContainer" style="width:100%;height:150px;overflow:hidden;">
+								<img id="leftImg" style="width:50%;float:left;" v-if="footData.left_urla" :src="footData.left_urla">
+								<img id="rightImg" style="width:50%;float:left" v-if="footData.right_urla" :src="footData.right_urla">
 							</div>
 						</div>
 					</f7-col>
 					<f7-col>
-						<div class="border">
+						<div class="border" :style="imgHeight">
 							<div class="bTitle">
 								<img src='static/assets/icon/icon_result.png'></img>
 								测量结果
@@ -97,7 +99,7 @@
 				<div id='f_k'></div>
 			</f7-card-content>
 		</f7-card>
-		<p style="margin:5px auto;width:50%;">
+		<p style="margin:5px auto 20px auto;width:50%;">
 			<f7-button fill style="background-color:#fa7699;height:35px;line-height:35px;" @click="$router.push('/shoeDetail')">选一双合适的孕妇鞋</f7-button>
 		</p>
 	</f7-page>
@@ -105,6 +107,7 @@
 
 
 <script>
+	import moment from "moment"
 export default {
 	data() {
 		return {
@@ -114,7 +117,8 @@ export default {
 			},
 			dataName: ['足长', '足宽', '型宽'],
 			valueName: ['length', 'width', 'foot_width'],
-			shoeType: ['基础功能型', '加强缓震型', '控制型', '超级稳定型', '保胎孕妇鞋']
+			shoeType: ['基础功能型', '加强缓震型', '控制型', '超级稳定型', '保胎孕妇鞋'],
+			imgHeight:""
 		}
 	},
 	beforeCreate() {
@@ -122,8 +126,8 @@ export default {
 	},
 	computed: {
 		reportDate() {
-			if (this.footData.server_date) {
-				return this.footData.server_date.substring(0, 10)
+			if (this.footData.date_server) {
+				return moment(this.footData.date_server).format("YYYY-MM-DD")
 			} else {
 				return ''
 			}
@@ -159,17 +163,32 @@ export default {
 				} else {
 					self.haveDate = true;
 					self.footData = res.body.data[0]
-					self.footData.left_length = self.footData.left_length.toFixed() + 'mm'
-					self.footData.right_length = self.footData.right_length.toFixed() + 'mm'
-					self.footData.left_width = self.footData.left_width.toFixed() + 'mm'
-					self.footData.right_width = self.footData.right_width.toFixed() + 'mm'
+					self.footData.left_length = Math.floor(self.footData.left_length) + 'mm'
+					self.footData.right_length = Math.floor(self.footData.right_length) + 'mm'
+					self.footData.left_width = Math.floor(self.footData.left_width) + 'mm'
+					self.footData.right_width = Math.floor(self.footData.right_width) + 'mm'
 					self.footData.left_foot_size = (self.footData.left_foot_size - 200) * 0.2 + 30;
 					self.footData.right_foot_size = (self.footData.right_foot_size - 200) * 0.2 + 30;
 					self.footData.suggestShoe = 5;
+
+				// self.footData.left_urla="http://139.196.238.46:8097/20170703/00E0B4507DC320170703152808R.jpg",
+				// self.footData.right_urla="http://139.196.238.46:8097/20170703/00E0B4507DC320170703152808R.jpg"
 					self.$nextTick(function () {
 						document.getElementById("f_k").innerHTML = self.footData.footknowledge
 						var str = self.footData.footAdvice.replace(/{{footData.right_foot_size}}/g, self.footData.right_foot_size)
 						document.getElementById("f_a").innerHTML = str
+
+
+						//适配
+						var container = document.getElementById("imgContainer");
+						var cwidth = container.offsetWidth;
+						var cheight = container.offsetHeight;
+						var rateImg = 127.5/121.23	//这个比例固定
+						//计算比例 如果显示不下就搞撑满
+						if (cwidth / cheight > rateImg) {
+							self.imgHeight = "height:" + String(cwidth / 1.05 + 30) + "px";
+							container.style.height = String(cwidth / 1.05) + "px";
+						} 
 					})
 				}
 			}

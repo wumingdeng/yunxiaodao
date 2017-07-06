@@ -1,5 +1,5 @@
 <template>
-    <f7-page name="recordPage" navbar-through id="withdrawPage" infinite-scroll :infinite-scroll-preloader="isPreloader" @infinite="onInfinite">
+  <f7-page name="recordPage" navbar-through id="withdrawPage" infinite-scroll :infinite-scroll-preloader="isPreloader" @infinite="onInfinite">
     <f7-navbar sliding>
       <f7-nav-left>
           <f7-link icon="icon-back color-black color-black" @click="$router.go(-1)"></f7-link>
@@ -28,18 +28,18 @@
     <f7-table card>
       <f7-table-row>
         <f7-table-cell label :style="columnStyle_head">日期</f7-table-cell>
-        <f7-table-cell label :style="columnStyle_head">孕期</f7-table-cell>
+        <f7-table-cell label :style="columnStyle_head">孕周</f7-table-cell>
         <f7-table-cell numeric :style="columnStyle_head">体重 (kg)</f7-table-cell>
         <f7-table-cell label :style="columnStyle_head">状态</f7-table-cell>
       </f7-table-row>
       <f7-table-row v-for="(item,index) in weightInfo" :key="index">
-        <f7-table-cell label :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-if="item.recordDate">
+        <f7-table-cell label :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-show="item.recordDate">
             {{getRecordDate(item.recordDate)}}
         </f7-table-cell>
         <f7-table-cell label style='background-color:#fff5f7' :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_left" >
           {{item.week}}
         </f7-table-cell>
-        <f7-table-cell numeric :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right" v-if="item.weight">
+        <f7-table-cell numeric :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right">
           {{item.weight}}
         </f7-table-cell>
         <f7-table-cell label style='background-color:#fff5f7' :style="index==(weightInfo.length-1)?columnStyle_end:columnStyle_right_end" v-if="item.result">
@@ -209,6 +209,7 @@
 
       getRecordDate(date){
         console.log(date)
+        date = new Date(date).toLocaleString(); //转化成本地时间
         return date.substring(0,10)
       },
       getChartData(data) {

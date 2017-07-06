@@ -490,8 +490,12 @@ user_router.route('/getreport').post(function(req,res){
             db.sequelize.query(query, { replacements: [report_id], 
                 type: db.sequelize.QueryTypes.SELECT }
                 ).then(function(records){
-                if(records){
+                if(records && records.length > 0){
                     var record = records[0]
+                    if (!record) {
+                        res.json({data:[]})
+                        return;
+                    }
                     //取足部建议
                     db.users.findOne({where:{'wxid':openid}}).then(function(data){
                         if(data){
@@ -512,7 +516,7 @@ user_router.route('/getreport').post(function(req,res){
                             var footTypeAdvice = mem.m.footType_advice_configs
                             for (var i in footTypeAdvice) {
                                 var faData = footTypeAdvice[i]
-                                var fy = record.dataValues.left_foot_status == "正常足弓" ? record.dataValues.right_foot_status : record.dataValues.left_foot_status
+                                var fy = record.left_foot_status == "正常足弓" ? record.right_foot_status : record.left_foot_status
                                 if (faData.minWeek <= currentWeek && faData.maxWeek >= currentWeek && fy == faData.footType ) {
                                     record.footAdvice = faData.content;
                                 }

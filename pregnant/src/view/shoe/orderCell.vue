@@ -23,7 +23,7 @@
 			</div> -->
 			<f7-grid v-if="orderData.status==orderstatus.waitPay" style="width:100%;height:30px">
 				<f7-col><f7-button  style="border-color:#fd7f97;color:#fd7f97" @click.stop.prevent="onCancel">取消</f7-button></f7-col>
-				<f7-col><f7-button  style="background-color:#fd7f97" fill>支付</f7-button></f7-col>
+				<f7-col><f7-button  style="background-color:#fd7f97" fill @click="onPay">支付</f7-button></f7-col>
 			</f7-grid>
 			<f7-grid v-if="orderData.status==orderstatus.waitReceipt" style="width:100%;height:30px">
 				<f7-col><f7-button  style="border-color:#fd7f97;color:#fd7f97" @click.stop.prevent="openLogistics">查看物流</f7-button></f7-col>
@@ -78,6 +78,49 @@
 		},
 		methods:{
 			timeToDate:timeToDate,
+			onPay() {
+				debugger
+				this.$store.dispatch('orderpay',{
+					self:this,
+					info:{
+						oid: this.orderData.id
+					},
+					callback(self, res) {
+						if (res.body.w) {
+							// self.$f7.alert('','下单成功',function() {
+							// 	self.$router.push('/order')
+							// })
+						}
+						var payargs = {
+							 "appId":"wx5da59f32f8c2f724",     //公众号名称，由商户传入     
+		           "timeStamp":"1395712654",         //时间戳，自1970年以来的秒数     
+		           "nonceStr":"e61463f8efa94090b1f366cccfbbb444", //随机串     
+		           "package":"prepay_id=u802345jgfjsdfgsdg888",     
+		           "signType":"MD5",         //微信签名方式：     
+		           "paySign":"70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名 
+						}
+						payargs = res.body;
+						if (payargs.err ) {
+							self.$f7.alert('','支付失败');
+							return
+						}
+						if (typeof WeixinJSBridge == 'undefined') {
+							self.$f7.alert('','支付失败,请在微信中进行支付');
+							return
+						}
+						WeixinJSBridge.invoke('getBrandWCPayRequest', payargs, function(res){
+							console.log(res)
+						  if(res.err_msg == "get_brand_wcpay_request:ok"){
+								self.orderData.status = self.orderstatus.waitDeliver;
+						    // alert("支付成功");
+						    // 这里可以跳转到订单完成页面向用户展示
+						  }else{
+								self.$f7.alert('','支付失败,请重试');
+						  }
+						});
+					}
+				})
+			},
 			onCancel(){
 				//取消订单
 				this.$f7.confirm("","确定要取消订单？",()=>{

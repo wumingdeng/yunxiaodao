@@ -39,6 +39,9 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
      mem.r.client.hmset(message.Ticket, "open_id", message.FromUserName);
      res.reply('欢迎关注孕小岛!');
   }else if(message.Event === 'SCAN'){
+     for (v in message) {
+      console.log("key=" + v + '  value=' + message[v])
+     }
     //  res.reply('欢迎扫描测试号！'+message.EventKey+' '+message.FromUserName);
      mem.r.client.hmset(message.Ticket, "open_id", message.FromUserName);
      // res.reply('SCAN');

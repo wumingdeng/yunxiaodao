@@ -9,22 +9,27 @@
     </f7-navbar> -->
     <f7-page-content  style="-webkit-transform: translateZ(0px);">
   		<homeSwipe :swipeData="swipeData"></homeSwipe>
-  		<f7-block inner style="margin:-5px 0 0 0;font-size:17px;">
+  		<f7-block inner style="margin:-6px 0 0 0;font-size:17px;">
   			<span>{{productData.name}}</span>
-  			<span style="float:right;color:#ff0000;margin-right:20px">价格:{{productData.price}}元</span>
+  			<span style="float:right;color:#ff0000;margin-right:-3px">活动价: ¥{{productData.price}}元</span>
+        <s style="font-size:1em;float:right;color:#cdcdcd;margin:1px 6px 0 0;">¥869</s>
   		</f7-block>
   		
-  		<f7-card style="margin: 10px 0">
+  		<f7-card style="margin: 10px 0;box-shadow: 0 1px 1px rgba(0,0,0,.3);">
   			<f7-card-header>
   				详情介绍
   			</f7-card-header>
   			<f7-card-content style="">
-          <img 
+          <v-touch
+            tag='img' 
             style="width:100%; display:block;" 
             v-for="(n,index) in productData.introNum" 
             v-lazy="getImgSrc(n)"
-            @click="openPhotoBrowser(index)"
+            v-bind:enabled="{ swipe: false}"
+            @tap="openPhotoBrowser(index)"
+            @swipeup="onTouchStart"
             >
+          </v-touch>
           <f7-photo-browser
             ref="pb"
             :photos="photos"
@@ -33,6 +38,8 @@
             :loop=true
             :exposition=false
             :expositionHideCaptions=false
+            :lazyLoading=true
+            :lazyLoadingInPrevNext=true
             @click="onClickPB"
           ></f7-photo-browser>
   			</f7-card-content>
@@ -76,7 +83,11 @@
     	swipeData() {
     		var pdata = this.$store.state.productDetail
     		if (pdata && pdata.swipePic) {
-	    		return pdata.swipePic.split(',')
+          var imgArr = pdata.swipePic.split(',')
+          for (var i in imgArr) {
+            imgArr[i] = imgArr[i] + Global.verStr
+          }
+	    		return imgArr
     		} else {
     			return []
     		}
@@ -84,12 +95,15 @@
       photos() {
         var pArr = []
         for (var i = 1; i <= this.productData.introNum; ++i) {
-          pArr.push("static/assets/shoe/product/intro_p" + this.productData.pid + "/" + i +".jpg")
+          pArr.push("static/assets/shoe/product/intro_p" + this.productData.pid + "/" + i +".jpg" + Global.verStr)
         }
         return pArr
       }
     },
     methods:{
+      onTouchStart() {
+        console.log('touchstart')
+      },
       openPhotoBrowser(index) {
         this.$refs.pb.open(index)
         this.$refs.pb.enableExposition()
@@ -102,7 +116,7 @@
         this.pickerOpened = true;
       },
       getImgSrc(n) {
-        return "static/assets/shoe/product/intro_p" + this.productData.pid + "/" + n +".jpg"
+        return "static/assets/shoe/product/intro_p" + this.productData.pid + "/" + n +".jpg" + Global.verStr;
       },
       doIt:function() {
         //刷新一下。。。解决ios卡住的问题

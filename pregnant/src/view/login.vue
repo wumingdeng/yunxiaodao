@@ -58,7 +58,7 @@
 				        		self.$router.push({
 				        			path:'/' + page,	//默认跳到卖鞋页
 				        			query:{
-				        				rid: rid
+				        				rid: rid 
 				        			}
 				        		});
 				        		localStorage.rid = null;

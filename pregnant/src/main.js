@@ -24,9 +24,16 @@ Vue.config.productionTip = false
 import cfg from '../static/webConfig.json'
 Global.verStr = '?version=' + cfg.version
 
+//懒加载
 import VueLazyload from 'vue-lazyload'
+Vue.use(VueLazyload, {
+  preLoad: 2.5,
+  attempt: 3
+})
 
-Vue.use(VueLazyload)
+//vue-touch 事件插件
+import VueTouch from 'vue-touch'
+Vue.use(VueTouch, {name: 'v-touch'})
 
 /* eslint-disable no-new */
 Global.v = new Vue({
