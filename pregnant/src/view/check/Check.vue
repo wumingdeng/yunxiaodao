@@ -7,11 +7,11 @@
     <f7-card>
       <f7-card-content style='text-align: center;'>
         <div style='position:relative'>
-          <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -1.67em 1.2em'>!</div>
-          <h3 style="text-align:center;color:#fe4365">您已经怀孕　{{weightInfo.currentWeek}}　周</h3>
+          <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -1.67em 1.6em'>!</div>
+          <h3 style="text-align:center;color:#fe4365">恭喜您已怀孕　{{weightInfo.currentWeek}}　周</h3>
         </div>
   
-        <p style="text-align:center;font-size:16px">建议体重范围：{{weightInfo.currentStandard}}</p>
+        <p style="text-align:center;font-size:16px">本孕周建议体重：{{weightInfo.currentStandard}}</p>
         <p>
           <f7-grid>
             <f7-col>
@@ -34,7 +34,7 @@
       <f7-card-content>
         <f7-list form>
           <f7-list-item>
-            <f7-label style='width:5em'>当前体重:</f7-label>
+            <f7-label style='width:7em'>输入当前体重:</f7-label>
             <div style='width:25%'>
               <input id="inputWeight" style='text-align:center;background-color:#f0f0f0;height:30px;border-radius:1px' type="number" placeholder="">
             </div>
@@ -47,18 +47,16 @@
     <f7-card v-if='haveData'>
       <f7-card-content clase='p-title'>
         <div style='position:relative;top:-1em'>
-          <p style="text-align: center;position:absolute;left:0;top:-0.65em;right:0;font-size:18px;font-weight:bold;">体重管理评估</p>
+          <p style="text-align: center;position:absolute;left:0;top:-0.65em;right:0;font-size:18px;">{{storeTitle}}</p>
           <p style="text-align: center">
             <img src="static/assets/weight_title.jpg" style='width:100%' />
           </p>
         </div>
-        <custitle :name='"最新体重报告"'></custitle>
+        <custitle :name='"体重数据"'></custitle>
         <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg 于 {{recordDate}}</p>
-        <custitle :name='"目前体重情况"'></custitle>
-        <p style='font-size:16px'>&nbsp; &nbsp; &nbsp;{{weightInfo.result}}: 建议体重: {{weightInfo.standard}}</p>
-        <custitle :name='"体重管理建议"'></custitle>
+        <custitle :name='"评估结果"'></custitle>
         <div style='font-size:16px;margin-left: 23px;' v-if='overStandard' id='w_sug'></div>
-        <custitle :name='"饮食注意事项"'></custitle>
+        <custitle :name='"饮食贴士"'></custitle>
         <div v-if='overStandard' id='w_diet'></div>
       </f7-card-content>
     </f7-card>
@@ -123,7 +121,22 @@ export default {
     },
     overStandard(){
       return this.weightInfo.currentWeek<=40
+    },
+    storeTitle(){
+      var userInfo = window.Global.s.state.userinfo
+      var difdata = new Date(this.weightInfo.recordDate).getTime() - new Date(userInfo.lastPeriod).getTime()
+     
+      var week = Math.floor(difdata/(7 * 24 * 3600 * 1000))+1
+
+      console.log(week)
+
+      if(week == this.weightInfo.currentWeek){
+        return "体重管理评估"
+      }else{
+        return "历史体重管理评估"
+      }
     }
+
   },
 
   methods: {
@@ -181,7 +194,7 @@ export default {
     }
   },
   beforeCreate() {
-    document.title = '体重管理'
+    document.title = '孕期体重管理'
     this.$store.commit("LOADING",true)
   },
   mounted() {
@@ -201,7 +214,8 @@ export default {
           console.log('没有体重信息')
         } else {
           self.$nextTick(function () {
-          document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug || ''
+          var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
+          document.getElementById("w_sug").innerHTML = str || ''
           document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
           document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''

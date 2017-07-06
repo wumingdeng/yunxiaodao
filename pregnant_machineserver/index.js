@@ -28,12 +28,6 @@ app.all('*', function(req, res, next) {
 // upload
 require('./routes/imgUtils')(app)
 
-// error handler
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
-
 // api router
 for(var key in route_table){
     app.use('/api',route_table[key]);
@@ -43,6 +37,12 @@ utils.onServerInit();
 
 app.set('port', cfg.listen);
 app.use(express.static(path.join(__dirname, './uploads')));
+
+// error handler
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 process.on('uncaughtException', function (err) {
 　　console.log('Caught exception: ' + err);

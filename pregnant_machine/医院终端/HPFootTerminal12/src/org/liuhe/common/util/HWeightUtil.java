@@ -31,7 +31,7 @@ public class HWeightUtil implements SerialPortEventListener{
 		hwConfig.setParity(parity);
 	}
 	
-	public void doActionPerformed(){
+	public boolean doActionPerformed(){
 		result = "";
 		isOK = false;
 		OutputStream outputStream = null;
@@ -46,11 +46,16 @@ public class HWeightUtil implements SerialPortEventListener{
 			outputStream.flush();
 			serialPort.addEventListener(this);
 			serialPort.notifyOnDataAvailable(true);
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		} finally{
 			try {
-				outputStream.close();
+				if(outputStream!=null){
+					outputStream.close();
+				}
+				return false;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

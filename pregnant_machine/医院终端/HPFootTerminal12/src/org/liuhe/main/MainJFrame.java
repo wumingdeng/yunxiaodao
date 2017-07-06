@@ -30,7 +30,6 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -120,6 +119,8 @@ public class MainJFrame extends JFrame{
 		
 	// 首页屏保
 	private JustGetWeightThread getWeightThread;
+	// 後臺獲取體重綫程
+	private GetWeightThread bgGetWeightThread;
 	private UploadThread uploadThread;
 	private GetQrcodeThread getQrcodeThread;
 	private ArrayList<QRcodeInfo> qrcodeArr;
@@ -205,7 +206,7 @@ public class MainJFrame extends JFrame{
 	
 	private String openID = null;
 	private String cardID = null;
-		
+	
 	public static void main(String[] args) {
 		try {
 			System.setProperty("awt.useSystemAAFontSettings", "on");
@@ -664,6 +665,15 @@ public class MainJFrame extends JFrame{
 	private void toQrcodePane(boolean skip){
 		toQrcodeThread = new QrcodeThread(skip);
 		toQrcodeThread.start();
+		if(!skip){
+			if(this.bgGetWeightThread!=null){
+				// stop last first
+				this.bgGetWeightThread.stopRequest();
+			}
+			this.studyinfo.setCurrentWeight("0.0");
+			this.bgGetWeightThread = new GetWeightThread();
+			bgGetWeightThread.start();
+		}
 	}
 	private void initPeriodPane(){
 		JPanel periodTopPane = new JPanel();
@@ -1294,6 +1304,9 @@ public class MainJFrame extends JFrame{
 			else if(button == button_close){
 				uploadThread.stopRequest();
 				getQrcodeThread.stopRequest();
+				if(bgGetWeightThread!=null){
+					bgGetWeightThread.stopRequest();
+				}
 				System.exit(0);
 			}
 			// 弹出系统设置操作框
@@ -1358,7 +1371,7 @@ public class MainJFrame extends JFrame{
 				}
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(now_date);
-				cal.add(Calendar.DAY_OF_YEAR, -280);
+				cal.add(Calendar.DAY_OF_YEAR, -315);
 				Date before = cal.getTime();
 				if(before.getTime()>=period_date.getTime()){
 					MessageDialog option = new MessageDialog(MainJFrame.this,"请输入正确的末次月经时间！","提示",MessageDialog.WARNING_MESSAGE);
@@ -1376,7 +1389,7 @@ public class MainJFrame extends JFrame{
 						toStaturePane();
 					}else if(studyinfo.getWeight()==null){
 						toBeforeWeighPane();
-					}else if(studyinfo.getName()==null){
+					}else if(studyinfo.getName()==null && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1396,7 +1409,7 @@ public class MainJFrame extends JFrame{
 					toStaturePane();
 				}else if(studyinfo.getWeight() == null){
 					toBeforeWeighPane();
-				}else if(studyinfo.getName() == null){
+				}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1425,9 +1438,9 @@ public class MainJFrame extends JFrame{
 					toBeforeWeighPane();
 				}else{
 					sqlServer.addHeight(studyinfo.getOpen_id(), studyinfo.getHeight());
-					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")){
+					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")||studyinfo.getWeight().equals("null")){
 						toBeforeWeighPane();
-					}else if(studyinfo.getName() == null){
+					}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1456,7 +1469,7 @@ public class MainJFrame extends JFrame{
 					}
 				}
 			}
-			// 确认身高采集 modify by kael
+			// 确认孕前體重采集 modify by kael
 			else if(button == beforeWeightBut){
 				String stature = beforeWeightPane.getStature();
 				boolean single = beforeWeightPane.getIsSingle();
@@ -1472,11 +1485,11 @@ public class MainJFrame extends JFrame{
 				}
 				studyinfo.setWeight(stature);
 				studyinfo.setIsSingle(single);
-				if(studyinfo.getOpen_id() == null){
+				if(studyinfo.getOpen_id() == null && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					sqlServer.addWeight(studyinfo.getOpen_id(), studyinfo.getWeight(),single);
-					if(studyinfo.getName() == null){
+					if(studyinfo.getName() == null && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1486,13 +1499,14 @@ public class MainJFrame extends JFrame{
 							toScanPane();
 						}
 					}
+					beforeWeightPane.reset();
 				}
 			}
-			// 跳过身高采集 modify by kael
+			// 跳过孕前體重采集 modify by kael
 			else if(button == jumpBeforeWeightBut){
-				if(studyinfo.getOpen_id() == null){
+				if(studyinfo.getOpen_id() == null && ServerConfig.showIdPage){
 					toIndentityPane();
-				}else if(studyinfo.getName() == null){
+				}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1550,6 +1564,7 @@ public class MainJFrame extends JFrame{
 					if(button_oper.getTitle().equals("开始检测")||button_oper.getTitle().equals("请 重 试")){
 						scanFeetThread = new ScanFeetThread();
 						scanFeetThread.start();
+						button_oper.setEnabled(false);
 					}else if(button_oper.getTitle().equals("返回首页")){
 						scanFeetThread.stopRequest();
 						initPara();
@@ -1832,7 +1847,8 @@ public class MainJFrame extends JFrame{
 					String ticket = null;
 					while(ticket == null){
 						scene = QRCodeService2.getScene();
-						ticket = QRCodeService2.getTicket(access_token, 86400, scene);
+						long scene2 = serverConfig.getHospitalScene();
+						ticket = QRCodeService2.getTicket(access_token, 86400, scene2);
 						try {
 							Thread.sleep(200);
 						} catch (InterruptedException e) {
@@ -1969,7 +1985,7 @@ public class MainJFrame extends JFrame{
 							toStaturePane();
 						}else if(userinfo.get("weight") == null || userinfo.get("weight").equals("") || userinfo.get("weight").equals("null")){
 							toBeforeWeighPane();
-						}else if(userinfo.get("name") == null || userinfo.get("name").equals("") || userinfo.get("name").equals("null")){
+						}else if(ServerConfig.showIdPage && userinfo.get("name") == null || userinfo.get("name").equals("") || userinfo.get("name").equals("null")){
 							toIndentityPane();
 						}else{
 							// modify by kael
@@ -2190,40 +2206,46 @@ public class MainJFrame extends JFrame{
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}
-						System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
-						studyinfo.setWeight("0.0");
-						hwLabel.setText("体重：0.0kg");
-						
-						HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
-						hweightUtil.doActionPerformed();
-						int times = 0;
-						while(!hweightUtil.isOK()&&times<30){
-							try {
-								Thread.sleep(100);
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
+						if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
+							System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
+							studyinfo.setCurrentWeight("0.0");
+							hwLabel.setText("体重：0.0kg");
+							HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
+							hweightUtil.doActionPerformed();
+							int times = 0;
+							while(!hweightUtil.isOK()&&times<30){
+								try {
+									Thread.sleep(100);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								times++;
+								System.out.println("****************** HWeight wait 100ms ****************");
 							}
-							times++;
-							System.out.println("****************** HWeight wait 100ms ****************");
+							if(times == 30){
+								System.out.println("3秒后未读取到串口数据！退出读取数据");
+								MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
+								option.create_option();
+								button_oper.setTitle("开始检测");
+								button_oper.setEnabled(true);
+								return ;
+							}
+							Float weight = hweightUtil.getWeight();
+							if(weight == null){
+								System.out.println("读取的数据有误！退出重新测量");
+								MessageDialog option = new MessageDialog(MainJFrame.this,"获取体重数据失败，请重试！","提示",MessageDialog.WARNING_MESSAGE);
+								option.create_option();
+								button_oper.setTitle("开始检测");
+								button_oper.setEnabled(true);
+								return ;
+							}
+							weight = weight + Float.parseFloat(hwConfig.getWeight());
+							studyinfo.setCurrentWeight_float(weight);
+							hwLabel.setText("体重："+weight+"kg");
+						}else{
+							hwLabel.setText("体重："+studyinfo.getCurrentWeight()+"kg");
 						}
-						if(times == 30){
-							System.out.println("3秒后未读取到串口数据！退出读取数据");
-							MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
-							option.create_option();
-							button_oper.setTitle("开始检测");
-							return ;
-						}
-						Float weight = hweightUtil.getWeight();
-						if(weight == null){
-							System.out.println("读取的数据有误！退出重新测量");
-							MessageDialog option = new MessageDialog(MainJFrame.this,"获取体重数据失败，请重试！","提示",MessageDialog.WARNING_MESSAGE);
-							option.create_option();
-							button_oper.setTitle("开始检测");
-							return ;
-						}
-						weight = weight + Float.parseFloat(hwConfig.getWeight());
-						studyinfo.setWeight_float(weight);
-						hwLabel.setText("体重："+weight+"kg");
+//						hwLabel.setText("体重："+weight+"kg");
 					}
 				}
 				
@@ -2236,7 +2258,7 @@ public class MainJFrame extends JFrame{
 //					BufferedImage origImage = acquire.startAcquireOne();
 					// modify by kael
 					int k = serverConfig.getMachine_kind();
-					button_oper.setEnabled(false);
+//					button_oper.setEnabled(false);
 					BufferedImage origImage=null;
 					if(k==ServerConfig.MACHINE_KIND_A3){
 						origImage = acquire.startAcquireOne();
@@ -2511,6 +2533,7 @@ public class MainJFrame extends JFrame{
 //					}else{
 //						printQrcode.showUploaded();
 //					}
+//					button_oper.setEnabled(true);
 					if(printUtil.havePrint() != null){
 						if(Integer.parseInt(serverConfig.getMachine_type()) >= 2){
 							printUtil.setCinicInfo(studyinfo.getClinic_dept()+"  "+studyinfo.getQueue_num(), studyinfo.getWait_num());
@@ -2529,7 +2552,7 @@ public class MainJFrame extends JFrame{
 						}else{
 							printUtil.setQrcode(null);
 						}
-						// todo
+						// 
 						printUtil.printpaper();
 						if(ServerConfig.reportPrinterName.length()>0){
 							printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());
@@ -2668,40 +2691,97 @@ public class MainJFrame extends JFrame{
 						e1.printStackTrace();
 					}
 					System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
-					studyinfo.setWeight("0.0");
-					hwLabel.setText("体重：0.0kg");
-					
-					HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
-					hweightUtil.doActionPerformed();
-					int times = 0;
-					while(!hweightUtil.isOK()&&times<30){
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
+					if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
+						hwLabel.setText("体重：0.0kg");
+						HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
+						hweightUtil.doActionPerformed();
+						int times = 0;
+						while(!hweightUtil.isOK()&&times<30){
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+							times++;
+							System.out.println("****************** HWeight wait 100ms ****************");
 						}
-						times++;
-						System.out.println("****************** HWeight wait 100ms ****************");
+						if(times == 30){
+							System.out.println("3秒后未读取到串口数据！退出读取数据");
+							MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
+							option.create_option();
+							return ;
+						}
+						Float weight = hweightUtil.getWeight();
+						if(weight == null){
+							System.out.println("读取的数据有误！退出重新测量");
+							MessageDialog option = new MessageDialog(MainJFrame.this,"获取体重数据失败，请重试！","提示",MessageDialog.WARNING_MESSAGE);
+							option.create_option();
+							return ;
+						}
+						weight = weight + Float.parseFloat(hwConfig.getWeight());
+						studyinfo.setCurrentWeight_float(weight);
 					}
-					if(times == 30){
-						System.out.println("3秒后未读取到串口数据！退出读取数据");
-						MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
-						option.create_option();
-						return ;
-					}
-					Float weight = hweightUtil.getWeight();
-					if(weight == null){
-						System.out.println("读取的数据有误！退出重新测量");
-						MessageDialog option = new MessageDialog(MainJFrame.this,"获取体重数据失败，请重试！","提示",MessageDialog.WARNING_MESSAGE);
-						option.create_option();
-						return ;
-					}
-					weight = weight + Float.parseFloat(hwConfig.getWeight());
-					studyinfo.setWeight_float(weight);
+//					studyinfo.setWeight("0.0");
 					studyinfo.setHospital_no(serverConfig.getHospital_no());
 					studyinfo.setHospital_name(serverConfig.getHospital_name());
 					sqlServer.sendWeightBaseinfo(studyinfo);
 				}
+			}
+		}
+	}
+	
+	private class GetWeightThread extends Thread{
+		private volatile boolean stopRequested;
+		private Thread runThread;
+		public void run() {
+			runThread = Thread.currentThread();
+			stopRequested = false;
+			while ( !stopRequested ) {
+				try{
+					HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
+					boolean getWeightHardwareOk = hweightUtil.doActionPerformed();
+					if(getWeightHardwareOk){
+						int times = 0;
+						while(!hweightUtil.isOK()&&times<30){
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+							times++;
+						}
+						if(times == 30){
+							continue;
+						}
+						Float weight = hweightUtil.getWeight();
+						if(weight == null){
+							continue;
+						}
+						studyinfo.setCurrentWeight_float(weight);
+						stopRequested=true;
+					}else{
+						MessageDialog option = new MessageDialog(MainJFrame.this,"没有体重测试仪器，请重试！","提示",MessageDialog.WARNING_MESSAGE);
+						option.create_option();
+						// for test
+//						studyinfo.setCurrentWeight("48.5");
+						break;
+					}
+					if(!stopRequested){
+						try {
+							Thread.sleep(17000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}catch(Exception e){
+//					System.out.println(e.getStackTrace());
+				}
+			}
+		}
+		public void stopRequest() {
+			stopRequested = true;
+			if ( runThread != null ) {
+				runThread.interrupt();
 			}
 		}
 	}

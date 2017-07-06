@@ -3,7 +3,8 @@ module.exports = function(sequelize, DataTypes) {
   var hospitals = sequelize.define('hospitals', {
     // id:DataTypes.STRING,
     name: DataTypes.STRING,
-    host: DataTypes.STRING
+    host: DataTypes.STRING,
+    scene_id: DataTypes.INTEGER,
   },{
        timestamps: true,
        primaryKey: true

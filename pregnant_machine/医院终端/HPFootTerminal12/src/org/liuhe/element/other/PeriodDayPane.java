@@ -14,6 +14,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,7 +47,19 @@ public class PeriodDayPane extends JPanel{
         this(new Date());
     }
     public PeriodDayPane(Date date){
-    	select.setTime(date);
+//    	select.setTime(date);
+    	SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+    	Calendar cc = Calendar.getInstance();
+		cc.setTime(date);
+		cc.set(Calendar.DATE, cc.get(Calendar.DATE) - 1);
+		try {
+			Date endDate = dft.parse(dft.format(cc.getTime()));
+			select.setTime(endDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			select.setTime(date);
+		}
         initPanel();
     }
     

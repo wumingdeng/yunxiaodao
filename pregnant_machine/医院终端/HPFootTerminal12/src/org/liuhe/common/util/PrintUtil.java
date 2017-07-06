@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,11 +32,8 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.HashAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.PrinterName;
-import javax.print.attribute.standard.Sides;
-
 import org.liuhe.algorithm.config.ServerConfig;
 import org.liuhe.main.MainJFrame;
 
@@ -47,13 +43,11 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar; 
 
 import javax.print.attribute.DocAttributeSet;
 import javax.print.attribute.HashDocAttributeSet;
-import javax.print.attribute.HashPrintRequestAttributeSet;
 
 class WeightRate{
 	public double rateMin;
@@ -270,13 +264,20 @@ public class PrintUtil implements Printable{
 				return false;
 			}
 		    long weeks_long = ((now.getTime()-lastPeriod.getTime())/(7 * 24 * 3600 * 1000) + 1); 
-		    
-		    String leftLengthString = para[2].substring(0, para[2].indexOf("."))+"mm";
-			String rightLengthString = para[3].substring(0, para[3].indexOf("."))+"mm";
-			String leftWidthString = para[4].substring(0, para[4].indexOf("."))+"mm";
-			String rightWidthString = para[5].substring(0, para[5].indexOf("."))+"mm";
-			String leftArrowString = para[6].substring(0, para[6].indexOf("."))+"mm";
-			String rightArrowtring = para[7].substring(0, para[7].indexOf("."))+"mm";
+		    			
+		    int leftLengthIndex =  para[2].indexOf(".");
+			int rightLengthIndex =  para[3].indexOf(".");
+			int leftWidthIndex =  para[4].indexOf(".");
+			int rightWidthIndex =  para[5].indexOf(".");
+			int leftArrowIndex =  para[6].indexOf(".");
+			int rightArrowIndex =  para[7].indexOf(".");
+			
+			String leftLengthString = para[2].substring(0, leftLengthIndex<0?para[2].length():leftLengthIndex)+"mm";
+			String rightLengthString = para[3].substring(0, rightLengthIndex<0?para[3].length():rightLengthIndex)+"mm";
+			String leftWidthString = para[4].substring(0, leftWidthIndex<0?para[4].length():leftWidthIndex)+"mm";
+			String rightWidthString = para[5].substring(0, rightWidthIndex<0?para[5].length():rightWidthIndex)+"mm";
+			String leftArrowString = para[6].substring(0, leftArrowIndex<0?para[6].length():leftArrowIndex)+"mm";
+			String rightArrowtring = para[7].substring(0, rightArrowIndex<0?para[7].length():rightArrowIndex)+"mm";
 			String leftStatusString = para[8].replaceAll("足弓", "");
 			String rightStatusString = para[9].replaceAll("足弓", "");
 		    
@@ -358,7 +359,12 @@ public class PrintUtil implements Printable{
 		    s.setField("Month", String.valueOf(month+1));
 		    s.setField("Day", String.valueOf(date));
 		    s.setField("Weeks", String.valueOf(weeks_long));
-		    s.setField("Weight",para[1] );
+		    if(weight_float>0){
+		    	s.setField("Weight",para[1]+"kg" );
+			    s.setField("SuggestWeight", suggestionWeight);
+			    s.setField("BMI", bmi_str);
+		    }
+		    s.setField("Height",height_float*100+"cm" );
 		    s.setField("LLength", leftLengthString);
 		    s.setField("RLength", rightLengthString);
 		    s.setField("LWidth", leftWidthString);
@@ -367,8 +373,6 @@ public class PrintUtil implements Printable{
 		    s.setField("RFootType", rightStatusString);
 		    s.setField("LTypeWidth", leftArrowString);
 		    s.setField("RTypeWidth", rightArrowtring);
-		    s.setField("BMI", bmi_str);
-		    s.setField("SuggestWeight", suggestionWeight);
 		    s.setField("Syms", PrintUtil.Common_symptoms[week_index]);
 		    s.setField("Advices", PrintUtil.Doctor_advices[week_index]);
 		    s.setField("PregentWeeks", week_bound_start+"-"+week_bound_end);
@@ -580,7 +584,7 @@ public class PrintUtil implements Printable{
 	    //计算点数：2.28*72=164.409449点(一英寸有72点)
 	    //纸张大小 A4的大小//A4(595 X 842)设置打印区域，其实0,0应该是72,72，因为A4纸的默认X,Y边距是72
 	    paper.setSize(590,840);
-	    paper.setImageableArea(15,5, 150,440);//144
+	    paper.setImageableArea(15,5, 150,370);//144
 	    pageFormat.setPaper(paper);
 	    Book book = new Book();
 		book.append(this, pageFormat);
@@ -684,12 +688,19 @@ public class PrintUtil implements Printable{
 //					g2.drawString("左足弓:"+para[6]+"mm 右足弓:"+para[7]+"mm", 0, (float)(3*height+8));
 //					g2.drawString("左足态:"+para[8]+" 右足态:"+para[9], 0, (float)(4*height+10));
 					
-					String leftLengthString = para[2].substring(0, para[2].indexOf("."))+"mm";
-					String rightLengthString = para[3].substring(0, para[3].indexOf("."));
-					String leftWidthString = para[4].substring(0, para[4].indexOf("."))+"mm";
-					String rightWidthString = para[5].substring(0, para[5].indexOf("."));
-					String leftArrowString = para[6].substring(0, para[6].indexOf("."))+"mm";
-					String rightArrowtring = para[7].substring(0, para[7].indexOf("."));
+					int leftLengthIndex =  para[2].indexOf(".");
+					int rightLengthIndex =  para[3].indexOf(".");
+					int leftWidthIndex =  para[4].indexOf(".");
+					int rightWidthIndex =  para[5].indexOf(".");
+					int leftArrowIndex =  para[6].indexOf(".");
+					int rightArrowIndex =  para[7].indexOf(".");
+					
+					String leftLengthString = para[2].substring(0, leftLengthIndex<0?para[2].length():leftLengthIndex)+"mm";
+					String rightLengthString = para[3].substring(0, rightLengthIndex<0?para[3].length():rightLengthIndex);
+					String leftWidthString = para[4].substring(0, leftWidthIndex<0?para[4].length():leftWidthIndex)+"mm";
+					String rightWidthString = para[5].substring(0, rightWidthIndex<0?para[5].length():rightWidthIndex);
+					String leftArrowString = para[6].substring(0, leftArrowIndex<0?para[6].length():leftArrowIndex)+"mm";
+					String rightArrowtring = para[7].substring(0, rightArrowIndex<0?para[7].length():rightArrowIndex);
 					String leftStatusString = para[8].replaceAll("足弓", "");
 					String rightStatusString = para[9].replaceAll("足弓", "");
 					short totalLength=7;

@@ -1646,7 +1646,7 @@ public class FootPane extends JPanel implements ActionListener{
 				return foot_width_str;
 			}else{
 				// modify by kael
-				float w=(float) (width_pre+0.25+Math.random()*0.5);
+				float w=(float) (width_pre+0.125+Math.random()*0.25);
 				float num=(float)(Math.round(w*100.0)/100.0);
 				return String.valueOf(num);
 				// modify by kael over
