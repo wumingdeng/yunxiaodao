@@ -3,9 +3,7 @@
 		<f7-card>
 	
 			<f7-card-header>
-				<p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
-					<span style='font-family:hcpfont;'>*</span>
-					&nbsp;&nbsp;足部健康评测报告</p>
+				<p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>足部健康评测报告</p>
 				<span style="font-size:16px;"> {{reportDate}}</span>
 				</div>
 			</f7-card-header>
@@ -168,7 +166,7 @@ export default {
 					self.footData.suggestShoe = 5;
 					self.$nextTick(function () {
 						document.getElementById("f_k").innerHTML = self.footData.footknowledge
-						var str = self.footData.footAdvice.replace(/{{footData.right_foot_size}}/g, self.footData.right_foot_size)
+						var str = self.footData.footAdvice.replace(/{{footData.right_foot_size}}/g, self.footData.right_foot_size)  
 						document.getElementById("f_a").innerHTML = str
 					})
 				}

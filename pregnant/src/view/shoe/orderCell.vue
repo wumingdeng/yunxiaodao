@@ -44,14 +44,16 @@
 			return {
 				orderstatus:{
 					waitPay:0,	//待支付
-					waitDeliver:1,	//待发货
-					waitReceipt:2,	//待收货
-					waitEvaluate:3,	//待评价
-					finish:4,	//完成
-					cancel:5
+					waitChoice:1, //待备货
+					waitDeliver:2,	//待发货
+					waitReceipt:3,	//待收货
+					waitEvaluate:4,	//待评价
+					finish:5,	//完成
+					cancel:6
 				},
 				statusName:[
 					'待付款',
+					'待备货',
 					'待发货',
 					'待收货',
 					'待评价',
