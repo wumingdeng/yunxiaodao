@@ -60,7 +60,11 @@
   // require('echarts/lib/component/dataZoom');
   require('echarts/lib/component/tooltip');
   require('echarts/lib/component/markLine');
-  import moment from 'moment'
+  var moment
+  require.ensure('moment',function(){
+    moment = require('moment');
+  }, 'moment')
+  // import moment from 'moment'
   export default {
     data () {
       return {
