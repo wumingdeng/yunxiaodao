@@ -1262,8 +1262,10 @@ public class MainJFrame extends JFrame{
 		backThread = new BackTimerThread(title,clinic,time);
 		backThread.start();
 	}
+	
+	//末次月经面板与体重面板的初始化
 	private void initPanePara(){
-		beforeWeightPane.initPara();
+		beforeWeightPane.reset();
 		periodPane.initPara();
 	}
 	
@@ -2215,7 +2217,7 @@ public class MainJFrame extends JFrame{
 						}
 						if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 							System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
-							studyinfo.setCurrentWeight("0.0");
+//							studyinfo.setCurrentWeight("0.0");
 							hwLabel.setText("体重：0.0kg");
 							HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 							hweightUtil.doActionPerformed();
@@ -2547,7 +2549,7 @@ public class MainJFrame extends JFrame{
 						}else{
 							printUtil.setCinicInfo(null, null);
 						}
-						String[] para = {studyinfo.getHeight(),studyinfo.getWeight()
+						String[] para = {studyinfo.getHeight(),studyinfo.getCurrentWeight()
 								,studyinfo.getLeft_length(),studyinfo.getRight_length()
 								,studyinfo.getLeft_width(),studyinfo.getRight_width(),
 								studyinfo.getLeft_length_725(),studyinfo.getRight_length_725(),
@@ -2736,20 +2738,22 @@ public class MainJFrame extends JFrame{
 					//获取最新的报告记录
 					Map<String, String> map = new HashMap<String,String>();
 					map = sqlServer.getLastReportInfo(openID);
-					studyinfo.setLeft_urla(map.get("left_urla"));
-					studyinfo.setRight_urla(map.get("right_urla"));
-					studyinfo.setLeft_foot_size(map.get("left_foot_size"));
-					studyinfo.setLeft_foot_width(map.get("left_foot_width"));
-					studyinfo.setLeft_foot_width2(map.get("left_foot_width2"));
-					studyinfo.setLeft_foot_status(map.get("left_foot_status"));
-					studyinfo.setRight_foot_size(map.get("right_foot_size"));
-					studyinfo.setRight_foot_width(map.get("right_foot_width"));
-					studyinfo.setRight_foot_width2(map.get("right_foot_width2"));
-					studyinfo.setRight_foot_status(map.get("right_foot_status"));
-					studyinfo.setLeft_foot_size(map.get("left_length"));
-					studyinfo.setRight_length(map.get("right_length"));
-					studyinfo.setLeft_width(map.get("left_width"));
-					studyinfo.setRight_width(map.get("right_width"));
+					if(map!=null){
+						studyinfo.setLeft_urla(map.get("left_urla"));
+						studyinfo.setRight_urla(map.get("right_urla"));
+						studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+						studyinfo.setLeft_foot_width(map.get("left_foot_width"));
+						studyinfo.setLeft_foot_width2(map.get("left_foot_width2"));
+						studyinfo.setLeft_foot_status(map.get("left_foot_status"));
+						studyinfo.setRight_foot_size(map.get("right_foot_size"));
+						studyinfo.setRight_foot_width(map.get("right_foot_width"));
+						studyinfo.setRight_foot_width2(map.get("right_foot_width2"));
+						studyinfo.setRight_foot_status(map.get("right_foot_status"));
+						studyinfo.setLeft_length(map.get("left_length"));
+						studyinfo.setRight_length(map.get("right_length"));
+						studyinfo.setLeft_width(map.get("left_width"));
+						studyinfo.setRight_width(map.get("right_width"));
+					}
 				}
 			}
 		}
@@ -2761,9 +2765,9 @@ public class MainJFrame extends JFrame{
 		public void run() {
 			runThread = Thread.currentThread();
 			stopRequested = false;
+			HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 			while ( !stopRequested ) {
 				try{
-					HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 					boolean getWeightHardwareOk = hweightUtil.doActionPerformed();
 					if(getWeightHardwareOk){
 						int times = 0;
@@ -2788,12 +2792,12 @@ public class MainJFrame extends JFrame{
 //						MessageDialog option = new MessageDialog(MainJFrame.this,"没有体重测试仪器，请重试！","提示",MessageDialog.WARNING_MESSAGE);
 //						option.create_option();
 						// for test
-//						studyinfo.setCurrentWeight("48.5");
+//						studyinfo.setCurrentWeight("68.5");
 						break;
 					}
 					if(!stopRequested){
 						try {
-							Thread.sleep(17000);
+							Thread.sleep(7000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}

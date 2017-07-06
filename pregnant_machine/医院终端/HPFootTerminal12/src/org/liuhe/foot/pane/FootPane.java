@@ -1618,6 +1618,7 @@ public class FootPane extends JPanel implements ActionListener{
 	}
 	private String getFoot_length(float footLength){
 		String foot_length_str = calcUtil.getFootLength_mm(footLength,dpi,scale);
+//		return foot_length_str;
 		if(foot_length_pre==null||foot_length_pre.equals("")){
 			return foot_length_str;
 		}else{
@@ -1637,6 +1638,7 @@ public class FootPane extends JPanel implements ActionListener{
 	}
 	private String getFoot_width(){
 		String foot_width_str = calcUtil.getFootLength_mm(line_725.getLength()+line_635.getLength(),dpi,scale);
+//		return foot_width_str;
 		if(foot_width_pre==null||foot_width_pre.equals("")){
 			return foot_width_str;
 		}else{

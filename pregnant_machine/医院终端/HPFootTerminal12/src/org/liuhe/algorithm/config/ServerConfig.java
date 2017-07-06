@@ -44,6 +44,7 @@ public class ServerConfig {
 	private String clinicUrl;
 	private String uploadUrl;
 	private String dataUrl;
+	private String lastReportUrl;
 	
 	private String worktime;
 	private String interval;
@@ -288,6 +289,9 @@ public class ServerConfig {
 					setClinicUrl(jsonObject.getString("clinic_url"));
 					setUploadUrl(jsonObject.getString("upload_url"));
 					setDataUrl(jsonObject.getString("data_url"));
+					/*
+					setLastReportUrl(jsonObject.getString("latestreport_url"));
+					*/
 					setInterval(jsonObject.getString("space_day"));
 					setAppName(jsonObject.getString("app_name"));
 					System.out.println("-----------------------");
@@ -375,6 +379,14 @@ public class ServerConfig {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public String getLastReportUrl() {
+		return lastReportUrl;
+	}
+
+	public void setLastReportUrl(String lastReportUrl) {
+		this.lastReportUrl = lastReportUrl;
 	}
 	
 }
