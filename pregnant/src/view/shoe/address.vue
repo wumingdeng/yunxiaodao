@@ -64,8 +64,9 @@
 	</f7-page>
 </template>
 
-<script>
-	import vueArea from 'vue-area'
+<script>	
+	// var vueArea = require.ensure('vue-area',function(){},'vue-area')
+	var vueArea = require('vue-area')
 	export default {
 		name: 'address',
 		data() {

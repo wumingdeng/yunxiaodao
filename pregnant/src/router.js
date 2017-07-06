@@ -2,16 +2,22 @@ import VueRouter from 'vue-router'
 import Vue from 'vue'
 Vue.use(VueRouter)
 import Login from '@/view/login'
-import Check from '@/view/check/Check'
-import Record from '@/view/check/Record'
+// import Check from '@/view/check/Check'
+// const Check = resolve => require(['@/view/check/Check'], resolve)
+const Check = r => require.ensure([], () => r(require('@/view/check/Check')), 'moment')
+const Record = resolve => require(['@/view/check/Record'], resolve)
+// import Record from '@/view/check/Record'
 import Cycle from '@/view/check/Cycle'
-import UserInfo from '@/view/UserInfo'
+// import UserInfo from '@/view/UserInfo'
+// const UserInfo = resolve => require(['@/view/UserInfo'], resolve)
+const UserInfo = r => require.ensure([], () => r(require('@/view/UserInfo')), 'moment')
 import Foot from '@/view/foot/Foot'
 import shoeHome from '@/view/shoe/shoeHome'
 import shoeDetail from '@/view/shoe/shoeDetail'
 import Order from '@/view/shoe/order'
 import buyShoe from '@/view/shoe/buyShoe'
-import Address from '@/view/shoe/address'
+const Address = resolve => require(['@/view/shoe/address'], resolve)
+// import Address from '@/view/shoe/address'
 import Pay from '@/view/shoe/pay'
 
 // 根目录
