@@ -2760,8 +2760,8 @@ public class MainJFrame extends JFrame{
 						studyinfo.setCurrentWeight_float(weight);
 						stopRequested=true;
 					}else{
-						MessageDialog option = new MessageDialog(MainJFrame.this,"没有体重测试仪器，请重试！","提示",MessageDialog.WARNING_MESSAGE);
-						option.create_option();
+//						MessageDialog option = new MessageDialog(MainJFrame.this,"没有体重测试仪器，请重试！","提示",MessageDialog.WARNING_MESSAGE);
+//						option.create_option();
 						// for test
 //						studyinfo.setCurrentWeight("48.5");
 						break;
