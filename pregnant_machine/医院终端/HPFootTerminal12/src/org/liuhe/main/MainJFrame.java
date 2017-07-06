@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1261,6 +1262,11 @@ public class MainJFrame extends JFrame{
 		backThread = new BackTimerThread(title,clinic,time);
 		backThread.start();
 	}
+	private void initPanePara(){
+		beforeWeightPane.initPara();
+		periodPane.initPara();
+	}
+	
 	//脚型扫描页中读秒或者单击返回初始化
 	private void initPara(){
 		studyinfo = new FootStudyInfo();
@@ -2167,6 +2173,7 @@ public class MainJFrame extends JFrame{
 				int second = Integer.parseInt(count_label.getText());
 				if(second == 0){
 					stopRequested = true;
+					initPanePara();
 					toFirstPane();
 				}else{
 					second = second-1;
@@ -2725,6 +2732,26 @@ public class MainJFrame extends JFrame{
 					studyinfo.setHospital_no(serverConfig.getHospital_no());
 					studyinfo.setHospital_name(serverConfig.getHospital_name());
 					sqlServer.sendWeightBaseinfo(studyinfo);
+					
+					//获取最新的报告记录
+					Map<String, String> map = new HashMap<String,String>();
+					map = sqlServer.getLastReportInfo(openID);
+					if(map!=null){
+						studyinfo.setLeft_urla(map.get("left_urla"));
+						studyinfo.setRight_urla(map.get("right_urla"));
+						studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+						studyinfo.setLeft_foot_width(map.get("left_foot_width"));
+						studyinfo.setLeft_foot_width2(map.get("left_foot_width2"));
+						studyinfo.setLeft_foot_status(map.get("left_foot_status"));
+						studyinfo.setRight_foot_size(map.get("right_foot_size"));
+						studyinfo.setRight_foot_width(map.get("right_foot_width"));
+						studyinfo.setRight_foot_width2(map.get("right_foot_width2"));
+						studyinfo.setRight_foot_status(map.get("right_foot_status"));
+						studyinfo.setLeft_length(map.get("left_length"));
+						studyinfo.setRight_length(map.get("right_length"));
+						studyinfo.setLeft_width(map.get("left_width"));
+						studyinfo.setRight_width(map.get("right_width"));
+					}
 				}
 			}
 		}
@@ -2760,8 +2787,8 @@ public class MainJFrame extends JFrame{
 						studyinfo.setCurrentWeight_float(weight);
 						stopRequested=true;
 					}else{
-						MessageDialog option = new MessageDialog(MainJFrame.this,"没有体重测试仪器，请重试！","提示",MessageDialog.WARNING_MESSAGE);
-						option.create_option();
+//						MessageDialog option = new MessageDialog(MainJFrame.this,"没有体重测试仪器，请重试！","提示",MessageDialog.WARNING_MESSAGE);
+//						option.create_option();
 						// for test
 //						studyinfo.setCurrentWeight("48.5");
 						break;

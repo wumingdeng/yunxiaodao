@@ -37,7 +37,15 @@ public class ForePane extends JPanel{
     	String str04 = "取检测报告";
     	g2.drawString(str04, 60+differ_h, 180+differ_v);
     	
+    	g2.fillOval(40+differ_h, 220-13+differ_v, 10, 10);
+    	String str05 = "体重";
+    	g2.drawString(str05, 60+differ_h, 220+differ_v);
+    	
     	//g2.setPaint(Color.BLACK);
         //g2.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+	}
+	
+	public void setWeight(String weight){
+		
 	}
 }

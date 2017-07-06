@@ -175,7 +175,14 @@ public  class AcquireHelper {
 			process.waitFor();
 			System.out.println(process.exitValue()); 
 			BufferedImage bimg = ImageIO.read(new File(scanDir+"/Image/fin.jpg"));
-			return bimg;
+			// make contrast & brightness
+			ContrastFilter filter = new ContrastFilter();
+			filter.setBrightness((Integer.parseInt(config.getScan_bright())+100)*1.0f/100);
+			filter.setContrast((Integer.parseInt(config.getScan_constrast())+100)*1.0f/100);
+			BufferedImage bufImage = filter.filter(bimg, null);
+			saveJpgFile(bufImage,MainJFrame.scanExternProgramDir+"/Image/fin.jpg");
+			// 
+			return bufImage;
 			// modify by kael over
 		}catch(Exception e1) {
 			e1.printStackTrace();

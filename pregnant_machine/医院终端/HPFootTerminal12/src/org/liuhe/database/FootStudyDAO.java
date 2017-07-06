@@ -569,4 +569,95 @@ public class FootStudyDAO {
 			return false;
 		}
 	}
+	
+	/**
+	 * add by fizzo
+	 * 获取用户最新的足部报告信息
+	 *  yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,
+	 */
+	public Map<String, String> getLastReportInfo(String idValue){
+		String outputStr = "openid="+idValue;
+		JSONObject jsonObject = HttpUtil.httpRequest(serverConfig.getLastReportUrl(),"POST",outputStr);
+		if(jsonObject == null){
+			return null;
+		}
+		int errcode = jsonObject.getInt("errcode");
+        if(errcode==2){
+        	return null;
+        }else if(errcode == 3){
+        	return null;
+        }else{
+        	Map<String, String> map = new HashMap<String, String>();
+        	if(!jsonObject.getString("id").equals("")){
+        		map.put("id", jsonObject.getString("id"));
+        	}
+        	if(!jsonObject.getString("open_id").equals("")){
+        		map.put("open_id", jsonObject.getString("open_id"));
+        	}
+        	if(!jsonObject.getString("mac_id").equals("")){
+        		map.put("mac_id", jsonObject.getString("mac_id"));
+        	}
+        	if(!jsonObject.getString("card_id").equals("")){
+        		map.put("card_id", jsonObject.getString("card_id"));
+        	}
+        	if(!jsonObject.getString("name").equals("")){
+        		map.put("name", jsonObject.getString("name"));
+        	}
+        	if(!jsonObject.getString("age").equals("")){
+        		map.put("age", jsonObject.getString("age"));
+        	}
+        	if(!jsonObject.getString("sex").equals("")){
+        		map.put("sex", jsonObject.getString("sex"));
+        	}
+        	if(!jsonObject.getString("date_server").equals("")){
+        		map.put("date_server", jsonObject.getString("date_server"));
+        	}
+        	if(!jsonObject.getString("left_urla").equals("")){
+        		map.put("left_urla", jsonObject.getString("left_urla"));
+        	}
+        	if(!jsonObject.getString("right_urla").equals("")){
+        		map.put("right_urla", jsonObject.getString("right_urla"));
+        	}
+        	if(!jsonObject.getString("left_foot_size").equals("")){
+        		map.put("left_foot_size", jsonObject.getString("left_foot_size"));
+        	}
+        	if(!jsonObject.getString("left_foot_width").equals("")){
+        		map.put("left_foot_width", jsonObject.getString("left_foot_width"));
+        	}
+        	if(!jsonObject.getString("left_foot_width2").equals("")){
+        		map.put("left_foot_width2", jsonObject.getString("left_foot_width2"));
+        	}
+        	if(!jsonObject.getString("left_foot_status").equals("")){
+        		map.put("left_foot_status", jsonObject.getString("left_foot_status"));
+        	}
+        	
+        	if(!jsonObject.getString("right_foot_size").equals("")){
+        		map.put("right_foot_size", jsonObject.getString("right_foot_size"));
+        	}
+        	if(!jsonObject.getString("right_foot_width").equals("")){
+        		map.put("right_foot_width", jsonObject.getString("right_foot_width"));
+        	}
+        	if(!jsonObject.getString("right_foot_width2").equals("")){
+        		map.put("right_foot_width2", jsonObject.getString("right_foot_width2"));
+        	}
+        	if(!jsonObject.getString("right_foot_status").equals("")){
+        		map.put("right_foot_status", jsonObject.getString("right_foot_status"));
+        	}
+        	if(!jsonObject.getString("left_length").equals("")){
+        		map.put("left_length", jsonObject.getString("left_length"));
+        	}
+        	if(!jsonObject.getString("right_length").equals("")){
+        		map.put("right_length", jsonObject.getString("right_length"));
+        	}
+        	if(!jsonObject.getString("left_width").equals("")){
+        		map.put("left_width", jsonObject.getString("left_width"));
+        	}
+        	if(!jsonObject.getString("right_width").equals("")){
+        		map.put("right_width", jsonObject.getString("right_width"));
+        	}
+        	
+        	return map;
+        }
+		
+	}	
 }
