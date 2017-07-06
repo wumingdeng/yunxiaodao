@@ -131,9 +131,9 @@ export default {
       console.log(week)
 
       if(week == this.weightInfo.currentWeek){
-        return "体重管理评估"
+        return "体重评估报告"
       }else{
-        return "历史体重管理评估"
+        return "历史体重评估报告"
       }
     }
 
