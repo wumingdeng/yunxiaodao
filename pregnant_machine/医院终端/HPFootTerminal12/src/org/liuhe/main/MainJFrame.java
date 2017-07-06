@@ -665,13 +665,15 @@ public class MainJFrame extends JFrame{
 	private void toQrcodePane(boolean skip){
 		toQrcodeThread = new QrcodeThread(skip);
 		toQrcodeThread.start();
-		if(this.bgGetWeightThread!=null){
-			// stop last first
-			this.bgGetWeightThread.stopRequest();
+		if(!skip){
+			if(this.bgGetWeightThread!=null){
+				// stop last first
+				this.bgGetWeightThread.stopRequest();
+			}
+			this.studyinfo.setCurrentWeight("0.0");
+			this.bgGetWeightThread = new GetWeightThread();
+			bgGetWeightThread.start();
 		}
-		this.studyinfo.setCurrentWeight("0.0");
-		this.bgGetWeightThread = new GetWeightThread();
-		bgGetWeightThread.start();
 	}
 	private void initPeriodPane(){
 		JPanel periodTopPane = new JPanel();
@@ -2553,7 +2555,7 @@ public class MainJFrame extends JFrame{
 						// 
 						printUtil.printpaper();
 						if(ServerConfig.reportPrinterName.length()>0){
-							printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());
+							printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle(),studyinfo.getHeight_float());
 							boolean ok = printUtil.genReport();
 							if(ok){
 //								printUtil.doPrintReport(ServerConfig.reportPrinterName);

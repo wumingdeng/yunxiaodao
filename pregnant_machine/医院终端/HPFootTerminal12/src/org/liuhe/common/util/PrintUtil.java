@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,11 +32,8 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.HashAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.PrinterName;
-import javax.print.attribute.standard.Sides;
-
 import org.liuhe.algorithm.config.ServerConfig;
 import org.liuhe.main.MainJFrame;
 
@@ -47,13 +43,11 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar; 
 
 import javax.print.attribute.DocAttributeSet;
 import javax.print.attribute.HashDocAttributeSet;
-import javax.print.attribute.HashPrintRequestAttributeSet;
 
 class WeightRate{
 	public double rateMin;
@@ -79,6 +73,7 @@ public class PrintUtil implements Printable{
 	private String right_foot_advice = null;
 	private String[] para = null;
 	private String qrcode = null;
+	private float height;
 	private boolean isSingle = true;
 	public static int[] Weeks_index = {1,12,13,16,17,20,21,24,25,28,29,30,31,32,33,34,35,36,37,37,38,38,39,39,40,40} ;
 	public static String[] Common_symptoms = {
@@ -127,10 +122,11 @@ public class PrintUtil implements Printable{
 		this.wait_num = wait_num;
 	}
 	
-	public void setReportParam(String no, String date_yunfu,boolean isSingle){
+	public void setReportParam(String no, String date_yunfu,boolean isSingle,float height){
 		this.no = no;
 		this.date_yunfu = date_yunfu;
 		this.isSingle = isSingle;
+		this.height = height;
 	}
 	
 	public void setReportFootParam(String left_foot_status, String left_foot_advice,String right_foot_status, String right_foot_advice){
@@ -365,7 +361,8 @@ public class PrintUtil implements Printable{
 		    s.setField("Month", String.valueOf(month+1));
 		    s.setField("Day", String.valueOf(date));
 		    s.setField("Weeks", String.valueOf(weeks_long));
-		    s.setField("Weight",para[1] );
+		    s.setField("Weight",para[1]+"kg" );
+		    s.setField("Height",height+"cm" );
 		    s.setField("LLength", leftLengthString);
 		    s.setField("RLength", rightLengthString);
 		    s.setField("LWidth", leftWidthString);
