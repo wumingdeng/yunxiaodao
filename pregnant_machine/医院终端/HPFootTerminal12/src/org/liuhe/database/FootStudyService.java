@@ -77,5 +77,7 @@ public class FootStudyService {
 //	public String getAppAccessToken(String appname){
 //		return dao.getAppAccessToken(appname);
 //	}
-	
+	public Map<String,String> getLastReportInfo(String idValue){
+		return dao.getLastReportInfo(idValue);
+	}
 }

@@ -7,7 +7,7 @@
     <f7-card>
       <f7-card-content style='text-align: center;'>
         <div style='position:relative'>
-          <div style='font-family:hcpfont;color:#fa7699;font-size:35px;margin:0px 0px -1.67em 1.6em'>!</div>
+          <div style='font-family:hcpfont;color:#fa7699;font-size:35px;position:absolute;left:0em;top:-0.2em;right:-1.7em'>!</div>
           <h3 style="text-align:center;color:#fe4365">恭喜您已怀孕　{{weightInfo.currentWeek}}　周</h3>
         </div>
   
