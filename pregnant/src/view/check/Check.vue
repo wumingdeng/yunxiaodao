@@ -7,15 +7,12 @@
     <f7-card>
       <f7-card-content style='text-align: center;'>
         <div>
-          <h3 style="text-align:center;color:#fe4365;display:inline">恭喜您已怀孕 </h3>
-          <div style='display:inline;position:relative'>
-            <div style='font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:relative;top:11px; left:6px;'>!</div>
-            <h3 style="text-align:center;color:#fe4365;display:inline">{{weightInfo.currentWeek}}</h3>
+          <h3 style="text-align:center;color:#fe4365;display:inline">恭喜您已怀孕</h3>
+          <div style='display:inline'>
+            <div :style='weightInfo.currentWeek>9?ydSty:ydSty_1'>!</div>
+            <h3 style="text-align:center; color:#fe4365;display:inline">{{weightInfo.currentWeek}}&nbsp;</h3>
           </div>
-          <h3 style="text-align:center;color:#fe4365;display:inline">&nbsp; 周</h3>
-          <!--
-          <h3 style="text-align:center;color:#fe4365">恭喜您已怀孕　{{weightInfo.currentWeek}}　周</h3>
-          -->
+          <h3 style="text-align:center;color:#fe4365;display:inline">&nbsp;&nbsp;周</h3>
         </div>
   
         <p style="text-align:center;font-size:16px">本孕周建议体重：{{weightInfo.currentStandard}}</p>
@@ -102,7 +99,9 @@ export default {
       showPage:false,
       havaDiet: true,
       weightInfo: {},
-      testTip: ''
+      testTip: '',
+      ydSty:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:relative;top:10px;left:6px',
+      ydSty_1:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:relative;top:10px;left:2px',
     }
   },
   components: {
@@ -143,7 +142,6 @@ export default {
         return "历史体重评估报告"
       }
     }
-
   },
 
   methods: {
