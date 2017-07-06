@@ -60,6 +60,7 @@
   // require('echarts/lib/component/dataZoom');
   require('echarts/lib/component/tooltip');
   require('echarts/lib/component/markLine');
+  import moment from 'moment'
   export default {
     data () {
       return {
@@ -209,8 +210,9 @@
 
       getRecordDate(date){
         console.log(date)
-        date = new Date(date).toLocaleString(); //转化成本地时间
-        return date.substring(0,10)
+        var date = moment(date).format("YYYY-MM-DD")
+        // date = new Date(date).toLocaleString(); //转化成本地时间
+        return date
       },
       getChartData(data) {
         //取折线图数据

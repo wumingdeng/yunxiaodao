@@ -11,6 +11,7 @@ var config = require('../config.json')
 var sequelize = new Sequelize(config.dbname, config.user, config.pass, {
   host: config.dbaddr,
   port:config.port,
+  timezone:'+08:00',
   dialect: config.dialect,
   pool: {
     max: config.poolsize,
