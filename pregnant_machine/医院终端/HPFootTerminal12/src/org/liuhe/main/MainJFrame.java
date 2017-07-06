@@ -1262,8 +1262,10 @@ public class MainJFrame extends JFrame{
 		backThread = new BackTimerThread(title,clinic,time);
 		backThread.start();
 	}
+	
+	//末次月经面板与体重面板的初始化
 	private void initPanePara(){
-		beforeWeightPane.initPara();
+		beforeWeightPane.reset();
 		periodPane.initPara();
 	}
 	
