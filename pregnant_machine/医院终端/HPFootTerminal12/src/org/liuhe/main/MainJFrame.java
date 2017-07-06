@@ -2540,7 +2540,7 @@ public class MainJFrame extends JFrame{
 						}else{
 							printUtil.setCinicInfo(null, null);
 						}
-						String[] para = {studyinfo.getHeight(),studyinfo.getWeight()
+						String[] para = {studyinfo.getHeight(),studyinfo.getCurrentWeight()
 								,studyinfo.getLeft_length(),studyinfo.getRight_length()
 								,studyinfo.getLeft_width(),studyinfo.getRight_width(),
 								studyinfo.getLeft_length_725(),studyinfo.getRight_length_725(),
@@ -2763,7 +2763,7 @@ public class MainJFrame extends JFrame{
 //						MessageDialog option = new MessageDialog(MainJFrame.this,"没有体重测试仪器，请重试！","提示",MessageDialog.WARNING_MESSAGE);
 //						option.create_option();
 						// for test
-//						studyinfo.setCurrentWeight("48.5");
+//						studyinfo.setCurrentWeight("68.5");
 						break;
 					}
 					if(!stopRequested){
