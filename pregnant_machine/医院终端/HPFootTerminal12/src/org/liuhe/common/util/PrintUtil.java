@@ -73,7 +73,6 @@ public class PrintUtil implements Printable{
 	private String right_foot_advice = null;
 	private String[] para = null;
 	private String qrcode = null;
-	private float height;
 	private boolean isSingle = true;
 	public static int[] Weeks_index = {1,12,13,16,17,20,21,24,25,28,29,30,31,32,33,34,35,36,37,37,38,38,39,39,40,40} ;
 	public static String[] Common_symptoms = {
@@ -122,11 +121,10 @@ public class PrintUtil implements Printable{
 		this.wait_num = wait_num;
 	}
 	
-	public void setReportParam(String no, String date_yunfu,boolean isSingle,float height){
+	public void setReportParam(String no, String date_yunfu,boolean isSingle){
 		this.no = no;
 		this.date_yunfu = date_yunfu;
 		this.isSingle = isSingle;
-		this.height = height;
 	}
 	
 	public void setReportFootParam(String left_foot_status, String left_foot_advice,String right_foot_status, String right_foot_advice){
@@ -361,8 +359,12 @@ public class PrintUtil implements Printable{
 		    s.setField("Month", String.valueOf(month+1));
 		    s.setField("Day", String.valueOf(date));
 		    s.setField("Weeks", String.valueOf(weeks_long));
-		    s.setField("Weight",para[1]+"kg" );
-		    s.setField("Height",height+"cm" );
+		    if(weight_float>0){
+		    	s.setField("Weight",para[1]+"kg" );
+			    s.setField("SuggestWeight", suggestionWeight);
+			    s.setField("BMI", bmi_str);
+		    }
+		    s.setField("Height",height_float*100+"cm" );
 		    s.setField("LLength", leftLengthString);
 		    s.setField("RLength", rightLengthString);
 		    s.setField("LWidth", leftWidthString);
@@ -371,8 +373,6 @@ public class PrintUtil implements Printable{
 		    s.setField("RFootType", rightStatusString);
 		    s.setField("LTypeWidth", leftArrowString);
 		    s.setField("RTypeWidth", rightArrowtring);
-		    s.setField("BMI", bmi_str);
-		    s.setField("SuggestWeight", suggestionWeight);
 		    s.setField("Syms", PrintUtil.Common_symptoms[week_index]);
 		    s.setField("Advices", PrintUtil.Doctor_advices[week_index]);
 		    s.setField("PregentWeeks", week_bound_start+"-"+week_bound_end);

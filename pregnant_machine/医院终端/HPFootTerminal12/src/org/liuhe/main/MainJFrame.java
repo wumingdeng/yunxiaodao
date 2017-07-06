@@ -2555,7 +2555,7 @@ public class MainJFrame extends JFrame{
 						// 
 						printUtil.printpaper();
 						if(ServerConfig.reportPrinterName.length()>0){
-							printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle(),studyinfo.getHeight_float());
+							printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());
 							boolean ok = printUtil.genReport();
 							if(ok){
 //								printUtil.doPrintReport(ServerConfig.reportPrinterName);
