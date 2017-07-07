@@ -100,8 +100,8 @@ export default {
       havaDiet: true,
       weightInfo: {},
       testTip: '',
-      ydSty:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-12px;left:-8px',
-      ydSty_1:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-12px;left:-13px',
+      ydSty:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-11px;left:-8px',
+      ydSty_1:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-11px;left:-13px',
     }
   },
   components: {
