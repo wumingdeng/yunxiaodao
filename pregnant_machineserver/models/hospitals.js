@@ -5,6 +5,7 @@ module.exports = function(sequelize, DataTypes) {
     name: DataTypes.STRING,
     host: DataTypes.STRING,
     scene_id: DataTypes.INTEGER,
+    interval_days: DataTypes.INTEGER,
   },{
        timestamps: true,
        primaryKey: true

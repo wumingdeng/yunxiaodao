@@ -59,13 +59,14 @@
 	      <!-- <f7-input id="inputRemark" type="textarea" placeholder="" v-model="$store.state.remark"></f7-input> -->
 	    </f7-list-item>	    
 		</f7-list>
-		<p style="width:90%;margin:-15px auto 0 auto;"><f7-button style="background-color:#fa7699" big fill @click="onSure">确定</f7-button></p>
+		<p style="width:90%;margin:-15px auto 50px auto;"><f7-button style="background-color:#fa7699" big fill @click="onSure">确定</f7-button></p>
 		 <vueArea :props-show="show" :props-result="result" v-on:result="areaResult"></vueArea>
 	</f7-page>
 </template>
 
-<script>
-	import vueArea from 'vue-area'
+<script>	
+	// var vueArea = require.ensure('vue-area',function(){},'vue-area')
+	var vueArea = require('vue-area')
 	export default {
 		name: 'address',
 		data() {

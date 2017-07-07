@@ -2255,9 +2255,9 @@ public class MainJFrame extends JFrame{
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}
-						if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
+//						if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 							System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
-							studyinfo.setCurrentWeight("0.0");
+//							studyinfo.setCurrentWeight("0.0");
 							hwLabel.setText("体重：0.0kg");
 							HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 							hweightUtil.doActionPerformed();
@@ -2288,12 +2288,24 @@ public class MainJFrame extends JFrame{
 								button_oper.setEnabled(true);
 								return ;
 							}
+							float weight_already = 0.0f;
+							if(studyinfo.getCurrentWeight()!=null){
+								if(studyinfo.getCurrentWeight().length()!=0){
+									try{
+										weight_already = Float.parseFloat(studyinfo.getCurrentWeight());
+									}catch(Exception e){}
+								} 
+							}
+							
 							weight = weight + Float.parseFloat(hwConfig.getWeight());
+							if(weight<weight_already){
+								weight = weight_already;
+							}
 							studyinfo.setCurrentWeight_float(weight);
 							hwLabel.setText("体重："+weight+"kg");
-						}else{
-							hwLabel.setText("体重："+studyinfo.getCurrentWeight()+"kg");
-						}
+//						}else{
+//							hwLabel.setText("体重："+studyinfo.getCurrentWeight()+"kg");
+//						}
 //						hwLabel.setText("体重："+weight+"kg");
 					}
 				}
@@ -2589,7 +2601,7 @@ public class MainJFrame extends JFrame{
 						}else{
 							printUtil.setCinicInfo(null, null);
 						}
-						String[] para = {studyinfo.getHeight(),studyinfo.getWeight()
+						String[] para = {studyinfo.getHeight(),studyinfo.getCurrentWeight()
 								,studyinfo.getLeft_length(),studyinfo.getRight_length()
 								,studyinfo.getLeft_width(),studyinfo.getRight_width(),
 								studyinfo.getLeft_length_725(),studyinfo.getRight_length_725(),
@@ -2740,7 +2752,7 @@ public class MainJFrame extends JFrame{
 						e1.printStackTrace();
 					}
 					System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
-					if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
+//					if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 						hwLabel.setText("体重：0.0kg");
 						HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 						hweightUtil.doActionPerformed();
@@ -2767,9 +2779,22 @@ public class MainJFrame extends JFrame{
 							option.create_option();
 							return ;
 						}
+						
+						float weight_already = 0.0f;
+						if(studyinfo.getCurrentWeight()!=null){
+							if(studyinfo.getCurrentWeight().length()!=0){
+								try{
+									weight_already = Float.parseFloat(studyinfo.getCurrentWeight());
+								}catch(Exception e){}
+							} 
+						}
+						
 						weight = weight + Float.parseFloat(hwConfig.getWeight());
+						if(weight<weight_already){
+							weight = weight_already;
+						}
 						studyinfo.setCurrentWeight_float(weight);
-					}
+//					}
 //					studyinfo.setWeight("0.0");
 					studyinfo.setHospital_no(serverConfig.getHospital_no());
 					studyinfo.setHospital_name(serverConfig.getHospital_name());
@@ -2805,9 +2830,9 @@ public class MainJFrame extends JFrame{
 		public void run() {
 			runThread = Thread.currentThread();
 			stopRequested = false;
+			HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 			while ( !stopRequested ) {
 				try{
-					HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 					boolean getWeightHardwareOk = hweightUtil.doActionPerformed();
 					if(getWeightHardwareOk){
 						int times = 0;
@@ -2832,12 +2857,12 @@ public class MainJFrame extends JFrame{
 //						MessageDialog option = new MessageDialog(MainJFrame.this,"没有体重测试仪器，请重试！","提示",MessageDialog.WARNING_MESSAGE);
 //						option.create_option();
 						// for test
-//						studyinfo.setCurrentWeight("48.5");
+//						studyinfo.setCurrentWeight("68.5");
 						break;
 					}
 					if(!stopRequested){
 						try {
-							Thread.sleep(17000);
+							Thread.sleep(7000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}

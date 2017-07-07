@@ -622,7 +622,7 @@ tour_router.route('/yxd3').post(function(req,res){
                             "upload_url":cfg.serverAdress+':'+cfg.listen+"/serverftp4",
                             "data_url":cfg.serverAdress+':'+cfg.listen+"/api/serverdata",
                             "latestreport_url":cfg.serverAdress+':'+cfg.listen+"/api/get_user_latest_report",
-                            "space_day":"0",//"space_day":"30",
+                            "space_day":hos.interval_days+'',//"space_day":"30",
                             "app_name":"yxd","errcode":0,"errmsg":"ok2"})
                     }else{
                         res.json({"errcode":2,"errmsg":"成功连接数据服务器"})

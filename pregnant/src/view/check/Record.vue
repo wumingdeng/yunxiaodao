@@ -7,7 +7,7 @@
       <f7-nav-center sliding title="历史记录"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
-    <f7-page style='margin-top:15px'>
+    <!-- <f7-page style='margin-top:15px'> -->
     <div v-if="isNoData"
       style="text-align:center;height:100%;" 
     >
@@ -48,7 +48,7 @@
       </f7-table-row>
     </f7-table>
     </f7-card>
-     </f7-page>
+     <!-- </f7-page> -->
   </f7-page>
 </template>
 
@@ -60,7 +60,11 @@
   // require('echarts/lib/component/dataZoom');
   require('echarts/lib/component/tooltip');
   require('echarts/lib/component/markLine');
-  import moment from 'moment'
+  var moment
+  require.ensure('moment',function(){
+    moment = require('moment');
+  }, 'moment')
+  // import moment from 'moment'
   export default {
     data () {
       return {
