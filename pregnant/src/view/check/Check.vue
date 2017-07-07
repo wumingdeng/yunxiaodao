@@ -224,8 +224,8 @@ export default {
           console.log('没有体重信息')
         } else {
           self.$nextTick(function () {
-            
-          var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
+          var str = self.weightInfo.currentStandard.replace(/-/,'到')
+          str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, str)  
           document.getElementById("w_sug").innerHTML = str || ''
           document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
