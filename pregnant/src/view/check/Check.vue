@@ -42,7 +42,7 @@
             <div style='width:25%'>
               <input id="inputWeight" style='text-align:center;background-color:#f0f0f0;height:30px;border-radius:1px' type="number" placeholder="">
             </div>
-            <span style="width:10%">kg</span>
+            <span style="width:10%">&nbsp;kg</span>
             <f7-button style='width:30%;font-size:17px' class='cusBtn' fill @click='onFillWeight'>评估</f7-button>
           </f7-list-item>
         </f7-list>
@@ -175,7 +175,9 @@ export default {
                   
                   document.getElementById("inputWeight").value = ''
                   if(self.weightInfo.currentWeek>40) return 
-                  document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug || ''
+                  var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
+                  document.getElementById("w_sug").innerHTML = str || ''
+                  //document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug || ''
                   document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
                   document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
