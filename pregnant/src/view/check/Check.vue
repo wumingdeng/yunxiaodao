@@ -59,9 +59,9 @@
         <custitle :name='"体重数据"'></custitle>
         <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg 于 {{recordDate}}</p>
         <custitle :name='"评估结果"'></custitle>
-        <div style='font-size:16px;margin-left: 23px;' v-if='overStandard' id='w_sug'></div>
+        <div style='font-size:16px;margin-left: 23px;' id='w_sug'></div>
         <custitle :name='"饮食贴士"'></custitle>
-        <div v-if='overStandard' id='w_diet'></div>
+        <div  id='w_diet'></div>
       </f7-card-content>
     </f7-card>
     <f7-card v-else>
@@ -100,8 +100,8 @@ export default {
       havaDiet: true,
       weightInfo: {},
       testTip: '',
-      ydSty:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-10px;left:-8px',
-      ydSty_1:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-10px;left:-13px',
+      ydSty:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-12px;left:-8px',
+      ydSty_1:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-12px;left:-13px',
     }
   },
   components: {
@@ -174,12 +174,13 @@ export default {
                 self.$nextTick(function () {
                   
                   document.getElementById("inputWeight").value = ''
-                  if(self.weightInfo.currentWeek>40) return 
+                  
                   var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
                   document.getElementById("w_sug").innerHTML = str || ''
                   //document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug || ''
                   document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
+                  if(self.weightInfo.currentWeek>40) return 
                   document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
                  
                   document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
@@ -223,11 +224,12 @@ export default {
           console.log('没有体重信息')
         } else {
           self.$nextTick(function () {
-            if(self.weightInfo.currentWeek>40) return 
+            
           var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
           document.getElementById("w_sug").innerHTML = str || ''
           document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
+          if(self.weightInfo.currentWeek>40) return 
           document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
          
           document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
