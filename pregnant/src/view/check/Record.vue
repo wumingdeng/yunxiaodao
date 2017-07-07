@@ -7,7 +7,7 @@
       <f7-nav-center sliding title="历史记录"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
-    <f7-page style='margin-top:15px'>
+    <!-- <f7-page style='margin-top:15px'> -->
     <div v-if="isNoData"
       style="text-align:center;height:100%;" 
     >
@@ -48,7 +48,7 @@
       </f7-table-row>
     </f7-table>
     </f7-card>
-     </f7-page>
+     <!-- </f7-page> -->
   </f7-page>
 </template>
 
