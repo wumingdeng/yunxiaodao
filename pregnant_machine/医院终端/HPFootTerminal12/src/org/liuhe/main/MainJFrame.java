@@ -2215,7 +2215,7 @@ public class MainJFrame extends JFrame{
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}
-						if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
+//						if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 							System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
 //							studyinfo.setCurrentWeight("0.0");
 							hwLabel.setText("体重：0.0kg");
@@ -2248,12 +2248,24 @@ public class MainJFrame extends JFrame{
 								button_oper.setEnabled(true);
 								return ;
 							}
+							float weight_already = 0.0f;
+							if(studyinfo.getCurrentWeight()!=null){
+								if(studyinfo.getCurrentWeight().length()!=0){
+									try{
+										weight_already = Float.parseFloat(studyinfo.getCurrentWeight());
+									}catch(Exception e){}
+								} 
+							}
+							
 							weight = weight + Float.parseFloat(hwConfig.getWeight());
+							if(weight<weight_already){
+								weight = weight_already;
+							}
 							studyinfo.setCurrentWeight_float(weight);
 							hwLabel.setText("体重："+weight+"kg");
-						}else{
-							hwLabel.setText("体重："+studyinfo.getCurrentWeight()+"kg");
-						}
+//						}else{
+//							hwLabel.setText("体重："+studyinfo.getCurrentWeight()+"kg");
+//						}
 //						hwLabel.setText("体重："+weight+"kg");
 					}
 				}
@@ -2700,7 +2712,7 @@ public class MainJFrame extends JFrame{
 						e1.printStackTrace();
 					}
 					System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
-					if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
+//					if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 						hwLabel.setText("体重：0.0kg");
 						HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 						hweightUtil.doActionPerformed();
@@ -2727,9 +2739,22 @@ public class MainJFrame extends JFrame{
 							option.create_option();
 							return ;
 						}
+						
+						float weight_already = 0.0f;
+						if(studyinfo.getCurrentWeight()!=null){
+							if(studyinfo.getCurrentWeight().length()!=0){
+								try{
+									weight_already = Float.parseFloat(studyinfo.getCurrentWeight());
+								}catch(Exception e){}
+							} 
+						}
+						
 						weight = weight + Float.parseFloat(hwConfig.getWeight());
+						if(weight<weight_already){
+							weight = weight_already;
+						}
 						studyinfo.setCurrentWeight_float(weight);
-					}
+//					}
 //					studyinfo.setWeight("0.0");
 					studyinfo.setHospital_no(serverConfig.getHospital_no());
 					studyinfo.setHospital_name(serverConfig.getHospital_name());
