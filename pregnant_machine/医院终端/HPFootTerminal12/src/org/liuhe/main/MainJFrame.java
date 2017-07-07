@@ -9,16 +9,21 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -38,6 +43,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -117,7 +123,8 @@ public class MainJFrame extends JFrame{
 	private JLabel hospitalName;
 	private CardLayout topCard;
 	private JPanel title_center_pane;
-		
+	private JButton home;	
+	
 	// 首页屏保
 	private JustGetWeightThread getWeightThread;
 	// 後臺獲取體重綫程
@@ -232,6 +239,20 @@ public class MainJFrame extends JFrame{
 		createFrame();
     	createMainPane();
     	setVisible(true);
+    	setFrameSizeChange();
+	}
+	
+	//监听窗体的尺寸的改变
+	private void setFrameSizeChange(){
+		
+		this.addComponentListener(new ComponentAdapter(){        //为主面板添加窗口监听器
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+            	home.setLocation((int) (e.getComponent().getSize().getWidth()-80),-5);
+                System.out.println("-----------");
+            }
+        });
 	}
 	
 	private void initConfig(){
@@ -306,6 +327,21 @@ public class MainJFrame extends JFrame{
     	contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     	contentPane.setLayout(new BorderLayout());
     	setContentPane(contentPane);
+    	
+    	
+    	
+    	home = new JButton();
+		home.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\picture\\home.png"));
+		home.setMargin(new Insets(0,0,0,0));
+		home.setHideActionText(true);
+		home.setBorderPainted(false);
+		home.setFocusPainted(false);
+		home.setContentAreaFilled(false);
+		home.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		home.setBorder(new BevelBorder(BevelBorder.RAISED));
+		home.addActionListener(action_listener);
+		home.setBounds(width-80,-5, 60, 60);
+		this.add(home);
 	}
 	
 	private void createMainPane(){
@@ -393,13 +429,17 @@ public class MainJFrame extends JFrame{
 		hospitalName.setForeground(new Color(144,197,72));
 		title_west_pane.add(hospitalName);
 		
+		
+		
 		JPanel title_east_pane = new JPanel();
 		title_east_pane.setLayout(new FlowLayout(FlowLayout.LEFT,10,1));
 		title_east_pane.setOpaque(false);
 		topPane.add(title_east_pane,BorderLayout.EAST);
 		
+		
+		
 		JLabel card_label = new JLabel();
-		card_label.setPreferredSize(new Dimension(40,30));
+		card_label.setPreferredSize(new Dimension(140,30));
 		//card_label.setBackground(Color.red);
 		//card_label.setOpaque(true);
 		title_east_pane.add(card_label);
@@ -1331,7 +1371,7 @@ public class MainJFrame extends JFrame{
 				card.next(cardPane);
 			}
 			// 返回屏保首页
-			else if(button == button_first){
+			else if(button == button_first||button == home){
 				if(button_oper.getTitle().equals("开始检测")||button_oper.getTitle().equals("请 重 试")){
 					if(studyinfo.getHospital_no() != null){
 						if(printUtil.havePrint() == null){
