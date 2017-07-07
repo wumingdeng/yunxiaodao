@@ -10,14 +10,14 @@
 
     <f7-list id="userinfoForm" form style='margin-top:0px;'>
       <f7-list-item>
-        <f7-label style='width: 2em'>身高</f7-label>
+        <f7-label style='width: 3em'>身高</f7-label>
         <div class="item-input custom">
           <input id="heightInput" type="number" placeholder="" v-model="$store.state.userinfo.height">
         </div>
         <span style='width:43%'>&nbsp; cm</span>
       </f7-list-item>
       <f7-list-item>
-        <f7-label style='width: 4em'>孕前体重</f7-label>
+        <f7-label style='width: 5em'>孕前体重</f7-label>
         <div class="item-input custom">
           <input id="weightInput" type="number" placeholder="" v-model="$store.state.userinfo.weight">
         </div>
@@ -163,7 +163,7 @@
 
 <style scoped>
   .custom {
-    width: 100%;
+    width: 70%;
   }
   .custom input {
     text-align: right;

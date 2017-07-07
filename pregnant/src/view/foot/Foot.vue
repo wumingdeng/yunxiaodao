@@ -47,7 +47,7 @@
 			</f7-card-content>
 		</f7-card>
 	
-		<f7-card>
+		<f7-card v-if='haveAdvice'>
 		<!--
 			<f7-card-header>
 				<p style='color:#fa7190;width:100%;line-height:30px;text-align:center;'>
@@ -90,7 +90,7 @@
 			</f7-card-content>
 		</f7-card>
 	
-		<f7-card>
+		<f7-card v-if='haveKnowledge'>
 			<f7-card-content>
 				<div id='f_k'></div>
 			</f7-card-content>
@@ -107,6 +107,8 @@ export default {
 	data() {
 		return {
 			haveDate: false,
+			haveAdvice:false,
+			haveKnowledge:false,
 			footData: {
 				suggestShoe: 5
 			},
@@ -164,10 +166,17 @@ export default {
 					self.footData.left_foot_size = (self.footData.left_foot_size - 200) * 0.2 + 30;
 					self.footData.right_foot_size = (self.footData.right_foot_size - 200) * 0.2 + 30;
 					self.footData.suggestShoe = 5;
+					
+					self.haveKnowledge = !(self.footData.footknowledge==undefined || self.footData.footknowledge=="" || self.footData.footknowledge==null)
+					self.haveAdvice = !(self.footData.footAdvice==undefined || self.footData.footAdvice=="" || self.footData.footAdvice==null)
 					self.$nextTick(function () {
-						document.getElementById("f_k").innerHTML = self.footData.footknowledge
-						var str = self.footData.footAdvice.replace(/{{footData.right_foot_size}}/g, self.footData.right_foot_size)  
-						document.getElementById("f_a").innerHTML = str
+						if(self.haveKnowledge){
+							document.getElementById("f_k").innerHTML = self.footData.footknowledge
+						}
+						if(self.haveAdvice){
+							var str = self.footData.footAdvice.replace(/{{footData.right_foot_size}}/g, self.footData.right_foot_size)  
+							document.getElementById("f_a").innerHTML = str
+						}
 					})
 				}
 			}

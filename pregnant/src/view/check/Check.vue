@@ -7,12 +7,12 @@
     <f7-card>
       <f7-card-content style='text-align: center;'>
         <div>
-          <h3 style="text-align:center;color:#fe4365;display:inline">恭喜您已怀孕</h3>
-          <div style='display:inline'>
+          <h3 style="text-align:center;color:#fe4365;display:inline">恭喜您已怀孕&nbsp;&nbsp;&nbsp;</h3>
+          <div style='display:inline;position:relative;'>
             <div :style='weightInfo.currentWeek>9?ydSty:ydSty_1'>!</div>
-            <h3 style="text-align:center; color:#fe4365;display:inline">{{weightInfo.currentWeek}}&nbsp;</h3>
+            <h3 style="text-align:center; color:#fe4365;display:inline">{{weightInfo.currentWeek}}</h3>
           </div>
-          <h3 style="text-align:center;color:#fe4365;display:inline">&nbsp;&nbsp;周</h3>
+          <h3 style="text-align:center;color:#fe4365;display:inline">&nbsp;&nbsp;&nbsp;周</h3>
         </div>
   
         <p style="text-align:center;font-size:16px">本孕周建议体重：{{weightInfo.currentStandard}}</p>
@@ -59,9 +59,9 @@
         <custitle :name='"体重数据"'></custitle>
         <p style='font-size:16px'> &nbsp; &nbsp; &nbsp;{{weightInfo.weight}}kg 于 {{recordDate}}</p>
         <custitle :name='"评估结果"'></custitle>
-        <div style='font-size:16px;margin-left: 23px;' v-if='overStandard' id='w_sug'></div>
+        <div style='font-size:16px;margin-left: 23px;' id='w_sug'></div>
         <custitle :name='"饮食贴士"'></custitle>
-        <div v-if='overStandard' id='w_diet'></div>
+        <div  id='w_diet'></div>
       </f7-card-content>
     </f7-card>
     <f7-card v-else>
@@ -100,8 +100,8 @@ export default {
       havaDiet: true,
       weightInfo: {},
       testTip: '',
-      ydSty:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:relative;top:10px;left:6px',
-      ydSty_1:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:relative;top:10px;left:2px',
+      ydSty:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-12px;left:-8px',
+      ydSty_1:'font-family:hcpfont;color:#fa7699;font-size:35px;display:inline;position:absolute;top:-12px;left:-13px',
     }
   },
   components: {
@@ -174,12 +174,13 @@ export default {
                 self.$nextTick(function () {
                   
                   document.getElementById("inputWeight").value = ''
-                  if(self.weightInfo.currentWeek>40) return 
+                  
                   var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
                   document.getElementById("w_sug").innerHTML = str || ''
                   //document.getElementById("w_sug").innerHTML = self.weightInfo.tip.con_sug || ''
                   document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
+                  if(self.weightInfo.currentWeek>40) return 
                   document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
                  
                   document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
@@ -223,11 +224,12 @@ export default {
           console.log('没有体重信息')
         } else {
           self.$nextTick(function () {
-            if(self.weightInfo.currentWeek>40) return 
+            
           var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
           document.getElementById("w_sug").innerHTML = str || ''
           document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
+          if(self.weightInfo.currentWeek>40) return 
           document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
          
           document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
