@@ -1618,43 +1618,43 @@ public class FootPane extends JPanel implements ActionListener{
 	}
 	private String getFoot_length(float footLength){
 		String foot_length_str = calcUtil.getFootLength_mm(footLength,dpi,scale);
-//		return foot_length_str;
-		if(foot_length_pre==null||foot_length_pre.equals("")){
-			return foot_length_str;
-		}else{
-			float length_float = Float.parseFloat(foot_length_str);//预测数据区间为上一次数据的+(0.0,1.0)
-			float length_pre = Float.parseFloat(foot_length_pre);
-			if(length_pre<length_float&&length_float<length_pre+1){
-				return foot_length_str;
-			}else{
-				// modify by kael
-				float l=(float) (length_pre+0.25+Math.random()*0.5);
-				float num=(float)(Math.round(l*100.0)/100.0);
-				return String.valueOf(num);
-				// modify by kael over
-//				return String.valueOf(length_pre+0.25+Math.random()*0.5);//否则返回上一数据+(0.25,0.75)
-			}
-		}
+		return foot_length_str;
+//		if(foot_length_pre==null||foot_length_pre.equals("")){
+//			return foot_length_str;
+//		}else{
+//			float length_float = Float.parseFloat(foot_length_str);//预测数据区间为上一次数据的+(0.0,1.0)
+//			float length_pre = Float.parseFloat(foot_length_pre);
+//			if(length_pre<length_float&&length_float<length_pre+1){
+//				return foot_length_str;
+//			}else{
+//				// modify by kael
+//				float l=(float) (length_pre+0.25+Math.random()*0.5);
+//				float num=(float)(Math.round(l*100.0)/100.0);
+//				return String.valueOf(num);
+//				// modify by kael over
+////				return String.valueOf(length_pre+0.25+Math.random()*0.5);//否则返回上一数据+(0.25,0.75)
+//			}
+//		}
 	}
 	private String getFoot_width(){
 		String foot_width_str = calcUtil.getFootLength_mm(line_725.getLength()+line_635.getLength(),dpi,scale);
-//		return foot_width_str;
-		if(foot_width_pre==null||foot_width_pre.equals("")){
-			return foot_width_str;
-		}else{
-			float width_float = Float.parseFloat(foot_width_str);//预测数据区间为上一次数据的+(0.0,0.5)
-			float width_pre = Float.parseFloat(foot_width_pre);
-			if(width_pre<width_float&&width_float<width_pre+0.5){
-				return foot_width_str;
-			}else{
-				// modify by kael
-				float w=(float) (width_pre+0.125+Math.random()*0.25);
-				float num=(float)(Math.round(w*100.0)/100.0);
-				return String.valueOf(num);
-				// modify by kael over
-//				return String.valueOf(width_pre+0.125+Math.random()*0.25);//否则返回上一数据+(0.125,0.375)
-			}
-		}
+		return foot_width_str;
+//		if(foot_width_pre==null||foot_width_pre.equals("")){
+//			return foot_width_str;
+//		}else{
+//			float width_float = Float.parseFloat(foot_width_str);//预测数据区间为上一次数据的+(0.0,0.5)
+//			float width_pre = Float.parseFloat(foot_width_pre);
+//			if(width_pre<width_float&&width_float<width_pre+0.5){
+//				return foot_width_str;
+//			}else{
+//				// modify by kael
+//				float w=(float) (width_pre+0.125+Math.random()*0.25);
+//				float num=(float)(Math.round(w*100.0)/100.0);
+//				return String.valueOf(num);
+//				// modify by kael over
+////				return String.valueOf(width_pre+0.125+Math.random()*0.25);//否则返回上一数据+(0.125,0.375)
+//			}
+//		}
 	}
 	
 	private void judgeBreak(){							//判断两个段位内点的X轴坐标
