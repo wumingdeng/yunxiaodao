@@ -44,7 +44,8 @@ namespace TwainDemo
         #endregion
 
         public static string[] inputParams;
-        public static string machineName;
+        //public static string machineName;
+        //public static string defaultMachineName;
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
@@ -58,7 +59,8 @@ namespace TwainDemo
             }
             Program.inputParams = args;
             string cfg = System.Environment.CurrentDirectory + "\\cfg.ini";
-            Program.machineName = Program.ReadIniData("Printer", Program.inputParams[0], "", cfg);
+            //Program.machineName = Program.ReadIniData("Printer", Program.inputParams[0], "", cfg);
+            //Program.defaultMachineName = Program.ReadIniData("Printer", "left", "", cfg);
             //MessageBox.Show(machineName);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
