@@ -26,10 +26,14 @@ tour_router.route('/scanverify').post(function(req,res){
                 if(err){
                     res.json({"errcode":3,"errmsg":"查询验证数据失败！"})
                 }else{
-                    if(obj.open_id===undefined){
+                    if(obj===undefined || obj == null){
                         res.json({"errcode":3,"errmsg":"查询验证数据失败！"})
                     }else{
-                        res.json({"errcode":0,"errmsg":"ok","open_id":obj.open_id})
+                        if(obj.open_id===undefined){
+                            res.json({"errcode":3,"errmsg":"查询验证数据失败！"})
+                        }else{
+                            res.json({"errcode":0,"errmsg":"ok","open_id":obj.open_id})
+                        }
                     }
                 }
             });
