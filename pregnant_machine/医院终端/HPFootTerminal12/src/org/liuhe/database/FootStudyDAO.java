@@ -588,8 +588,9 @@ public class FootStudyDAO {
         	return null;
         }else{
         	Map<String, String> map = new HashMap<String, String>();
-        	if(!jsonObject.getString("id").equals("")){
-        		map.put("id", jsonObject.getString("id"));
+        	if(!jsonObject.getString("data").equals("")){
+        		JSONArray json = JSONArray.fromObject(jsonObject.getString("data"));
+        		jsonObject = JSONObject.fromObject(json.get(0));
         	}
         	if(!jsonObject.getString("open_id").equals("")){
         		map.put("open_id", jsonObject.getString("open_id"));

@@ -162,7 +162,7 @@ public class FootCalcUtil {
 				return type+"型基宽";
 			}
 		}
-		return null;
+		return "";
 	}
 	/**
 	 * 根据半型宽判断整数型宽
@@ -170,15 +170,17 @@ public class FootCalcUtil {
 	 * @return 整数型宽
 	 * */
 	public String getwidthname(String width){
-		if(width.startsWith("1")){
-			return "一型";
-		}else if(width.startsWith("2")){
-			return "二型";
-		}else if(width.startsWith("3")){
-			return "三型";
-		}else if(width.startsWith("4")){
-			return "四型";
+		if(width != null){
+			if(width.startsWith("1")){
+				return "一型";
+			}else if(width.startsWith("2")){
+				return "二型";
+			}else if(width.startsWith("3")){
+				return "三型";
+			}else if(width.startsWith("4")){
+				return "四型";
+			}
 		}
-		return null;
+		return "";
 	}
 }

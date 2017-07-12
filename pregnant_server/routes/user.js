@@ -85,7 +85,7 @@ function getWeightTipInfo(week, result) {
     var tip = mem.m.weightAdvice_configs
     var w_size = getWeightSize(result)
     for (var i = 0 in tip) {
-        if (week >= tip[i].minweek && week <= tip[i].maxweek && w_size==tip[i].type) {
+        if (w_size==tip[i].type) {
             tipInfo.con_sug = tip[i].con_sug
             tipInfo.con_diet = tip[i].con_diet
             break;

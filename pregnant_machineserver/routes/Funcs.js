@@ -26,10 +26,14 @@ tour_router.route('/scanverify').post(function(req,res){
                 if(err){
                     res.json({"errcode":3,"errmsg":"查询验证数据失败！"})
                 }else{
-                    if(obj.open_id===undefined){
+                    if(obj===undefined || obj == null){
                         res.json({"errcode":3,"errmsg":"查询验证数据失败！"})
                     }else{
-                        res.json({"errcode":0,"errmsg":"ok","open_id":obj.open_id})
+                        if(obj.open_id===undefined){
+                            res.json({"errcode":3,"errmsg":"查询验证数据失败！"})
+                        }else{
+                            res.json({"errcode":0,"errmsg":"ok","open_id":obj.open_id})
+                        }
                     }
                 }
             });
@@ -537,7 +541,7 @@ tour_router.route('/get_user_latest_report').post(function(req,res){
     console.log('get_user_latest_report at:'+Date.now())
     var openid = req.body.openid || ''
      if(openid === ''){
-        res.json({error:g.errorCode.WRONG_PARAM})
+        res.json({error:g.errorCode.WRONG_PARAM,errcode:2})
     }else{
         getLatestReport(openid,res)
    }
@@ -565,12 +569,12 @@ function getLatestReport(openid,res){
         type: db.sequelize.QueryTypes.SELECT }
         ).then(function(records){
         if(records){
-            res.json({data:records})
+            res.json({data:records,errcode:0})
         }else{
-            res.json({data:[]})
+            res.json({data:[],errcode:0})
         }
     }).catch(function(err){
-        res.json({error:g.errorCode.WRONG_SQL})
+        res.json({error:g.errorCode.WRONG_SQL,errcode:2})
     })
 }
 
@@ -611,6 +615,7 @@ tour_router.route('/yxd3').post(function(req,res){
             if(data){
                 db.hospitals.findOne({where:{id:data.hospital_no}}).then(function(hos){
                     if(hos){
+                        console.log(hos.interval_days)
                         res.json({"hospital_no":hos.id,"machine_type":"2",
                             "hospital_name":hos.name,"worktime":"23:00",//"hospital_scene":hos.scene_id,
                             "db_ip":"","db_port":"",
@@ -622,7 +627,7 @@ tour_router.route('/yxd3').post(function(req,res){
                             "upload_url":cfg.serverAdress+':'+cfg.listen+"/serverftp4",
                             "data_url":cfg.serverAdress+':'+cfg.listen+"/api/serverdata",
                             "latestreport_url":cfg.serverAdress+':'+cfg.listen+"/api/get_user_latest_report",
-                            "space_day":"0",//"space_day":"30",
+                            "space_day":hos.interval_days+'',//"space_day":"30",
                             "app_name":"yxd","errcode":0,"errmsg":"ok2"})
                     }else{
                         res.json({"errcode":2,"errmsg":"成功连接数据服务器"})

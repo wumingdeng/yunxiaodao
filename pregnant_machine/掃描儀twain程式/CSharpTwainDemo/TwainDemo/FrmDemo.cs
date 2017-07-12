@@ -44,20 +44,27 @@ namespace TwainDemo
                 Directory.CreateDirectory(mImagePath);
             }
             mTwain.Language = TwLanguage.CHINESE_SINGAPORE;
-            mTwain.IsTwain2Enable = false;
+            mTwain.IsTwain2Enable = true;
             mTwain.OpenDSM();
             List<string> srclst = new List<string>();
-            int index = 0;
+            //int index = 0;
             for (int i = 0; i < mTwain.SourcesCount; i++)
             {
-                if (mTwain.GetSourceProductName(i).Equals(Program.machineName))
-                {
+                //Console.WriteLine("name is:"+mTwain.GetSourceProductName(i));
+                //if (mTwain.GetSourceProductName(i).Equals(Program.machineName))
+                //{
                     srclst.Add(mTwain.GetSourceProductName(i));
-                    index = i;
-                }
+                //    index = i;
+                //}
             }
-            mTwain.SourceIndex = index;
-            mTwain.OpenDataSource();
+            //Console.WriteLine(index);
+            //if(index == -1)
+            //{
+                //MessageBox.Show("can not find " + Program.machineName);
+            //    return;
+            //}
+            //mTwain.SourceIndex = index;
+            //mTwain.OpenDataSource();
             combo_Dev.DataSource = srclst;
             mTwain.EndXfer += twEndXfer;
 
@@ -83,7 +90,7 @@ namespace TwainDemo
             //    mTwain.Capabilities.PixelType.Set(TwPixelType.Gray);
             //}
             mTwain.ShowUI = false;
-            mTwain.DisableAfterAcquire = true;
+            mTwain.DisableAfterAcquire = false;
             mTwain.Acquire();
             mTwain.AcquireError += MTwain_AcquireError;
             mTwain.AcquireCompleted += MTwain_AcquireCompleted;
@@ -116,8 +123,8 @@ namespace TwainDemo
         {
             try
             {
-                //mTwain.SourceIndex = combo_Dev.SelectedIndex;
-                //mTwain.OpenDataSource();
+                mTwain.SourceIndex = combo_Dev.SelectedIndex;
+                mTwain.OpenDataSource();
                 var _resolutions = mTwain.Capabilities.XResolution.Get();
                 List<string> dpilst = new List<string>();
                 for (var i = 0; i < _resolutions.Count; i++)

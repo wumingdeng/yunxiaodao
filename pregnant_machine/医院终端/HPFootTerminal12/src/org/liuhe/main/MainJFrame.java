@@ -9,11 +9,14 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -38,6 +41,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -117,7 +121,8 @@ public class MainJFrame extends JFrame{
 	private JLabel hospitalName;
 	private CardLayout topCard;
 	private JPanel title_center_pane;
-		
+	private JButton home;	
+	
 	// 首页屏保
 	private JustGetWeightThread getWeightThread;
 	// 後臺獲取體重綫程
@@ -232,6 +237,20 @@ public class MainJFrame extends JFrame{
 		createFrame();
     	createMainPane();
     	setVisible(true);
+    	setFrameSizeChange();
+	}
+	
+	//监听窗体的尺寸的改变
+	private void setFrameSizeChange(){
+		
+		this.addComponentListener(new ComponentAdapter(){        //为主面板添加窗口监听器
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+            	home.setLocation((int) (e.getComponent().getSize().getWidth()-80),-5);
+                System.out.println("-----------");
+            }
+        });
 	}
 	
 	private void initConfig(){
@@ -306,6 +325,21 @@ public class MainJFrame extends JFrame{
     	contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     	contentPane.setLayout(new BorderLayout());
     	setContentPane(contentPane);
+    	
+    	
+    	
+    	home = new JButton();
+		home.setIcon(new ImageIcon(System.getProperty("user.dir")+"\\picture\\home.png"));
+		home.setMargin(new Insets(0,0,0,0));
+		home.setHideActionText(true);
+		home.setBorderPainted(false);
+		home.setFocusPainted(false);
+		home.setContentAreaFilled(false);
+		home.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		home.setBorder(new BevelBorder(BevelBorder.RAISED));
+		home.addActionListener(action_listener);
+		home.setBounds(width-80,-5, 60, 60);
+		this.add(home);
 	}
 	
 	private void createMainPane(){
@@ -393,13 +427,17 @@ public class MainJFrame extends JFrame{
 		hospitalName.setForeground(new Color(144,197,72));
 		title_west_pane.add(hospitalName);
 		
+		
+		
 		JPanel title_east_pane = new JPanel();
 		title_east_pane.setLayout(new FlowLayout(FlowLayout.LEFT,10,1));
 		title_east_pane.setOpaque(false);
 		topPane.add(title_east_pane,BorderLayout.EAST);
 		
+		
+		
 		JLabel card_label = new JLabel();
-		card_label.setPreferredSize(new Dimension(40,30));
+		card_label.setPreferredSize(new Dimension(140,30));
 		//card_label.setBackground(Color.red);
 		//card_label.setOpaque(true);
 		title_east_pane.add(card_label);
@@ -666,6 +704,9 @@ public class MainJFrame extends JFrame{
 	private void toQrcodePane(boolean skip){
 		toQrcodeThread = new QrcodeThread(skip);
 		toQrcodeThread.start();
+
+		studyinfo = new FootStudyInfo();
+		openID = null;
 		if(!skip){
 			if(this.bgGetWeightThread!=null){
 				// stop last first
@@ -1331,7 +1372,7 @@ public class MainJFrame extends JFrame{
 				card.next(cardPane);
 			}
 			// 返回屏保首页
-			else if(button == button_first){
+			else if(button == button_first||button == home){
 				if(button_oper.getTitle().equals("开始检测")||button_oper.getTitle().equals("请 重 试")){
 					if(studyinfo.getHospital_no() != null){
 						if(printUtil.havePrint() == null){
@@ -1389,15 +1430,15 @@ public class MainJFrame extends JFrame{
 				studyinfo.setDate_yunfu_str(period_str);
 				int zhou = (int)(((now_date.getTime()-period_date.getTime())/(24*60*60*1000))/7);
 				studyinfo.setPeriod(zhou);
-				if(studyinfo.getOpen_id()==null){
+				if(studyinfo.getOpen_id()==null || studyinfo.getOpen_id().equals("") || studyinfo.getOpen_id().equalsIgnoreCase("null")){
 					toStaturePane();
 				}else{
 					sqlServer.addPeriodDate(studyinfo.getOpen_id(), studyinfo.getDate_yunfu_str());
-					if(studyinfo.getHeight()==null){
+					if(studyinfo.getHeight()==null || studyinfo.getHeight().equals("") || studyinfo.getHeight().equalsIgnoreCase("null")){
 						toStaturePane();
-					}else if(studyinfo.getWeight()==null){
+					}else if(studyinfo.getWeight()==null || studyinfo.getWeight().equals("") || studyinfo.getWeight().equalsIgnoreCase("null")){
 						toBeforeWeighPane();
-					}else if(studyinfo.getName()==null && ServerConfig.showIdPage){
+					}else if((studyinfo.getName()==null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1411,13 +1452,13 @@ public class MainJFrame extends JFrame{
 			}
 			// 跳过末次月经
 			else if(button == jumpPeriod){
-				if(studyinfo.getOpen_id() == null){
+				if(studyinfo.getOpen_id() == null || studyinfo.getOpen_id().equals("") || studyinfo.getOpen_id().equalsIgnoreCase("null")){
 					toStaturePane();
-				}else if(studyinfo.getHeight() == null){
+				}else if(studyinfo.getHeight() == null || studyinfo.getHeight().equals("") || studyinfo.getHeight().equalsIgnoreCase("null") ){
 					toStaturePane();
-				}else if(studyinfo.getWeight() == null){
+				}else if(studyinfo.getWeight() == null || studyinfo.getWeight().equals("") || studyinfo.getWeight().equalsIgnoreCase("null")){
 					toBeforeWeighPane();
-				}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
+				}else if((studyinfo.getName() == null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1446,9 +1487,9 @@ public class MainJFrame extends JFrame{
 					toBeforeWeighPane();
 				}else{
 					sqlServer.addHeight(studyinfo.getOpen_id(), studyinfo.getHeight());
-					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")||studyinfo.getWeight().equals("null")){
+					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")||studyinfo.getWeight().equalsIgnoreCase("null")){
 						toBeforeWeighPane();
-					}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
+					}else if((studyinfo.getName() == null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1462,11 +1503,11 @@ public class MainJFrame extends JFrame{
 			}
 			// 跳过身高采集
 			else if(button == jumpStature){
-				if(studyinfo.getOpen_id() == null){
+				if(studyinfo.getOpen_id() == null || studyinfo.getOpen_id().equals("") || studyinfo.getOpen_id().equalsIgnoreCase("null")){
 					toBeforeWeighPane();
-				}else if(studyinfo.getName() == null){
+				}else if(studyinfo.getName() == null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")){
 					toBeforeWeighPane();
-				}else if(studyinfo.getWeight() == null){
+				}else if(studyinfo.getWeight() == null || studyinfo.getWeight().equals("") || studyinfo.getWeight().equalsIgnoreCase("null")){
 					toBeforeWeighPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1497,7 +1538,7 @@ public class MainJFrame extends JFrame{
 					toIndentityPane();
 				}else{
 					sqlServer.addWeight(studyinfo.getOpen_id(), studyinfo.getWeight(),single);
-					if(studyinfo.getName() == null && ServerConfig.showIdPage){
+					if((studyinfo.getName() == null  || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1514,7 +1555,7 @@ public class MainJFrame extends JFrame{
 			else if(button == jumpBeforeWeightBut){
 				if(studyinfo.getOpen_id() == null && ServerConfig.showIdPage){
 					toIndentityPane();
-				}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
+				}else if((studyinfo.getName() == null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -2159,10 +2200,6 @@ public class MainJFrame extends JFrame{
 			runThread = Thread.currentThread();
 			stopRequested = false;
 			card.show(cardPane, "back");
-			
-			studyinfo = new FootStudyInfo();
-			openID = null;
-			cardID = null;
 			title_label.setText(title);
 			clinic_label.setText(clinic);
 			count_label.setText(time);
@@ -2175,6 +2212,10 @@ public class MainJFrame extends JFrame{
 				int second = Integer.parseInt(count_label.getText());
 				if(second == 0){
 					stopRequested = true;
+//					studyinfo = new FootStudyInfo();
+//					openID = null;
+					cardID = null;
+				
 					initPanePara();
 					toFirstPane();
 				}else{
@@ -2215,7 +2256,7 @@ public class MainJFrame extends JFrame{
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}
-						if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
+//						if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 							System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
 //							studyinfo.setCurrentWeight("0.0");
 							hwLabel.setText("体重：0.0kg");
@@ -2248,12 +2289,24 @@ public class MainJFrame extends JFrame{
 								button_oper.setEnabled(true);
 								return ;
 							}
+							float weight_already = 0.0f;
+							if(studyinfo.getCurrentWeight()!=null){
+								if(studyinfo.getCurrentWeight().length()!=0){
+									try{
+										weight_already = Float.parseFloat(studyinfo.getCurrentWeight());
+									}catch(Exception e){}
+								} 
+							}
+							
 							weight = weight + Float.parseFloat(hwConfig.getWeight());
+							if(weight<weight_already){
+								weight = weight_already;
+							}
 							studyinfo.setCurrentWeight_float(weight);
 							hwLabel.setText("体重："+weight+"kg");
-						}else{
-							hwLabel.setText("体重："+studyinfo.getCurrentWeight()+"kg");
-						}
+//						}else{
+//							hwLabel.setText("体重："+studyinfo.getCurrentWeight()+"kg");
+//						}
 //						hwLabel.setText("体重："+weight+"kg");
 					}
 				}
@@ -2699,13 +2752,14 @@ public class MainJFrame extends JFrame{
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
+					
 					System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
-					if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
+//					if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 						hwLabel.setText("体重：0.0kg");
 						HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 						hweightUtil.doActionPerformed();
 						int times = 0;
-						while(!hweightUtil.isOK()&&times<30){
+						while(!hweightUtil.isOK()&&times<20){
 							try {
 								Thread.sleep(100);
 							} catch (InterruptedException e1) {
@@ -2714,8 +2768,8 @@ public class MainJFrame extends JFrame{
 							times++;
 							System.out.println("****************** HWeight wait 100ms ****************");
 						}
-						if(times == 30){
-							System.out.println("3秒后未读取到串口数据！退出读取数据");
+						if(times == 20){
+							System.out.println("2秒后未读取到串口数据！退出读取数据");
 							MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
 							option.create_option();
 							return ;
@@ -2727,33 +2781,45 @@ public class MainJFrame extends JFrame{
 							option.create_option();
 							return ;
 						}
+						
+						float weight_already = 0.0f;
+						if(studyinfo.getCurrentWeight()!=null){
+							if(studyinfo.getCurrentWeight().length()!=0){
+								try{
+									weight_already = Float.parseFloat(studyinfo.getCurrentWeight());
+								}catch(Exception e){}
+							} 
+						}
+						
 						weight = weight + Float.parseFloat(hwConfig.getWeight());
+						if(weight<weight_already){
+							weight = weight_already;
+						}
 						studyinfo.setCurrentWeight_float(weight);
-					}
-//					studyinfo.setWeight("0.0");
+//					}
 					studyinfo.setHospital_no(serverConfig.getHospital_no());
 					studyinfo.setHospital_name(serverConfig.getHospital_name());
 					sqlServer.sendWeightBaseinfo(studyinfo);
 					
 					//获取最新的报告记录
-					Map<String, String> map = new HashMap<String,String>();
-					map = sqlServer.getLastReportInfo(openID);
-					if(map!=null){
-						studyinfo.setLeft_urla(map.get("left_urla"));
-						studyinfo.setRight_urla(map.get("right_urla"));
-						studyinfo.setLeft_foot_size(map.get("left_foot_size"));
-						studyinfo.setLeft_foot_width(map.get("left_foot_width"));
-						studyinfo.setLeft_foot_width2(map.get("left_foot_width2"));
-						studyinfo.setLeft_foot_status(map.get("left_foot_status"));
-						studyinfo.setRight_foot_size(map.get("right_foot_size"));
-						studyinfo.setRight_foot_width(map.get("right_foot_width"));
-						studyinfo.setRight_foot_width2(map.get("right_foot_width2"));
-						studyinfo.setRight_foot_status(map.get("right_foot_status"));
-						studyinfo.setLeft_length(map.get("left_length"));
-						studyinfo.setRight_length(map.get("right_length"));
-						studyinfo.setLeft_width(map.get("left_width"));
-						studyinfo.setRight_width(map.get("right_width"));
-					}
+//					Map<String, String> map = new HashMap<String,String>();
+//					map = sqlServer.getLastReportInfo(openID);
+//					if(map!=null){
+//						studyinfo.setLeft_urla(map.get("left_urla"));
+//						studyinfo.setRight_urla(map.get("right_urla"));
+//						studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+//						studyinfo.setLeft_foot_width(map.get("left_foot_width"));
+//						studyinfo.setLeft_foot_width2(map.get("left_foot_width2"));
+//						studyinfo.setLeft_foot_status(map.get("left_foot_status"));
+//						studyinfo.setRight_foot_size(map.get("right_foot_size"));
+//						studyinfo.setRight_foot_width(map.get("right_foot_width"));
+//						studyinfo.setRight_foot_width2(map.get("right_foot_width2"));
+//						studyinfo.setRight_foot_status(map.get("right_foot_status"));
+//						studyinfo.setLeft_length(map.get("left_length"));
+//						studyinfo.setRight_length(map.get("right_length"));
+//						studyinfo.setLeft_width(map.get("left_width"));
+//						studyinfo.setRight_width(map.get("right_width"));
+//					}
 				}
 			}
 		}

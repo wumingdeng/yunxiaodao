@@ -251,7 +251,8 @@ public class PrintUtil implements Printable{
 				if(this.date_yunfu==null){
 					this.date_yunfu = "";
 				}
-				String str_lastPeriod = this.date_yunfu.substring(0, this.date_yunfu.indexOf("T"));
+				int idxT =  this.date_yunfu.indexOf("T");
+				String str_lastPeriod = this.date_yunfu.substring(0,idxT<=0?this.date_yunfu.length():idxT);
 				lastPeriod = format2.parse(str_lastPeriod);
 			} catch (ParseException e) {
 				e.printStackTrace();

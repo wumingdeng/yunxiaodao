@@ -94,6 +94,8 @@ CREATE TABLE `hospitals` (
 `updatedAt`  datetime NULL DEFAULT NULL ,
 `host`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `favicon`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`interval_days` int(11) NOT NULL DEFAULT '0' COMMENT '扫描间隔时间',
+`scene_id` int(11) unsigned DEFAULT NULL COMMENT '渠道ID',
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
