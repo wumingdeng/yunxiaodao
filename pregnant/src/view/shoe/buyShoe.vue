@@ -164,7 +164,7 @@
   			this.$store.commit('SHOE_TYPE',this.nowType)
         this.$store.state.nowPicture = this.selectColorImg;
         // this.$emit('close');
-        this.$f7.closeModal()
+        this.$f7.closeModal(null,false)
   			this.$router.push('/address')
   		},
       onClose() {

@@ -105,7 +105,9 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    //不打包moment不需要的语音包
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|zh-cn/)
   ]
 })
 

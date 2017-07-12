@@ -135,7 +135,7 @@
       },
     	onInfinite(event, done){
     		//获取数据
-            console.log('pulldown...')
+        console.log('pulldown...')
     		this.getData(done);
     	},
     	getData(callback){
@@ -167,6 +167,7 @@
     },
     mounted() {
     	//取订单数据
+      this.$f7.initPageInfiniteScroll('#app');
     	this.getData();
     }
   }

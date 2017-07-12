@@ -2,7 +2,7 @@
 	<f7-page navbar-through>
 		<f7-navbar sliding>
       <f7-nav-left>
-          <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
+          <f7-link icon="icon-back color-black" @click="onBack"></f7-link>
       </f7-nav-left>
       <f7-nav-center sliding title="邮寄地址"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
@@ -43,18 +43,18 @@
 			<f7-list-item>
 	      <f7-label>所在地区</f7-label>
     		<!-- <chinaCity style="margin-left:5px;" v-model="cityInfo" :initInfo="cityInit" :test='87'></chinaCity> -->
-	      <f7-input id="inputLocation" type="text" readonly placeholder="点击选择所在地区" @click="onSelectArea" v-model="showArea"></f7-input>
+	      <f7-input id="inputLocation" type="text" readonly placeholder=" 点击选择" @click="onSelectArea" v-model="showArea"></f7-input>
 	    </f7-list-item>
 	    <f7-list-item>
 				<f7-label style="margin-top:-65px;">详细地址</f7-label>
 				<div class="item-input">
-					<textarea id="inputAddress" style="margin:3px 0;border:1px solid #aaaaaa;padding-left:5px;" type="textarea" v-model="$store.state.userinfo.address"></textarea>
+					<textarea id="inputAddress" style="margin:3px 0;border:1px solid #eeeeee;padding-left:5px;" type="textarea" v-model="$store.state.userinfo.address"></textarea>
 				</div>
 	    </f7-list-item>
 	    <f7-list-item>
 				<f7-label style="margin-top:-65px;">备注</f7-label>
 				<div class="item-input">
-					<textarea id="inputRemark" style="margin:3px 0;border:1px solid #aaaaaa;padding-left:5px;" type="textarea" v-model="$store.state.remark"></textarea>
+					<textarea id="inputRemark" style="margin:3px 0 10px;border:1px solid #eeeeee;padding-left:5px;" type="textarea" v-model="$store.state.remark"></textarea>
 				</div>
 	      <!-- <f7-input id="inputRemark" type="textarea" placeholder="" v-model="$store.state.remark"></f7-input> -->
 	    </f7-list-item>	    
@@ -67,6 +67,7 @@
 <script>	
 	// var vueArea = require.ensure('vue-area',function(){},'vue-area')
 	var vueArea = require('vue-area')
+	import g from '../../globals/global.js'
 	export default {
 		name: 'address',
 		data() {
@@ -105,6 +106,19 @@
 			"vueArea":vueArea
 		},
 		methods:{
+			onBack() {
+				if (g.isIphone()) {
+					//this.$store.state.isReload = true;
+					//this.$store.state.isLogin = false;
+					this.$router.push({
+						path: 'shoeDetail'
+					})
+					return
+				}
+				this.$router.push({
+					path:'/shoeDetail'
+				});
+			},
 	    areaResult: function(show, result){
 	        this.show = show
 	        this.result = result
@@ -123,6 +137,10 @@
 				if (!contact) {
     			this.$f7.alert('','请输入联系人')
     			return false
+				}
+				if (contact.replace(/[\u0391-\uFFE5]/g,"aa").length > 12) {
+					this.$f7.alert('','联系人太长了')
+					return false
 				}
 
 				var phone = document.getElementById("inputTel");
@@ -159,6 +177,7 @@
 			}
 		},
 		mounted() {
+			this.$f7.resize();
 			//初始化数据
 			// this.contact = this.$store.state.userinfo && this.$store.state.userinfo.contact || ''
 			this.gender = this.$store.state.userinfo && this.$store.state.userinfo.gender || 0

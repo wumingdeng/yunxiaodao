@@ -47,6 +47,12 @@ export default {
       }
     }
     return false
+  },
+  isIphone:function() {
+    return browser.versions.ios
+  },
+  isAndroid:function() {
+    return browser.versions.android
   }
 }
 

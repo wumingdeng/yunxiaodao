@@ -228,10 +228,12 @@
           callback(self,res) {
             if (res.body.ok != 0) {
               self.chartData = res.body.ok
-              self.chartData.unshift({
-                week: 0,
-                weight: self.$store.state.userinfo.weight
-              })
+              if (self.chartData[0] && self.chartData[0].week != 0) {
+                self.chartData.unshift({
+                  week: 0,
+                  weight: self.$store.state.userinfo.weight
+                })
+              }
               self.showCharts();
             }
           }

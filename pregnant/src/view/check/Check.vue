@@ -64,22 +64,22 @@
         <div v-if='overStandard' id='w_diet'></div>
       </f7-card-content>
     </f7-card>
-    <f7-card v-else>
+<!--     <f7-card v-else>
       <f7-card-content>
         <p>暂无数据</p>
       </f7-card-content>
-    </f7-card>
-    <f7-card v-if='haveData&&overStandard'>
+    </f7-card> -->
+    <f7-card v-if='overStandard'>
       <f7-card-content>
         <div id='g_sign'></div>
       </f7-card-content>
     </f7-card>
-    <f7-card v-if='haveData&&havaDiet&&overStandard'>
+    <f7-card v-if='havaDiet&&overStandard'>
       <f7-card-content>
         <div id='g_diet'></div>
       </f7-card-content>
     </f7-card>
-    <f7-card v-if='haveData&&overStandard'>
+    <f7-card v-if='overStandard'>
       <f7-card-content>
         <div id='g_sport'></div>
       </f7-card-content>
@@ -154,6 +154,11 @@ export default {
           document.getElementById("inputWeight").value = ''
           return
         }
+        if (weight > 500) {
+          this.$f7.alert("","体重数据异常")
+          document.getElementById("inputWeight").value = ''
+          return
+        }
         this.$f7.confirm('', '您输入的体重为:' + weight + 'kg', () => {
           if (isSend) {
             document.getElementById("inputWeight").value = ''
@@ -221,20 +226,28 @@ export default {
         if (!res.body.ok.id) {
           self.haveData = false;
           console.log('没有体重信息')
+          self.$nextTick(() => {
+            document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
+           
+            document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
+            if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
+              self.havaDiet = false
+            }
+            document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport || ''
+          })
         } else {
           self.$nextTick(function () {
             if(self.weightInfo.currentWeek>40) return 
-          var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
-          document.getElementById("w_sug").innerHTML = str || ''
-          document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
-
-          document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
-         
-          document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
-          if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
-            self.havaDiet = false
-          }
-          document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport || ''
+            document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
+           
+            document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
+            if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
+              self.havaDiet = false
+            }
+            document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport || ''
+            var str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, self.weightInfo.currentStandard)  
+            document.getElementById("w_sug").innerHTML = str || ''
+            document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
           })
         }
       }

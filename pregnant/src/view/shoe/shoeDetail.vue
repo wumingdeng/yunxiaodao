@@ -8,6 +8,7 @@
       <f7-nav-right></f7-nav-right>
     </f7-navbar> -->
     <f7-page-content  style="-webkit-transform: translateZ(0px);">
+      <div style="height: calc(100% + 1px);">
   		<homeSwipe :swipeData="swipeData"></homeSwipe>
   		<f7-block inner style="margin:-6px 0 0 0;font-size:17px;">
   			<span>{{productData.name}}</span>
@@ -51,9 +52,9 @@
         :pickerOpened="pickerOpened"
         @close="pickerOpened = false"
       ></buyShoe>
+      </div>
     </f7-page-content>
     <div v-if="pickerOpened" class="blackMask"></div>
-
       <div class="navFooter">
           <!-- <p><f7-button class="pre" @click="$router.push('/buyShoe')">立即购买</f7-button></p> -->
           <span style="width:30%;"><f7-button style="background-color:#fff" class="pre" @click="$router.push('/order')">
@@ -105,6 +106,7 @@
         console.log('touchstart')
       },
       openPhotoBrowser(index) {
+        console.log(index)
         this.$refs.pb.open(index)
         this.$refs.pb.enableExposition()
       },
@@ -126,6 +128,7 @@
     },
 		beforeRouteEnter(to,from,next){
 			//获取首页的配置信息
+      // debugger
     	var sid = to.query.sid || 1;
     	//查询产品信息
     	window.Global.s.dispatch('getProductDetail', {
@@ -140,11 +143,31 @@
       document.title = '一双好鞋'
     },
 		mounted() {
+      this.$f7.resize();
+      var isReload = this.$store.state.isReload;
+      if (isReload) { 
+        // this.$store.state.isLogin = false
+        // this.$store.state.isReload = false
+        // this.$router.push({
+        //   path:'/',
+        //   query:{
+        //     page:'showDetail'
+        //   }
+        // })
+        window.location.reload(true)
+        // location.replace(document.referrer); 
+        return
+      }
       this.productData = this.$store.state.productDetail
       window.setTimeout(this.doIt,1000); 
+      // var self = this
+      // this.$nextTick(function() {
+      //   self.doIt()
+      // })
 		},
     beforeDestroy() {
       console.log('destory...')
+      this.$refs.pb.close();
       this.pickerOpened = false;
       this.$f7.closeModal()
     }

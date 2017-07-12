@@ -15,9 +15,10 @@ import Foot from '@/view/foot/Foot'
 import shoeHome from '@/view/shoe/shoeHome'
 import shoeDetail from '@/view/shoe/shoeDetail'
 import Order from '@/view/shoe/order'
+import OrderDetail from '@/view/shoe/orderDetail'
 import buyShoe from '@/view/shoe/buyShoe'
-const Address = resolve => require(['@/view/shoe/address'], resolve)
-// import Address from '@/view/shoe/address'
+// const Address = resolve => require(['@/view/shoe/address'], resolve)
+import Address from '@/view/shoe/address'
 import Pay from '@/view/shoe/pay'
 
 // 根目录
@@ -46,7 +47,7 @@ var routes = [
     component: Cycle, 
     name: 'Cycle',
     meta: { 
-      share: true
+      share: false
     }
   },
 	{
@@ -95,6 +96,10 @@ var routes = [
     component: Order
   },
   {
+    path: '/orderDetail',
+    component: OrderDetail
+  },
+  {
     path: '/address',
     component: Address
   },
@@ -130,7 +135,7 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/',
         query: { 
-          // page: to.fullPath.substring(1),
+          page: to.fullPath.substring(1),
           oid:localStorage.oid
         }
       })

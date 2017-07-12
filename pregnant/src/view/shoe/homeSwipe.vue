@@ -2,7 +2,7 @@
   <div style="height:auto;position:relative;">
     <!-- <f7-navbar back-link="Back" title="Swiper" sliding></f7-navbar> -->
 
-    <f7-swiper name="testSwiper" :params='{autoplayDisableOnInteraction:false,loop:true,autoplay:3000}' pagination style="height:auto">
+    <f7-swiper name="testSwiper" :params='{autoplayDisableOnInteraction:false,loop:false,autoplay:3000}' pagination style="height:auto">
       <f7-swiper-slide class="bg-white color-black" v-for="(item,index) in swipeData" :key=index>
         <img class="swipeImg" :src="item.url || item">
       </f7-swiper-slide>

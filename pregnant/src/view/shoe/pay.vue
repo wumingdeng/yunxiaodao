@@ -1,5 +1,12 @@
 <template>
-	<f7-page>
+	<f7-page navbar-through>
+		<f7-navbar sliding>
+      <f7-nav-left>
+          <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
+      </f7-nav-left>
+      <f7-nav-center sliding title="确认订单"></f7-nav-center>
+      <f7-nav-right></f7-nav-right>
+    </f7-navbar>
 		<f7-block inner style="font-size:1.2em;margin:20px 0 0 0;" id="topInfo">
 			<p>
 				<span style="width:40%;display:inline-block;">
@@ -126,7 +133,7 @@
 		},
 
 		mounted() {
-
+			this.$f7.resize();
 			// function onBridgeReady(){
 			//    WeixinJSBridge.invoke(
 			//        'getBrandWCPayRequest', {

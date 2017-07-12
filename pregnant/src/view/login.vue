@@ -21,7 +21,7 @@
 			// 	return;
 			// }
 			// console.log('page:' + this.$route.query.page)
-			// console.log('rid:' + this.$route.query.rid)
+			// console.log('rid:' + this.$route.query.rid
 			var code = this.$route.query.code
 			var page = this.$route.query.page || localStorage.page;	//跳转的页面
 			if (page == "undefined") page = 'shoeDetail'
@@ -31,7 +31,6 @@
 			// localStorage.code = code;
 			localStorage.page = page;
 			localStorage.rid = rid;
-			// debugger
 			// this.$store.commit('GET_WXID',wxid)
 			var isTest = process.env.NODE_ENV == 'development'
 			if (isTest) {
@@ -52,7 +51,7 @@
 			        	self.$store.commit('GET_WXID',res.body.ok.wxid);
 			        	self.$store.state.token = res.body.token;
 		        		if (isTest) {
-		        			self.$router.go(-1)
+		        			self.$router.push('/' + page)
 		        		} else {
 		        			if (page == 'foot' && rid) {
 				        		self.$router.push({

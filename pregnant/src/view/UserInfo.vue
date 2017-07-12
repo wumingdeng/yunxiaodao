@@ -111,7 +111,7 @@
     			return false
     		}
 
-				var isSingle = this.$data.radio_0?1:0
+				var isSingle = this.radio_0?1:0
 				if(!this.$data.radio_0 && !this.$data.radio_1)
 				{
 					this.$f7.alert('','请选择单胎妊娠')
@@ -156,6 +156,9 @@
       this.isNecessary = this.$route.query.isNecessary || false;
       this.radio_0  = this.$store.state.userinfo.isSingle == 1;
       this.radio_1  = this.$store.state.userinfo.isSingle == 0;
+      if (!this.radio_0 && !this.radio_1) {
+        this.radio_1 = true;
+      }
       document.getElementById('lastPeriodInput').value = this.userLastPeroid
 		}
 	}

@@ -23,7 +23,7 @@
 			</div> -->
 			<f7-grid v-if="orderData.status==orderstatus.waitPay" style="width:100%;height:30px">
 				<f7-col><f7-button  style="border-color:#fd7f97;color:#fd7f97" @click.stop.prevent="onCancel">取消</f7-button></f7-col>
-				<f7-col><f7-button  style="background-color:#fd7f97" fill @click="onPay">支付</f7-button></f7-col>
+				<f7-col><f7-button  style="background-color:#fd7f97" fill @click.stop.prevent="onPay">支付</f7-button></f7-col>
 			</f7-grid>
 			<f7-grid v-if="orderData.status==orderstatus.waitReceipt" style="width:100%;height:30px">
 				<f7-col><f7-button  style="border-color:#fd7f97;color:#fd7f97" @click.stop.prevent="openLogistics">查看物流</f7-button></f7-col>
@@ -42,6 +42,7 @@
 	export default {
 		data(){
 			return {
+				isInPay:false,
 				orderstatus:{
 					waitPay:0,	//待支付
 					waitChoice:1, //待备货
@@ -67,13 +68,6 @@
 				type:Object,
 				default:function(){
 					return {
-						id:123456,
-						status:2,
-						service:"丰胸",
-						scontent:"上门按摩",
-						simg:".///static/client/teacher/pro.png",
-						cname:"技师甲",
-						createtime:"2016-12-14 10:12:50"
 					}
 				}
 			}
@@ -81,7 +75,7 @@
 		methods:{
 			timeToDate:timeToDate,
 			onPay() {
-				debugger
+				this.isInPay = true
 				this.$store.dispatch('orderpay',{
 					self:this,
 					info:{
@@ -104,14 +98,17 @@
 						payargs = res.body;
 						if (payargs.err ) {
 							self.$f7.alert('','支付失败');
+							self.isInPay = false;
 							return
 						}
 						if (typeof WeixinJSBridge == 'undefined') {
 							self.$f7.alert('','支付失败,请在微信中进行支付');
+							self.isInPay = false;
 							return
 						}
 						WeixinJSBridge.invoke('getBrandWCPayRequest', payargs, function(res){
 							console.log(res)
+							self.isInPay = false;
 						  if(res.err_msg == "get_brand_wcpay_request:ok"){
 								self.orderData.status = self.orderstatus.waitDeliver;
 						    // alert("支付成功");
@@ -124,6 +121,7 @@
 				})
 			},
 			onCancel(){
+				if (this.isInPay) return;
 				//取消订单
 				this.$f7.confirm("","确定要取消订单？",()=>{
 					this.$f7.showPreloader('正在取消订单');
@@ -152,12 +150,10 @@
 			},
 			onDetail(){
 				//进入订单明细
-				// this.$router.push({
-				// 	path:'/checkOrder',
-				// 	query:{
-				// 		oid:this.orderData.id
-				// 	}
-				// });
+				this.$store.state.currentOrder = this.orderData
+				this.$router.push({
+					path:'/orderDetail'
+				});
 			},
 			openLogistics() {
 				this.$emit('logistics',this.orderData.id)

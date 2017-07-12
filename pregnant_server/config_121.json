@@ -1,4 +1,5 @@
 {
+    "sqlDebug": true,
     "dbaddr":"121.40.254.174",
     "port":"3306",
     "user":"root",

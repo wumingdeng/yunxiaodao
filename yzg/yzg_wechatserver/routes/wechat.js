@@ -7,6 +7,8 @@ var app = express()
 var mem = require('../memory')
 var db = require('../models')
 var utils = require('../utils')
+var template = require('../template.json');
+var moment = require('moment')
 // w_router.use('/', wechat(config.token, function(req, res, next) {
 // 	var message = req.weixin;
 // 	//文本
@@ -14,6 +16,38 @@ var utils = require('../utils')
 // 		res.reply('hehe'+Date.now());
 // 	}
 // }));
+
+function sendQRcodeTemplateToUser(wxid,user,name) {
+  // templateid
+  var tid = template.template_qrcode_used;
+  // data formate: "d":{"first":{"value":"DAMAO"},"service":{"value":"ni h你好s j"}}
+  // first ,service is setting as {{first.DATA}} in template,alse can use "color"
+  var data = {
+      first:{
+          value:'有人扫了你贴在电线杆上的二维码！',
+          color:"#000000"
+      },
+      keyword1:{
+          value: user
+      },
+      keyword2:{
+          value: name
+      },
+      keyword3:{
+          value:'*'
+      },
+      keyword4:{
+          value:'*'
+      },
+      keyword5:{
+          value:moment().format("YYYY-MM-DD hh:mm:ss")
+      },
+      remark:{
+          value:''
+      }
+  }
+  utils.wechat_f.sendToUser(wxid,tid,data)
+}
 
 //创建二维码变更记录
 function recordQRCodeChange(userid, newSid, newMaster, oldSid, oldMaster) {
@@ -35,6 +69,7 @@ function userUseQRCode(userid, sid, cb) {
       db.qrcodes.findOne({where:{id: sid}}).then(function(qrcodeData){
         db.users.update({qrcode:sid, qrcodeOwner: qrcodeData.userid},{where:{id:data.id}})
         recordQRCodeChange(userid, qrcodeData.id, qrcodeData.userid, data.qrcode, data.qrcodeOwner)
+        sendQRcodeTemplateToUser(qrcodeData.userid,data.wxid,data.name)
         //显示扫码的人
         db.users.findOne({where:{wxid: qrcodeData.userid}}).then(function(owner) {
           if (owner) {
@@ -54,6 +89,7 @@ function userUseQRCode(userid, sid, cb) {
             db.qrcodes.findOne({where:{id: sid}}).then(function(qrcodeData){
               db.users.update({qrcode:sid, qrcodeOwner: qrcodeData.userid},{where:{id:newUser.id}})
               recordQRCodeChange(userid, qrcodeData.id, qrcodeData.userid)
+              sendQRcodeTemplateToUser(qrcodeData.userid,newUser.wxid,newUser.name)
               //显示扫码的人
               db.users.findOne({where:{wxid: qrcodeData.userid}}).then(function(owner) {
                 if (owner) {
@@ -149,7 +185,7 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
      var user = message.FromUserName
      var sid = message.EventKey.substring(8); //有个"qrscene_"前缀
      userUseQRCode(user,sid, function(master) {
-        res.reply('您在' + user + '的带领下加入了孕足管!');
+        res.reply('您在' + master + '的带领下加入了孕足管!');
      });
   }else if(message.Event === 'SCAN'){
      for (v in message) {

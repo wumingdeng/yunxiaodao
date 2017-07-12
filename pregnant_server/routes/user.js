@@ -14,8 +14,8 @@ function getWeek(lastPeriod, now) {
     } else {
         now = new Date().getTime();
     }
-    var week = now - lastPeriod.getTime();
-    week = Math.floor(week / (7 * 24 * 3600 * 1000)) + 1
+    var week = now - (lastPeriod.getTime() - 8 * 3600 * 1000);  //减去8小时
+    week = Math.floor(week / (7 * 24 * 3600 * 1000))
     return week;
 }
 
@@ -82,7 +82,6 @@ function getWeightSize(result){
 //取体重提示和小贴士
 function getWeightTipInfo(week, result) {
     var tipInfo={};
-    var dietInfo={};
     var tip = mem.m.weightAdvice_configs
     var w_size = getWeightSize(result)
     for (var i = 0 in tip) {
@@ -93,7 +92,14 @@ function getWeightTipInfo(week, result) {
         }
     }
     
+
+    return tipInfo
+}
+
+//取孕周的建议
+function getWeightAdvice(week) {
     //取饮食建议
+    var dietInfo={};
     var diets = mem.m.weight_diet_configs
      for (var idx in diets) {
         var diet = diets[idx]
@@ -107,12 +113,11 @@ function getWeightTipInfo(week, result) {
             }
         }
         if(dietInfo.key && dietInfo.eat && dietInfo.sport){break;}
-    }
-    return {
-        tip: tipInfo,
-        diet: dietInfo
-    }
+    }  
+    return dietInfo
 }
+
+
 
 // user_router.route('/getBehavior').get(function (req, res) {
 //     db.user_behaviors.findOne({userid:"o6rXewG_WxyiS2ltJPbvWI15_cJw"}).then(function(data) {
@@ -156,6 +161,12 @@ user_router.route('/getWeightInfo').post(function (req, res) {
     } else {
         db.users.findOne({ where: { 'wxid': wxid } }).then(function (data) {
             if (data) {
+                var shape = data.dataValues.shape
+                if (!shape) {
+                    //如果没有 shape 就补上
+                    shape = getShape(data.weight, data.height)
+                    db.users.update({shape:shape},{where:{id:data.id}});
+                }
                 db.weight_records.findOne({ where: { 'userid': wxid }, order: 'recordDate DESC' }).then(function (wdata) {
                     var lastPeriod = data.dataValues.lastPeriod;
                     if (!lastPeriod) {  //没有末次月经时间
@@ -163,19 +174,21 @@ user_router.route('/getWeightInfo').post(function (req, res) {
                         return
                     }
                     var currentWeek = getWeek(lastPeriod);  //取当前周数
-                    var currentStandard = getStandardWeight(currentWeek, data.dataValues.weight, data.dataValues.shape, data.dataValues.isSingle).value;  //取当前标准体重
+                    var currentStandard = getStandardWeight(currentWeek, data.dataValues.weight, shape, data.dataValues.isSingle).value;  //取当前标准体重
                     //取对应提示
+                    var diet = getWeightAdvice(currentWeek)
                     if (wdata) {
-                        var info = getWeightTipInfo(currentWeek, wdata.result)
+                        var tip = getWeightTipInfo(currentWeek, wdata.result)
                         wdata.dataValues.currentWeek = currentWeek;
                         wdata.dataValues.currentStandard = currentStandard;
-                        wdata.dataValues.diet = info.diet;   //饮食提示
-                        wdata.dataValues.tip = info.tip; //体重提示
+                        wdata.dataValues.diet = diet;   //饮食提示
+                        wdata.dataValues.tip = tip; //体重提示
                         res.json({ ok: wdata.dataValues })
                     } else {
                         var resData = {
                             currentWeek: currentWeek,
-                            currentStandard: currentStandard
+                            currentStandard: currentStandard,
+                            diet: diet
                         }
                         console.log('no weightRecord');
                         res.json({ ok: resData })
@@ -218,13 +231,19 @@ function fillWeight(res,wxid,weight,hospital_no) {
         db.users.findOne({ where: { 'wxid': wxid } }).then(function (udata) {
             //计算周数
             if (udata) {
+                var shape = udata.dataValues.shape
+                if (!shape) {
+                    //如果没有 shape 就补上
+                    shape = getShape(udata.weight, udata.height)
+                    db.users.update({shape:shape},{where:{id:udata.id}});
+                }
                 //根据算法 得出体重数据 存入体重数据表中
                 //计算标准体重
                 var lastPeriod = udata.dataValues.lastPeriod;
                 var currentWeek = getWeek(lastPeriod);  //取当前周数
                 newRecord.userid = wxid;
                 newRecord.week = currentWeek;
-                var standard = getStandardWeight(currentWeek, udata.dataValues.weight, udata.dataValues.shape, udata.dataValues.isSingle);
+                var standard = getStandardWeight(currentWeek, udata.dataValues.weight, shape, udata.dataValues.isSingle);
                 newRecord.standard = standard.value
                 var result
                 if (weight < standard.min) {
@@ -245,10 +264,11 @@ function fillWeight(res,wxid,weight,hospital_no) {
                         db.sequelize.where(db.sequelize.fn('TO_DAYS', db.sequelize.col('recordDate')), '=', db.sequelize.fn('TO_DAYS', new Date()))
                     ]
                 }).then(function (data) {
-                    var info = getWeightTipInfo(currentWeek, result)
+                    var tip = getWeightTipInfo(currentWeek, result)
+                    var diet = getWeightAdvice(currentWeek)
                     var tempRecord = Object.assign({},newRecord)
-                    tempRecord.tip = info.tip;
-                    tempRecord.diet = info.diet;
+                    tempRecord.tip = tip;
+                    tempRecord.diet = diet;
                     if (data[0] != 0) {
                         console.log('更新体重数据')
                         // tempRecord.recordDate = newRecord.recordDate.toLocaleDateString()
@@ -324,7 +344,7 @@ user_router.route('/getWeightData').post(function (req, res) {
     if (wxid === 0) {
         res.json({ err: g.errorCode.WRONG_PARAM })
     } else {
-        db.weight_records.findAll({ order: 'recordDate DESC', offset: offset, limit: limit, where: { 'userid': wxid, week: { $gt: 0 } } }).then(function (records) {
+        db.weight_records.findAll({ order: 'recordDate DESC', offset: offset, limit: limit, where: { 'userid': wxid, week: { $gte: 0 } } }).then(function (records) {
             if (records) {
                 res.json({ ok: records })
             } else {
@@ -365,7 +385,11 @@ user_router.route('/updateInfo').post(function (req, res) {
                     for (var i = 0; i < records.length; i++) {
                         var record = records[i];
                         var newRecord = {}
-                        var currentWeek = getWeek(new Date(lastPeriod), record.recordDate)
+                        console.log('-------------')
+                        console.log(new Date(lastPeriod))
+                        console.log(record.recordDate)
+                        console.log(new Date(record.recordDate));
+                        var currentWeek = getWeek(new Date(lastPeriod), new Date(record.recordDate))
                         newRecord.week = currentWeek
                         var standard = getStandardWeight(currentWeek, weight, shape, isSingle);
                         newRecord.standard = standard.value

@@ -137,7 +137,8 @@ var f = {
             if (err) {
                 console.log(err)
             }else {
-                //   console.log(body);
+                console.log('发送模版。。')
+                console.log(body);
             }
         })
     },
