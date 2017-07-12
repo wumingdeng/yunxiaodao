@@ -289,7 +289,9 @@ public class ServerConfig {
 					setClinicUrl(jsonObject.getString("clinic_url"));
 					setUploadUrl(jsonObject.getString("upload_url"));
 					setDataUrl(jsonObject.getString("data_url"));
-					setLastReportUrl(jsonObject.getString("latestreport_url"));
+					if(jsonObject.containsKey("latestreport_url")){
+						setLastReportUrl(jsonObject.getString("latestreport_url"));
+					}
 					setInterval(jsonObject.getString("space_day"));
 					setAppName(jsonObject.getString("app_name"));
 					System.out.println("-----------------------");

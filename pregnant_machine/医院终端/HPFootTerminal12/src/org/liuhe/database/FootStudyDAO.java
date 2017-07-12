@@ -587,11 +587,11 @@ public class FootStudyDAO {
         }else if(errcode == 3){
         	return null;
         }else{
+        	Map<String, String> map = new HashMap<String, String>();
         	if(!jsonObject.getString("data").equals("")){
         		JSONArray json = JSONArray.fromObject(jsonObject.getString("data"));
         		jsonObject = JSONObject.fromObject(json.get(0));
         	}
-        	Map<String, String> map = new HashMap<String, String>();
         	if(!jsonObject.getString("open_id").equals("")){
         		map.put("open_id", jsonObject.getString("open_id"));
         	}

@@ -22,8 +22,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -706,6 +704,9 @@ public class MainJFrame extends JFrame{
 	private void toQrcodePane(boolean skip){
 		toQrcodeThread = new QrcodeThread(skip);
 		toQrcodeThread.start();
+
+		studyinfo = new FootStudyInfo();
+		openID = null;
 		if(!skip){
 			if(this.bgGetWeightThread!=null){
 				// stop last first
@@ -2199,10 +2200,6 @@ public class MainJFrame extends JFrame{
 			runThread = Thread.currentThread();
 			stopRequested = false;
 			card.show(cardPane, "back");
-			
-			studyinfo = new FootStudyInfo();
-			openID = null;
-			cardID = null;
 			title_label.setText(title);
 			clinic_label.setText(clinic);
 			count_label.setText(time);
@@ -2215,6 +2212,10 @@ public class MainJFrame extends JFrame{
 				int second = Integer.parseInt(count_label.getText());
 				if(second == 0){
 					stopRequested = true;
+//					studyinfo = new FootStudyInfo();
+//					openID = null;
+					cardID = null;
+				
 					initPanePara();
 					toFirstPane();
 				}else{
@@ -2758,7 +2759,7 @@ public class MainJFrame extends JFrame{
 						HWeightUtil hweightUtil = new HWeightUtil(hwConfig);
 						hweightUtil.doActionPerformed();
 						int times = 0;
-						while(!hweightUtil.isOK()&&times<30){
+						while(!hweightUtil.isOK()&&times<20){
 							try {
 								Thread.sleep(100);
 							} catch (InterruptedException e1) {
@@ -2767,8 +2768,8 @@ public class MainJFrame extends JFrame{
 							times++;
 							System.out.println("****************** HWeight wait 100ms ****************");
 						}
-						if(times == 30){
-							System.out.println("3秒后未读取到串口数据！退出读取数据");
+						if(times == 20){
+							System.out.println("2秒后未读取到串口数据！退出读取数据");
 							MessageDialog option = new MessageDialog(MainJFrame.this,"读取体重数据失败，请检查设备或重试！","提示",MessageDialog.WARNING_MESSAGE);
 							option.create_option();
 							return ;
@@ -2796,30 +2797,29 @@ public class MainJFrame extends JFrame{
 						}
 						studyinfo.setCurrentWeight_float(weight);
 //					}
-//					studyinfo.setWeight("0.0");
 					studyinfo.setHospital_no(serverConfig.getHospital_no());
 					studyinfo.setHospital_name(serverConfig.getHospital_name());
 					sqlServer.sendWeightBaseinfo(studyinfo);
 					
 					//获取最新的报告记录
-					Map<String, String> map = new HashMap<String,String>();
-					map = sqlServer.getLastReportInfo(openID);
-					if(map!=null){
-						studyinfo.setLeft_urla(map.get("left_urla"));
-						studyinfo.setRight_urla(map.get("right_urla"));
-						studyinfo.setLeft_foot_size(map.get("left_foot_size"));
-						studyinfo.setLeft_foot_width(map.get("left_foot_width"));
-						studyinfo.setLeft_foot_width2(map.get("left_foot_width2"));
-						studyinfo.setLeft_foot_status(map.get("left_foot_status"));
-						studyinfo.setRight_foot_size(map.get("right_foot_size"));
-						studyinfo.setRight_foot_width(map.get("right_foot_width"));
-						studyinfo.setRight_foot_width2(map.get("right_foot_width2"));
-						studyinfo.setRight_foot_status(map.get("right_foot_status"));
-						studyinfo.setLeft_length(map.get("left_length"));
-						studyinfo.setRight_length(map.get("right_length"));
-						studyinfo.setLeft_width(map.get("left_width"));
-						studyinfo.setRight_width(map.get("right_width"));
-					}
+//					Map<String, String> map = new HashMap<String,String>();
+//					map = sqlServer.getLastReportInfo(openID);
+//					if(map!=null){
+//						studyinfo.setLeft_urla(map.get("left_urla"));
+//						studyinfo.setRight_urla(map.get("right_urla"));
+//						studyinfo.setLeft_foot_size(map.get("left_foot_size"));
+//						studyinfo.setLeft_foot_width(map.get("left_foot_width"));
+//						studyinfo.setLeft_foot_width2(map.get("left_foot_width2"));
+//						studyinfo.setLeft_foot_status(map.get("left_foot_status"));
+//						studyinfo.setRight_foot_size(map.get("right_foot_size"));
+//						studyinfo.setRight_foot_width(map.get("right_foot_width"));
+//						studyinfo.setRight_foot_width2(map.get("right_foot_width2"));
+//						studyinfo.setRight_foot_status(map.get("right_foot_status"));
+//						studyinfo.setLeft_length(map.get("left_length"));
+//						studyinfo.setRight_length(map.get("right_length"));
+//						studyinfo.setLeft_width(map.get("left_width"));
+//						studyinfo.setRight_width(map.get("right_width"));
+//					}
 				}
 			}
 		}
