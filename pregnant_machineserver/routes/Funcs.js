@@ -541,7 +541,7 @@ tour_router.route('/get_user_latest_report').post(function(req,res){
     console.log('get_user_latest_report at:'+Date.now())
     var openid = req.body.openid || ''
      if(openid === ''){
-        res.json({error:g.errorCode.WRONG_PARAM})
+        res.json({error:g.errorCode.WRONG_PARAM,errcode:2})
     }else{
         getLatestReport(openid,res)
    }
@@ -569,12 +569,12 @@ function getLatestReport(openid,res){
         type: db.sequelize.QueryTypes.SELECT }
         ).then(function(records){
         if(records){
-            res.json({data:records})
+            res.json({data:records,errcode:0})
         }else{
-            res.json({data:[]})
+            res.json({data:[],errcode:0})
         }
     }).catch(function(err){
-        res.json({error:g.errorCode.WRONG_SQL})
+        res.json({error:g.errorCode.WRONG_SQL,errcode:2})
     })
 }
 
@@ -615,6 +615,7 @@ tour_router.route('/yxd3').post(function(req,res){
             if(data){
                 db.hospitals.findOne({where:{id:data.hospital_no}}).then(function(hos){
                     if(hos){
+                        console.log(hos.interval_days)
                         res.json({"hospital_no":hos.id,"machine_type":"2",
                             "hospital_name":hos.name,"worktime":"23:00",//"hospital_scene":hos.scene_id,
                             "db_ip":"","db_port":"",
