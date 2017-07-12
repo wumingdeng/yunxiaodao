@@ -1429,15 +1429,15 @@ public class MainJFrame extends JFrame{
 				studyinfo.setDate_yunfu_str(period_str);
 				int zhou = (int)(((now_date.getTime()-period_date.getTime())/(24*60*60*1000))/7);
 				studyinfo.setPeriod(zhou);
-				if(studyinfo.getOpen_id()==null){
+				if(studyinfo.getOpen_id()==null || studyinfo.getOpen_id().equals("") || studyinfo.getOpen_id().equalsIgnoreCase("null")){
 					toStaturePane();
 				}else{
 					sqlServer.addPeriodDate(studyinfo.getOpen_id(), studyinfo.getDate_yunfu_str());
-					if(studyinfo.getHeight()==null){
+					if(studyinfo.getHeight()==null || studyinfo.getHeight().equals("") || studyinfo.getHeight().equalsIgnoreCase("null")){
 						toStaturePane();
-					}else if(studyinfo.getWeight()==null){
+					}else if(studyinfo.getWeight()==null || studyinfo.getWeight().equals("") || studyinfo.getWeight().equalsIgnoreCase("null")){
 						toBeforeWeighPane();
-					}else if(studyinfo.getName()==null && ServerConfig.showIdPage){
+					}else if((studyinfo.getName()==null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1451,13 +1451,13 @@ public class MainJFrame extends JFrame{
 			}
 			// 跳过末次月经
 			else if(button == jumpPeriod){
-				if(studyinfo.getOpen_id() == null){
+				if(studyinfo.getOpen_id() == null || studyinfo.getOpen_id().equals("") || studyinfo.getOpen_id().equalsIgnoreCase("null")){
 					toStaturePane();
-				}else if(studyinfo.getHeight() == null){
+				}else if(studyinfo.getHeight() == null || studyinfo.getHeight().equals("") || studyinfo.getHeight().equalsIgnoreCase("null") ){
 					toStaturePane();
-				}else if(studyinfo.getWeight() == null){
+				}else if(studyinfo.getWeight() == null || studyinfo.getWeight().equals("") || studyinfo.getWeight().equalsIgnoreCase("null")){
 					toBeforeWeighPane();
-				}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
+				}else if((studyinfo.getName() == null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1486,9 +1486,9 @@ public class MainJFrame extends JFrame{
 					toBeforeWeighPane();
 				}else{
 					sqlServer.addHeight(studyinfo.getOpen_id(), studyinfo.getHeight());
-					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")||studyinfo.getWeight().equals("null")){
+					if(studyinfo.getWeight()==null||studyinfo.getWeight().equals("0")||studyinfo.getWeight().equalsIgnoreCase("null")){
 						toBeforeWeighPane();
-					}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
+					}else if((studyinfo.getName() == null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1502,11 +1502,11 @@ public class MainJFrame extends JFrame{
 			}
 			// 跳过身高采集
 			else if(button == jumpStature){
-				if(studyinfo.getOpen_id() == null){
+				if(studyinfo.getOpen_id() == null || studyinfo.getOpen_id().equals("") || studyinfo.getOpen_id().equalsIgnoreCase("null")){
 					toBeforeWeighPane();
-				}else if(studyinfo.getName() == null){
+				}else if(studyinfo.getName() == null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")){
 					toBeforeWeighPane();
-				}else if(studyinfo.getWeight() == null){
+				}else if(studyinfo.getWeight() == null || studyinfo.getWeight().equals("") || studyinfo.getWeight().equalsIgnoreCase("null")){
 					toBeforeWeighPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1537,7 +1537,7 @@ public class MainJFrame extends JFrame{
 					toIndentityPane();
 				}else{
 					sqlServer.addWeight(studyinfo.getOpen_id(), studyinfo.getWeight(),single);
-					if(studyinfo.getName() == null && ServerConfig.showIdPage){
+					if((studyinfo.getName() == null  || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 						toIndentityPane();
 					}else{
 						if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -1554,7 +1554,7 @@ public class MainJFrame extends JFrame{
 			else if(button == jumpBeforeWeightBut){
 				if(studyinfo.getOpen_id() == null && ServerConfig.showIdPage){
 					toIndentityPane();
-				}else if(studyinfo.getName() == null && ServerConfig.showIdPage){
+				}else if((studyinfo.getName() == null || studyinfo.getName().equals("") || studyinfo.getName().equalsIgnoreCase("null")) && ServerConfig.showIdPage){
 					toIndentityPane();
 				}else{
 					if(serverConfig.getMachine_type().equals("0")||serverConfig.getMachine_type().equals("1")){
@@ -2751,6 +2751,7 @@ public class MainJFrame extends JFrame{
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
+					
 					System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
 //					if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 						hwLabel.setText("体重：0.0kg");
