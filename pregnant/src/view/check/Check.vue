@@ -209,7 +209,6 @@ export default {
   },
   mounted() {
     //取体重数据
-    console.log(this.$store.state.wxid)
     this.$store.dispatch('getWeightInfo', {
       self: this,
       info: {
@@ -224,19 +223,19 @@ export default {
           console.log('没有体重信息')
         } else {
           self.$nextTick(function () {
-          var str = self.weightInfo.currentStandard.replace(/-/,'到')
-          str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, str)  
-          document.getElementById("w_sug").innerHTML = str || ''
-          document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
+            var str = self.weightInfo.currentStandard.replace(/-/,'到')
+            str = self.weightInfo.tip.con_sug.replace(/{{weightInfo.currentStandard}}/g, str)  
+            document.getElementById("w_sug").innerHTML = str || ''
+            document.getElementById("w_diet").innerHTML = self.weightInfo.tip.con_diet || ''
 
-          if(self.weightInfo.currentWeek>40) return 
-          document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
-         
-          document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
-          if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
-            self.havaDiet = false
-          }
-          document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport || ''
+            if(self.weightInfo.currentWeek>40) return 
+            document.getElementById("g_sign").innerHTML = self.weightInfo.diet.key || ''
+           
+            document.getElementById("g_diet").innerHTML = self.weightInfo.diet.eat || ''
+            if (!self.weightInfo.diet.eat || self.weightInfo.diet.eat == '') {
+              self.havaDiet = false
+            }
+            document.getElementById("g_sport").innerHTML = self.weightInfo.diet.sport || ''
           })
         }
       }
