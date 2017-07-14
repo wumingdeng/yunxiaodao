@@ -174,7 +174,7 @@ export default {
 							document.getElementById("f_k").innerHTML = self.footData.footknowledge
 						}
 						if(self.haveAdvice){
-							var str = self.footData.footAdvice.replace(/{{footData.right_foot_size}}/g, self.footData.right_foot_size)  
+							var str = self.footData.footAdvice.replace(/{{footData.right_foot_size}}/g, Math.max(this.footData.left_foot_size, this.footData.right_foot_size))  
 							document.getElementById("f_a").innerHTML = str
 						}
 					})
