@@ -277,8 +277,8 @@ public class PrintUtil implements Printable{
 			String rightLengthString = para[3].substring(0, rightLengthIndex<0?para[3].length():rightLengthIndex)+"mm";
 			String leftWidthString = para[4].substring(0, leftWidthIndex<0?para[4].length():leftWidthIndex)+"mm";
 			String rightWidthString = para[5].substring(0, rightWidthIndex<0?para[5].length():rightWidthIndex)+"mm";
-			String leftArrowString = para[6].substring(0, leftArrowIndex<0?para[6].length():leftArrowIndex)+"mm";
-			String rightArrowtring = para[7].substring(0, rightArrowIndex<0?para[7].length():rightArrowIndex)+"mm";
+			String leftArrowString = para[6];
+			String rightArrowtring = para[7];
 			String leftStatusString = para[8].replaceAll("×ã¹­", "");
 			String rightStatusString = para[9].replaceAll("×ã¹­", "");
 		    
@@ -693,15 +693,15 @@ public class PrintUtil implements Printable{
 					int rightLengthIndex =  para[3].indexOf(".");
 					int leftWidthIndex =  para[4].indexOf(".");
 					int rightWidthIndex =  para[5].indexOf(".");
-					int leftArrowIndex =  para[6].indexOf(".");
-					int rightArrowIndex =  para[7].indexOf(".");
+					int leftArrowIndex =  para[10].indexOf(".");
+					int rightArrowIndex =  para[11].indexOf(".");
 					
 					String leftLengthString = para[2].substring(0, leftLengthIndex<0?para[2].length():leftLengthIndex)+"mm";
 					String rightLengthString = para[3].substring(0, rightLengthIndex<0?para[3].length():rightLengthIndex);
 					String leftWidthString = para[4].substring(0, leftWidthIndex<0?para[4].length():leftWidthIndex)+"mm";
 					String rightWidthString = para[5].substring(0, rightWidthIndex<0?para[5].length():rightWidthIndex);
-					String leftArrowString = para[6].substring(0, leftArrowIndex<0?para[6].length():leftArrowIndex)+"mm";
-					String rightArrowtring = para[7].substring(0, rightArrowIndex<0?para[7].length():rightArrowIndex);
+					String leftArrowString = para[10].substring(0, leftArrowIndex<0?para[10].length():leftArrowIndex)+"mm";
+					String rightArrowtring = para[11].substring(0, rightArrowIndex<0?para[11].length():rightArrowIndex);
 					String leftStatusString = para[8].replaceAll("×ã¹­", "");
 					String rightStatusString = para[9].replaceAll("×ã¹­", "");
 					short totalLength=7;
