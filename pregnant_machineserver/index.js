@@ -48,6 +48,10 @@ process.on('uncaughtException', function (err) {
 　　console.log('Caught exception: ' + err);
 });
 
+process.on('unhandledRejection', function(reason, p) {
+  console.log("Unhandled Rejection:", reason.stack);
+});
+
 var server = app.listen(app.get('port'), function() {
     console.log('server listening on port ' + server.address().port);
 });

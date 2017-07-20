@@ -552,7 +552,7 @@ public class FootStudyDAO {
 	public boolean sendWeightBaseinfo(FootStudyInfo object){
 		try {
 			String json = packgeJsonWeight(object);
-			 String content = "sign=liuhe&w=1&data="+json;
+			String content = "sign=liuhe&w=1&data="+json;
 			JSONObject jsonObject = HttpUtil.httpRequest(serverConfig.getDataUrl(),"POST",content);
 			if(jsonObject == null){
 				return false;
@@ -656,7 +656,12 @@ public class FootStudyDAO {
         	if(!jsonObject.getString("right_width").equals("")){
         		map.put("right_width", jsonObject.getString("right_width"));
         	}
-        	
+        	if(jsonObject.containsKey("right_length_725") && !jsonObject.getString("right_length_725").equals("")){
+        		map.put("right_length_725", jsonObject.getString("right_length_725"));
+        	}
+        	if(jsonObject.containsKey("left_length_725") && !jsonObject.getString("left_length_725").equals("")){
+        		map.put("left_length_725", jsonObject.getString("left_length_725"));
+        	}
         	return map;
         }
 		

@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 
 public class FirstActionButton extends JLabel{
 	private static final long serialVersionUID = 1L;
+	private String disLabel = "点击开始操作";
 	public void paintComponent(Graphics g) {
 		int width = this.getWidth();
 		int height = this.getHeight();
@@ -23,6 +24,13 @@ public class FirstActionButton extends JLabel{
 		g2.setPaint(Color.WHITE);
 		g2.setFont(new Font("黑体", Font.PLAIN+Font.BOLD, 38));
 		FontMetrics fm = g2.getFontMetrics();
-     	g2.drawString("点击开始操作", (width-fm.stringWidth("点击开始操作"))/2, (height+fm.getHeight())/2-7);
+     	g2.drawString(disLabel, (width-fm.stringWidth(disLabel))/2, (height+fm.getHeight())/2-7);
     }
+	
+	public void setDisLabe(String disLabel){
+		this.disLabel = disLabel;
+	}
+	public String getDisLabe(){
+		return this.disLabel;
+	}
 }

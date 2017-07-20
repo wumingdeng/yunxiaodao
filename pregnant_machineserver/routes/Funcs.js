@@ -168,6 +168,7 @@ tour_router.route('/serverdata').post(function(req,res){
                     }
                 }
                 query+= " order by date_server desc limit 1";
+                // console.log('judge need scan ')
                 db.sequelize.query(query, { replacements: [req.body.space_day], 
                     type: db.sequelize.QueryTypes.SELECT }
                 ).then(function(records){
@@ -186,14 +187,20 @@ tour_router.route('/serverdata').post(function(req,res){
             }else if(req.body.w !== undefined){
                 var infos = JSON.parse(req.body.data)
                 var now = new Date()
+                // console.log('just weight 0 ')
                 var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString().replace('AM','').replace('PM','')
                 db.yxd_basicinfos.create({date_server:date_server,mac_id:infos.mac_id,weight:infos.weight,
                     open_id:infos.open_id,card_id:infos.card_id,view_type:2,hospital_no:infos.hospital_no,hospital_name:infos.hospital_name,
                     doctor_name:infos.doctor_name,user_id:infos.user_id,doctor_id:infos.doctor_id}).then(function(dta){
+                        // console.log('just weight 1 ')
                     db.yxd_parameters.create({id:dta.id,mac_id:infos.mac_id}).then(function(){
+                        // console.log('just weight 2 ')
                         db.yxd_suggestions.create({id:dta.id,mac_id:infos.mac_id}).then(function(){
+                            // console.log('just weight 3 ')
                             db.yxd_pictures.create({id:dta.id,mac_id:infos.mac_id}).then(function(){
+                                // console.log('just weight 4 ')
                                 db.yxd_references.create({id:dta.id,mac_id:infos.mac_id}).then(function(){
+                                    // console.log('just weight 5 ')
                                     //更新该open_id下的档案总数
                                     if(infos.open_id!=='null'){
                                         var query=`select count(id) as amount from yxd_basicinfos where open_id=?`
@@ -217,6 +224,7 @@ tour_router.route('/serverdata').post(function(req,res){
                                     }
                                     request(options2, function(error2, response2, data2){
                                     })
+                                    // console.log('just weight 6 ')
                                     res.json({"errcode":0,"errmsg":"新增脚型数据成功"})
                                 }).catch(function(err){
                                     db.yxd_pictures.destroy({where:{id:dta.id}})
@@ -259,8 +267,16 @@ tour_router.route('/serverdata').post(function(req,res){
                                 birth=new Date(infos.birth).toLocaleDateString()
                             }
                             var now = new Date()
-                            var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString().replace('AM','').replace('PM','')
+                            // var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString().replace('AM','').replace('PM','')
+                            Y = now.getFullYear() + '-';
+                            M = (now.getMonth()+1 < 10 ? '0'+(now.getMonth()+1) : now.getMonth()+1) + '-';
+                            D = now.getDate() + ' ';
+                            h = now.getHours() + ':';
+                            m = now.getMinutes() + ':';
+                            s = now.getSeconds(); 
+                            var date_server = Y+M+D+h+m+s;
                             var date_yunfu=new Date(infos.date_yunfu).toLocaleDateString()
+                            // console.log('add record 0 ')
                             db.yxd_basicinfos.create({mac_id:infos.mac_id,
                                 open_id:infos.open_id,card_id:infos.card_id,ticket:infos.ticket,
                                 scene:infos.scene,from_id:infos.from_id,from_app:infos.from_app,date_server:date_server,
@@ -270,6 +286,7 @@ tour_router.route('/serverdata').post(function(req,res){
                                 weight:infos.weight,date_yunfu:date_yunfu,hospital_no:infos.hospital_no,hospital_name:infos.hospital_name,
                                 doctor_name:infos.doctor_name,user_id:infos.user_id,doctor_id:infos.doctor_id,
                                 period:infos.period}).then(function(dta){
+                                    // console.log('add record 1 ')
                                     db.yxd_parameters.create({id:dta.id,mac_id:infos.mac_id,
                                         left_length:infos.left_length,left_width:infos.left_width,right_length:infos.right_length,
                                         right_width:infos.right_width,left_length_725:infos.left_length_725,left_length_635:infos.left_length_635,
@@ -283,13 +300,16 @@ tour_router.route('/serverdata').post(function(req,res){
                                         right_length_825:infos.right_length_825,right_length_78:infos.right_length_78,right_length_18:infos.right_length_18,right_width_90:infos.right_width_90,
                                         right_width_78:infos.right_width_78,right_width_18:infos.right_width_18,right_width_ratio:infos.right_width_ratio,right_center_angle:infos.right_center_angle,
                                         right_incline_angle:infos.right_incline_angle}).then(function(){
+                                            // console.log('add record 2 ')
                                             db.yxd_suggestions.create({id:dta.id,mac_id:infos.mac_id,left_foot_size:infos.left_foot_size,
                                                 left_foot_width:infos.left_foot_width,left_foot_width2:infos.left_foot_width2,left_foot_status:infos.left_foot_status,left_int_status:infos.left_int_status,
                                                 right_foot_size:infos.right_foot_size,right_foot_width:infos.right_foot_width,right_foot_width2:infos.right_foot_width2,right_foot_status:infos.right_foot_status,
                                                 right_int_status:infos.right_int_status}).then(function(){
+                                                    // console.log('add record 3 ')
                                                     db.yxd_pictures.create({id:dta.id,mac_id:infos.mac_id,left_url:infos.left_url,
                                                         right_url:infos.right_url,left_dpi:infos.left_dpi,right_dpi:infos.right_dpi,left_urla:infos.left_urla,
                                                         right_urla:infos.right_urla}).then(function(){
+                                                            // console.log('add record 4 ')
                                                             db.yxd_references.create({id:dta.id,mac_id:infos.mac_id,
                                                                 lcircle_01_x:infos.lcircle_01_x,lcircle_01_y:infos.lcircle_01_y,lcircle_02_x:infos.lcircle_02_x,lcircle_02_y:infos.lcircle_02_y,
                                                                 lcircle_03_x:infos.lcircle_03_x,lcircle_03_y:infos.lcircle_03_y,lfoot_top:infos.lfoot_top,lfoot_bottom:infos.lfoot_bottom,
@@ -328,6 +348,7 @@ tour_router.route('/serverdata').post(function(req,res){
                                                                             }
                                                                         })
                                                                     }
+                                                                    // console.log('add record 4 ')
                                                                     // //如果存在挂号功能，将挂号信息和脚型数据做匹配
                                                                     // if(infos.hospital_no!=='null'){
                                                                     //     db.yxd_details.update({record_id:dta.id},{where:{hospital_no:infos.hospital_no,
@@ -356,6 +377,7 @@ tour_router.route('/serverdata').post(function(req,res){
                                                                     }
                                                                     request(options2, function(error2, response2, data2){
                                                                     })
+                                                                    // console.log('add record 5 ')
                                                                     res.json({"errcode":0,"errmsg":"新增脚型数据成功"})
                                                             }).catch(function(err){
                                                                 db.yxd_pictures.destroy({where:{id:dta.id}})
@@ -615,7 +637,6 @@ tour_router.route('/yxd3').post(function(req,res){
             if(data){
                 db.hospitals.findOne({where:{id:data.hospital_no}}).then(function(hos){
                     if(hos){
-                        console.log(hos.interval_days)
                         res.json({"hospital_no":hos.id,"machine_type":"2",
                             "hospital_name":hos.name,"worktime":"23:00",//"hospital_scene":hos.scene_id,
                             "db_ip":"","db_port":"",
