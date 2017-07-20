@@ -138,6 +138,10 @@ user_router.route('/quickloginwxUser').post(function (req, res) {
         utils.authFromWxServer({
             code:code
         },function(err, response, data) {
+            if (!data) {
+                res.json({err:0})
+                return
+            }
             if (data.ok) {
                 jwt.sign({ wxid: data.ok.wxid }, cfg.secret, { expiresIn: cfg.expiresIn},function(err, token) { 
                     data.token = token

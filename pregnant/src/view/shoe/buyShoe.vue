@@ -8,7 +8,7 @@
 				</f7-col>
 				<f7-col width=60>
 					<p style="margin-bottom:0.5em;font-size:1.2em;color:#1f2d3d;">{{productDetail.name}}</p>
-					<p style="font-size:1.2em;margin:0;color:#ff0000;">优惠价: <span style="color:#ff0000">{{productDetail.price}}</span></p>
+					<p style="font-size:1.2em;margin:0;color:#ff0000;">优惠价: <span style="color:#ff0000">{{productDetail.price}} 元</span></p>
 <!--           <f7-link 
             class="closeBtn"
             @click="onClose"
@@ -176,7 +176,7 @@
   		this.nowSize = this.$store.state.shoeSize;
   		this.nowColor = this.$store.state.shoeColor;
   		this.nowType = this.$store.state.shoeType;
-      this.selectColorImg = this.colorArray[0] && this.colorArray[0].img || ""
+      this.selectColorImg = this.$store.state.nowPicture || (this.colorArray[0] && this.colorArray[0].img || "")
       // this.onClickColor(this.colorArray[0]);
   	}
   }

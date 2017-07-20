@@ -123,7 +123,8 @@
       doIt:function() {
         //刷新一下。。。解决ios卡住的问题
         var card = document.getElementsByClassName('card')[0]
-        card.style.marginBottom = '1px';
+        if (card)
+          card.style.marginBottom = '1px';
       }
     },
 		beforeRouteEnter(to,from,next){

@@ -153,10 +153,10 @@
 			},
 			onDetail(){
 				//进入订单明细
-				// this.$store.state.currentOrder = this.orderData
-				// this.$router.push({
-				// 	path:'/orderDetail'
-				// });
+				this.$store.state.currentOrder = this.orderData
+				this.$router.push({
+					path:'/orderDetail'
+				});
 			},
 			openLogistics() {
 				this.$emit('logistics',this.orderData.id)
