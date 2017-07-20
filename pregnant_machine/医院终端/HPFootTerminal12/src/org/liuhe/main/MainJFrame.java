@@ -178,6 +178,12 @@ public class MainJFrame extends JFrame{
 	private JLabel count_label;
 	private BackTimerThread backThread;
 	
+	//只取体重信息，足部数据取最新记录
+	private JPanel justWeightPane;
+	private JLabel interval_label = null;
+	private FirstActionButton printButton = null;
+	private FirstActionButton gotoButton = null;
+	
 	private boolean draging = false;
     private Point draggingAnchor = null;
 	private Font gen_font14 = new Font("微软雅黑", Font.PLAIN, 14);
@@ -401,6 +407,11 @@ public class MainJFrame extends JFrame{
 		backCardPane.setLayout(new BorderLayout());
 		initBackPane();
 		cardPane.add("back", backCardPane);
+		
+		justWeightPane =  new BackCardPane();
+		justWeightPane.setLayout(new BorderLayout());
+		initJustWeightPanel();
+		cardPane.add("justWeight", justWeightPane);
 	}
 	
 	private void initTopPane(){
@@ -1251,9 +1262,11 @@ public class MainJFrame extends JFrame{
 			if(ifNeedScan){
 				card.show(cardPane, "scan");
 			}else{
-				getWeightThread = new JustGetWeightThread();
-				getWeightThread.start();
-				toBackPane("系 统 消 息","您已在"+serverConfig.getInterval()+"天内完成过采集.","5");
+				//getWeightThread = new JustGetWeightThread();
+				//getWeightThread.start();
+				//toBackPane("系 统 消 息","您已在"+serverConfig.getInterval()+"天内完成过采集.","5");
+				card.show(cardPane, "justWeight");
+				interval_label.setText("您已在"+serverConfig.getInterval()+"天内完成过采集.");
 			}
 		}else{
 			toBackPane("系 统 消 息","无身份验证！","5");
@@ -1298,16 +1311,68 @@ public class MainJFrame extends JFrame{
 		back_label.setForeground(new Color(198,198,198));
 		countBackPane.add(back_label);
 	}
+	
+	private void initJustWeightPanel(){
+		JPanel contentPane = new JPanel();
+		contentPane.setLayout(new BorderLayout(10,20));
+		contentPane.setBorder(BorderFactory.createEmptyBorder(100, 330, 10, 15));
+		contentPane.setOpaque(false);
+		justWeightPane.add(contentPane,BorderLayout.CENTER);
+		interval_label = new JLabel("提 示 标 题");// 您已经在专科队列中，请耐心等候！挂号成功，请等候叫号！
+		interval_label.setHorizontalAlignment(JLabel.CENTER);
+		interval_label.setFont(new Font("黑体", Font.PLAIN+Font.BOLD, 38));
+		interval_label.setForeground(new Color(144,197,72));
+		interval_label.setPreferredSize(new Dimension(interval_label.getWidth(),100));
+		contentPane.add(interval_label,BorderLayout.NORTH);
+		
+		JPanel countBackPane = new JPanel();
+		countBackPane.setOpaque(false);
+		countBackPane.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		contentPane.add(countBackPane,BorderLayout.CENTER);
+		
+		
+		gotoButton = new FirstActionButton();
+		gotoButton.setDisLabe("足部检测");
+		gotoButton.setPreferredSize(new Dimension(240,75));
+		gotoButton.addMouseListener(new MouseAdapter()//鼠标监听
+			{
+			public void mouseClicked(MouseEvent e)
+	         {
+				card.show(cardPane, "scan");
+	         }
+			});
+		countBackPane.add(gotoButton);
+		
+		printButton = new FirstActionButton();
+		printButton.setDisLabe("开始打印");
+		printButton.setPreferredSize(new Dimension(240,75));
+		printButton.addMouseListener(new MouseAdapter()//鼠标监听
+         {
+	         public void mouseClicked(MouseEvent e)
+	         {
+	        	 
+	        	 FirstActionButton label = (FirstActionButton)e.getSource();
+	        	 if(label.getDisLabe().equals("正在打印")){
+						return;
+				 }else if(label.getDisLabe().equals("开始打印")){
+					label.setDisLabe("正在打印");
+					getWeightThread = new JustGetWeightThread();
+					getWeightThread.start();
+				 }
+	        	 gotoButton.setVisible(false);
+	        	 printButton.setVisible(false);
+	        	 interval_label.setText("正在打印中。。。。。.");
+	         }
+         });
+		countBackPane.add(printButton);
+	}
+		
+	
 	//适用于：已在队列中、挂号成功、不用采集、无身份验证
 	private void toBackPane(String title,String clinic,String time){
 		backThread = new BackTimerThread(title,clinic,time);
 		backThread.start();
-	}
-	
-	//末次月经面板与体重面板的初始化
-	private void initPanePara(){
-		beforeWeightPane.reset();
-		periodPane.initPara();
 	}
 	
 	//脚型扫描页中读秒或者单击返回初始化
@@ -1330,8 +1395,14 @@ public class MainJFrame extends JFrame{
 		centerCard.show(centerCardPane,"fore");
 		//contentPane.setAlpha(1.0f);
 		button_oper.setTitle("开始检测");
+		printButton.setDisLabe("开始打印");
+		gotoButton.setVisible(true);
+   	 	printButton.setVisible(true);
 		hwLabel.setText("");
 		timerLabel.setText("");
+		
+		beforeWeightPane.reset();
+		periodPane.initPara();
 	}
 	
 	private class Action_listener implements ActionListener{
@@ -2216,7 +2287,7 @@ public class MainJFrame extends JFrame{
 //					openID = null;
 					cardID = null;
 				
-					initPanePara();
+					initPara();
 					toFirstPane();
 				}else{
 					second = second-1;
@@ -2250,7 +2321,7 @@ public class MainJFrame extends JFrame{
 				//machine_type：2：只采集脚数据+体重测量+挂号系统
 				//machine_type：3：只采集脚数据+体重测量+挂号系统+his系统
 				if(!serverConfig.getMachine_type().equals("0")){
-					if(hwLabel.getText().equals("")){
+					//if(hwLabel.getText().equals("")){
 						try {
 							Thread.sleep(500);
 						} catch (InterruptedException e1) {
@@ -2308,9 +2379,8 @@ public class MainJFrame extends JFrame{
 //							hwLabel.setText("体重："+studyinfo.getCurrentWeight()+"kg");
 //						}
 //						hwLabel.setText("体重："+weight+"kg");
-					}
+					//}
 				}
-				
 				//扫描脚型数据
 				//获取左右脚信息：文件格式、分辨率、文件路径及文件名
 				if(!isScaned){
@@ -2605,8 +2675,9 @@ public class MainJFrame extends JFrame{
 						String[] para = {studyinfo.getHeight(),studyinfo.getCurrentWeight()
 								,studyinfo.getLeft_length(),studyinfo.getRight_length()
 								,studyinfo.getLeft_width(),studyinfo.getRight_width(),
-								studyinfo.getLeft_length_725(),studyinfo.getRight_length_725(),
-								studyinfo.getLeft_foot_status(),studyinfo.getRight_foot_status()};
+								studyinfo.getLeft_foot_width(),studyinfo.getRight_foot_width(),
+								studyinfo.getLeft_foot_status(),studyinfo.getRight_foot_status(),
+								studyinfo.getLeft_length_725(),studyinfo.getRight_length_725(),};
 						printUtil.setFeetPara(para);
 						if(studyinfo.getOpen_id() == null){
 							printUtil.setQrcode(qrcodePane.getImagePath());
@@ -2752,7 +2823,6 @@ public class MainJFrame extends JFrame{
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
-					
 					System.out.println("机器类型不为0型且外设数据为空，进行身高体重等外设测量...");
 //					if(studyinfo.getCurrentWeight().equals("0.0") || studyinfo.getCurrentWeight().length()==0 || studyinfo.getCurrentWeight()==null){
 						hwLabel.setText("体重：0.0kg");
@@ -2800,26 +2870,70 @@ public class MainJFrame extends JFrame{
 					studyinfo.setHospital_no(serverConfig.getHospital_no());
 					studyinfo.setHospital_name(serverConfig.getHospital_name());
 					sqlServer.sendWeightBaseinfo(studyinfo);
-					
 					//获取最新的报告记录
-//					Map<String, String> map = new HashMap<String,String>();
-//					map = sqlServer.getLastReportInfo(openID);
-//					if(map!=null){
-//						studyinfo.setLeft_urla(map.get("left_urla"));
-//						studyinfo.setRight_urla(map.get("right_urla"));
-//						studyinfo.setLeft_foot_size(map.get("left_foot_size"));
-//						studyinfo.setLeft_foot_width(map.get("left_foot_width"));
-//						studyinfo.setLeft_foot_width2(map.get("left_foot_width2"));
-//						studyinfo.setLeft_foot_status(map.get("left_foot_status"));
-//						studyinfo.setRight_foot_size(map.get("right_foot_size"));
-//						studyinfo.setRight_foot_width(map.get("right_foot_width"));
-//						studyinfo.setRight_foot_width2(map.get("right_foot_width2"));
-//						studyinfo.setRight_foot_status(map.get("right_foot_status"));
-//						studyinfo.setLeft_length(map.get("left_length"));
-//						studyinfo.setRight_length(map.get("right_length"));
-//						studyinfo.setLeft_width(map.get("left_width"));
-//						studyinfo.setRight_width(map.get("right_width"));
-//					}
+					Map<String, String> map = new HashMap<String,String>();
+					map = sqlServer.getLastReportInfo(openID);
+					if(map!=null){
+						if(map.containsKey("left_foot_width")){
+							studyinfo.setLeft_foot_width(map.get("left_foot_width"));
+						}else{
+							studyinfo.setLeft_foot_width("");
+						}
+						if(map.containsKey("left_length_725")){
+							studyinfo.setLeft_length_725(map.get("left_length_725"));
+						}else{
+							studyinfo.setLeft_length_725("");
+						}
+						studyinfo.setLeft_foot_status(map.get("left_foot_status"));
+						if(map.containsKey("right_foot_width")){
+							studyinfo.setRight_foot_width(map.get("right_foot_width"));
+						}else{
+							studyinfo.setRight_foot_width("");
+						}
+						if(map.containsKey("right_length_725")){
+							studyinfo.setRight_length_725(map.get("right_length_725"));
+						}else{
+							studyinfo.setRight_length_725("");
+						}
+						studyinfo.setRight_foot_status(map.get("right_foot_status"));
+						studyinfo.setLeft_length(map.get("left_length"));
+						studyinfo.setRight_length(map.get("right_length"));
+						studyinfo.setLeft_width(map.get("left_width"));
+						studyinfo.setRight_width(map.get("right_width"));
+					}
+					if(printUtil.havePrint() != null){
+						if(Integer.parseInt(serverConfig.getMachine_type()) >= 2){
+							printUtil.setCinicInfo(studyinfo.getClinic_dept()+"  "+studyinfo.getQueue_num(), studyinfo.getWait_num());
+						}else{
+							printUtil.setCinicInfo(null, null);
+						}
+						String[] para = {studyinfo.getHeight(),studyinfo.getCurrentWeight()
+								,studyinfo.getLeft_length(),studyinfo.getRight_length()
+								,studyinfo.getLeft_width(),studyinfo.getRight_width(),
+								studyinfo.getLeft_foot_status(),studyinfo.getRight_foot_status(),
+								studyinfo.getLeft_foot_width(),studyinfo.getRight_foot_width(),
+								studyinfo.getLeft_length_725(),studyinfo.getRight_length_725(),};
+						printUtil.setFeetPara(para);
+						if(studyinfo.getOpen_id() == null){
+							printUtil.setQrcode(qrcodePane.getImagePath());
+							qrcodeArr.remove(0);
+						}else{
+							printUtil.setQrcode(null);
+						}
+						printUtil.printpaper();
+						if(ServerConfig.reportPrinterName.length()>0){
+							printUtil.setReportParam(studyinfo.getMac_id(), studyinfo.getDate_yunfu_str(),studyinfo.isSingle());
+							
+							String left_foot_advice = calcUtil.getFootAdvice(studyinfo.getLeft_foot_status());
+							String right_foot_advice = calcUtil.getFootAdvice(studyinfo.getRight_foot_status());
+							printUtil.setReportFootParam(studyinfo.getLeft_foot_status(),left_foot_advice,studyinfo.getRight_foot_status(),right_foot_advice);
+							boolean ok = printUtil.genReport();
+							if(ok){
+								printUtil.doPrintReportExtern(ServerConfig.reportPrinterName);
+							}
+							toBackPane("系 统 消 息","已完成打印,返回首页","5");
+						}
+					}
 				}
 			}
 		}

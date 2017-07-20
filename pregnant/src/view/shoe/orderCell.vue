@@ -75,6 +75,9 @@
 		methods:{
 			timeToDate:timeToDate,
 			onPay() {
+				if (this.isInPay) {
+					return
+				}
 				this.isInPay = true
 				this.$store.dispatch('orderpay',{
 					self:this,
@@ -83,7 +86,7 @@
 					},
 					callback(self, res) {
 						if (res.body.w) {
-							// self.$f7.alert('','下单成功',function() {
+							// self.$f7.alert('','下单成功',function() {+
 							// 	self.$router.push('/order')
 							// })
 						}
@@ -150,10 +153,10 @@
 			},
 			onDetail(){
 				//进入订单明细
-				this.$store.state.currentOrder = this.orderData
-				this.$router.push({
-					path:'/orderDetail'
-				});
+				// this.$store.state.currentOrder = this.orderData
+				// this.$router.push({
+				// 	path:'/orderDetail'
+				// });
 			},
 			openLogistics() {
 				this.$emit('logistics',this.orderData.id)
