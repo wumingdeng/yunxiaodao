@@ -267,7 +267,14 @@ tour_router.route('/serverdata').post(function(req,res){
                                 birth=new Date(infos.birth).toLocaleDateString()
                             }
                             var now = new Date()
-                            var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString().replace('AM','').replace('PM','')
+                            // var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString().replace('AM','').replace('PM','')
+                            Y = now.getFullYear() + '-';
+                            M = (now.getMonth()+1 < 10 ? '0'+(now.getMonth()+1) : now.getMonth()+1) + '-';
+                            D = now.getDate() + ' ';
+                            h = now.getHours() + ':';
+                            m = now.getMinutes() + ':';
+                            s = now.getSeconds(); 
+                            var date_server = Y+M+D+h+m+s;
                             var date_yunfu=new Date(infos.date_yunfu).toLocaleDateString()
                             // console.log('add record 0 ')
                             db.yxd_basicinfos.create({mac_id:infos.mac_id,
