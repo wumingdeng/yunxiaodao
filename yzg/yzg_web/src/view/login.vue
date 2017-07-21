@@ -22,15 +22,34 @@
 			// }
 			// console.log('page:' + this.$route.query.page)
 			// console.log('rid:' + this.$route.query.rid
+
 			var code = this.$route.query.code
 			var page = this.$route.query.page || localStorage.page;	//跳转的页面
 			if (page == "undefined") page = 'shoeDetail'
 			var rid = this.$route.query.rid || localStorage.rid	//足部报告id
 			if (rid == "undefined") rid = null;
+			var bossid = this.$route.query.bossid || localStorage.bossid
+			if (bossid == "undefined") bossid = null;
 			// var oid = this.$route.query.oid;
 			// localStorage.code = code;
 			localStorage.page = page;
 			localStorage.rid = rid;
+			localStorage.bossid = bossid;
+			// alert('page:' + page)
+			//不需要授权的页面
+			if (page.match('share')) {
+				this.$router.push('/' + page)
+				return
+			} else {
+				// alert('wtf?')
+				if (!this.$store.state.href) {
+					this.$store.state.href = location.href.split('#')[0]
+					// alert(this.$store.state.href)
+				} else {
+					// alert('初始路径:' + this.$store.state.href)
+				}
+			}
+
 			// this.$store.commit('GET_WXID',wxid)
 			var isTest = process.env.NODE_ENV == 'development'
 			if (isTest) {
@@ -50,6 +69,23 @@
 			        	self.$store.commit('USERINFO',res.body.ok);
 			        	self.$store.commit('GET_WXID',res.body.ok.wxid);
 			        	self.$store.state.token = res.body.token;
+
+			        	if (bossid && bossid != self.$store.state.wxid) {
+			        		//从推广页点进来的 绑定关系
+			        		console.log('boss coming')
+			        		localStorage.bossid = null
+			        		self.$store.dispatch('tglink',{
+										self:self,
+										info:{
+											wxid: self.$store.state.wxid,
+											bossid:bossid
+										},
+										callback(self, res) {
+
+										}
+									})
+			        	}
+
 		        		if (isTest) {
 		        			self.$router.push('/' + page)
 		        		} else {
@@ -68,8 +104,8 @@
 			        } else if (res.body.err == 14) {
 			        	//授权失败
 			        	console.log(res.body)
-			        	alert(res.body)
-			        	return
+			        	// alert(res.body)
+			        	// return
 								wxAuth.auth();
 			        }
 						}

@@ -1,10 +1,10 @@
 <template>
 	<f7-page navbar-through>
 		<f7-navbar sliding>
-      <f7-nav-center sliding title="分享"></f7-nav-center>
+      <f7-nav-center sliding title="分享推广测试页"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
-		<p><f7-button style="margin-top:200px;" fill @click="onHooked">一双好鞋</f7-button></p>
+		<p><f7-button style="margin:200px 100px 0 100px;" fill big @click="onHooked">选一双专业孕妇鞋</f7-button></p>
 	</f7-page>
 </template>
 
@@ -21,21 +21,20 @@
 				if (true) {
 					//绑定关系
 					console.log(this.boss)
-					this.$store.dispatch('tglink',{
-						self:this,
-						info:{
-							wxid: this.$store.state.wxid,
-							bossid:this.boss
-						},
-						callback(self, res) {
-
-						}
-					})
+					
 				}
-				this.$router.push('/shoeDetail');
+				this.$store.state.isLogin = false
+				this.$router.push({
+					path:'/',
+					query:{
+						page:'shoeDetail',
+						bossid:this.boss
+					}
+				});
 			}
 		},
 		mounted() {
+			this.$f7.resize();
 			this.boss = this.$route.query.userid;
 		}
 	}

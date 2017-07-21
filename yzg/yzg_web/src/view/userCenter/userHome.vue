@@ -4,24 +4,22 @@
 			<img class="face" :src="$store.state.userinfo.headUrl">
 			<span><p>{{$store.state.userinfo.name}}</p></span>
 		</div>
-		<div class="dc_m" @click.prevent.stop='getQRCode'>
+        <!-- <div class="dc_m" @click.prevent.stop='getQRCode'> -->
+		<router-link to='/qrcode' class="dc_m" >
             <!-- <img class='listIcon' src="/static/client/assets/info_icon.jpg"></img> -->
-            <span class="listText">我的二维码</span>
+            <span class="listText">推广二维码</span>
             <span class="up"></span>
-        </div>
+        </router-link>
         <div class="dc_m" @click.prevent.stop='gotoShare'>
             <!-- <img class='listIcon' src="/static/client/assets/order_icon.jpg"></img> -->
-            <span class='listText'>推广链接</span>
+            <span class='listText'>推广页面</span>
             <span class="up"></span>
         </div>
 		<router-link to='/tgOrder' class="dc_m">
             <!-- <img class='listIcon' src="/static/client/assets/order_icon.jpg"></img> -->
-            <span class='listText'>我的推广</span>
+            <span class='listText'>我的推广订单</span>
             <span class="up"></span>
         </router-link>
-        <div v-show="showQRCode" class="qrcodeBg" @click="hideQRCode">
-            <img :src="qrcodeUrl" alt="">
-        </div>
 	</f7-page>
 </template>
 
@@ -42,35 +40,6 @@
                         userid: this.$store.state.wxid
                     }
                 })
-            },
-            getQRCode() {
-                this.showQRCode = true;
-                if (this.qrcode) {
-                    return
-                }
-                this.$store.dispatch('getQRCode',{
-                    self:this,
-                    info:{
-                        userid: this.$store.state.wxid
-                    },
-                    callback(self,res) {
-                        if (res.body.ok)
-                            self.qrcode = res.body.ok;
-                    }
-                })
-            },
-            hideQRCode() {
-                console.log('hide..')
-                this.showQRCode = false;
-            }
-        },
-        computed:{
-            qrcodeUrl() {
-                if (this.qrcode) {
-                    return 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + this.qrcode
-                } else {
-                    return ''
-                }
             }
         },
         components:{
@@ -80,25 +49,6 @@
 </script>
 
 <style type="text/css">
-    .qrcodeBg {
-        width:100%;
-        height:100%;
-        background-color: #000000;
-        filter:alpha(Opacity=60);
-        -moz-opacity:0.6;
-        /*opacity: 0.6;*/
-        position: absolute;
-        top: 0px;
-        z-index: 99;
-        vertical-align: center;
-        animation: photoBrowserIn .4s forwards;
-        transform: translate3d(0,0,0);
-    }
-    .qrcodeBg img {
-        width: 100%;
-        margin-top: 100px;
-        /*margin:auto 40px;*/
-    }
 	.dc_top_per {
     background: url('../../../static/assets/userCenter/user_bg.jpg') no-repeat;
     background-size:cover;
@@ -148,7 +98,7 @@
     }
     .dc_m .listText {
         position:relative;
-        /*top:-3px;*/
+        top:3px;
         left:10px;
     }
 	.dc_m .up {

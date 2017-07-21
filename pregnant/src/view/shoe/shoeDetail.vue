@@ -141,7 +141,7 @@
     	})
 		},
     beforeCreate() {
-      document.title = '一双好鞋'
+      document.title = '专业孕妇鞋'
     },
 		mounted() {
       this.$f7.resize();

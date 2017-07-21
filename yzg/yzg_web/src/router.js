@@ -22,6 +22,7 @@ import Address from '@/view/shoe/address'
 import Pay from '@/view/shoe/pay'
 
 import UserHome from '@/view/userCenter/userHome'
+import QRCode from '@/view/userCenter/qrcode'
 import TgOrder from '@/view/userCenter/tgOrder'
 import Share from '@/view/userCenter/Share'
 
@@ -116,6 +117,10 @@ var routes = [
     component: UserHome
   },
   {
+    path: '/qrcode',
+    component: QRCode
+  },
+  {
     path: '/tgOrder',
     component: TgOrder
   },
@@ -170,11 +175,12 @@ router.beforeEach((to, from, next) => {
 import wxApi from './utils/wxApi.js'
 router.afterEach(route => {
     var currentPage = route.fullPath.substring(1)
-    if (currentPage && currentPage.substring(0,1) != '?') //当跳转到根路径时不记录
-      localStorage.page = route.fullPath.substring(1); //保存当前路由 刷新的时候用
     // if (process.env.NODE_ENV == 'development') return;
-    window.setTimeout(wxApi.init.bind(this,route.meta.share),50)  //加个延时 要不location.href 还是旧的路由
-    
+    //当跳转到根路径时不记录
+    if (currentPage && currentPage.substring(0,1) != '?')  {
+      localStorage.page = route.fullPath.substring(1); //保存当前路由 刷新的时候用
+      window.setTimeout(wxApi.init.bind(this,route.meta.share),150)  //加个延时 要不location.href 还是旧的路由
+    }
 })
 
 

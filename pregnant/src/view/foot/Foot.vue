@@ -15,14 +15,13 @@
 								<img src='static/assets/icon/icon_foot.png'></img>
 								足型扫描
 							</div>
-							<div style="width:100%;height:150px;overflow:hidden;">
-								<img style="width:50%;float:left;" v-if="footData.left_urla" :src="footData.left_urla">
-								<img style="width:50%;float:left" v-if="footData.right_urla" :src="footData.right_urla">
+							<div id="imgContainer" style="width:100%;overflow:hidden;">
+								<img style="width:50%;height:100%;float:left;" v-if="footData.left_urla" :src="footData.left_urla"><img style="width:50%;height:100%;float:left" v-if="footData.right_urla" :src="footData.right_urla">
 							</div>
 						</div>
 					</f7-col>
 					<f7-col>
-						<div class="border">
+						<div id="dataContainer" class="border" style="height:180px;">
 							<div class="bTitle">
 								<img src='static/assets/icon/icon_result.png'></img>
 								测量结果
@@ -167,6 +166,9 @@ export default {
 					self.footData.right_foot_size = (self.footData.right_foot_size - 200) * 0.2 + 30;
 					self.footData.suggestShoe = 5;
 					
+					self.footData.left_urla = 'http://139.196.238.46:8097/20170720/30B49E6793FF20170720170517L.jpg'
+					self.footData.right_urla = 'http://139.196.238.46:8097/20170720/30B49E6793FF20170720170517L.jpg'
+
 					self.haveKnowledge = !(self.footData.footknowledge==undefined || self.footData.footknowledge=="" || self.footData.footknowledge==null)
 					self.haveAdvice = !(self.footData.footAdvice==undefined || self.footData.footAdvice=="" || self.footData.footAdvice==null)
 					self.$nextTick(function () {
@@ -177,6 +179,18 @@ export default {
 							var str = self.footData.footAdvice.replace(/{{footData.right_foot_size}}/g, Math.max(this.footData.left_foot_size, this.footData.right_foot_size))  
 							document.getElementById("f_a").innerHTML = str
 						}
+						var imgContainer = document.getElementById('imgContainer');
+						var rate = 1.06
+						var curHeight = imgContainer.offsetWidth * rate;
+						// debugger
+						// if (imgContainer.offsetWidth / 2 != 0) {
+						// 	imgContainer.style.width = (imgContainer.offsetWidth + 1) + 'px'
+						// }
+						// if (curHeight > 180) {
+							imgContainer.style.height = curHeight + 'px';
+							var dataContainer = document.getElementById('dataContainer');
+							dataContainer.style.height = (curHeight + 30) + 'px';
+						// }
 					})
 				}
 			}
@@ -192,7 +206,7 @@ export default {
 }
 
 .border {
-	height: 180px;
+	/*height: 180px;*/
 	/*box-shadow: 0 1px 2px rgba(0,0,0,.3);*/
 	background-color: #f6f6f6;
 }

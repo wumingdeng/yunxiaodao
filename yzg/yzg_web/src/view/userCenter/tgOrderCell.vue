@@ -21,7 +21,7 @@
 <!-- 			<div v-if="orderData.status==orderstatus.waitPay" style="height:40px;">
 				<p class="oc_time" style="float:right;overflow:hidden;">订单时间:{{timeToDate(orderData.createtime,true)}}</p>
 			</div> -->
-			<f7-grid v-if="orderData.status==orderstatus.waitPay" style="width:100%;height:30px">
+<!-- 			<f7-grid v-if="orderData.status==orderstatus.waitPay" style="width:100%;height:30px">
 				<f7-col><f7-button  style="border-color:#fd7f97;color:#fd7f97" @click.stop.prevent="onCancel">取消</f7-button></f7-col>
 				<f7-col><f7-button  style="background-color:#fd7f97" fill @click.stop.prevent="onPay">支付</f7-button></f7-col>
 			</f7-grid>
@@ -32,7 +32,7 @@
 			<f7-grid v-if="orderData.status==orderstatus.waitEvaluate" style="width:100%;height:30px">
 				<f7-col></f7-col>
 				<f7-col><f7-button  style="background-color:#fd7f97" fill>评价</f7-button></f7-col>
-			</f7-grid>
+			</f7-grid> -->
 		</f7-card-content>
 	</f7-card>
 </template>

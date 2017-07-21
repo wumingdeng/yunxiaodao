@@ -133,13 +133,21 @@ function setWxConfig() {
   hideMenu()
 }
 
+var hideShare = false;
+
+import g  from '../globals/global.js'
 
 export default {
   init(isShare) {
     var vue = window.Global.Vue
     var url = location.href.split('#')[0]
+    if (g.isIphone() && window.Global.s.state.href) {
+      url = window.Global.s.state.href
+    }
+
     // var url = 'http://yzxs.sujudao.com/yxd/shoeDetail'
     // console.log('发送页面' + url)
+    // alert(url)
     window.Global.s.dispatch('signature',{
       self:vue,
       info:{
@@ -170,10 +178,13 @@ export default {
             //设置分享功能
             console.log('set share..')
             setWxConfig()
+            // hideShare = false
           } else {
+            // if (hideShare) return;
             // hideMenu(['menuItem:share:appMessage','menuItem:share:timeline'])
             console.log('hide all...')
             wx.hideOptionMenu();
+            // hideShare = true
           }
         });
       }

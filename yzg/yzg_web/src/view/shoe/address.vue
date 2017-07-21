@@ -84,12 +84,16 @@
 		},
 		watch:{
 			result(newVal, oldVal) {
+				var showCity = newVal.city.name
+				if (showCity == '市辖区' || showCity == '县') {
+					showCity = ''
+				}
 				this.cityInfo = {
 					province: newVal.province.name,
-					city: newVal.city.name,
+					city: showCity,
 					area: newVal.area.name
 				}
-				this.showArea = newVal.province.name + " " + newVal.city.name + " " + newVal.area.name
+				this.showArea = newVal.province.name + " " + showCity + " " + newVal.area.name
 			}
 		},
 		computed: {
@@ -155,7 +159,7 @@
      			return false;
      		} 
 
-     		if (this.cityInfo.province == '' || this.cityInfo.city == '' || this.cityInfo.area == '') {
+     		if (this.cityInfo.province == '' || this.cityInfo.area == '') {
      			this.$f7.alert('','请选择所在地区')
      			return false
      		}
@@ -181,7 +185,8 @@
 			//初始化数据
 			// this.contact = this.$store.state.userinfo && this.$store.state.userinfo.contact || ''
 			this.gender = this.$store.state.userinfo && this.$store.state.userinfo.gender || 0
-			if (this.$store.state.userinfo.province && this.$store.state.userinfo.city && this.$store.state.userinfo.area) {
+			if (this.$store.state.userinfo.province && this.$store.state.userinfo.area) {
+				debugger
 				this.showArea = this.$store.state.userinfo.province + ' ' +  this.$store.state.userinfo.city + ' ' + this.$store.state.userinfo.area
 			}
 		}

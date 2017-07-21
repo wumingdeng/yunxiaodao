@@ -220,7 +220,7 @@ order_router.route('/orderlistReference').post(function(req,res){
         res.json({err:g.errorCode.WRONG_PARAM})
         return
     }
-    db.orders.findAll({where:{reference:userid}}).then(function(order) {
+    db.orders.findAll({order:'createtime DESC', where:{reference:userid}}).then(function(order) {
         if (order) {
             order.forEach(function(item,index){ 
                 var sinfo = mem.m.products[item.shoeid]
