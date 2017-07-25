@@ -19,7 +19,10 @@ module.exports = function(sequelize, DataTypes) {
     area:DataTypes.STRING,
     headUrl:DataTypes.STRING,
     qrcode:DataTypes.INTEGER,
-    qrcodeOwner:DataTypes.STRING
+    qrcodeOwner:DataTypes.STRING,
+    isSaleman: DataTypes.INTEGER,
+    isBoss: DataTypes.INTEGER,
+    bossid: DataTypes.STRING
   },{
        timestamps: false
   }, {

@@ -22,7 +22,7 @@
 			// }
 			// console.log('page:' + this.$route.query.page)
 			// console.log('rid:' + this.$route.query.rid
-
+			console.log('bossid:' + this.$route.query.bossid);
 			var code = this.$route.query.code
 			var page = this.$route.query.page || localStorage.page;	//跳转的页面
 			if (page == "undefined") page = 'shoeDetail'
@@ -30,11 +30,17 @@
 			if (rid == "undefined") rid = null;
 			var bossid = this.$route.query.bossid || localStorage.bossid
 			if (bossid == "undefined") bossid = null;
+			var qrcode = this.$route.query.qrcode || localStorage.qrcode
+			if (qrcode == "undefined") qrcode = null;
 			// var oid = this.$route.query.oid;
 			// localStorage.code = code;
 			localStorage.page = page;
+			if (rid)
 			localStorage.rid = rid;
+			if (bossid)
 			localStorage.bossid = bossid;
+			if (qrcode)
+			localStorage.qrcode = qrcode;
 			// alert('page:' + page)
 			//不需要授权的页面
 			if (page.match('share')) {
@@ -70,10 +76,10 @@
 			        	self.$store.commit('GET_WXID',res.body.ok.wxid);
 			        	self.$store.state.token = res.body.token;
 
-			        	if (bossid && bossid != self.$store.state.wxid) {
+			        	if (bossid && bossid != null && bossid != self.$store.state.wxid) {
 			        		//从推广页点进来的 绑定关系
 			        		console.log('boss coming')
-			        		localStorage.bossid = null
+			        		localStorage.removeItem('bossid')
 			        		self.$store.dispatch('tglink',{
 										self:self,
 										info:{
@@ -96,7 +102,22 @@
 				        				rid: rid 
 				        			}
 				        		});
-				        		localStorage.rid = null;
+				        		localStorage.removeItem('rid');
+				        	} else if (page == 'userHome' && qrcode && qrcode != null) {
+				        		self.$router.push({
+				        			path:'/' + page,
+				        			query:{
+				        				qrcode: qrcode
+				        			}
+				        		})
+		        			} else if (page == 'shoeDetail' && res.body.ok.isSaleman) {
+		        				//有推广权限的加上id
+		        				self.$router.push({
+				        			path:'/' + page,
+				        			query:{
+				        				bossid: res.body.ok.wxid
+				        			}
+				        		})
 		        			} else {
 		        				self.$router.push("/" + page);
 		        			}

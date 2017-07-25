@@ -1,5 +1,5 @@
 <template>
-	<f7-page>
+	<f7-page v-show="isShow">
 		<div class="dc_top_per">
 			<img class="face" :src="$store.state.userinfo.headUrl">
 			<span><p>{{$store.state.userinfo.name}}</p></span>
@@ -8,6 +8,11 @@
 		<router-link to='/qrcode' class="dc_m" >
             <!-- <img class='listIcon' src="/static/client/assets/info_icon.jpg"></img> -->
             <span class="listText">推广二维码</span>
+            <span class="up"></span>
+        </router-link>
+        <router-link v-if="$store.state.userinfo.isBoss" :to="{path:'/qrcode',query:{isBoss:true}}" class="dc_m" >
+            <!-- <img class='listIcon' src="/static/client/assets/info_icon.jpg"></img> -->
+            <span class="listText">超级二维码</span>
             <span class="up"></span>
         </router-link>
         <div class="dc_m" @click.prevent.stop='gotoShare'>
@@ -29,7 +34,8 @@
         data() {
             return {
                 qrcode:null,
-                showQRCode: false
+                showQRCode: false,
+                isShow:false
             }
         },
         methods:{
@@ -45,12 +51,51 @@
         components:{
     			// "navFooter":navFooter
         },  
+        mounted() {
+            var qrcode = this.$route.query.qrcode;
+            console.log(qrcode)
+            if (qrcode) {
+                if (this.$store.state.isUseQrcode) {
+                    this.isShow = true;
+                    return;
+                }
+                this.$store.state.isUseQrcode = true;
+                localStorage.removeItem('qrcode')
+                this.$store.state.isLoading = true;
+                this.$store.dispatch('useBossQrcode',{
+                    self: this,
+                    info:{
+                        qrcode: qrcode
+                    },
+                    callback(self, res) {
+                        console.log(res.body.err)
+                        if (res.body.err) {
+                        }
+                        self.$f7.alert('','成功成为推广人')
+                        self.$store.state.isLoading = false;
+                        self.isShow = true;
+                    }
+                })
+            } else {
+                var isSaleman = this.$store.state.userinfo.isSaleman;
+                if (isSaleman && isSaleman == 1)
+                    this.isShow = true
+                else {
+                    this.$f7.alert('','您的权限不足',function() {
+                        //关闭页面
+                        if (typeof WeixinJSBridge != "undefined") {
+                            WeixinJSBridge.invoke("closeWindow")
+                        } 
+                    })
+                }
+            }
+        }
 	}
 </script>
 
 <style type="text/css">
 	.dc_top_per {
-    background: url('../../../static/assets/userCenter/user_bg.jpg') no-repeat;
+    background: url('/yzg/static/assets/userCenter/user_bg.jpg') no-repeat;
     background-size:cover;
     padding: 10px;
     min-height: 110px;

@@ -88,7 +88,7 @@ var routes = [
     path: '/shoeDetail',
     component: shoeDetail,
     meta: { 
-      auth: true,
+      // auth: true,
       share: true
     }
   },
@@ -157,12 +157,11 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     var isLogin = window.Global.s.state.isLogin
     if (!isLogin) {
+      var query = to.query;
+      query.page = to.path.substring(1)
       next({
         path: '/',
-        query: { 
-          page: to.fullPath.substring(1),
-          oid:localStorage.oid
-        }
+        query: query
       })
     } else {
       next()

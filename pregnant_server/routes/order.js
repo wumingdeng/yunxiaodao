@@ -8,8 +8,8 @@ var utils = require('../utils')
 var tpl = require('../template.json')
 
 
-//创建订单
-order_router.route('/ordermake').post(function(req,res){
+
+function makeorder(req,res,price) {
     var wxid = req.decoded.wxid || ''
     var contact = req.body.contact || ''
     var gender = req.body.gender || 0
@@ -23,7 +23,9 @@ order_router.route('/ordermake').post(function(req,res){
     var color = req.body.color || ''
     var type = req.body.type
     var remark = req.body.remark
-    if(false){
+    var discountCode = req.body.discountCode || ''
+
+    if(!shoeid){
         res.json({err:g.errorCode.WRONG_PARAM})
         return
     }
@@ -31,18 +33,15 @@ order_router.route('/ordermake').post(function(req,res){
         res.json({err:g.errorCode.WRONG_PARAM})
         return
     }
-    
-    // 计算价格
-    var price = mem.m.products[shoeid].price;
+
     var shoeName = mem.m.products[shoeid].name;
-    
     db.users.findOne({where:{'wxid':wxid}}).then(function(data){
         if(data){
             var nowsec = Math.floor(Date.now()/1000)
             db.orders.create({userid:wxid,contact:contact,gender:gender,tel:tel,
                 address:address,province:province,city:city,area:area,shoeid:shoeid,
                 price:price,shoeName:shoeName,size:size,createtime:nowsec,color:color,
-                type:type,remark:remark,status:0,valid:1}).then(function(order) {
+                type:type,remark:remark,status:0,valid:1,discountCode:discountCode}).then(function(order) {
                     // mem.r.pub.set('pe:'+order.id+":"+data.id,1)
                     // mem.r.pub.expire('pe:'+order.id+":"+data.id,payExpireSec)
                     // mem.r.pub.expire('pe:'+order.id,7)
@@ -69,6 +68,32 @@ order_router.route('/ordermake').post(function(req,res){
             res.json({err:g.errorCode.WRONG_USER_MISSING})
         }
     })
+}
+
+//创建订单
+order_router.route('/ordermake').post(function(req,res){
+    var shoeid = req.body.shoeid
+    var discountCode = req.body.discountCode || ''
+    
+    var price = mem.m.products[shoeid].price;
+
+    // 计算价格
+    if (discountCode) {
+        db.discountCodes.findOne({where:{code: discountCode}}).then(function(data) {
+            if (data && data.status == 0) {
+                price = price - data.price;
+                if (price <= 0) {
+                    price = 0.01    //一分钱打底～
+                }
+                db.discountCodes.update({status:1},{where:{id: data.id}})
+                makeorder(req, res, price)
+            } else {
+                res.json({err:g.errorCode.WRONG_INVALID_DISCOUNTCODE})
+            }
+        })
+    } else {
+        makeorder(req, res, price)
+    }
 });
 
 //支付已经生成的订单
@@ -267,4 +292,21 @@ order_router.route('/orderdetail').post(function(req,res){
                 }
             })
 })
+
+//验证优惠码
+order_router.route('/useDiscountCode').post(function(req,res){
+    var code = req.body.code;
+    if (!code) {
+        res.json({err:g.errorCode.WRONG_PARAM})
+        return
+    }
+    db.discountCodes.findOne({where:{code: code}}).then(function(data) {
+        if (data && data.status == 0) {
+            res.json({ok:{price: data.price}})
+        } else {
+            res.json({err:g.errorCode.WRONG_INVALID_DISCOUNTCODE})
+        }
+    })
+})
+
 module.exports=order_router;

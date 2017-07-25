@@ -12,6 +12,7 @@ var sequelize = new Sequelize(config.dbname, config.user, config.pass, {
   host: config.dbaddr,
   port:config.port,
   dialect: config.dialect,
+  timezone:'+08:00',
   pool: {
     max: config.poolsize,
     min: 0,

@@ -559,35 +559,7 @@ user_router.route('/getreport').post(function(req,res){
     }
 })
 
-//推广功能
-//访问分享页 绑定关系
-user_router.route('/tglink').post(function(req,res){
-    var wxid = req.decoded.wxid
-    var boss = req.body.bossid
-    if (!wxid || !boss) {
-        res.json({error:g.errorCode.WRONG_PARAM})
-        return
-    }
-    db.users.findOne({where:{wxid:wxid}}).then(function(data) {
-        if (data) {
-            //如果账号已创建 直接写入上线
-            db.users.update({qrcode:0, qrcodeOwner: boss},{where:{id: data.id}})
-            //绑定关系变更
-            if (data.qrcodeOwner != boss || data.qrcode != 0) {
-                db.qrcodechange_records.create({
-                    userid: wxid,
-                    time: new Date(),
-                    newSid: 0,
-                    oldSid: data.qrcode,
-                    newMaster: boss,
-                    oldMaster: data.qrcodeOwner,
-                    linkShare: 1
-                })
-            }
-        }
-    })
-    res.json({ok:0})
-})
+
 
 
 

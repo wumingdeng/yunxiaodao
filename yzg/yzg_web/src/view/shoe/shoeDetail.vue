@@ -140,7 +140,7 @@
     	})
 		},
     beforeCreate() {
-      document.title = '一双好鞋'
+      document.title = '专业孕妇鞋'
     },
 		mounted() {
       this.$f7.resize();
@@ -160,6 +160,7 @@
       }
       this.productData = this.$store.state.productDetail
       window.setTimeout(this.doIt,1000); 
+
       // var self = this
       // this.$nextTick(function() {
       //   self.doIt()

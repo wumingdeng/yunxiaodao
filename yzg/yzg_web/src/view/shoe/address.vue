@@ -186,7 +186,6 @@
 			// this.contact = this.$store.state.userinfo && this.$store.state.userinfo.contact || ''
 			this.gender = this.$store.state.userinfo && this.$store.state.userinfo.gender || 0
 			if (this.$store.state.userinfo.province && this.$store.state.userinfo.area) {
-				debugger
 				this.showArea = this.$store.state.userinfo.province + ' ' +  this.$store.state.userinfo.city + ' ' + this.$store.state.userinfo.area
 			}
 		}

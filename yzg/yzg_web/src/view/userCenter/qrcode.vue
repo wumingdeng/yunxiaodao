@@ -7,8 +7,9 @@
       <f7-nav-center sliding title="我的推广二维码"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
-    <div v-show="showQRCode" class="qrcodeBg">
-        <img :src="qrcodeUrl" alt="">
+    <canvas id='canvas'></canvas>
+    <div v-show="showQRCode"  class="qrcodeBg">
+        <img :src="qrcodeUrl" alt="" id='qrcode'>
     </div>
 	</f7-page>
 </template>
@@ -38,6 +39,37 @@
           }
         })
       },
+      getBossQRcode() {
+      	var self = this
+				var QRCode = require('qrcode')
+
+				this.$store.dispatch('getBossQrcode', {
+					self:this,
+					info:{
+						wxid: this.$store.state.wxid
+					},
+					callback(self, res) {
+						if (res.body.ok) {
+							var opts = {
+							  errorCorrectionLevel: 'H',
+							  type: 'image/jpeg',
+							  rendererOpts: {
+							    quality: 0.3
+							  }
+							}
+							var qrcode = res.body.ok;
+							var url = 'http://yzg.sujudao.com/yzg/?page=userHome&qrcode=' + qrcode;
+							QRCode.toDataURL(url, opts, function (err, url) {
+							  if (err) throw err
+							  self.showQRCode = true
+							  var img = document.getElementById('qrcode')
+							  img.src = url
+							})
+						}
+					}
+				})
+				
+      },
       hideQRCode() {
           console.log('hide..')
           this.showQRCode = false;
@@ -53,7 +85,22 @@
         }
     },
 		mounted() {
-			this.getQRCode();
+			var bossQrcode = this.$route.query.isBoss;
+			var isBoss = this.$store.state.userinfo.isBoss == 1;
+			if (isBoss) {
+        if (bossQrcode) {
+          this.getBossQRcode();
+        } else {
+          this.getQRCode();
+        }
+			} else {
+        if (bossQrcode) {
+          this.$f7.alert('', '权限不足')
+          return
+        }
+				this.getQRCode();
+			}
+			
 		}
 	}
 

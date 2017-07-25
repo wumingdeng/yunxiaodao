@@ -20,6 +20,8 @@ function onErrorHandler(errCode) {
     //token过期了
     Global.s.state.isLogin = false; //重新登录
     Global.v.$router.push('/')
+  } else if (errCode == 100) {
+    Global.v.$f7.alert('','无效的优惠码')
   }
 }
 
@@ -376,6 +378,29 @@ export function signature ({commit, state},data) {
 export function getCheckCycle ({commit, state},data) {
   var self = data.self;
   self.$http.get(g.serverAddress+'/api/getCheckCycle')
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
+//验证优惠码
+export function useDiscountCode ({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/useDiscountCode',data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()

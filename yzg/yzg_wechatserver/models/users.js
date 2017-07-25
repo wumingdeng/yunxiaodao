@@ -17,7 +17,11 @@ module.exports = function(sequelize, DataTypes) {
     province:DataTypes.STRING,
     city:DataTypes.STRING,
     area:DataTypes.STRING,
-    headUrl:DataTypes.STRING
+    headUrl:DataTypes.STRING,
+    qrcode:DataTypes.INTEGER,
+    qrcodeOwner:DataTypes.STRING,
+    isSaleman: DataTypes.INTEGER,
+    isBoss: DataTypes.INTEGER
   },{
        timestamps: false
   }, {

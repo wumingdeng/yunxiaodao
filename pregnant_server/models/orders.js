@@ -19,7 +19,8 @@ module.exports = function(sequelize, DataTypes) {
     price:DataTypes.INTEGER,
     remark:DataTypes.STRING,
     createtime:DataTypes.BIGINT,
-    status:DataTypes.INTEGER
+    status:DataTypes.INTEGER,
+    discountCode: DataTypes.STRING
   },{
        timestamps: false
   }, {

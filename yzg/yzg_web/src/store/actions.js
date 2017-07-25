@@ -20,6 +20,13 @@ function onErrorHandler(errCode) {
     //token过期了
     Global.s.state.isLogin = false; //重新登录
     Global.v.$router.push('/')
+  } else if (errCode == 23) {
+    Global.v.$f7.alert('','无效的二维码',function() {
+      //关闭页面
+      if (typeof WeixinJSBridge != "undefined") {
+          WeixinJSBridge.invoke("closeWindow")
+      } 
+    })
   }
 }
 
@@ -444,6 +451,51 @@ export function tglink({commit, state},data) {
   var self = data.self;
   data.info.token = self.$store.state.token  //带上token
   self.$http.post(g.serverAddress+'/api/tglink', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
+//取超级验证吗
+export function getBossQrcode({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/getBossQrcode', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+//超级验证吗
+export function useBossQrcode({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/useBossQrcode', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()

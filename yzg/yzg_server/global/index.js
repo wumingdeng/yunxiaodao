@@ -56,6 +56,8 @@ module.exports = {
         WRONG_SERVICE_RECORD_NOT_EXIST:19,// 
         WRONG_SERVICE_RECORD_STATUS:20,
         WRONG_CARE_RECORD_MISSING:21,
+        WRONG_NO_RIGHT:22,  //没有权限
+        WRONG_INVALID_QRCODE:23, //无效的二维码
         WRONG_REQUEST_FAILED:997,// 
         WRONG_COMMON_SQL:998,// 
         WRONG_PARAM:999

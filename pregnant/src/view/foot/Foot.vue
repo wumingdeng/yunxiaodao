@@ -166,8 +166,8 @@ export default {
 					self.footData.right_foot_size = (self.footData.right_foot_size - 200) * 0.2 + 30;
 					self.footData.suggestShoe = 5;
 					
-					self.footData.left_urla = 'http://139.196.238.46:8097/20170720/30B49E6793FF20170720170517L.jpg'
-					self.footData.right_urla = 'http://139.196.238.46:8097/20170720/30B49E6793FF20170720170517L.jpg'
+					// self.footData.left_urla = 'http://139.196.238.46:8097/20170720/30B49E6793FF20170720170517L.jpg'
+					// self.footData.right_urla = 'http://139.196.238.46:8097/20170720/30B49E6793FF20170720170517L.jpg'
 
 					self.haveKnowledge = !(self.footData.footknowledge==undefined || self.footData.footknowledge=="" || self.footData.footknowledge==null)
 					self.haveAdvice = !(self.footData.footAdvice==undefined || self.footData.footAdvice=="" || self.footData.footAdvice==null)

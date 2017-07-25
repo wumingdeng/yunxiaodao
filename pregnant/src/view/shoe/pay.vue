@@ -43,8 +43,28 @@
 			</f7-list-item>
 		</f7-list>
 
+		<f7-grid v-show="!isUseCode" class='yhcode' style="padding-top:10px;">
+			<f7-col width=60 style="text-align:center;">
+				<span style="position:relative;top:5px;">优惠码:</span>
+				<input id="discountCode" type='text' style="position:relative;top:5px;background-color:#eeeeee">
+				</input>
+			</f7-col>
+			<f7-col width=40>
+				<f7-button fill color="green" style="margin-right:15px;" :disabled="isUseCode" @click="onDiscount">
+					使用
+				</f7-button>
+			</f7-col>
+		</f7-grid>
+
+		<div v-show="isUseCode" class='yhcode'>
+			<p style="text-align:center;font-size:20px;position:relative;top:5px;">已优惠
+				<span style="color:#ff0000">{{discountPrice}}</span>
+				元
+			</p>
+		</div>
+
   	<div class="pay_btnwrap">
-  	  <p class="wap"><span style="margin-right:-12px;color:#000000">实付款：</span><span>￥</span><span id="total_fee">{{$store.state.productDetail.price}}元</span><a @click.once="onPay" id="payBtn" class="pay_btn">微信支付</a></p>
+  	  <p class="wap"><span style="margin-right:-12px;color:#000000">实付款：</span><span>￥</span><span id="total_fee">{{orderPrice}}元</span><a @click.once="onPay" id="payBtn" class="pay_btn">微信支付</a></p>
   	</div>
 	</f7-page>
 </template>
@@ -53,7 +73,10 @@
 	export default {
 		data() {
 			return {
-
+				isUseCode:false,
+				orderPrice:null,
+				discountCode:null,
+				discountPrice:null,	//已优惠价格
 			}
 		},
 		computed:{
@@ -69,6 +92,33 @@
 			}
 		},
 		methods:{
+			onDiscount(event,btn) {
+				this.discountCode = document.getElementById('discountCode').value;
+				if (this.discountCode == '') {
+					this.$f7.alert('','请输入优惠码')
+					return
+				}
+				document.getElementById('discountCode').value = ''
+				this.$store.dispatch('useDiscountCode', {
+					self: this,
+					info: {
+						code: this.discountCode
+					},
+					callback(self, res) {
+						var price = res.body.ok.price;
+						self.discountPrice = price
+						self.$f7.alert('','成功使用优惠券！')
+						self.isUseCode = true;
+						self.orderPrice -= Number(price)
+						if (self.orderPrice < 0) {
+							self.orderPrice = 0;
+						}
+						event.target.style.backgroundColor = '#eeeeee';
+
+					}
+				})
+
+			},
 			onPay() {
 				var state = this.$store.state
 				var info = {}
@@ -85,6 +135,7 @@
 				info.province = state.userinfo.province
 				info.city = state.userinfo.city
 				info.area = state.userinfo.area
+				info.discountCode = this.discountCode;
 
 
 				this.$store.dispatch('ordermake',{
@@ -134,6 +185,7 @@
 
 		mounted() {
 			this.$f7.resize();
+			this.orderPrice = this.$store.state.productDetail.price
 			// function onBridgeReady(){
 			//    WeixinJSBridge.invoke(
 			//        'getBrandWCPayRequest', {
@@ -165,6 +217,12 @@
 </script>
 
 <style scoped>
+	.yhcode {
+		height:40px;
+		background-color: #ffffff;
+		margin-top: -15px;
+		margin-bottom: 50px;
+	}
 	#topInfo p {
 		margin: 0;
 	}
