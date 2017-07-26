@@ -1,5 +1,5 @@
 <template>
-	<f7-page navbar-through>
+<f7-page navbar-through>
 		<f7-navbar sliding>
       <f7-nav-left>
           <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
@@ -7,22 +7,26 @@
       <f7-nav-center sliding title="确认订单"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
-		<f7-block inner style="font-size:1.2em;margin:20px 0 0 0;" id="topInfo">
+		<f7-block inner style="font-size:1.2em;margin:0 0 0 0;" id="topInfo">
 			<p>
-				<span style="width:40%;display:inline-block;">
+				<span style="display:inline-block;">
 					<span>姓名:</span><span style="color:#888888"> {{$store.state.userinfo.contact}}</span>
 				</span>
-				<span>手机:</span><span style="color:#888888"> {{$store.state.userinfo.tel}}</span>
+				<span>
+					<span>手机:</span><span style="color:#888888"> {{$store.state.userinfo.tel}}</span>
+				</span>
 			</p>
 			<div class="partingLine"></div>
 			<p>
 				<span>地址:</span><span style="color:#888888"> {{fullAddress}}</span>
 			</p>
 		</f7-block>
+		<img src="static/assets/shoe/line.jpg" style="position:relative;top:-12px;height:3px">
 
-		<f7-block inner style="margin-top:15px;">
+		<f7-block-title style="margin-top:0px;font-size:18px;">订单信息</f7-block-title>
+		<f7-block inner style="margin:5px 0 15px;">
 			<f7-grid name="baseInfo">
-				<f7-col width=30>
+				<f7-col width=30 id='orderImg'>
 					<img class="shoeImg" :src="$store.state.nowPicture">
 				</f7-col>
 				<f7-col width=70>
@@ -31,20 +35,21 @@
 					<p style="font-size:1.2em;color:#ff0000;margin:8px 0;">¥{{$store.state.productDetail.price}}</p>
 				</f7-col>
 			</f7-grid>
+
+
+			<f7-list form style="margin:20px 0 0 0;border:none;">
+				<f7-list-item>
+					<f7-label style="width:20%;margin-top:-65px;">备注:</f7-label>
+					<div class="item-input">
+						<textarea style="padding:2px 5px;margin:12px 0;background-color:#eeeeee;border:1px solid #dddddd;border-radius:4px;" type="textarea" readonly="readonly" v-model=orderRemark></textarea>
+					</div>
+					<!-- <f7-input readonly type='textarea' v-model="$store.state.remark"></f7-input> -->
+				</f7-list-item>
+			</f7-list>
 		</f7-block>
 
-		<f7-list form style="margin-top:-18px;">
-			<f7-list-item>
-				<f7-label style="width:20%;margin-top:-65px;">备注:</f7-label>
-				<div class="item-input">
-					<textarea style="padding:2px 5px;margin:12px 0;background-color:#eeeeee" type="textarea" readonly="readonly" v-model=orderRemark></textarea>
-				</div>
-				<!-- <f7-input readonly type='textarea' v-model="$store.state.remark"></f7-input> -->
-			</f7-list-item>
-		</f7-list>
-
   	<div class="pay_btnwrap">
-  	  <p class="wap"><span style="margin-right:-12px;color:#000000">实付款：</span><span>￥</span><span id="total_fee">{{$store.state.productDetail.price}}元</span><a @click.once="onPay" id="payBtn" class="pay_btn">微信支付</a></p>
+  	  <p class="wap"><span style="margin-right:-12px;color:#000000">实付款：</span><span>￥</span><span id="total_fee">{{orderPrice}}元</span><a @click.once="onPay" id="payBtn" class="pay_btn">微信支付</a></p>
   	</div>
 	</f7-page>
 </template>
@@ -59,7 +64,7 @@
 		computed:{
 			fullAddress() {
 				var info = this.$store.state.userinfo
-				return info.province + ' ' + info.city + ' ' + info.area + ' ' + info.address;
+				return (info.province || '') + ' ' + (info.city || '') + ' ' + (info.area || '') + ' ' + info.address;
 			},
 			orderRemark() {
 				var remark = this.$store.state.remark

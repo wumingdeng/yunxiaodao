@@ -54,31 +54,41 @@
       ></buyShoe>
       </div>
     </f7-page-content>
+    
+    <service :isShow="isSHowService" @close="isSHowService=false"></service>
+
     <div v-if="pickerOpened" class="blackMask"></div>
-      <div class="navFooter">
-          <!-- <p><f7-button class="pre" @click="$router.push('/buyShoe')">立即购买</f7-button></p> -->
-          <span style="width:30%;"><f7-button style="background-color:#fff" class="pre" @click="$router.push('/order')">
-            <img src='static/assets/shoe/myOrder.png'></img>
-          </f7-button></span>
-          <span style="width:70%;"><f7-button class="pre" @click="onClickBuy">立即购买</f7-button></span>
-      </div>
+
+    <div class="navFooter">
+        <!-- <p><f7-button class="pre" @click="$router.push('/buyShoe')">立即购买</f7-button></p> -->
+        <span style="width:20%;box-sizing:border-box;border-right:1px solid #dddddd"><f7-button style="background-color:#fff" class="pre" @click="$router.push('/order')">
+          <img src='static/assets/shoe/myOrder.png'></img>
+        </f7-button></span>
+        <span style="width:20%;"><f7-button style="background-color:#fff" class="pre" @click="showService">
+          <img src='static/assets/service.png'></img>
+        </f7-button></span>
+        <span style="width:60%;"><f7-button class="pre" @click="onClickBuy">立即购买</f7-button></span>
+    </div>
 	</f7-page>
 </template>
 
 <script>
 	import homeSwipe from "./homeSwipe";
   import buyShoe from "./buyShoe";
+  import service from "@/components/service"
   // import wxApi from '../../utils/wxApi.js'
 	export default{
 		data () {
 			return {
         pickerOpened:false,
-				productData:{}
+				productData:{},
+        isSHowService:false
 			}
 		},
     components:{
     	"homeSwipe":homeSwipe,
-      'buyShoe':buyShoe
+      'buyShoe':buyShoe,
+      "service":service
     },     
     computed: {
     	swipeData() {
@@ -119,6 +129,9 @@
       },
       getImgSrc(n) {
         return "static/assets/shoe/product/intro_p" + this.productData.pid + "/" + n +".jpg" + Global.verStr;
+      },
+      showService() {
+        this.isSHowService = true;
       },
       doIt:function() {
         //刷新一下。。。解决ios卡住的问题

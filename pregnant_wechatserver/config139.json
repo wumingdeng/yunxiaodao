@@ -17,7 +17,7 @@
     "encodingAESKey":"",
     "partnerKey": "dfanvojsdfg83413jacmzxvgjrf8743r",
     "authCodeAddress":"http://180yxd.sujudao.com/api/auth",
-    "webAddress":"http://qiniu.sujudao.com/yxd",
+    "webAddress":"http://180yxd.sujudao.com/yxd",
     "wechatServerAddress":"http://180yxd.sujudao.com/api/payResult",
     "redisAdress":"127.0.0.1"
 }

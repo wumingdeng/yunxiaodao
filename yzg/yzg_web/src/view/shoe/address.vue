@@ -12,7 +12,7 @@
 		<f7-list form>
 	    <f7-list-item>
 	      <f7-label>姓名</f7-label>
-	      <f7-input id="inputContact" type="text" placeholder="" v-model="$store.state.userinfo.contact"></f7-input>
+	      <f7-input id="inputContact" type="text" placeholder="请输入联系人" v-model="$store.state.userinfo.contact"></f7-input>
 	    </f7-list-item>
 	    <li v-if="false" class="">
 	    	<div style="width:60%;margin:0 auto;">
@@ -34,7 +34,7 @@
       <f7-list-item radio name="my-radio" :value="2" title="女士"></f7-list-item> -->    
 	    <f7-list-item>
 	      <f7-label>手机号</f7-label>
-	      <f7-input id="inputTel" type="number" placeholder="" v-model='$store.state.userinfo.tel'></f7-input>
+	      <f7-input id="inputTel" type="number" placeholder="请输入手机号" v-model='$store.state.userinfo.tel'></f7-input>
 	    </f7-list-item>
     </f7-list>
 
@@ -146,7 +146,6 @@
 					this.$f7.alert('','联系人太长了')
 					return false
 				}
-
 				var phone = document.getElementById("inputTel");
     		if (!phone.value) {
     			this.$f7.alert('','请输入手机号')
@@ -158,8 +157,7 @@
      			phone.focus();
      			return false;
      		} 
-
-     		if (this.cityInfo.province == '' || this.cityInfo.area == '') {
+     		if (!this.cityInfo.province || this.cityInfo.province == '' || !this.cityInfo.area || this.cityInfo.area == '') {
      			this.$f7.alert('','请选择所在地区')
      			return false
      		}
@@ -186,6 +184,10 @@
 			// this.contact = this.$store.state.userinfo && this.$store.state.userinfo.contact || ''
 			this.gender = this.$store.state.userinfo && this.$store.state.userinfo.gender || 0
 			if (this.$store.state.userinfo.province && this.$store.state.userinfo.area) {
+				this.cityInfo = {
+					province: this.$store.state.userinfo.province,
+					area: this.$store.state.userinfo.area
+				}
 				this.showArea = this.$store.state.userinfo.province + ' ' +  this.$store.state.userinfo.city + ' ' + this.$store.state.userinfo.area
 			}
 		}

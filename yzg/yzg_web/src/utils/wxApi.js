@@ -77,6 +77,7 @@ import cfg from '../../static/webConfig.json'
 function shareAppMessage(link) {
   var url = cfg.webAddress
   var route = location.href.split('#')[0].substring(url.length + 1)
+  route = route.replace('?','&')
   url = url + '/?page=' + route;
   // console.log('link:' + url)
   wx.onMenuShareAppMessage({

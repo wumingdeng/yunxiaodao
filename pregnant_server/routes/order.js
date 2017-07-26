@@ -35,13 +35,17 @@ function makeorder(req,res,price) {
     }
 
     var shoeName = mem.m.products[shoeid].name;
+
+    //不要钱的时候 订单变成已支付
+    var status = price == 0 ? 1 : 0;
+
     db.users.findOne({where:{'wxid':wxid}}).then(function(data){
         if(data){
             var nowsec = Math.floor(Date.now()/1000)
             db.orders.create({userid:wxid,contact:contact,gender:gender,tel:tel,
                 address:address,province:province,city:city,area:area,shoeid:shoeid,
                 price:price,shoeName:shoeName,size:size,createtime:nowsec,color:color,
-                type:type,remark:remark,status:0,valid:1,discountCode:discountCode}).then(function(order) {
+                type:type,remark:remark,status:status,valid:1,discountCode:discountCode}).then(function(order) {
                     // mem.r.pub.set('pe:'+order.id+":"+data.id,1)
                     // mem.r.pub.expire('pe:'+order.id+":"+data.id,payExpireSec)
                     // mem.r.pub.expire('pe:'+order.id,7)
@@ -49,6 +53,10 @@ function makeorder(req,res,price) {
                 //更新用户资料
                 db.users.update({contact:contact,gender: gender,tel: tel,address: address,province: province,city: city,area: area},{where:{wxid:wxid}})
                 
+                if (price == 0) {
+                    res.json({ok:0,info:"It's free~!"})
+                    return
+                }
                 //支付请求
                 utils.sendPayToWxServer({
                     spbill_create_ip: req.ip.match(/\d+\.\d+\.\d+\.\d+/),
@@ -83,7 +91,7 @@ order_router.route('/ordermake').post(function(req,res){
             if (data && data.status == 0) {
                 price = price - data.price;
                 if (price <= 0) {
-                    price = 0.01    //一分钱打底～
+                    price = 0    //一分钱打底～
                 }
                 db.discountCodes.update({status:1},{where:{id: data.id}})
                 makeorder(req, res, price)
@@ -301,6 +309,7 @@ order_router.route('/useDiscountCode').post(function(req,res){
         return
     }
     db.discountCodes.findOne({where:{code: code}}).then(function(data) {
+        console.log(data)
         if (data && data.status == 0) {
             res.json({ok:{price: data.price}})
         } else {

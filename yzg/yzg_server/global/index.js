@@ -61,14 +61,15 @@ module.exports = {
         WRONG_REQUEST_FAILED:997,// 
         WRONG_COMMON_SQL:998,// 
         WRONG_PARAM:999
-    },
+    },    
     orderStatus:{
         NOTPAY:0,
         PAYED_NO_DELIVER:1, //已支付 未发货
-        DELIVER_NO_RECEIPT:2,   //待收货
-        RECEIPT_NO_EVALUATE:3,  //待评价
-        FINISH:4,    //订单完成
-        CANCELED:5
+        DELIVER_NO_CHOICE:2,   //备货中
+        DELIVER_NO_RECEIPT:3,   //待收货
+        RECEIPT_NO_EVALUATE:4,  //待评价
+        FINISH:5,    //订单完成
+        CANCELED:6
     },
     earlyStage: 12,     //孕早期
     earlyAdd: 2,   //早期体重增加
