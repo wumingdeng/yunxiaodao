@@ -1,5 +1,5 @@
 {
-    "sqlDebug":false,
+    "sqlDebug":true,
     "debug":true,
     "testUser":"o6rXewG_WxyiS2ltJPbvWI15_cJw",
     "dbaddr":"121.40.254.174",

@@ -54,7 +54,7 @@
 				},
 				statusName:[
 					'待付款',
-					'待备货',
+					'待发货',
 					'待发货',
 					'待收货',
 					'待评价',
@@ -85,19 +85,6 @@
 						oid: this.orderData.id
 					},
 					callback(self, res) {
-						if (res.body.w) {
-							// self.$f7.alert('','下单成功',function() {+
-							// 	self.$router.push('/order')
-							// })
-						}
-						var payargs = {
-							 "appId":"wx5da59f32f8c2f724",     //公众号名称，由商户传入     
-		           "timeStamp":"1395712654",         //时间戳，自1970年以来的秒数     
-		           "nonceStr":"e61463f8efa94090b1f366cccfbbb444", //随机串     
-		           "package":"prepay_id=u802345jgfjsdfgsdg888",     
-		           "signType":"MD5",         //微信签名方式：     
-		           "paySign":"70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名 
-						}
 						payargs = res.body;
 						if (payargs.err ) {
 							self.$f7.alert('','支付失败');
@@ -113,7 +100,7 @@
 							console.log(res)
 							self.isInPay = false;
 						  if(res.err_msg == "get_brand_wcpay_request:ok"){
-								self.orderData.status = self.orderstatus.waitDeliver;
+								self.orderData.status = self.orderstatus.waitChoice;
 						    // alert("支付成功");
 						    // 这里可以跳转到订单完成页面向用户展示
 						  }else{
@@ -153,10 +140,10 @@
 			},
 			onDetail(){
 				//进入订单明细
-				// this.$store.state.currentOrder = this.orderData
-				// this.$router.push({
-				// 	path:'/orderDetail'
-				// });
+				this.$store.state.currentOrder = this.orderData
+				this.$router.push({
+					path:'/orderDetail'
+				});
 			},
 			openLogistics() {
 				this.$emit('logistics',this.orderData.id)

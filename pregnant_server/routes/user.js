@@ -138,6 +138,10 @@ user_router.route('/quickloginwxUser').post(function (req, res) {
         utils.authFromWxServer({
             code:code
         },function(err, response, data) {
+            if (!data) {
+                res.json({err:0})
+                return
+            }
             if (data.ok) {
                 jwt.sign({ wxid: data.ok.wxid }, cfg.secret, { expiresIn: cfg.expiresIn},function(err, token) { 
                     data.token = token
@@ -239,21 +243,25 @@ function fillWeight(res,wxid,weight,hospital_no) {
                 }
                 //根据算法 得出体重数据 存入体重数据表中
                 //计算标准体重
-                var lastPeriod = udata.dataValues.lastPeriod;
-                var currentWeek = getWeek(lastPeriod);  //取当前周数
                 newRecord.userid = wxid;
-                newRecord.week = currentWeek;
-                var standard = getStandardWeight(currentWeek, udata.dataValues.weight, shape, udata.dataValues.isSingle);
-                newRecord.standard = standard.value
-                var result
-                if (weight < standard.min) {
-                    result = g.weightStatus.skinny;
-                } else if (weight > standard.max) {
-                    result = g.weightStatus.fat
-                } else {
-                    result = g.weightStatus.normal
+                var lastPeriod = udata.dataValues.lastPeriod;
+                //终端扫描体重时可能没有末次月经时间
+                if (lastPeriod) {
+                    var currentWeek = getWeek(lastPeriod);  //取当前周数
+                    newRecord.week = currentWeek;
+                    var standard = getStandardWeight(currentWeek, udata.dataValues.weight, shape, udata.dataValues.isSingle);
+                    newRecord.standard = standard.value
+                    var result
+                    if (weight < standard.min) {
+                        result = g.weightStatus.skinny;
+                    } else if (weight > standard.max) {
+                        result = g.weightStatus.fat
+                    } else {
+                        result = g.weightStatus.normal
+                    }
+                    newRecord.result = result
                 }
-                newRecord.result = result
+                
 
                 
 

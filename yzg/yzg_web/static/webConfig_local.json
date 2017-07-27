@@ -1,0 +1,9 @@
+{
+	"debugServerAddress":"http://192.168.18.216:8192",
+	"serverAddress":"http://192.168.18.216:8192",
+	"adminServerAddress":"http://121.40.254.174:8101",
+	"machineServerAddress":"http://yzxs.sujudao.com:8097",
+	"webAddress":"http://yzg.sujudao.com/yzg",
+	"wechatServerAddress":"http://yzg.sujudao.com:82",
+	"appId":"wx440688713d1eacdd"
+}

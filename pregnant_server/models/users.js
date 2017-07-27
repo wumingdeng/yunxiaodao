@@ -14,7 +14,9 @@ module.exports = function(sequelize, DataTypes) {
     gender:DataTypes.INTEGER,
     tel:DataTypes.STRING,
     address:DataTypes.STRING,
+    province:DataTypes.STRING,
     city:DataTypes.STRING,
+    area:DataTypes.STRING,
     headUrl:DataTypes.STRING
   },{
        timestamps: false

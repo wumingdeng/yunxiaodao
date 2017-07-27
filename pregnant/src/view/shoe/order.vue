@@ -37,7 +37,8 @@
                 -->
               </f7-nav-right>
             </f7-navbar>
-            <f7-block inner style="margin-top:0">
+            <div v-show="!haveData" style="margin-top:100px;text-align:center;">尚无物流跟踪数据，请稍后重试</div>
+            <f7-block v-show="haveData" inner style="margin-top:0">
               <f7-timeline-item inner 
                 v-for="(item,index) in logisticsData.Traces"
                 :text="item.AcceptStation"
@@ -67,30 +68,31 @@
 				isPreloader:true,
         popupOpened:false,
         dateObj:{}, //存物流已有的日期
+        haveData:false,
         logisticsData:{
-          // "EBusinessID": "1287326",
-          // "ShipperCode": "YTO",
-          // "Success": true,
-          // "LogisticCode": "12345678",
-          // "State": "2",
-          // "Traces": [
-          //   {
-          //     "AcceptTime": "2017-05-18 10:12:38",
-          //     "AcceptStation": "圆通合作点【指尖快递】快件已到达绿地蓝海国际大厦B座负一层驿站,如有疑问请联系055163520604"
-          //   },
-          //   {
-          //     "AcceptTime": "2017-05-19 15:16:13",
-          //     "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-          //   },
-          //   {
-          //     "AcceptTime": "2017-05-19 15:16:13",
-          //     "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-          //   },
-          //   {
-          //     "AcceptTime": "2017-05-19 15:16:13",
-          //     "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
-          //   },
-          // ]
+          "EBusinessID": "1287326",
+          "ShipperCode": "YTO",
+          "Success": true,
+          "LogisticCode": "12345678",
+          "State": "2",
+          "Traces": [
+            {
+              "AcceptTime": "2017-05-18 10:12:38",
+              "AcceptStation": "圆通合作点【指尖快递】快件已到达绿地蓝海国际大厦B座负一层驿站,如有疑问请联系055163520604"
+            },
+            {
+              "AcceptTime": "2017-05-19 15:16:13",
+              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
+            },
+            {
+              "AcceptTime": "2017-05-19 15:16:13",
+              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
+            },
+            {
+              "AcceptTime": "2017-05-19 15:16:13",
+              "AcceptStation": "圆通合作点【指尖快递】快件已到达港汇广场A座负一层驿站,如有疑问请联系13515644171"
+            },
+          ]
         }
 			}
     },
@@ -104,6 +106,7 @@
         this.dateObj = {}
         this.logisticsData = {}
         this.popupOpened = true
+        this.haveData = false
         //取物流信息
         this.$store.dispatch('getLogistics',{
           self:this,
@@ -115,6 +118,9 @@
           callback(self, res) {
             if (res.body.ok == 1) {
               self.logisticsData = res.body.d;
+              if (self.logisticsData.Traces && self.logisticsData.Traces.length > 0) {
+                self.haveData = true
+              }
             }
           }
         })

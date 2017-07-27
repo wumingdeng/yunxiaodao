@@ -163,6 +163,7 @@ tour_router.route('/create_menu').get(function(req,res){
 
 tour_router.route('/auth').post(function(req,res){
     var code = req.body.code
+    console.log('login:' + code);
     if (!code) {
         res.json({err:g.errorCode.WRONG_PARAM})
     }
@@ -178,8 +179,10 @@ tour_router.route('/auth').post(function(req,res){
     }
     utils.wechat_f.getUserOpenid(code,function(openid){
         if(openid){
+            console.log('get openid:' + openid)
             utils.wechat_f.getUserBrief(openid,function(data){
                 if(data){
+                    console.log('get user data:' + data);
                     // res.redirect(301,'http://czw321.ngrok.cc/?wxid='+openid+'&type=1');
                     db.users.findOne({where:{'wxid':openid}}).then(function(user){
                         if(user){

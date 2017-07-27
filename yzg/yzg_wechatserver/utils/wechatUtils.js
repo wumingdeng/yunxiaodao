@@ -157,19 +157,19 @@ var f = {
         var url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='+cfg.access_token;
         var menus = {
             "button": [
+                // {
+                //     "type": "view",
+                //     "name": "体重管理",
+                //     "url": redirect_url_check//"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+cfg.appid+"&redirect_uri="+codeCallback+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
+                // },
+                // {
+                //     "type": "view",
+                //     "name": "足部健康",
+                //     "url": redirect_url_foot
+                // },
                 {
                     "type": "view",
-                    "name": "体重管理",
-                    "url": redirect_url_check//"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+cfg.appid+"&redirect_uri="+codeCallback+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
-                },
-                {
-                    "type": "view",
-                    "name": "足部健康",
-                    "url": redirect_url_foot
-                },
-                {
-                    "type": "view",
-                    "name": "一双好鞋",
+                    "name": "专业孕妇鞋",
                     "url": redirect_url_shoe//"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+cfg.appid+"&redirect_uri="+codeCallback+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
                 },
             ]

@@ -135,7 +135,7 @@ var f = {
                 },
                 {
                     "type": "view",
-                    "name": "一双好鞋",
+                    "name": "专业孕妇鞋",
                     "url": redirect_url_shoe//"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+cfg.appid+"&redirect_uri="+codeCallback+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
                 },
             ]
