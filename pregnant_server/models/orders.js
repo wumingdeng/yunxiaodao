@@ -15,6 +15,7 @@ module.exports = function(sequelize, DataTypes) {
     shoeName:DataTypes.STRING,
     size:DataTypes.INTEGER,
     color:DataTypes.STRING,
+    count:DataTypes.INTEGER,
     type:DataTypes.STRING,
     price:DataTypes.INTEGER,
     remark:DataTypes.STRING,

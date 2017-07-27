@@ -187,8 +187,13 @@ tour_router.route('/serverdata').post(function(req,res){
             }else if(req.body.w !== undefined){
                 var infos = JSON.parse(req.body.data)
                 var now = new Date()
-                // console.log('just weight 0 ')
-                var date_server = now.toLocaleDateString()+' '+now.toLocaleTimeString().replace('AM','').replace('PM','')
+                Y = now.getFullYear() + '-';
+                M = (now.getMonth()+1 < 10 ? '0'+(now.getMonth()+1) : now.getMonth()+1) + '-';
+                D = now.getDate() + ' ';
+                h = now.getHours() + ':';
+                m = now.getMinutes() + ':';
+                s = now.getSeconds();
+                var date_server = Y+M+D+h+m+s;
                 db.yxd_basicinfos.create({date_server:date_server,mac_id:infos.mac_id,weight:infos.weight,
                     open_id:infos.open_id,card_id:infos.card_id,view_type:2,hospital_no:infos.hospital_no,hospital_name:infos.hospital_name,
                     doctor_name:infos.doctor_name,user_id:infos.user_id,doctor_id:infos.doctor_id}).then(function(dta){
@@ -583,13 +588,13 @@ function getLatestReport(openid,res){
     //     res.json({error:g.errorCode.WRONG_SQL})
     // })
     var query = `select yb.mac_id,yb.user_id,yb.open_id,yb.card_id,yb.name,yb.age,yb.sex,yb.date_server,
-        ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,yp.left_urla,yp.right_urla,
+        ypp.left_width,ypp.left_length,ypp.right_length,ypp.right_width,ypp.right_length_725,ypp.left_length_725,yp.left_urla,yp.right_urla,
         ys.left_foot_size,ys.left_foot_width,ys.left_foot_width2,left_foot_status,ys.right_foot_size,ys.right_foot_width,
         ys.right_foot_width2,right_foot_status from yxd_basicinfos yb join yxd_pictures yp join yxd_parameters ypp join 
-        yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.open_id=? order by yb.id desc limit 1`
+        yxd_suggestions ys ON yb.mac_id=yp.mac_id and yb.mac_id=ypp.mac_id and yb.mac_id=ys.mac_id and yb.open_id=? and yb.view_type=1 order by yb.id desc limit 1`
     db.sequelize.query(query, { replacements: [openid], 
         type: db.sequelize.QueryTypes.SELECT }
-        ).then(function(records){
+        ).then(function(records){ 
         if(records){
             res.json({data:records,errcode:0})
         }else{
