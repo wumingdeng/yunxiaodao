@@ -15,6 +15,10 @@ Vue.use(VueResource)
 import Framework7Vue from '@/framework7-vue/framework7-vue.js'
 Vue.use(Framework7Vue)
 
+import f7css from '../static/framework7/css/framework7.ios.min.css'
+import f7Colorcss from '../static/framework7/css/framework7.ios.colors.min.css'
+import mycss from '../static/framework7/css/my-app.css'
+
 import Global from './globals/global'
 window.Global = Global
 Global.s = store

@@ -3,7 +3,8 @@ module.exports = function(sequelize, DataTypes) {
   var discountCodes = sequelize.define('discountCodes', {
     code: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
-    status: DataTypes.INTEGER
+    status: DataTypes.INTEGER,
+    expiryDate: DataTypes.STRING
   },{
        timestamps: false
   }, {

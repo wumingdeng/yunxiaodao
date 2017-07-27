@@ -111,8 +111,8 @@
         this.$store.dispatch('getLogistics',{
           self:this,
           info:{
-            expCode:'',
-            expNo:'',
+            expCode:data.exp_com_no,
+            expNo:data.exp_no,
             orderCode:data.id
           },
           callback(self, res) {

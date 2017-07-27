@@ -85,7 +85,7 @@
 						oid: this.orderData.id
 					},
 					callback(self, res) {
-						payargs = res.body;
+						var payargs = res.body;
 						if (payargs.err ) {
 							self.$f7.alert('','支付失败');
 							self.isInPay = false;

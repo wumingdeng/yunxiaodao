@@ -20,7 +20,10 @@ module.exports = function(sequelize, DataTypes) {
     remark:DataTypes.STRING,
     createtime:DataTypes.BIGINT,
     status:DataTypes.INTEGER,
-    discountCode: DataTypes.STRING
+    discountCode: DataTypes.INTEGER,
+    originalPrice: DataTypes.INTEGER,
+    exp_no: DataTypes.STRING,
+    exp_com_no: DataTypes.STRING
   },{
        timestamps: false
   }, {

@@ -405,14 +405,14 @@ export function useDiscountCode ({commit, state},data) {
       // success callback
       self.$f7.hidePreloader()
       console.log(response)
+
+      if (data.callback) {
+        data.callback(self,response)
+      }
       if(response.body.err){
         onErrorHandler(response.body.err)
         // self.$f7.alert('',response.body.err)
-      }else{
-        if (data.callback) {
-          data.callback(self,response)
-        }
-      }       
+      }     
     }, (response) => {
       // error callback
       // onErrorRefresh(self);

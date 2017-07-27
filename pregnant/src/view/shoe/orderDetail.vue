@@ -175,8 +175,8 @@
         this.$store.dispatch('getLogistics',{
           self:this,
           info:{
-            expCode:'',
-            expNo:'',
+            expCode:data.exp_com_no,
+            expNo:data.exp_no,
             orderCode:this.orderData.id
           },
           callback(self, res) {
@@ -204,6 +204,9 @@
         return str.substring(11)
       },
 			onPay() {
+				if (this.isInPay) {
+					return
+				}
 				this.isInPay = true
 				this.$store.dispatch('orderpay',{
 					self:this,

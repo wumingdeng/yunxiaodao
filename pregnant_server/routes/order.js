@@ -9,7 +9,7 @@ var tpl = require('../template.json')
 
 
 
-function makeorder(req,res,price) {
+function makeorder(req,res,price,nowPrice,discountCode) {
     var wxid = req.decoded.wxid || ''
     var contact = req.body.contact || ''
     var gender = req.body.gender || 0
@@ -23,7 +23,9 @@ function makeorder(req,res,price) {
     var color = req.body.color || ''
     var type = req.body.type
     var remark = req.body.remark
-    var discountCode = req.body.discountCode || ''
+    discountCode = discountCode || ''
+    nowPrice = nowPrice || price
+    // var discountCode = req.body.discountCode || ''
 
     if(!shoeid){
         res.json({err:g.errorCode.WRONG_PARAM})
@@ -44,7 +46,9 @@ function makeorder(req,res,price) {
             var nowsec = Math.floor(Date.now()/1000)
             db.orders.create({userid:wxid,contact:contact,gender:gender,tel:tel,
                 address:address,province:province,city:city,area:area,shoeid:shoeid,
-                price:price,shoeName:shoeName,size:size,createtime:nowsec,color:color,
+                price:nowPrice,
+                originalPrice:price,
+                shoeName:shoeName,size:size,createtime:nowsec,color:color,
                 type:type,remark:remark,status:status,valid:1,discountCode:discountCode}).then(function(order) {
                     // mem.r.pub.set('pe:'+order.id+":"+data.id,1)
                     // mem.r.pub.expire('pe:'+order.id+":"+data.id,payExpireSec)
@@ -87,14 +91,14 @@ order_router.route('/ordermake').post(function(req,res){
 
     // 计算价格
     if (discountCode) {
-        db.discountCodes.findOne({where:{code: discountCode}}).then(function(data) {
+        db.discountCodes.findOne({where:{code: discountCode, status:0, expiryDate:{$gte: new Date().toLocaleDateString()}}}).then(function(data) {
             if (data && data.status == 0) {
-                price = price - data.price;
-                if (price <= 0) {
-                    price = 0    //一分钱打底～
+                var nowPrice = price - data.price;
+                if (nowPrice <= 0) {
+                    nowPrice = 0    //一分钱打底～
                 }
                 db.discountCodes.update({status:1},{where:{id: data.id}})
-                makeorder(req, res, price)
+                makeorder(req, res, price, nowPrice, data.id)
             } else {
                 res.json({err:g.errorCode.WRONG_INVALID_DISCOUNTCODE})
             }
@@ -308,9 +312,8 @@ order_router.route('/useDiscountCode').post(function(req,res){
         res.json({err:g.errorCode.WRONG_PARAM})
         return
     }
-    db.discountCodes.findOne({where:{code: code}}).then(function(data) {
-        console.log(data)
-        if (data && data.status == 0) {
+    db.discountCodes.findOne({where:{code: code, status:0, expiryDate:{$gte: new Date().toLocaleDateString()}}}).then(function(data) {
+        if (data) {
             res.json({ok:{price: data.price}})
         } else {
             res.json({err:g.errorCode.WRONG_INVALID_DISCOUNTCODE})
