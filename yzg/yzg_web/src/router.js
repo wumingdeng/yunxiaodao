@@ -25,6 +25,8 @@ import UserHome from '@/view/userCenter/userHome'
 import QRCode from '@/view/userCenter/qrcode'
 import TgOrder from '@/view/userCenter/tgOrder'
 import Share from '@/view/userCenter/Share'
+import mySaleman from '@/view/userCenter/mySaleman'
+import fillInfo from '@/view/userCenter/fillInfo'
 
 // 根目录
 const rootPath = ''
@@ -131,6 +133,14 @@ var routes = [
       auth: true,
       share: true
     }
+  },
+  {
+    path: '/mySaleman',
+    component: mySaleman
+  },
+  {
+    path: '/fillInfo',
+    component: fillInfo
   }
 ].map(route => {
   route.path = rootPath + route.path

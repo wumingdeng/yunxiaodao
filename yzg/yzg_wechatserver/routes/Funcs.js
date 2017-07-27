@@ -187,14 +187,35 @@ tour_router.route('/auth').post(function(req,res){
                     db.users.findOne({where:{'wxid':openid}}).then(function(user){
                         if(user){
                             // console.log('用户已存在')
-                            if (data.nickname || data.subscribe == 1) {
-                                db.users.update({headUrl:data.headimgurl || '',name:data.nickname || ''},{where:{wxid:openid}}).then(function(){
-                                    // to change redirect url
-                                    // res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1&page=' + page);
-                                    res.json({ok:user})
+                            if (user.isBoss || user.isSaleman) {
+                                //推广人员取信息
+                                db.salemans.findOne({where:{userid: openid}}).then(function(sdata){
+                                    if (sdata) {
+                                        //把推广人员表的数据合并到用户数据里
+                                        console.log('here')
+                                        for (key in sdata.dataValues) {
+                                            var value = sdata.dataValues[key];
+                                            user.dataValues[key] = user.dataValues[key] || value;
+                                        }
+                                        //更新昵称和头像
+                                        db.salemans.update({headUrl:data.headimgurl || '',name:data.nickname || ''},{where:{userid:openid}}).then(function(){
+                                            res.json({ok:user})
+                                        })
+                                    } else {
+                                        res.json({ok:user})
+                                    }
                                 })
                             } else {
-                                res.json({ok:user})
+                                //一般用户
+                                if (data.nickname || data.subscribe == 1) {
+                                    db.users.update({headUrl:data.headimgurl || '',name:data.nickname || ''},{where:{wxid:openid}}).then(function(){
+                                        // to change redirect url
+                                        // res.redirect(301,cfg.webAddress + '/?wxid='+openid+'&type=1&page=' + page);
+                                        res.json({ok:user})
+                                    })
+                                } else {
+                                    res.json({ok:user})
+                                }
                             }
                         }else{
                             // console.log('创建用户')

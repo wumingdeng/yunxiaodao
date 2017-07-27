@@ -47,6 +47,14 @@ for(var key in route_table){
     app.use('/api',route_table[key]);
 }
 
+
+process.on('uncaughtException', function (err) {
+    //打印出错误
+    console.log(err);
+    //打印出错误的调用栈方便调试
+    // console.log(err.stack)
+});
+
 // error handler
 app.use(function(err, req, res, next) {
   console.log(err.stack);
@@ -58,11 +66,4 @@ var server = app.listen(cfg.listen, function () {
   var port = server.address().port;
 
   console.log('Example app listening at http://%s:%s', host, port);
-});
-
-process.on('uncaughtException', function (err) {
-    //打印出错误
-    console.log(err);
-    //打印出错误的调用栈方便调试
-    // console.log(err.stack)
 });

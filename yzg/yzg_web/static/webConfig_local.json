@@ -4,6 +4,6 @@
 	"adminServerAddress":"http://121.40.254.174:8101",
 	"machineServerAddress":"http://yzxs.sujudao.com:8097",
 	"webAddress":"http://yzg.sujudao.com/yzg",
-	"wechatServerAddress":"http://yzg.sujudao.com:82",
+	"wechatServerAddress":"http://121.40.254.174:82",
 	"appId":"wx440688713d1eacdd"
 }

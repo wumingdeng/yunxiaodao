@@ -514,4 +514,49 @@ export function useBossQrcode({commit, state},data) {
     });
 }
 
+//取我推广的代言人
+export function getSalemen({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/getSalemen', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
+//填写推广人资料
+export function tgFillInfo({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/tgFillInfo', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
 

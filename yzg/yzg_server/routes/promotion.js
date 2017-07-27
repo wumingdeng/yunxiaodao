@@ -7,6 +7,8 @@ var g = require('../global')
 var utils = require('../utils')
 var cfg = require('../config.json')
 var jwt = require('jsonwebtoken')
+var moment = require('moment')
+
 
 
 //访问分享页 绑定关系
@@ -82,12 +84,71 @@ promotion_router.route('/useBossQrcode').post(function(req, res){
 	        db.users.findOne({where:{wxid: wxid}}).then(function(user) {
 	        	if (user) {
 	        		db.users.update({bossid: bossid, isSaleman: 1},{where:{id:user.id}})
-	        	}
-	        	res.json({ok:0})
+	        		//插入到推广人员表
+              db.salemans.update({headUrl:user.headUrl,nickName:user.name, upid: bossid,joinDate: new Date()},
+                {where:{userid:wxid}}).then(function(newData) {
+                  if (newData[0] != 0) {
+                    res.json({ok:0,msg:'修改推广人员数据'})
+                  } else {
+                    db.salemans.create({userid:wxid,headUrl:user.headUrl,nickName:user.name, upid: bossid,joinDate: new Date()});
+                    res.json({ok:0,msg:'创建推广人员数据'})
+                  }
+                });
+	        	} else {
+              res.json({ok:0})
+            }
 	        })
 	    }
 	  });
 	})
+})
+
+//工作人员去所属推广人员
+promotion_router.route('/getSalemen').post(function(req, res){
+  var wxid = req.decoded.wxid;
+  db.salemans.findAll({where:{upid: wxid}, order: 'joinDate DESC'}).then(function(data) {
+    if (data) {
+      for (i in data) {
+        var item = data[i]
+        item.dataValues.joinDate = moment(item.dataValues.joinDate).format('YYYY-MM-DD hh:mm:ss')
+      }
+      res.json({ok: data})
+    } else {
+      res.json({ok:[]})
+    }
+  })
+})
+
+//医护人员填写信息
+promotion_router.route('/tgFillInfo').post(function(req, res){
+  var wxid = req.decoded.wxid;
+  var name = req.body.name;
+  var phone = req.body.phone;
+  var job = req.body.job;
+  var hospital = req.body.hospital;
+  var department = req.body.department;
+
+  if (!name || !phone || !job || !hospital || !department) {
+    res.json({err: g.errorCode.WRONG_PARAM})
+    return
+  }
+
+  var info = {
+    realName: name,
+    phone: phone,
+    job: job,
+    hospital: hospital,
+    department: department
+  }
+  db.salemans.update(info,{where:{userid: wxid}}).then(function(data) {
+    
+      res.json({ok:info})
+    // if (data[0] != 0) {
+    //   res.json({ok:info})
+    // } else {
+    //   res.json({err:0,msg:"没有推广人数据"})
+    // }
+  })
 })
 
 module.exports=promotion_router; 

@@ -4,25 +4,30 @@
 			<img class="face" :src="$store.state.userinfo.headUrl">
 			<span><p>{{$store.state.userinfo.name}}</p></span>
 		</div>
-        <!-- <div class="dc_m" @click.prevent.stop='getQRCode'> -->
-		<router-link to='/qrcode' class="dc_m" >
-            <!-- <img class='listIcon' src="/static/client/assets/info_icon.jpg"></img> -->
-            <span class="listText">推广二维码</span>
-            <span class="up"></span>
-        </router-link>
         <router-link v-if="$store.state.userinfo.isBoss" :to="{path:'/qrcode',query:{isBoss:true}}" class="dc_m" >
             <!-- <img class='listIcon' src="/static/client/assets/info_icon.jpg"></img> -->
-            <span class="listText">超级二维码</span>
+            <span class="listText">推广代言人</span>
             <span class="up"></span>
         </router-link>
+        <router-link v-if="$store.state.userinfo.isBoss" :to="{path:'/mySaleman'}" class="dc_m" >
+            <!-- <img class='listIcon' src="/static/client/assets/info_icon.jpg"></img> -->
+            <span class="listText">我推广的代言人</span>
+            <span class="up"></span>
+        </router-link>
+        <router-link v-if="$store.state.userinfo.isBoss" :to="{path:'/reviewRequest'}" class="dc_m" >
+            <!-- <img class='listIcon' src="/static/client/assets/info_icon.jpg"></img> -->
+            <span class="listText">代言人审核</span>
+            <span class="up"></span>
+        </router-link>
+        <!-- <div class="dc_m" @click.prevent.stop='getQRCode'> -->
         <div class="dc_m" @click.prevent.stop='gotoShare'>
             <!-- <img class='listIcon' src="/static/client/assets/order_icon.jpg"></img> -->
-            <span class='listText'>推广页面</span>
+            <span class='listText'>产品推广</span>
             <span class="up"></span>
         </div>
 		<router-link to='/tgOrder' class="dc_m">
             <!-- <img class='listIcon' src="/static/client/assets/order_icon.jpg"></img> -->
-            <span class='listText'>我的推广订单</span>
+            <span class='listText'>推广订单</span>
             <span class="up"></span>
         </router-link>
 	</f7-page>
@@ -52,6 +57,11 @@
     			// "navFooter":navFooter
         },  
         mounted() {
+            if (this.$store.state.userinfo.isBoss) {
+                //工作人员直接进入 不做什么有的没的
+                this.isShow = true;
+                return
+            }
             var qrcode = this.$route.query.qrcode;
             console.log(qrcode)
             if (qrcode) {
@@ -68,8 +78,13 @@
                         qrcode: qrcode
                     },
                     callback(self, res) {
-                        console.log(res.body.err)
-                        if (res.body.err) {
+                        //本地改权限
+                        self.$store.commit('USERINFO',{isSaleman: 1}});
+                        var realName = self.$store.state.userinfo.realName;
+                        if (!realName) {
+                            //如果没有填资料 直接进入资料填写
+                            self.$router.push('/fillInfo')
+                            return
                         }
                         self.$f7.alert('','成功成为推广人')
                         self.$store.state.isLoading = false;
@@ -78,9 +93,14 @@
                 })
             } else {
                 var isSaleman = this.$store.state.userinfo.isSaleman;
-                if (isSaleman && isSaleman == 1)
+                if (isSaleman && isSaleman == 1){
+                    if (!this.$store.state.userinfo) {
+                        //去填写信息
+                        this.$router.push('/fillInfo')
+                        return;
+                    }
                     this.isShow = true
-                else {
+                } else {
                     this.$f7.alert('','您的权限不足',function() {
                         //关闭页面
                         if (typeof WeixinJSBridge != "undefined") {
