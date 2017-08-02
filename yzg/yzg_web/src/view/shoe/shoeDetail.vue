@@ -25,6 +25,7 @@
             tag='img' 
             style="width:100%; display:block;" 
             v-for="(n,index) in productData.introNum" 
+            :key=index
             v-lazy="getImgSrc(n)"
             v-bind:enabled="{ swipe: false}"
             @tap="openPhotoBrowser(index)"

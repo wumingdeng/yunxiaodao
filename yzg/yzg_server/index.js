@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var cfg = require('./config.json')
 var xml=require('node-xml');
+var path = require('path');
 var bodyParser = require('body-parser');
 
 var db = require('./models');
@@ -40,6 +41,13 @@ app.use(authToken);
 
 var userBehavior = require('./utils/userBehaviorMiddleware')
 app.use(userBehavior);
+
+
+// upload
+require('./routes/imgUtils')(app)
+
+// static pages if needed
+app.use(express.static(path.join(__dirname, 'public')));
 
 // middleware register
 // api router

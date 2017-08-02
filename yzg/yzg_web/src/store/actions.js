@@ -503,11 +503,11 @@ export function useBossQrcode({commit, state},data) {
       if(response.body.err){
         onErrorHandler(response.body.err)
         // self.$f7.alert('',response.body.err)
-      }else{
+      }
         if (data.callback) {
           data.callback(self,response)
         }
-      }       
+             
     }, (response) => {
       // error callback
       // onErrorRefresh(self);
@@ -546,6 +546,41 @@ export function tgFillInfo({commit, state},data) {
       // success callback
       self.$f7.hidePreloader()
       console.log(response)
+      if (data.callback) {
+        data.callback(self,response)
+      }
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
+//申请成为推广人
+export function joinRequest({commit, state},data) {
+  var self = data.self;
+  self.$http.post(g.serverAddress+'/api/joinRequest', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if (data.callback) {
+        data.callback(self,response)
+      } 
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
+//申请成为推广人
+export function getRequestList({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/getRequestList', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
       if(response.body.err){
         onErrorHandler(response.body.err)
         // self.$f7.alert('',response.body.err)
@@ -560,3 +595,72 @@ export function tgFillInfo({commit, state},data) {
     });
 }
 
+
+//
+export function acceptRequest({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/acceptRequest', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
+//拒绝申请
+export function refuseRequest({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/refuseRequest', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
+//取推广人数据
+export function getSalemanData({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/getSalemanData', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}

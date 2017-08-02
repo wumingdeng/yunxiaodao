@@ -1,5 +1,11 @@
 var utils = require('./index.js')
-const filterList = ['/api/quickloginwxUser','/api/getProductDetail','/api/fillWeight','/api/getTGqrcode']
+const filterList = [
+	'/api/quickloginwxUser',
+	'/api/getProductDetail',
+	'/api/fillWeight',
+	'/api/getTGqrcode',
+	'/api/joinRequest'
+]
 function checkExcept(originalUrl){
     for(var idx = 0;idx < filterList.length;idx++){
         if(filterList[idx] === originalUrl){

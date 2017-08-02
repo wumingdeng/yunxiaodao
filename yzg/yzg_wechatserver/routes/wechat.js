@@ -214,6 +214,8 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
           res.reply('欢迎来到孕足管！')
         }
      });
+  } else if (message.Event == "TEMPLATESENDJOBFINISH") {
+    
   }
 }).middlewarify());
 

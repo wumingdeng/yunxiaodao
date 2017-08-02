@@ -20,7 +20,8 @@ module.exports = function(sequelize, DataTypes) {
     remark:DataTypes.STRING,
     createtime:DataTypes.BIGINT,
     status:DataTypes.INTEGER,
-    reference:DataTypes.STRING
+    reference:DataTypes.STRING,
+    reference2:DataTypes.STRING
   },{
        timestamps: false
   }, {

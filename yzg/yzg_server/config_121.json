@@ -9,6 +9,7 @@
     "poolsize":5,
     "listen":8192,
     "secret":"czwheheda",
-    "expiresIn":1800,
-    "wx_server_address": "http://localhost"
+    "expiresIn":1860,
+    "wx_server_address": "http://localhost:82",
+    "webAddress":"http://yzg.sujudao.com/yzg"
 }

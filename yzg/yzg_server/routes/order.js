@@ -39,34 +39,69 @@ order_router.route('/ordermake').post(function(req,res){
     db.users.findOne({where:{'wxid':wxid}}).then(function(data){
         if(data){
             var nowsec = Math.floor(Date.now()/1000)
-            console.log(data);
-            console.log('下单了:' + data.dataValues.qrcodeOwner)
-            db.orders.create({userid:wxid,contact:contact,gender:gender,tel:tel,
+            console.log('下单了:' + data.bossid)
+
+            //查询二级推广人
+            if (data.bossid) {
+                db.salemans.findOne({where:{userid: data.bossid}}).then(function(bossData) {
+                    var reference = ''
+                    var secondReference = ''
+                    if(bossData) {
+                        //如果没查到推广人 就不写到订单中
+                        reference = data.bossid
+                        secondReference = bossData.upid;
+                    } else {
+                        console.log('不存在的推广人:' + data.bossid)
+                    }
+                    db.orders.create({userid:wxid,contact:contact,gender:gender,tel:tel,
+                    address:address,province:province,city:city,area:area,shoeid:shoeid,
+                    price:price,shoeName:shoeName,size:size,createtime:nowsec,color:color,
+                    type:type,remark:remark,status:0,valid:1,reference:reference,reference2:secondReference}).then(function(order) {
+                        //更新用户资料
+                        db.users.update({contact:contact,gender: gender,tel: tel,address: address,province: province,city: city,area: area},{where:{wxid:wxid}})
+                    
+                        //支付请求
+                        utils.sendPayToWxServer({
+                            spbill_create_ip: req.ip.match(/\d+\.\d+\.\d+\.\d+/),
+                            openid: wxid,
+                            out_trade_no: order.id,
+                            body: order.shoeName,
+                            total_fee:price * 100,
+                            // total_fee:1,
+                            trade_type: 'JSAPI'
+                        }, function(err, response, payargs){
+                            console.log('支付返回');
+                            console.log(payargs);
+                            res.json(payargs)
+                        })
+                    })
+                })
+            } else {
+                //没有推广人
+                db.orders.create({userid:wxid,contact:contact,gender:gender,tel:tel,
                 address:address,province:province,city:city,area:area,shoeid:shoeid,
                 price:price,shoeName:shoeName,size:size,createtime:nowsec,color:color,
-                type:type,remark:remark,status:0,valid:1,reference:data.dataValues.qrcodeOwner}).then(function(order) {
-                    // mem.r.pub.set('pe:'+order.id+":"+data.id,1)
-                    // mem.r.pub.expire('pe:'+order.id+":"+data.id,payExpireSec)
-                    // mem.r.pub.expire('pe:'+order.id,7)
-                // res.json({w:price})
-                //更新用户资料
-                db.users.update({contact:contact,gender: gender,tel: tel,address: address,province: province,city: city,area: area},{where:{wxid:wxid}})
-                
-                //支付请求
-                utils.sendPayToWxServer({
-                    spbill_create_ip: req.ip.match(/\d+\.\d+\.\d+\.\d+/),
-                    openid: wxid,
-                    out_trade_no: order.id,
-                    body: order.shoeName,
-                    total_fee:price * 100,
-                    // total_fee:1,
-                    trade_type: 'JSAPI'
-                }, function(err, response, payargs){
-                    console.log('支付返回');
-                    console.log(payargs);
-                    res.json(payargs)
+                type:type,remark:remark,status:0,valid:1}).then(function(order) {
+                    //更新用户资料
+                    db.users.update({contact:contact,gender: gender,tel: tel,address: address,province: province,city: city,area: area},{where:{wxid:wxid}})
+                    
+                    //支付请求
+                    utils.sendPayToWxServer({
+                        spbill_create_ip: req.ip.match(/\d+\.\d+\.\d+\.\d+/),
+                        openid: wxid,
+                        out_trade_no: order.id,
+                        body: order.shoeName,
+                        total_fee:price * 100,
+                        // total_fee:1,
+                        trade_type: 'JSAPI'
+                    }, function(err, response, payargs){
+                        console.log('支付返回');
+                        console.log(payargs);
+                        res.json(payargs)
+                    })
                 })
-            })
+            }
+           
         }else{
             res.json({err:g.errorCode.WRONG_USER_MISSING})
         }

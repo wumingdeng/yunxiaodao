@@ -6,12 +6,14 @@ module.exports = function(sequelize, DataTypes) {
     nickName: DataTypes.STRING,
     review: DataTypes.INTEGER,
     headUrl: DataTypes.STRING,
-    phone: DataTypes.INTEGER,
+    phone: DataTypes.STRING,
     job: DataTypes.INTEGER,
+    certificate: DataTypes.STRING,
     hospital: DataTypes.STRING,
     department:DataTypes.STRING,
     upid: DataTypes.STRING,
-    joinDate: DataTypes.INTEGER
+    joinDate: DataTypes.INTEGER,
+    review: DataTypes.INTEGER
   },{
        timestamps: false
   }, {

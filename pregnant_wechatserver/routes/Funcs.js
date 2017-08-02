@@ -51,7 +51,8 @@ tour_router.route('/sendMsg').post(function(req,res){
     // data formate: "d":{"first":{"value":"DAMAO"},"service":{"value":"ni h你好s j"}}
     // first ,service is setting as {{first.DATA}} in template,alse can use "color"
     var data = req.body.d
-    utils.wechat_f.sendToUser(wxid,tid,data)
+    var toUrl = req.body.toUrl
+    utils.wechat_f.sendToUser(wxid,tid,data,toUrl)
 })
 
 tour_router.route('/sendPay').post(function(req,res){

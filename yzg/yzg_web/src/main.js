@@ -23,6 +23,7 @@ Vue.config.productionTip = false
 
 import cfg from '../static/webConfig.json'
 Global.verStr = '?version=' + cfg.version
+Global.isTest = process.env.NODE_ENV == 'development'
 
 //懒加载
 import VueLazyload from 'vue-lazyload'

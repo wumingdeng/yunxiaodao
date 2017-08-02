@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var salemans = sequelize.define('salemans', {
+  var join_requests = sequelize.define('join_requests', {
     userid: DataTypes.STRING,
     realName: DataTypes.STRING,
     nickName: DataTypes.STRING,
@@ -10,10 +10,13 @@ module.exports = function(sequelize, DataTypes) {
     job: DataTypes.INTEGER,
     hospital: DataTypes.STRING,
     department:DataTypes.STRING,
-    certificate: DataTypes.STRING,
     upid: DataTypes.STRING,
-    joinDate: DataTypes.INTEGER,
-    review: DataTypes.INTEGER
+    upName: DataTypes.STRING,
+    requestDate: DataTypes.INTEGER,
+    certificate: DataTypes.STRING,
+    status: DataTypes.INTEGER,
+    advice: DataTypes.STRING,
+    approver: DataTypes.STRING
   },{
        timestamps: false
   }, {
@@ -23,5 +26,5 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
-  return salemans;
+  return join_requests;
 };

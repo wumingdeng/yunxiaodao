@@ -12,6 +12,15 @@
 
 			}
 		},
+		methods:{
+			saveParameter(key) {
+				var value = this.$route.query[key] || localStorage[key];	//跳转的页面
+				if (value && value != 'undefined') {
+					localStorage[key] = value;
+				}
+				return value
+			}
+		},
 		mounted() {
 			//验证登录
 			// var wxid = this.$route.query.wxid;
@@ -24,23 +33,13 @@
 			// console.log('rid:' + this.$route.query.rid
 			console.log('bossid:' + this.$route.query.bossid);
 			var code = this.$route.query.code
-			var page = this.$route.query.page || localStorage.page;	//跳转的页面
-			if (page == "undefined") page = 'shoeDetail'
-			var rid = this.$route.query.rid || localStorage.rid	//足部报告id
-			if (rid == "undefined") rid = null;
-			var bossid = this.$route.query.bossid || localStorage.bossid
-			if (bossid == "undefined") bossid = null;
-			var qrcode = this.$route.query.qrcode || localStorage.qrcode
-			if (qrcode == "undefined") qrcode = null;
-			// var oid = this.$route.query.oid;
-			// localStorage.code = code;
-			localStorage.page = page;
-			if (rid)
-			localStorage.rid = rid;
-			if (bossid)
-			localStorage.bossid = bossid;
-			if (qrcode)
-			localStorage.qrcode = qrcode;
+
+			var page = this.saveParameter('page');
+			var rid = this.saveParameter('rid');	//足部报告
+			var bossid = this.saveParameter('bossid')	//用户推广功能
+			var qrcode = this.saveParameter('qrcode');	//工作人员给扫的二维码
+			var upid = this.saveParameter('upid');	//医护人员给的推广链接
+		
 			// alert('page:' + page)
 			//不需要授权的页面
 			if (page.match('share')) {
@@ -92,7 +91,8 @@
 									})
 			        	}
 
-		        		if (isTest) {
+		        		if (false) {
+		        		// if (isTest) {
 		        			self.$router.push('/' + page)
 		        		} else {
 		        			if (page == 'foot' && rid) {
@@ -118,6 +118,15 @@
 				        				bossid: res.body.ok.wxid
 				        			}
 				        		})
+		        			} else if (page == 'develop' && upid) {
+		        				localStorage.removeItem('upid');
+		        				self.$router.push({
+		        					path:'/' + page,
+		        					query:{
+		        						upid: upid
+		        					}
+		        				})
+
 		        			} else {
 		        				self.$router.push("/" + page);
 		        			}

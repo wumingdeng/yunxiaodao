@@ -118,6 +118,7 @@ var f = {
     },
 
     sendToUser:function(userOpenid,templateid,data,msgUrl){
+        console.log('准备发送模版消息')
         var url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='+cfg.access_token;
         var obj={
             "touser":userOpenid,
@@ -129,7 +130,7 @@ var f = {
             url: url,
             form: JSON.stringify(obj),
             headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         };
         

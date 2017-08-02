@@ -4,14 +4,18 @@
       <f7-nav-left>
         <f7-link icon="icon-back color-black" @click="$router.push('/userHome')"></f7-link>
       </f7-nav-left>
-      <f7-nav-center sliding style="left:-22px;" title="我推广的代言人"></f7-nav-center>
+      <f7-nav-center sliding style="left:-22px;" title="审核代言人"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
 	  </f7-navbar>
 		
 		<f7-card class='listCard'
-			v-for="(item,index) in salemanArray"
+			v-for="(item,index) in requestArray"
 			:key=index
 		>
+			<f7-card-header>
+				<span>申请时间：{{item.requestDate}}</span>
+				<span style="float:right;">{{requestStatus[item.status]}}</span>
+			</f7-card-header>
 			<f7-card-content>
 				<f7-grid>
 					<f7-col width=20>
@@ -20,13 +24,11 @@
 					<f7-col width=40>
 						<p>姓名:{{item.realName}}</p>
 						<p>联系方式:{{item.tel}}</p>
-						<p>医院:{{item.hospital}}</p>
-						<p>加入时间:{{item.joinDate}}</p>
 					</f7-col>
 					<f7-col width=40>
 						<p>昵称:{{item.nickName}}</p>
-						<p>身份:{{item.job}}</p>
-						<p>科室:{{item.department}}</p>
+						<p>推荐人:{{item.upName}}</p>
+						<p v-if="item.status==0"><f7-button @click="beginReview(index)">开始审核</f7-button></p>
 					</f7-col>
 				</f7-grid>
 			</f7-card-content>
@@ -43,12 +45,25 @@
         pageCount:10,
         isPreloader:true,
         isNoData:true,
-        salemanArray:[]
+        requestStatus:[
+        	'未审核',
+        	'审核通过',
+        	'审核未通过'
+        ],
+        requestArray:[]
 			}
 		},
+		computed:{
+		},
 		methods:{
+			//开始审核
+			beginReview(index) {
+				this.$store.state.currentRequest = this.requestArray[index];
+				this.$router.push('/reviewRequest')
+
+			},
 			getData(callback) {
-				this.$store.dispatch('getSalemen',{
+				this.$store.dispatch('getRequestList',{
           self:this,
           info:{
               wxid:this.$store.state.wxid,
@@ -56,8 +71,9 @@
               limit:this.pageCount
           },
           callback:(self,res)=>{
-              self.salemanArray = self.salemanArray.concat(res.body.ok)
-              if (res.body.ok.length > 0) {
+            if (res.body.ok) {
+            	self.requestArray = self.requestArray.concat(res.body.ok);
+            	if (res.body.ok.length > 0) {
                   self.isNoData = false;
               }
               if (res.body.ok.length < self.pageCount) {
@@ -69,6 +85,7 @@
               if (callback) {
                   callback();
               }
+            }
           }
 	      })
 	      this.page++;

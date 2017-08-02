@@ -27,6 +27,11 @@ import TgOrder from '@/view/userCenter/tgOrder'
 import Share from '@/view/userCenter/Share'
 import mySaleman from '@/view/userCenter/mySaleman'
 import fillInfo from '@/view/userCenter/fillInfo'
+import finishRequest from '@/view/userCenter/finishRequest'
+import develop from '@/view/userCenter/develop'
+import requestList from '@/view/userCenter/requestList'
+import reviewRequest from '@/view/userCenter/reviewRequest'
+import checkSaleman from '@/view/userCenter/checkSaleman'
 
 // 根目录
 const rootPath = ''
@@ -141,7 +146,30 @@ var routes = [
   {
     path: '/fillInfo',
     component: fillInfo
-  }
+  },
+  {
+    path: '/finishRequest',
+    component: finishRequest
+  },
+  {
+    path: '/requestList',
+    component: requestList
+  },
+  {
+    path: '/reviewRequest',
+    component: reviewRequest
+  },
+  {
+    path: '/develop',
+    component: develop,
+    meta: { 
+      share: true
+    }
+  },
+  {
+    path: '/checkSaleman',
+    component: checkSaleman
+  },
 ].map(route => {
   route.path = rootPath + route.path
   return route
