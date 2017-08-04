@@ -171,7 +171,23 @@ tour_router.route('/auth').post(function(req,res){
     if (code == 'heheda' && cfg.debug && cfg.testUser) {
         db.users.findOne({where:{'wxid':cfg.testUser}}).then(function(user){
             if (user) {
-                res.json({ok:user})
+                if (user.isBoss || user.isSaleman) {
+                    //推广人员取信息
+                    db.salemans.findOne({where:{userid: cfg.testUser}}).then(function(sdata){
+                        if (sdata) {
+                            //把推广人员表的数据合并到用户数据里
+                            for (key in sdata.dataValues) {
+                                var value = sdata.dataValues[key];
+                                user.dataValues[key] = user.dataValues[key] || value;
+                            }
+                            res.json({ok:user})
+                        } else {
+                            res.json({ok:user})
+                        }
+                    })
+                } else {
+                    res.json({ok:user})
+                }
             } else {
                 res.json({err:g.errorCode.WRONG_WXCHAT_AUTHFAILED});
             }

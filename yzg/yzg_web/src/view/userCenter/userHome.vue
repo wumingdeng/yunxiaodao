@@ -77,7 +77,7 @@
         computed:{
             canReview() {
                 if (process.env.NODE_ENV == 'development') {
-                    return true
+                    // return true
                 }
                 return this.$store.state.userinfo.isBoss && this.$store.state.userinfo.review;
             }

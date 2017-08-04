@@ -142,26 +142,23 @@ function testGetQRCode(userid, cb) {
 
 w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
   // 微信输入信息都在message上
-  if (message.Content == '推广') {
+  if (message.Content == '推广' || message.Content.toLowerCase() == 'tg') {
     var userid = message.FromUserName
-    res.reply([
-      {
-        title: '推广页',
-        description: '打开查看您的推广',
-        picurl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1495434160&di=011945b146f93281dbd690a59fbcca36&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.cnxmld.com%2Ftupians%2Fbd14908247.jpg',
-        url: config.webAddress + "/?page=userHome"
+    //查询权限
+    db.users.findOne({where:{wxid: userid}}).then(function(user) {
+      if (user.isSaleman || user.isBoss) {
+        res.reply([
+          {
+            title: '推广页',
+            description: '打开查看您的推广',
+            picurl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1495434160&di=011945b146f93281dbd690a59fbcca36&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.cnxmld.com%2Ftupians%2Fbd14908247.jpg',
+            url: config.webAddress + "/?page=userHome"
+          }
+        ])
+      } else {
+        res.reply('欢迎来到孕足管！');
       }
-    ])
-    // testGetQRCode(userid, function(ticket) {
-    //   res.reply([
-    //     {
-    //       title: '你要的二维码 拿去！',
-    //       description: '打开查看二维码',
-    //       picurl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1495434160&di=011945b146f93281dbd690a59fbcca36&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.cnxmld.com%2Ftupians%2Fbd14908247.jpg',
-    //       url: "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + ticket
-    //     }
-    //   ])
-    // })
+    })
     return;
   }
   res.reply('欢迎来到孕足管！');
@@ -215,7 +212,7 @@ w_router.use('/', wechat(config.token).text(function (message, req, res, next) {
         }
      });
   } else if (message.Event == "TEMPLATESENDJOBFINISH") {
-    
+
   }
 }).middlewarify());
 

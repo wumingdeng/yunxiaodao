@@ -1,6 +1,9 @@
 <template>
 	<f7-page navbar-through>
 		<f7-navbar sliding>
+      <f7-nav-left>
+        <f7-link icon="icon-back color-black" @click="$router.push('/userHome')"></f7-link>
+      </f7-nav-left>
       <f7-nav-center sliding title="分享推广测试页"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
