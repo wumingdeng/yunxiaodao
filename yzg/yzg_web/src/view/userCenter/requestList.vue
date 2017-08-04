@@ -12,24 +12,27 @@
 			v-for="(item,index) in requestArray"
 			:key=index
 		>
-			<f7-card-header>
+			<f7-card-header style="white-space: nowrap;font-size:16px;">
 				<span>申请时间：{{item.requestDate}}</span>
 				<span style="float:right;">{{requestStatus[item.status]}}</span>
 			</f7-card-header>
-			<f7-card-content>
+			<f7-card-content style="padding-right:0px;">
 				<f7-grid>
 					<f7-col width=20>
-						<img style="width:100%" :src="item.headUrl" alt="">
+						<img style="width:100%;margin-top:8px;border-radius: 80px;-moz-border-radius: 80px;-webkit-border-radius: 80px;" :src="item.headUrl" alt="">
 					</f7-col>
-					<f7-col width=40>
+					<f7-col width=80 style="border-left:1px solid rgba(0,0,0,0.2);padding-left:10px;">
 						<p>姓名:{{item.realName}}</p>
-						<p>联系方式:{{item.tel}}</p>
-					</f7-col>
-					<f7-col width=40>
 						<p>昵称:{{item.nickName}}</p>
+						<p>联系方式:{{item.phone}}</p>
 						<p>推荐人:{{item.upName}}</p>
-						<p v-if="item.status==0"><f7-button @click="beginReview(index)">开始审核</f7-button></p>
 					</f7-col>
+					<div v-if="item.status==0" style="margin-top:20px;position:absolute;right:10px;width:25%;">
+						<f7-button fill color="lightblue" @click="beginReview(index)">开始审核</f7-button>
+					</div>
+					<div v-else style="margin-top:20px;position:absolute;right:10px;width:25%;">
+						<f7-button fill color="lightblue" @click="onCheck(index)">详情</f7-button>
+					</div>
 				</f7-grid>
 			</f7-card-content>
 		</f7-card>
@@ -60,7 +63,14 @@
 			beginReview(index) {
 				this.$store.state.currentRequest = this.requestArray[index];
 				this.$router.push('/reviewRequest')
-
+			},
+			onCheck(index) {
+				this.$router.push({
+					path: '/checkSaleman',
+					query:{
+						userid: this.requestArray[index].userid
+					}
+				})
 			},
 			getData(callback) {
 				this.$store.dispatch('getRequestList',{

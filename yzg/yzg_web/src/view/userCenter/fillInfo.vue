@@ -6,56 +6,58 @@
 	  </f7-navbar> -->
 	  <img style="width:100%" src="static/assets/tgdyr.jpg">
 
+	  <f7-list id="userinfoForm" class="infoBg" :style="infoBgStyle" form enctype="multipart/form-data">
+      <f7-list-item class="fillInfoItem">
+        <f7-label>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</f7-label>
+        <f7-input id="nameInput" class="fillInput" type="text" placeholder=""></f7-input>
+      </f7-list-item>
+      <f7-list-item class="fillInfoItem">
+        <f7-label>手机号码</f7-label>
+        <div class="item-input custom">
+          <input id="phoneInput" type="number" placeholder="" v-model="$store.state.userinfo.phone">
+        </div>
+      </f7-list-item>
+      <li class="jobInfoItem">
+      	<div class="item-content">
+      		<div class="item-inner">
+      			<div class="item-title label">职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业</div> 
+      			<div id="jobBorder" class="item-input">
+      				<select type="select" id="jobInput">
+      					<option value="1">医生</option> 
+      					<option value="2">护士</option>
+      				</select>
+      				<img src="static/assets/userCenter/down_icon.jpg" class="inputDown">
+      			</div>
+      		</div>
+      	</div>
+      </li>
+     
+      <f7-list-item class="fillInfoItem">
+        <f7-label>执业医院</f7-label>
+        <f7-input id="hospitalInput" type="text" placeholder=""></f7-input>
+      </f7-list-item>
+      <f7-list-item class="fillInfoItem">
+        <f7-label>科&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;室</f7-label>
+        <f7-input id="departmentInput" type="text" placeholder=""></f7-input>
+      </f7-list-item>
+      <f7-list-item v-if="isRequest" class="fillInfoItem">
+			  <f7-label>执业证书</f7-label>
 
-	  <f7-block-title style="font-size:19px;margin-top:5px;">
-			信息认证
-	  </f7-block-title>
-	  <f7-block inner>
-		  <f7-list id="userinfoForm" form style='margin-top:0px;' enctype="multipart/form-data">
-	      <f7-list-item>
-	        <f7-label>姓名</f7-label>
-	        <f7-input id="nameInput" class="fillInput" type="text" placeholder=""></f7-input>
-	      </f7-list-item>
-	      <f7-list-item>
-	        <f7-label>手机号码</f7-label>
-	        <div class="item-input custom">
-	          <input id="phoneInput" type="number" placeholder="" v-model="$store.state.userinfo.phone">
-	        </div>
-	      </f7-list-item>
-	      <f7-list-item>
-	        <f7-label>职业</f7-label>
-	        <f7-input id="jobInput" type="select" v-model="selectJob">
-	          <option value="1">医生</option>
-	          <option value="2">护士</option>
-	        </f7-input>
-	      </f7-list-item>
-	      <f7-list-item>
-	        <f7-label>执业医院</f7-label>
-	        <f7-input id="hospitalInput" type="text" placeholder=""></f7-input>
-	      </f7-list-item>
-	      <f7-list-item>
-	        <f7-label>科室</f7-label>
-	        <f7-input id="departmentInput" type="text" placeholder=""></f7-input>
-	      </f7-list-item>
-	      <f7-list-item v-if="isRequest">
-				  <f7-label>执业资格证书</f7-label>
+				<vue-core-image-upload id="inputCert" ref="certPic" style="position:relative; left:-50px;"
+					:class="['btn', 'btn-primary']"
+			    text="点击选择证书"
+					@imagechanged="imagechanged"
+					@imageuploaded="imageuploaded"
+			    :crop="false"
+			    :isXhr="false"
+			    :max-file-size="5242880">
+			    <p>{{currentPic}}</p>
+			  </vue-core-image-upload>
+			</f7-list-item>
+    </f7-list>
 
-					<vue-core-image-upload id="inputCert" ref="certPic"
-  					:class="['btn', 'btn-primary']"
-				    text="点击选择图片"
-  					@imagechanged="imagechanged"
-  					@imageuploaded="imageuploaded"
-				    :crop="false"
-				    :isXhr="false"
-				    :max-file-size="5242880">
-				    <p>{{currentPic}}</p>
-				  </vue-core-image-upload>
-				</f7-list-item>
-	    </f7-list>
-
-			<p v-if="!isRequest"><f7-button big fill color=green style="width:90%;margin:-10px auto 0 auto;" @click.stop.prevent="onSubmit">提交</f7-button>
-			<p v-if="isRequest"><f7-button big fill color=green style="width:90%;margin:-10px auto 0 auto;" @click.stop.prevent="onSubmit">申请</f7-button></p>
-		</f7-block>
+		<p v-if="!isRequest"><f7-button big fill color=deepgreen style="width:95%;margin:-10px auto 0 auto;" @click.stop.prevent="onSubmit">提交</f7-button>
+		<p v-if="isRequest"><f7-button big fill color=deepgreen style="width:95%;margin:-10px auto 0 auto;" @click.stop.prevent="onSubmit">申请</f7-button></p>
 	</f7-page>
 </template>
 
@@ -85,7 +87,7 @@
                 alert(data.length)
             }
         },
-        currentPic:'点击选择上传的图片'
+        currentPic:'点击选择证书'
       }
 		},
     components:{
@@ -93,6 +95,22 @@
     	'vue-core-image-upload': VueCoreImageUpload,
     },
     computed:{
+    	infoBgStyle() {
+    		if (Global.isTest) {
+    			if (this.isRequest)
+    				return  "margin:5px;background: url('/static/assets/userCenter/info_bg.png') no-repeat;background-size: 100% 320px;height:320px;"
+    			else {
+    				return "margin:5px;background: url('/static/assets/userCenter/info_bg.png') no-repeat;background-size: 100% 290px;height:290px;"
+    			}
+    			
+    		} else {
+    			if (this.isRequest)
+    				return  "margin:5px;background: url('/yzg/static/assets/userCenter/info_bg.png') no-repeat;background-size: 100% 320px;height:320px;"
+    			else {
+    				return "margin:5px;background: url('/yzg/static/assets/userCenter/info_bg.png') no-repeat;background-size: 100% 290px;height:290px;"
+    			}
+    		}
+    	}
     },
 		methods:{
     	onBeginUpload(){
@@ -151,13 +169,14 @@
      			this.$f7.alert('','请填写科室');
      			return false;
      		}
-     		var cert = this.$refs['certPic'].files[0];
-     		if (this.isRequest && !cert) {
-     			this.$f7.alert('','请上传执业资格证书')
-     			return false;
-     		}
+
      		//结果保存到服务端
   			if (this.isRequest){
+  				var cert = this.$refs['certPic'].files[0];
+	     		if (this.isRequest && !cert) {
+	     			this.$f7.alert('','请上传执业资格证书')
+	     			return false;
+	     		}
 	  			var formData = new FormData()
 	  			formData.append('wxid',this.$store.state.wxid);
 	  			formData.append('name',name);
@@ -224,6 +243,36 @@
 
 			}
 		},
+		beforeRouteEnter(to,from,next){
+			//获取审核状态
+    	var isRequest = to.query.request;
+    	if (Global.isTest) {
+    		isRequest = true;
+    	}
+    	if(isRequest) {
+    		Global.s.dispatch('getRequestStatus',{
+	    		self:window.Global.v,
+	    		info:{
+	    		},
+					callback(self, res) {
+						if (res.body.ok) {
+							//存在在审核的申请
+							self.$f7.alert('','您的申请正在审核中',function(){
+								//关闭页面
+                if (typeof WeixinJSBridge != "undefined") {
+                    WeixinJSBridge.invoke("closeWindow")
+                } 
+							})
+						} else {
+							next();
+						}
+					}
+    		})
+    	} else {
+    		next()
+    	}
+
+		},
 		mounted() {
 			this.isRequest = this.$route.query.request;
 			if (Global.isTest) {
@@ -234,15 +283,59 @@
 	}
 </script>
 
-<style scoped>
-/*	.fillInput {
-		background-color:#eeeeee;
-		margin:5px;
-		border-radius:5px;
+<style>
+	.infoBg {
+    
 	}
-	.fillInput input {
-		text-align:center;
-	}*/
+	#userinfoForm ul {
+		background: inherit;
+		border: none;
+		padding-top:20px;
+	}
+	.fillInfoItem .item-title.label {
+		width:30%;
+		text-align: center;
+	}
+	#userinfoForm ul:after {
+		background-color: rgba(0,0,0,0);
+	}
+	#userinfoForm ul:before {
+		background-color: rgba(0,0,0,0);
+	}
+	.fillInfoItem .item-inner:after {
+		background-color: rgba(0,0,0,0);
+	}
+	.fillInfoItem .item-inner input {
+		background-color: #eee;
+		border-radius: 5px;
+		height: 35px;
+		text-align: center;
+	}
+	.jobInfoItem .item-inner select{
+	  width: auto;
+    padding: 0 37%;
+    margin: 0 auto;
+    height: 35px;
+	}
+	.jobInfoItem .item-title.label {
+		width:30%;
+		text-align: center;
+	}
+	.jobInfoItem .item-inner:after {
+		background-color: rgba(0,0,0,0);
+	}
+	.jobInfoItem #jobBorder {
+		/*height: 33px;*/
+		border:1px solid #eee;
+		border-radius: 5px;
+	}
+	.jobInfoItem #jobBorder .inputDown {
+		position: absolute;
+		height: 30%;
+		right:30px;
+		top: 16px;
+	}
+
 </style>
 
 

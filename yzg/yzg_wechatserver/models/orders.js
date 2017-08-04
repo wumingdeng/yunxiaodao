@@ -19,7 +19,9 @@ module.exports = function(sequelize, DataTypes) {
     price:DataTypes.INTEGER,
     remark:DataTypes.STRING,
     createtime:DataTypes.BIGINT,
-    status:DataTypes.INTEGER
+    status:DataTypes.INTEGER,
+    reference:DataTypes.STRING,
+    reference2:DataTypes.STRING
   },{
        timestamps: false
   }, {

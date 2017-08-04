@@ -11,6 +11,7 @@ module.exports = function(sequelize, DataTypes) {
     certificate: DataTypes.STRING,
     hospital: DataTypes.STRING,
     department:DataTypes.STRING,
+    haveTGInfo: DataTypes.INTEGER,
     upid: DataTypes.STRING,
     joinDate: DataTypes.INTEGER,
     review: DataTypes.INTEGER

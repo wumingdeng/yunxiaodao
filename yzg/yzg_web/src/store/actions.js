@@ -537,11 +537,48 @@ export function getSalemen({commit, state},data) {
     });
 }
 
+
+//填写推广人资料
+export function getRequestStatus({commit, state},data) {
+  var self = data.self;
+  data.info.token = Global.s.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/getRequestStatus', data.info)
+    .then((response) => {
+      // success callback
+      Global.v.$f7.hidePreloader()
+      console.log(response)
+      if (data.callback) {
+        data.callback(self,response)
+      }
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
 //填写推广人资料
 export function tgFillInfo({commit, state},data) {
   var self = data.self;
   data.info.token = self.$store.state.token  //带上token
   self.$http.post(g.serverAddress+'/api/tgFillInfo', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if (data.callback) {
+        data.callback(self,response)
+      }
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}
+
+//变更上线
+export function changeBoss({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/changeBoss', data.info)
     .then((response) => {
       // success callback
       self.$f7.hidePreloader()

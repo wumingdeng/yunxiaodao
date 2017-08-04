@@ -1,5 +1,5 @@
 <template>
-	<f7-card @click.native="onDetail">
+	<f7-card @click.native="onDetail" id="tgOrderCard">
 		<f7-card-header style="">
 			<p>订单号：{{orderData.id}}</p>
 			<p style="float:right">{{statusName[orderData.status]}}</p>
@@ -12,6 +12,7 @@
 				<f7-col width=70>
 					<div class="oc_right">
 						<span style="">{{orderData.shoeName}}</span>
+						<div class='tgOrderCardLine'></div>
 						<span style="color:#ff0000;font-size:1.5em;position:absolute;top:10px;right:16px;">¥{{orderData.price}}</span>
 						<p style="color:#71777f;white-space:nowrap;">尺码:{{orderData.size}}码 颜色:{{orderData.color}} 鞋型:{{orderData.type}}</p>
 						<p>订单时间:{{timeToDate(orderData.createtime,true)}}</p>
@@ -171,6 +172,12 @@
 </script>
 
 <style type="text/css">
+	.tgOrderCardLine {
+		background-color: #ccc;
+		height: 1px;
+		width: 100%;
+		margin-top: 5px;
+	}
 	.oc_orderImg {
 		width:100%;
 		float:left;

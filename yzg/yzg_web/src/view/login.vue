@@ -33,17 +33,22 @@
 			// console.log('rid:' + this.$route.query.rid
 			console.log('bossid:' + this.$route.query.bossid);
 			var code = this.$route.query.code
-
 			var page = this.saveParameter('page');
 			var rid = this.saveParameter('rid');	//足部报告
 			var bossid = this.saveParameter('bossid')	//用户推广功能
 			var qrcode = this.saveParameter('qrcode');	//工作人员给扫的二维码
 			var upid = this.saveParameter('upid');	//医护人员给的推广链接
 		
+			console.log('upid:' + this.$route.query.upid);
 			// alert('page:' + page)
 			//不需要授权的页面
 			if (page.match('share')) {
-				this.$router.push('/' + page)
+				this.$router.push({
+					path:'/' + page,
+					query:{
+						upid: upid
+					}
+				})
 				return
 			} else {
 				// alert('wtf?')
@@ -126,7 +131,6 @@
 		        						upid: upid
 		        					}
 		        				})
-
 		        			} else {
 		        				self.$router.push("/" + page);
 		        			}

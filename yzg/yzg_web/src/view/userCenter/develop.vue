@@ -30,8 +30,23 @@
 					//通过链接进来的
 					if (this.$store.state.userinfo.isSaleman) {
 						//如果已经是推广人了
-						//进入个人中心
-						this.$router.push('/userHome')
+						var bossid = this.$store.state.userinfo.bossid
+						if (bossid != this.upid) {
+							//变更上限
+							this.$store.dispatch('changeBoss',{
+								self: this,
+								info:{
+									upid: this.upid
+								},
+								callback(self, res) {
+									//进入个人中心
+									self.$router.push('/userHome')
+								}
+							})
+						} else {
+							this.$router.push('/userHome')
+						}
+						
 					} else {
 						//进入申请推广人页面
 						this.$router.push({

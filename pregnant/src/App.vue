@@ -45,7 +45,6 @@
   @import "/static/assets/framework7/css/framework7.ios.colors.min.css";
   @import "/static/assets/framework7/css/my-app.css";*/
 
-
   label.label-checkbox input[type=checkbox]:checked+.item-media i.icon-form-checkbox{
     background-color: #fc5475
   }

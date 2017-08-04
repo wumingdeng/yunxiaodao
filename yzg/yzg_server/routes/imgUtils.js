@@ -78,26 +78,28 @@ function doInit(app){
     db.salemans.findOne({where:{userid: upid}}).then(function(upData) {
       //TODO 推荐人判断
       if (upData) {      
+        info.upName = upData.realName;
+        db.users.findOne({where:{wxid: wxid}}).then(function(user) {
+          if (user) {
+            info.headUrl = user.headUrl
+            info.nickName = user.name
+            db.join_requests.findOne({where:{userid: wxid,status: 0}}).then(function(data){
+                if (data) {
+                  db.join_requests.update(info, {where:{userid: wxid,status: 0}}).then(function(newData) {
+                      res.json({ok:0});
+                  })
+                } else {      
+                  info.userid = wxid
+                  db.join_requests.create(info).then(function(){
+                    res.json({ok:0})
+                  })
+                }
+            })
+          }
+        })
+      } else {
+        res.json({err:99,msg:'无效的推广人'})
       }
-      info.upName = upData.realName;
-      db.users.findOne({where:{wxid: wxid}}).then(function(user) {
-        if (user) {
-          info.headUrl = user.headUrl
-          info.nickName = user.name
-          db.join_requests.findOne({where:{userid: wxid,status: 0}}).then(function(data){
-              if (data) {
-                db.join_requests.update(info, {where:{userid: wxid,status: 0}}).then(function(newData) {
-                    res.json({ok:0});
-                })
-              } else {      
-                info.userid = wxid
-                db.join_requests.create(info).then(function(){
-                  res.json({ok:0})
-                })
-              }
-          })
-        }
-      })
     })
   })
 }

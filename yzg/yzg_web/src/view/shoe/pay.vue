@@ -49,7 +49,7 @@
 		</f7-block>
 
   	<div class="pay_btnwrap">
-  	  <p class="wap"><span style="margin-right:-12px;color:#000000">实付款：</span><span>￥</span><span id="total_fee">{{orderPrice}}元</span><a @click.once="onPay" id="payBtn" class="pay_btn">微信支付</a></p>
+  	  <p class="wap"><span style="margin-right:-12px;color:#000000">实付款：</span><span>￥</span><span id="total_fee">{{$store.state.productDetail.price}}元</span><a @click.once="onPay" id="payBtn" class="pay_btn">微信支付</a></p>
   	</div>
 	</f7-page>
 </template>

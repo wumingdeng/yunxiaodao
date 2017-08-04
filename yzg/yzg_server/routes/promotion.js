@@ -21,6 +21,10 @@ promotion_router.route('/tglink').post(function(req,res){
     }
     db.users.findOne({where:{wxid:wxid}}).then(function(data) {
         if (data) {
+            if (data.isSaleman) {
+              //推广人点了链接 不改变推广关系
+              return;
+            }
             //如果账号已创建 直接写入上线
             db.users.update({bossid: boss},{where:{id: data.id}})
             //绑定关系变更
@@ -56,6 +60,55 @@ promotion_router.route('/getBossQrcode').post(function(req,res){
   	} else {
   		res.json({err:g.errorCode.WRONG_USER_MISSING})
   	}
+  })
+})
+
+//获取审核状态
+promotion_router.route('/getRequestStatus').post(function(req, res){
+  var wxid = req.decoded.wxid;
+  if (!wxid) {
+    res.json({err: g.errorCode.WRONG_PARAM})
+    return
+  }
+
+  db.join_requests.findOne({where:{userid: wxid,status:0}}).then(function(data) {
+    if (data) {
+      //存在未审核的申请
+      res.json({ok:1})
+    } else {
+      //不存在未审核的申请
+      res.json({ok:0})
+    }
+  })
+
+})
+
+
+//医护人员填写信息
+promotion_router.route('/tgFillInfo').post(function(req, res){
+  var wxid = req.decoded.wxid;
+  var name = req.body.name;
+  var phone = req.body.phone;
+  var job = req.body.job;
+  var hospital = req.body.hospital;
+  var department = req.body.department;
+
+
+  if (!name || !phone || !job || !hospital || !department) {
+    res.json({err: g.errorCode.WRONG_PARAM})
+    return
+  }
+
+  var info = {
+    realName: name,
+    phone: phone,
+    job: job,
+    hospital: hospital,
+    department: department,
+    haveTGInfo: 1
+  }
+  db.salemans.update(info,{where:{userid: wxid}}).then(function(data) {
+      res.json({ok:info})
   })
 })
 
@@ -111,7 +164,7 @@ promotion_router.route('/useBossQrcode').post(function(req, res){
 //工作人员去所属推广人员
 promotion_router.route('/getSalemen').post(function(req, res){
   var wxid = req.decoded.wxid;
-  db.salemans.findAll({where:{upid: wxid}, order: 'joinDate DESC'}).then(function(data) {
+  db.salemans.findAll({where:{upid: wxid,haveTGInfo: 1}, order: 'joinDate DESC'}).then(function(data) {
     if (data) {
       for (i in data) {
         var item = data[i]
@@ -137,44 +190,41 @@ promotion_router.route('/getSalemanData').post(function(req, res){
 })
 
 
-//医护人员填写信息
-promotion_router.route('/tgFillInfo').post(function(req, res){
-  var wxid = req.body.wxid;
-  var name = req.body.name;
-  var phone = req.body.phone;
-  var job = req.body.job;
-  var hospital = req.body.hospital;
-  var department = req.body.department;
-
-
-    console.log(req.body)
-  for (key in req.body) {
-    console.log(key + ':' + req[key])
-  }
-
-  if (!name || !phone || !job || !hospital || !department) {
+//变更上线
+promotion_router.route('/changeBoss').post(function(req, res){
+  var wxid = req.decoded.wxid || ''
+  var upid = req.body.upid || ""
+  if (wxid == '' || upid == '') {
     res.json({err: g.errorCode.WRONG_PARAM})
     return
   }
 
-  var info = {
-    realName: name,
-    phone: phone,
-    job: job,
-    hospital: hospital,
-    department: department
-  }
-  db.salemans.update(info,{where:{userid: wxid}}).then(function(data) {
-    
-      res.json({ok:info})
-    // if (data[0] != 0) {
-    //   res.json({ok:info})
-    // } else {
-    //   res.json({err:0,msg:"没有推广人数据"})
-    // }
+  db.users.findOne({where:{wxid: wxid}}).then(function(user) {
+    if (user) {
+      db.users.update({bossid: upid},{where:{id: user.id}}).then(function() {
+        db.salemans.findOne({where:{userid: wxid}}).then(function(sdata) {
+          if (sdata) {
+            db.salemans.update({upid: upid},{where:{userid: wxid}}).then(function() {
+              //变更记录
+              if (user.bossid != upid) {
+                db.qrcodechange_records.create({
+                    userid: wxid,
+                    time: new Date(),
+                    newMaster: upid,
+                    oldMaster: user.bossid
+                })
+              }
+              res.json({ok:0})
+            })
+          } else {
+            console.log('没有推广人数据')
+            res.json({err:99,msg:'没有推广人数据'})
+          }
+        })
+      })
+    }
   })
 })
-
 
 
 //审核申请 取申请数据
@@ -220,11 +270,11 @@ promotion_router.route('/acceptRequest').post(function(req, res){
                 db.salemans.update({realName:joinData.realName,phone:joinData.phone,job:joinData.job,
                   hospital:joinData.hospital,department:joinData.department,certificate:joinData.certificate,
                   headUrl:user.headUrl,nickName:user.name, upid: joinData.upid,joinDate: new Date()},
-                  {where:{userid:joinData.userid}}).then(function(newData) {
+                  {where:{userid:joinData.userid,haveTGInfo: 1}}).then(function(newData) {
                     if (newData[0] != 0) {
                       res.json({ok:0,msg:'修改推广人员数据'})
                     } else {
-                      db.salemans.create({realName:joinData.realName,phone:joinData.phone,job:joinData.job,
+                      db.salemans.create({realName:joinData.realName,phone:joinData.phone,job:joinData.job,haveTGInfo: 1,
                       hospital:joinData.hospital,department:joinData.department,certificate:joinData.certificate,
                       userid:joinData.userid,headUrl:user.headUrl,nickName:user.name, upid: joinData.upid,joinDate: new Date()});
                       res.json({ok:0,msg:'创建推广人员数据'})

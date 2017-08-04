@@ -40,6 +40,10 @@
 </script>
 
 <style>
+  .button.button-fill.color-deepgreen {
+    color:#fff;
+    background-color: #68cfc1
+  }
   label.label-checkbox input[type=checkbox]:checked+.item-media i.icon-form-checkbox{
     background-color: #fc5475
   }

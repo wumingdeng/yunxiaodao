@@ -193,7 +193,6 @@ tour_router.route('/auth').post(function(req,res){
                                 db.salemans.findOne({where:{userid: openid}}).then(function(sdata){
                                     if (sdata) {
                                         //把推广人员表的数据合并到用户数据里
-                                        console.log('here')
                                         for (key in sdata.dataValues) {
                                             var value = sdata.dataValues[key];
                                             user.dataValues[key] = user.dataValues[key] || value;

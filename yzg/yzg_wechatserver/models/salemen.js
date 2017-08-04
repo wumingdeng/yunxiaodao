@@ -8,9 +8,10 @@ module.exports = function(sequelize, DataTypes) {
     headUrl: DataTypes.STRING,
     phone: DataTypes.STRING,
     job: DataTypes.INTEGER,
+    certificate: DataTypes.STRING,
     hospital: DataTypes.STRING,
     department:DataTypes.STRING,
-    certificate: DataTypes.STRING,
+    haveTGInfo: DataTypes.INTEGER,
     upid: DataTypes.STRING,
     joinDate: DataTypes.INTEGER,
     review: DataTypes.INTEGER

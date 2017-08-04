@@ -79,7 +79,12 @@
 		},
 		methods:{
 			onCheck() {
-				this.$router.push('/checkSaleman')
+				this.$router.push({
+					path: '/checkSaleman',
+					query:{
+						userid:this.$store.state.currentRequest.upid
+					}
+				})
 			},
 			onAccept() {
 				var self = this

@@ -61,11 +61,11 @@
 			onCheck() {
 
 			},
-			getData(){
+			getData(userid){
 				this.$store.dispatch('getSalemanData',{
 					self: this,
 					info:{
-						id: this.$store.state.currentRequest.upid
+						id: userid
 					},
 					callback(self, res){
 						if (res.body.ok) {
@@ -76,7 +76,8 @@
 			}
 		},
 		mounted() {
-			this.getData();
+			var userid = this.$route.query.userid;
+			this.getData(userid);
 		}
 	}
 </script>

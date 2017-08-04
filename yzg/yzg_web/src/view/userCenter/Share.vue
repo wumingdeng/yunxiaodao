@@ -35,7 +35,8 @@
 		},
 		mounted() {
 			this.$f7.resize();
-			this.boss = this.$route.query.userid;
+			this.boss = this.$route.query.upid;
+			console.log('推广人:' + this.boss)
 		}
 	}
 </script>
