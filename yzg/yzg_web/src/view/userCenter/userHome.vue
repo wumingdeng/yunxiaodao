@@ -1,7 +1,7 @@
 <template>
 	<f7-page v-show="isShow" >
         <f7-page-content style="overflow-x: hidden;">
-    		<div class="dc_top_per">
+    		<div class="dc_top_per" :style="topBgStyle">
     			<img class="face" :src="$store.state.userinfo.headUrl">
     			<span>
                     <p>{{$store.state.userinfo.name}}</p>
@@ -80,6 +80,12 @@
                     // return true
                 }
                 return this.$store.state.userinfo.isBoss && this.$store.state.userinfo.review;
+            },
+            topBgStyle() {
+                if (Global.isTest) 
+                    return "background: url('/static/assets/userCenter/user_bg.jpg') no-repeat;background-size:cover;"
+                else 
+                    return "background: url('/yzg/static/assets/userCenter/user_bg.jpg') no-repeat;background-size:cover;"
             }
         },
         methods:{
@@ -178,8 +184,6 @@
 
 <style type="text/css">
 	.dc_top_per {
-        background: url('/static/assets/userCenter/user_bg.jpg') no-repeat;
-        background-size:cover;
         width:100%;
         height:auto;
         /*border: 1px solid #d4d4d4;*/

@@ -49,6 +49,8 @@
     <p style="width:88%; margin:1em auto;"><f7-button big fill color="deepgreen" @click.stop.prevent="$router.go(-1)">返回</f7-button></p>
     <f7-photo-browser
       ref="pb"
+      :photos="cert"
+      @click="onClickPB"
     ></f7-photo-browser>
 	</f7-page>
 </template>
@@ -58,7 +60,7 @@
 	export default {
 		data() {
 			return {
-				cert:null,
+				cert:[],
 				salemanData:{},
 				pbParams: {
 					photos: [],
