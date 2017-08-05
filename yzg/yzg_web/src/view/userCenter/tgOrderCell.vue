@@ -13,9 +13,9 @@
 					<div class="oc_right">
 						<span style="">{{orderData.shoeName}}</span>
 						<div class='tgOrderCardLine'></div>
-						<span style="color:#ff0000;font-size:1.5em;position:absolute;top:10px;right:16px;">¥{{orderData.price}}</span>
-						<p style="color:#71777f;white-space:nowrap;">尺码:{{orderData.size}}码 颜色:{{orderData.color}} 鞋型:{{orderData.type}}</p>
-						<p>订单时间:{{timeToDate(orderData.createtime,true)}}</p>
+						<span style="color:#e35f0f;font-size:1.5em;position:absolute;top:13px;right:16px;">¥{{orderData.price}}</span>
+						<p style="color:#71777f;white-space:nowrap;margin-bottom:7px;">尺码:{{orderData.size}}码 颜色:{{orderData.color}} 鞋型:{{orderData.type}}</p>
+						<p style="margin-bottom:0px;margin-top:5px;">订单时间:{{timeToDate(orderData.createtime,true)}}</p>
 					</div>
 				</f7-col>
 			</f7-grid>
@@ -179,14 +179,14 @@
 		margin-top: 5px;
 	}
 	.oc_orderImg {
-		width:100%;
+		width:84px;
 		float:left;
 		display:inline-block;
 	}
 	.oc_right{
 		display:inline-block;
 		width:100%;
-		height:100px;
+		height:87px;
 		text-align:left;
 		overflow: hidden;
 	}

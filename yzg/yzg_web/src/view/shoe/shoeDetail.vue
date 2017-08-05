@@ -1,12 +1,13 @@
 <template>
 	<f7-page>
-<!-- 		<f7-navbar sliding>
+		<f7-navbar sliding v-if="showNav">
       <f7-nav-left>
-          <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
+          <f7-link icon="icon-back color-black" @click="onBack"></f7-link>
       </f7-nav-left>
       <f7-nav-center sliding title="产品详情"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
-    </f7-navbar> -->
+    </f7-navbar>
+    <div v-if="showNav" style="height:44px;"></div>
     <f7-page-content  style="-webkit-transform: translateZ(0px);">
       <div style="height: calc(100% + 1px);">
   		<homeSwipe :swipeData="swipeData"></homeSwipe>
@@ -73,6 +74,7 @@
 	export default{
 		data () {
 			return {
+        showNav:false,
         pickerOpened:false,
 				productData:{}
 			}
@@ -103,6 +105,15 @@
       }
     },
     methods:{
+      onBack() {
+        this.$router.push({
+          path:'/share',
+          query:{
+            showNav: true,
+            upid: this.$store.state.wxid
+          }
+        })
+      },
       onTouchStart() {
         console.log('touchstart')
       },
@@ -144,7 +155,8 @@
       document.title = '专业孕妇鞋'
     },
 		mounted() {
-      this.$f7.resize();
+      this.showNav = this.$route.query.showNav
+      this.$nextTick(this.$f7.resize)
       var isReload = this.$store.state.isReload;
       if (isReload) { 
         // this.$store.state.isLogin = false
@@ -160,7 +172,7 @@
         return
       }
       this.productData = this.$store.state.productDetail
-      window.setTimeout(this.doIt,1000); 
+      // window.setTimeout(this.doIt,1000); 
 
       // var self = this
       // this.$nextTick(function() {

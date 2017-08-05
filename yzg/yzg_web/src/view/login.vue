@@ -80,10 +80,10 @@
 			        	self.$store.commit('GET_WXID',res.body.ok.wxid);
 			        	self.$store.state.token = res.body.token;
 
+		        		localStorage.removeItem('bossid')
 			        	if (bossid && bossid != null && bossid != self.$store.state.wxid) {
 			        		//从推广页点进来的 绑定关系
 			        		console.log('boss coming')
-			        		localStorage.removeItem('bossid')
 			        		self.$store.dispatch('tglink',{
 										self:self,
 										info:{
@@ -117,10 +117,15 @@
 				        		})
 		        			} else if (page == 'shoeDetail' && res.body.ok.isSaleman) {
 		        				//有推广权限的加上id
+		        				var showNav = false
+		        				if (bossid && bossid == self.$store.state.wxid) {
+		        					showNav = true
+		        				}
 		        				self.$router.push({
 				        			path:'/' + page,
 				        			query:{
-				        				bossid: res.body.ok.wxid
+				        				bossid: res.body.ok.wxid,
+				        				showNav: showNav
 				        			}
 				        		})
 		        			} else if (page == 'develop' && upid) {

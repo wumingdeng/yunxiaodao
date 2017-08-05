@@ -105,6 +105,7 @@
                 this.$router.push({
                     path:'/share',
                     query:{
+                        showNav: true,
                         upid: this.$store.state.wxid
                     }
                 })
@@ -177,7 +178,7 @@
 
 <style type="text/css">
 	.dc_top_per {
-        background: url('/yzg/static/assets/userCenter/user_bg.jpg') no-repeat;
+        background: url('/static/assets/userCenter/user_bg.jpg') no-repeat;
         background-size:cover;
         width:100%;
         height:auto;

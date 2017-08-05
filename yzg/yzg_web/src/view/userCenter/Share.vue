@@ -1,6 +1,6 @@
 <template>
 	<f7-page navbar-through>
-		<f7-navbar sliding>
+		<f7-navbar sliding v-if="showNav">
       <f7-nav-left>
         <f7-link icon="icon-back color-black" @click="$router.push('/userHome')"></f7-link>
       </f7-nav-left>
@@ -15,7 +15,8 @@
 	export default {
 		data() {
 			return {
-				boss:null
+				boss:null,
+				showNav: false
 			}
 		},
 		methods:{
@@ -37,8 +38,9 @@
 			}
 		},
 		mounted() {
-			this.$f7.resize();
 			this.boss = this.$route.query.upid;
+			this.showNav = this.$route.query.showNav;
+			this.$nextTick(this.$f7.resize)
 			console.log('推广人:' + this.boss)
 		}
 	}

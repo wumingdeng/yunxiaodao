@@ -42,16 +42,17 @@
       </f7-list-item>
       <f7-list-item v-if="isRequest" class="fillInfoItem">
 			  <f7-label>执业证书</f7-label>
-
-				<vue-core-image-upload id="inputCert" ref="certPic" style="position:relative; left:-50px;"
+		    <p v-if="currentPic" class="addPicText">{{currentPic}}</p>
+				<vue-core-image-upload id="inputCert" ref="certPic" style="position:relative;left:-10vw;"
 					:class="['btn', 'btn-primary']"
-			    text="点击选择证书"
 					@imagechanged="imagechanged"
 					@imageuploaded="imageuploaded"
 			    :crop="false"
 			    :isXhr="false"
 			    :max-file-size="5242880">
-			    <p>{{currentPic}}</p>
+			    <div>
+				    <img  src="static/assets/userCenter/addPic.jpg" style="width:60px;">
+			    </div>
 			  </vue-core-image-upload>
 			</f7-list-item>
     </f7-list>
@@ -87,7 +88,7 @@
                 alert(data.length)
             }
         },
-        currentPic:'点击选择证书'
+        currentPic:''
       }
 		},
     components:{
@@ -334,6 +335,14 @@
 		height: 30%;
 		right:30px;
 		top: 16px;
+	}
+	.addPicText {
+		text-align:left;
+		white-space: nowrap;
+		position: relative;
+		overflow: hidden;;
+		width:30vw;
+		left: -5vw;
 	}
 
 </style>

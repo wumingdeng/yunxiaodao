@@ -161,14 +161,14 @@ promotion_router.route('/useBossQrcode').post(function(req, res){
 	})
 })
 
-//工作人员去所属推广人员
+//工作人员取所属推广人员
 promotion_router.route('/getSalemen').post(function(req, res){
   var wxid = req.decoded.wxid;
   db.salemans.findAll({where:{upid: wxid,haveTGInfo: 1}, order: 'joinDate DESC'}).then(function(data) {
     if (data) {
       for (i in data) {
         var item = data[i]
-        item.dataValues.joinDate = moment(item.dataValues.joinDate).format('YYYY-MM-DD hh:mm:ss')
+        item.dataValues.joinDate = moment(item.dataValues.joinDate).format('YYYY年MM月DD日')
       }
       res.json({ok: data})
     } else {
@@ -182,7 +182,17 @@ promotion_router.route('/getSalemanData').post(function(req, res){
   var id = req.body.id;
   db.salemans.findOne({where:{userid:id}}).then(function(data) {
     if (data) {
-      res.json({ok:data})
+      //取推荐人
+      if (data.upid) {
+        db.salemans.findOne({where:{userid:data.upid}}).then(function(upData) {
+          if (upData) {
+            data.dataValues.upName = upData.realName;
+          }
+          res.json({ok:data})
+        })
+      } else {
+        res.json({ok:data})
+      }
     } else {
       res.json({err:0,msg:'没有推广人数据'})
     }
