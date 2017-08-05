@@ -49,15 +49,6 @@
     <p style="width:88%; margin:1em auto;"><f7-button big fill color="deepgreen" @click.stop.prevent="$router.go(-1)">返回</f7-button></p>
     <f7-photo-browser
       ref="pb"
-      :photos="cert"
-      backLinkText=""
-      ofText="/"
-      :loop=true
-      :exposition=false
-      :expositionHideCaptions=false
-      :lazyLoading=true
-      :lazyLoadingInPrevNext=true
-      @click="onClickPB"
     ></f7-photo-browser>
 	</f7-page>
 </template>
@@ -67,23 +58,21 @@
 	export default {
 		data() {
 			return {
-				salemanData:{}
+				cert:null,
+				salemanData:{},
+				pbParams: {
+					photos: [],
+					backLinkText: '',
+					ofText: '/',
+					loop: false,
+					exposition: false,
+					expositionHideCaptions: false
+				}
 			}
 		},
 		computed:{
 			job() {
 				return this.salemanData.job == 1 ? '医生': '护士';
-			},
-			cert() {
-				var cert = this.salemanData.certificate;
-				if (cert) {
-					if (Global.isTest) {
-						return ['http://yzg.sujudao.com:8192' + '/' + cert]
-					}
-					return [g.serverAddress + '/' + cert];
-				} else {
-					return [''];
-				}
 			}
 		},
 		methods:{
@@ -108,12 +97,26 @@
 					callback(self, res){
 						if (res.body.ok) {
 							self.salemanData = res.body.ok;
+							var certpic = self.salemanData.certificate;
+							if (certpic) {
+								if (Global.isTest) {
+									self.cert =  ['http://yzg.sujudao.com:8192' + '/' + certpic]
+								} else {
+									self.cert = [g.serverAddress + '/' + certpic];
+								}
+							} else {
+								self.cert = [''];
+							}
+							self.pbParams.photos = self.cert;
+							self.pbParams.onClick = self.onClickPB;
+							self.$refs.pb = self.$f7.photoBrowser(self.pbParams)
 						}
 					}
 				})
 			}
 		},
 		mounted() {
+      this.$nextTick(this.$f7.resize)
 			var userid = this.$route.query.userid;
 			this.getData(userid);
 		},
