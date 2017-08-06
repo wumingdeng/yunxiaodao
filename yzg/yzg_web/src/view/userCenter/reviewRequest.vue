@@ -15,21 +15,21 @@
 			</f7-card-content>
 		</f7-card>
 		<f7-card inner style='border-radius:7px;margin: 10px;padding:20px 0px 5px 0px;'>
-			<f7-list id="userinfoForm" form style='margin-top:0px'>
+			<f7-list form style='margin-top:0px'>
 				<f7-list-item :title="'姓名'" class="cus_item">
-					<f7-label class='cus_label'>{{$store.state.currentRequest.realName}}</f7-label>
+					<f7-label class='cus_label' style='width:40%'>{{$store.state.currentRequest.realName}}</f7-label>
 				</f7-list-item>
 				<f7-list-item :title="'手机号码'" class="cus_item">
-					<f7-label class='cus_label'>{{$store.state.currentRequest.phone}}</f7-label>
+					<f7-label class='cus_label' style='width:40%'>{{$store.state.currentRequest.phone}}</f7-label>
 				</f7-list-item>
 				<f7-list-item :title="'职业'" class="cus_item">
-					<f7-label class='cus_label'>{{job}}</f7-label>
+					<f7-label class='cus_label' style='width:40%'>{{job}}</f7-label>
 				</f7-list-item>
 				<f7-list-item :title="'执业医院'" class="cus_item">
-					<f7-label class='cus_label'>{{$store.state.currentRequest.hospital}}</f7-label>
+					<f7-label class='cus_label' style='width:40%'>{{$store.state.currentRequest.hospital}}</f7-label>
 				</f7-list-item>
 				<f7-list-item :title="'科室'" class="cus_item">
-					<f7-label class='cus_label'>{{$store.state.currentRequest.department}}</f7-label>
+					<f7-label class='cus_label' style='width:40%'>{{$store.state.currentRequest.department}}</f7-label>
 				</f7-list-item>
 				<f7-list-item class="cus_item">
 					<f7-label style='width:30%;margin-bottom:100px'>执业证书</f7-label>
@@ -56,16 +56,16 @@
           ></f7-photo-browser>
 				</f7-list-item>
 				<f7-list-item>
-					<f7-label style='width:30%;margin-bottom:70px'>审核建议</f7-label>
-					<f7-input id="adviceInput" style='background:rgb(230,230,230;border-radius:20px;margin:10px 0' readonly type="textarea"></f7-input>
+					<f7-label style='width:30%;margin-bottom:60px'>审核建议</f7-label>
+					<f7-input id="adviceInput" style='height:3em;background:rgb(230,230,230);border-radius:10px;margin:0px 0;padding:1em' type="textarea"></f7-input>
 				</f7-list-item>
 			</f7-list>
 			<f7-grid style='margin:10px'>
 				<f7-col width=50>
-					<f7-button fill big style='background:#68cfc1' @click="onAccept">审核通过</f7-button>
+					<f7-button fill big style='background:#68cfc1;border-radius:10px' @click="onAccept">审核通过</f7-button>
 				</f7-col>
 				<f7-col width=50>
-					<f7-button fill big style='background:rgba(0,0,0,0);color:#68cfc1;border:2px solid #68cfc1' @click="onRefuse">审核不通过</f7-button>
+					<f7-button fill big style='background:rgba(0,0,0,0);color:#68cfc1;border:2px solid #68cfc1;border-radius:10px' @click="onRefuse">审核不通过</f7-button>
 				</f7-col>
 			</f7-grid>
 		</f7-card>
@@ -189,7 +189,3 @@ export default {
 	color:rgb(150,150,150)
 }
 </style>
-
-
-
-
