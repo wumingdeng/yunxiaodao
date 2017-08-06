@@ -9,10 +9,15 @@
 	  </f7-navbar> -->
 	  <div class="checkSalemanTop">
 			<img class="face" :src="salemanData.headUrl">
-			<span>
+			<div style='display: inline-block;width:0px;border-right: 2px solid #00739a;  padding-bottom:30px; margin-bottom:30px;margin-top:20px'>
+			</div>
+			<div style='display: inline-block;width:1px;border-right: 2px solid #75fff9;  padding-bottom:30px; margin-bottom:30px;margin-top:20px;margin-left:-5px;'>
+			</div>
+			<span class='cus_span'>
           <p>代言人: {{salemanData.realName}}</p>
-          <p>已加入代言计划＊天</p>
-          <p>累计推广订单＊单 累计推广代言人＊</p>
+          <p>已加入代言计划{{10}}天</p>
+          <p>累计推广订单{{10}}单 </p>
+					<p>累计推广代言人{{10}}个</p>
       </span>
       <p style="height:20px;"></p>
 		</div>
@@ -159,7 +164,7 @@
     display: inline-block;
     margin: 15px 0 0 15px;
     position: relative;
-    top:-13px;
+    top:-8px;
     /*text-align: center;*/
     /*overflow: hidden;*/
 	}
@@ -229,6 +234,10 @@
 	#userinfoForm #upmanItem input {
 		text-align: left;
 		color: #949494;
+	}
+	.cus_span p{
+		font-size:14px;
+		line-height:14px;
 	}
 </style>
 
