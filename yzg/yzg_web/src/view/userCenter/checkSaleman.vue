@@ -11,7 +11,7 @@
 			<img class="face" :src="salemanData.headUrl">
 			<div class="topShuxian"></div>
 			<span class='cus_span'>
-          <p>代言人: {{salemanData.realName}}</p>
+          <p style='font-size:16px;color:rgba(255,255,255,1)'>代言人: {{salemanData.realName}}</p>
           <p>已加入代言计划{{10}}天</p>
           <p>累计推广订单{{10}}单 </p>
 					<p>累计推广代言人{{10}}个</p>
@@ -149,7 +149,7 @@
         display: inline-block;
         padding: 1em 0;
         position: absolute;
-        margin:2.5em 0em 0 0.3em;
+        margin:2.5em 0em 0 0.6em;
     }
 	.checkSalemanTop .face {
     width: 20vw;
@@ -172,12 +172,16 @@
     margin: 15px 0 0 15px;
     position: relative;
     top:-8px;
+		left:10px;
     /*text-align: center;*/
     /*overflow: hidden;*/
 	}
 	.checkSalemanTop span p {
 		margin: 9px 0px;
 		white-space: nowrap;
+		font-size:14px;
+		line-height:14px;
+		color:rgba(255,255,255,0.8);
 	}
 	#checkSalemanForm {
 		margin: -50px 5px 0 5px;
@@ -241,10 +245,6 @@
 	#checkSalemanForm #upmanItem input {
 		text-align: left;
 		color: #949494;
-	}
-	.cus_span p{
-		font-size:14px;
-		line-height:14px;
 	}
 </style>
 
