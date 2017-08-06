@@ -7,7 +7,7 @@
     			<span>
                     <p>
                         {{$store.state.userinfo.realName}}
-                        <font size="0.8em">&nbsp;&nbsp;&nbsp;{{tgJob}}</font>
+                        <font size="2em">&nbsp;&nbsp;&nbsp;{{tgJob}}</font>
                     </p>
                     <p>余额: 0</p>
                 </span>
@@ -203,7 +203,7 @@
         padding: 1em 0;
         position: absolute;
         margin:0 0.7em;
-        margin-top:2.2em;
+        margin-top:1.7em;
     }
 	.dc_top_per {
         width:100%;

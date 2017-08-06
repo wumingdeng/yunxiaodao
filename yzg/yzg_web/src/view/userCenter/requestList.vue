@@ -12,16 +12,16 @@
 			<f7-card-header style="white-space: nowrap;font-size:16px;">
 				<span>{{item.requestDate.substr(0,10)}}</span>
 				<span>
-					<span style='color:#68cfc1;font-size:15px'>推荐人 : </span>{{item.upName}}</span>
+					<span style='color:#68cfc1;font-size:16px'>推荐人 : </span>{{item.upName}}</span>
 				<span :style="setItemStatusColor(item.status)">{{requestStatus[item.status]}}</span>
 			</f7-card-header>
 			<f7-card-content>
 				<f7-grid>
 					<f7-col width=20>
-						<img style="width:100%;margin-top:8px;border-radius: 80px;-moz-border-radius: 80px;-webkit-border-radius: 80px;overflow: hidden;border:3px solid rgba(0,220,240,0.2);" :src="item.headUrl" alt="">
+						<img style="width:100%;border-radius: 80px;-moz-border-radius: 80px;-webkit-border-radius: 80px;overflow: hidden;border:3px solid rgba(0,220,240,0.2);" :src="item.headUrl" alt="">
 					</f7-col>
 					<f7-col width=5>
-						<div style='width:3px;border-right: 2px solid rgba(164,164,164,0.3);  padding-bottom:30px; margin-bottom:0px;margin-top:20px'>
+						<div style='width:3px;border-right: 1px solid rgba(164,164,164,0.5);  padding-bottom:30px; margin-bottom:0px;margin-top:20px'>
 						</div>
 					</f7-col>
 					<f7-col width=75>
@@ -130,7 +130,6 @@ export default {
 
 <style scoped>
 .listCard {
-	margin-right: 7px;
 	margin-left: 7px;
 	border-radius: 10px;
 }
