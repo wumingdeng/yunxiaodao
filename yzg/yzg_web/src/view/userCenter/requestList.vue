@@ -18,7 +18,7 @@
 			<f7-card-content>
 				<f7-grid>
 					<f7-col width=20>
-						<img style="width:100%;margin-top:8px;border-radius: 80px;-moz-border-radius: 80px;-webkit-border-radius: 80px;overflow: hidden;border:3px solid rgba(0,220,240,0.3);" :src="item.headUrl" alt="">
+						<img style="width:100%;margin-top:8px;border-radius: 80px;-moz-border-radius: 80px;-webkit-border-radius: 80px;overflow: hidden;border:3px solid rgba(0,220,240,0.2);" :src="item.headUrl" alt="">
 					</f7-col>
 					<f7-col width=5>
 						<div style='width:3px;border-right: 2px solid rgba(164,164,164,0.3);  padding-bottom:30px; margin-bottom:0px;margin-top:20px'>

@@ -6,6 +6,7 @@
     			<span>
                     <p>{{$store.state.userinfo.name}}</p>
                     <p>余额: 0</p>
+                    <p style="position:absolute;right:2em; top:1.2em;">{{tgJob}}</p>
                 </span>
                 <p style="height:20px;"></p>
     		</div>
@@ -86,6 +87,13 @@
                     return "background: url('/static/assets/userCenter/user_bg.jpg') no-repeat;background-size:cover;"
                 else 
                     return "background: url('/yzg/static/assets/userCenter/user_bg.jpg') no-repeat;background-size:cover;"
+            },
+            tgJob() {
+                if (this.$store.state.userinfo.isBoss) {
+                    return '工作人员'
+                } else {
+                    return '代言人'
+                }
             }
         },
         methods:{

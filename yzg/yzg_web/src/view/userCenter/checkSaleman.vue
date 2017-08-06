@@ -40,7 +40,7 @@
         <f7-label>科&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;室</f7-label>
         <f7-input id="departmentInput" type="text" readonly v-model="salemanData.department"></f7-input>
       </f7-list-item>
-      <f7-list-item>
+      <f7-list-item id="certItem">
         <f7-label>执业证书</f7-label>
         <div style="height:5em;"></div>
 				<img :src="cert[0]" style="height:5em;position:absolute;left:6em;" @click.stop.prevent="openPhotoBrowser">
@@ -193,6 +193,16 @@
     transform-origin: 50% 100%;
 	}
 	
+	#certItem .item-content:after {
+		background-color: rgba(0,0,0,0);
+	}
+	#userinfoForm ul:before {
+		background-color: rgba(0,0,0,0);
+	}
+	#userinfoForm ul:after {
+		background-color: rgba(0,0,0,0);
+	}
+
 	#userinfoForm #upmanItem {
 		background-color: #fff;
 		border-radius: 10px 10px 0 0;
@@ -205,7 +215,7 @@
 		background-color: rgba(0,0,0,0)
 	}
 	#userinfoForm .item-title.label {
-		width:4em;
+		width:5em;
 	}
 	#userinfoForm #upmanItem .item-title.label {
 		width:5em;
