@@ -124,7 +124,7 @@ export default {
 		},
 		onAccept() {
 			var self = this
-			this.$f7.confirm('您将通过申请', function () {
+			this.$f7.confirm('','您将通过申请', function () {
 				self.$store.dispatch('acceptRequest', {
 					self: self,
 					info: {

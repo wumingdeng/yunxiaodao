@@ -1,12 +1,15 @@
 <template>
-	<f7-page v-show="isShow" >
+	<f7-page v-show="isShow" id="userHome">
         <f7-page-content style="overflow-x: hidden;">
     		<div class="dc_top_per" :style="topBgStyle">
     			<img class="face" :src="$store.state.userinfo.headUrl">
+                <div class="topShuxian"></div>
     			<span>
-                    <p>{{$store.state.userinfo.name}}</p>
+                    <p>
+                        {{$store.state.userinfo.realName}}
+                        <font size="0.8em">&nbsp;&nbsp;&nbsp;{{tgJob}}</font>
+                    </p>
                     <p>余额: 0</p>
-                    <p style="position:absolute;right:2em; top:1.2em;">{{tgJob}}</p>
                 </span>
                 <p style="height:20px;"></p>
     		</div>
@@ -191,6 +194,17 @@
 </script>
 
 <style type="text/css">
+    #userHome .topShuxian {
+        width: 1px;
+        height: 2.5em;
+        background-color: rgba(0,115,154,1);
+        border-right: 1px solid rgba(117,255,249,1);
+        display: inline-block;
+        padding: 1em 0;
+        position: absolute;
+        margin:0 0.7em;
+        margin-top:2.2em;
+    }
 	.dc_top_per {
         width:100%;
         height:auto;
@@ -202,8 +216,8 @@
         width: 90px;
         height: 90px;
         display: inline-block;
-        margin: 10px 0px 10px 30px;
-        border: 3px solid rgba(0,220,240,0.3);
+        margin: 10px 0px 10px 20px;
+        border: 3px solid rgba(255,255,255,0.3);
         border-radius: 80px;
         -moz-border-radius: 80px;
         -webkit-border-radius: 80px;
@@ -213,10 +227,10 @@
         line-height: 20px;
         height: 100px;
         font-size: 16px;
-        width:50%;
+        width: 50%;
         color: #fff;
         display: inline-block;
-        margin-left: 25px;
+        margin-left: 30px;
         /*text-align: center;*/
         overflow: hidden;
 	}

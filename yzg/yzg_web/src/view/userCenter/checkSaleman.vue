@@ -16,7 +16,7 @@
       </span>
       <p style="height:20px;"></p>
 		</div>
-	  <f7-list id="userinfoForm" form>
+	  <f7-list id="checkSalemanForm" form>
       <f7-list-item id="upmanItem">
         <f7-label>推荐人</f7-label>
         <f7-input id="nameInput" class="fillInput" type="text" readonly v-model="salemanData.upName"></f7-input>
@@ -167,17 +167,17 @@
 		margin: 9px 0px;
 		white-space: nowrap;
 	}
-	#userinfoForm {
+	#checkSalemanForm {
 		margin: -50px 5px 0 5px;
 	}
-	#userinfoForm > ul {
+	#checkSalemanForm > ul {
 		background-color: rgb(248,248,248);
 		border-radius: 10px;
 	}
-	#userinfoForm > .list-block .item-inner:after {
+	#checkSalemanForm > .list-block .item-inner:after {
 		background-color: rgba(0,0,0,0)
 	}
-	#userinfoForm .item-content:after {
+	#checkSalemanForm .item-content:after {
 		content: '';
     position: absolute;
     left: 0;
@@ -196,37 +196,37 @@
 	#certItem .item-content:after {
 		background-color: rgba(0,0,0,0);
 	}
-	#userinfoForm ul:before {
+	#checkSalemanForm ul:before {
 		background-color: rgba(0,0,0,0);
 	}
-	#userinfoForm ul:after {
+	#checkSalemanForm ul:after {
 		background-color: rgba(0,0,0,0);
 	}
 
-	#userinfoForm #upmanItem {
+	#checkSalemanForm #upmanItem {
 		background-color: #fff;
 		border-radius: 10px 10px 0 0;
 
 	}
-	#userinfoForm #upmanItem .item-content:after {
+	#checkSalemanForm #upmanItem .item-content:after {
 		background-color: rgba(0,0,0,0)
 	}	
-	#userinfoForm #upmanItem .item-inner:after {
+	#checkSalemanForm #upmanItem .item-inner:after {
 		background-color: rgba(0,0,0,0)
 	}
-	#userinfoForm .item-title.label {
+	#checkSalemanForm .item-title.label {
 		width:5em;
 	}
-	#userinfoForm #upmanItem .item-title.label {
+	#checkSalemanForm #upmanItem .item-title.label {
 		width:5em;
 		letter-spacing: 0.5em;
 		color: #68cfc1;
 	}
-	#userinfoForm input {
+	#checkSalemanForm input {
 		text-align: right;
 		color: #a7a7a7;
 	}
-	#userinfoForm #upmanItem input {
+	#checkSalemanForm #upmanItem input {
 		text-align: left;
 		color: #949494;
 	}

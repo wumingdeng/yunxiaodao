@@ -4,7 +4,7 @@
 	      <f7-nav-left>
 	        <f7-link icon="icon-back color-black" @click="$router.push('/userHome')"></f7-link>
 	      </f7-nav-left>
-	      <f7-nav-center sliding style="left:-22px;" title="我的推广"></f7-nav-center>
+	      <f7-nav-center sliding style="left:-22px;" title="推广订单"></f7-nav-center>
 	      <f7-nav-right></f7-nav-right>
 	  </f7-navbar>
   	<f7-page-content style="margin-top:44px;">

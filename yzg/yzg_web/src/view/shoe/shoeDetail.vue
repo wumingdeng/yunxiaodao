@@ -98,7 +98,7 @@
     	},
       photos() {
         var pArr = []
-        for (var i = 1; i <= 1; ++i) {
+        for (var i = 1; i <= this.productData.introNum; ++i) {
           pArr.push("static/assets/shoe/product/intro_p" + this.productData.pid + "/" + i +".jpg" + Global.verStr)
         }
         return pArr
