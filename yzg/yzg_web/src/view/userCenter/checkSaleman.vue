@@ -9,10 +9,7 @@
 	  </f7-navbar> -->
 	  <div class="checkSalemanTop">
 			<img class="face" :src="salemanData.headUrl">
-			<div style='display: inline-block;width:0px;border-right: 2px solid #00739a;  padding-bottom:30px; margin-bottom:30px;margin-top:20px'>
-			</div>
-			<div style='display: inline-block;width:1px;border-right: 2px solid #75fff9;  padding-bottom:30px; margin-bottom:30px;margin-top:20px;margin-left:-5px;'>
-			</div>
+			<div class="topShuxian"></div>
 			<span class='cus_span'>
           <p>代言人: {{salemanData.realName}}</p>
           <p>已加入代言计划{{10}}天</p>
@@ -144,6 +141,16 @@
     min-width: 288px;
     margin-bottom:15px;
 	}
+	.checkSalemanTop .topShuxian {
+        width: 1px;
+        height: 2.5em;
+        background-color: rgba(0,115,154,1);
+        border-right: 1px solid rgba(117,255,249,1);
+        display: inline-block;
+        padding: 1em 0;
+        position: absolute;
+        margin:2.5em 0em 0 0.3em;
+    }
 	.checkSalemanTop .face {
     width: 20vw;
     height: 20vw;
