@@ -57,7 +57,7 @@
 				</f7-list-item>
 				<f7-list-item>
 					<f7-label style='width:30%;margin-bottom:60px'>审核建议</f7-label>
-					<f7-input id="adviceInput" style='height:3em;background:rgb(230,230,230);border-radius:10px;margin:0px 0;padding:1em' type="textarea"></f7-input>
+					<f7-input id="adviceInput" class='cus_textarea' style='height:5em;background:rgb(230,230,230);border-radius:10px;margin:0px;padding:0px 10px' type="textarea"></f7-input>
 				</f7-list-item>
 			</f7-list>
 			<f7-grid style='margin:10px'>
@@ -187,5 +187,9 @@ export default {
 .cus_label {
 	text-align: right;
 	color:rgb(150,150,150)
+}
+
+.cus_textarea textarea {
+	height:80px;
 }
 </style>
