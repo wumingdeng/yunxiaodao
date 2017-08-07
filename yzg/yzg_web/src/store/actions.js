@@ -701,3 +701,27 @@ export function getSalemanData({commit, state},data) {
       // onErrorRefresh(self);
     });
 }
+
+
+//取收入数据
+export function getIncomeDetails({commit, state},data) {
+  var self = data.self;
+  data.info.token = self.$store.state.token  //带上token
+  self.$http.post(g.serverAddress+'/api/getIncomeDetails', data.info)
+    .then((response) => {
+      // success callback
+      self.$f7.hidePreloader()
+      console.log(response)
+      if(response.body.err){
+        onErrorHandler(response.body.err)
+        // self.$f7.alert('',response.body.err)
+      }else{
+        if (data.callback) {
+          data.callback(self,response)
+        }
+      }       
+    }, (response) => {
+      // error callback
+      // onErrorRefresh(self);
+    });
+}

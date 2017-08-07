@@ -15,7 +15,7 @@
     		</div>
             <div class="jscz">
                 <div class="shuxian"></div>
-                <div class="jsBtn" style="left:0px;">
+                <div class="jsBtn" style="left:0px;" @click.prevent.stop="$router.push('/incomeDetail')">
                     <img style="width:35px;" src="static/assets/userCenter/income.png">
                     <p style="margin:0">收入明细</p>
                 </div>

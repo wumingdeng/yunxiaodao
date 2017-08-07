@@ -33,6 +33,7 @@ import develop from '@/view/userCenter/develop'
 import requestList from '@/view/userCenter/requestList'
 import reviewRequest from '@/view/userCenter/reviewRequest'
 import checkSaleman from '@/view/userCenter/checkSaleman'
+import incomeDetail from '@/view/userCenter/incomeDetail'
 
 // 根目录
 const rootPath = ''
@@ -155,6 +156,10 @@ var routes = [
   {
     path: '/requestList',
     component: requestList
+  },
+  {
+    path: '/incomeDetail',
+    component: incomeDetail
   },
   {
     path: '/reviewRequest',
