@@ -251,11 +251,13 @@ order_router.route('/ordercancel').post(function(req,res){
 //推广的订单
 order_router.route('/orderlistReference').post(function(req,res){
     var userid = req.decoded.wxid
+    var offset = req.body.offset || 0
+    var limit = req.body.limit || 0
     if (!userid) {
         res.json({err:g.errorCode.WRONG_PARAM})
         return
     }
-    db.orders.findAll({order:'createtime DESC', where:{reference:userid}}).then(function(order) {
+    db.orders.findAll({order:'createtime DESC',offset:offset,limit:limit, where:{reference:userid}}).then(function(order) {
         if (order) {
             order.forEach(function(item,index){ 
                 var sinfo = mem.m.products[item.shoeid]

@@ -3,15 +3,15 @@
         <f7-page-content style="overflow-x: hidden;">
     		<div class="dc_top_per" :style="topBgStyle">
     			<img class="face" :src="$store.state.userinfo.headUrl">
-                <div class="topShuxian"></div>
     			<span>
-                    <p>
+                    <p style="margin-top:5px;">
                         {{$store.state.userinfo.realName}}
-                        <font size="3em">&nbsp;&nbsp;&nbsp;{{tgJob}}</font>
+                        <img src="static/assets/userCenter/modifyInfo.png" style="height:0.9em;">
                     </p>
-                    <p>余额: 0</p>
+                    <!-- <p>余额: 0</p> -->
                 </span>
-                <p style="height:20px;"></p>
+                <!-- <font size="3em">&nbsp;&nbsp;&nbsp;{{tgJob}}</font> -->
+                <p style="height:2em;"></p>
     		</div>
             <div class="jscz">
                 <div class="shuxian"></div>
@@ -19,7 +19,7 @@
                     <img style="width:35px;" src="static/assets/userCenter/income.png">
                     <p style="margin:0">收入明细</p>
                 </div>
-                <div class="jsBtn" style="">
+                <div class="jsBtn" style="" @click="gotoWithdraw">
                     <img style="width:35px;" src="static/assets/userCenter/withdraw.png">
                     <p style="margin:0">提现</p>
                 </div>
@@ -28,39 +28,43 @@
             <div class="menuBg">
                 <img src="static/assets/userCenter/yuanhuan.png" style="height:50px; float:left; margin-top:-33px;margin-left:20px;">
                 <img src="static/assets/userCenter/yuanhuan.png" style="height:50px; float:right; margin-top:-33px;margin-right:20px;">
-                <div @click.prevent.stop="onTouchTG" style="">
+                <div @click.prevent.stop="onTouchTG" style="margin-top:0px;">
                     <img style="width:100%" src="static/assets/userCenter/kapian1.jpg" alt="">
-                    <div class="menuContent">
+                    <div class="menuContent" style="top:7.3vh;">
                         <img src="static/assets/userCenter/icon_tgdyr.png">
                         <span>推广代言人</span>
                     </div>
                 </div>
-                <div @click.prevent.stop='gotoShare' style="position: relative; top: -45px;">
+                <div @click.prevent.stop='gotoShare' style="position: relative;
+        margin-top: -1em;">
                     <img style="width:100%" src="static/assets/userCenter/kapian2.jpg" alt="">
                     <div class="menuContent">
                         <img src="static/assets/userCenter/icon_tgcp.png">
                         <span>产品推广</span>
                     </div>
                 </div>
-                <div @click.prevent.stop="$router.push('/tgOrder')" style="position: relative; top: -90px;">
+                <div v-if="$store.state.userinfo.isBoss" @click.prevent.stop="$router.push('/mySaleman')" style="position: relative;
+        margin-top: -1em;">
                     <img style="width:100%" src="static/assets/userCenter/kapian3.jpg" alt="">
-                    <div class="menuContent">
-                        <img src="static/assets/userCenter/icon_myorder.png">
-                        <span>推广订单</span>
-                    </div>
-                </div>
-                <div v-if="$store.state.userinfo.isBoss" @click.prevent.stop="$router.push('/mySaleman')" style="position: relative; top: -135px;">
-                    <img style="width:100%" src="static/assets/userCenter/kapian2.jpg" alt="">
                     <div class="menuContent">
                         <img src="static/assets/userCenter/icon_mysaleman.png">
                         <span>我推广的代言人</span>
                     </div>
                 </div>
-                <div v-if="canReview" @click.prevent.stop="$router.push('/requestList')" style="position: relative; top: -180px;">
-                    <img style="width:100%" src="static/assets/userCenter/kapian1.jpg" alt="">
+                <div v-if="canReview" @click.prevent.stop="$router.push('/requestList')" style="position: relative;
+        margin-top: -1em;">
+                    <img style="width:100%" src="static/assets/userCenter/kapian2.jpg" alt="">
                     <div class="menuContent">
                         <img src="static/assets/userCenter/icon_dyrsh.png">
                         <span>代言人审核</span>
+                    </div>
+                </div>
+                <div @click.prevent.stop="$router.push('/tgOrder')" style="position: relative;
+        margin-top: -1em;">
+                    <img style="width:100%" :src="tgddImg" alt="">
+                    <div class="menuContent">
+                        <img src="static/assets/userCenter/icon_myorder.png">
+                        <span>推广订单</span>
                     </div>
                 </div>
             </div>
@@ -97,6 +101,17 @@
                 } else {
                     return '代言人'
                 }
+            },
+            tgddImg() {
+                if (!this.$store.state.userinfo.isBoss) {
+                    return "static/assets/userCenter/kapian3.jpg"
+                } else {
+                    if (this.canReview) {
+                        return "static/assets/userCenter/kapian1.jpg"
+                    } else {
+                        return "static/assets/userCenter/kapian2.jpg"
+                    }
+                }
             }
         },
         methods:{
@@ -126,6 +141,9 @@
                         upid: this.$store.state.wxid
                     }
                 })
+            },
+            gotoWithdraw() {
+                // this.$router.push('/withdraw')
             }
         },
         components:{
@@ -211,17 +229,19 @@
         /*border: 1px solid #d4d4d4;*/
         min-width: 288px;
         margin-bottom:15px;
+        text-align: center;
 	}
 	.dc_top_per .face {
-        width: 90px;
-        height: 90px;
-        display: inline-block;
-        margin: 10px 0px 10px 20px;
+        width: 17vw;
+        height: 17vw;
+        /*display: inline-block;*/
+        margin: 10px auto 0px auto;
         border: 3px solid rgba(255,255,255,0.3);
         border-radius: 80px;
         -moz-border-radius: 80px;
         -webkit-border-radius: 80px;
         overflow: hidden;
+
 	}
 	.dc_top_per span {
         line-height: 16px;
@@ -229,10 +249,10 @@
         font-size: 18px;
         width: 50%;
         color: #fff;
-        display: inline-block;
-        margin-left: 30px;
+        /*display: inline-block;*/
+        /*margin-left: 30px;*/
         /*text-align: center;*/
-        overflow: hidden;
+        /*overflow: hidden;*/
 	}
     .jscz {
         background-color: #ffffff;
@@ -265,16 +285,16 @@
         top: -35px;
         background-color: #ffffff;
         width:95%;
-        height:500px;
+        /*height:500px;*/
         margin:0 auto;
         border-radius: 5px;
         box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.3);
     }
     .menuBg .menuContent {    
         /*float: left;*/
-        top: -65px;
+        top: 4.5vh;
         left: 30px;
-        position: relative;
+        position: absolute;
         height:35px;
     }
     .menuBg .menuContent img {

@@ -33,6 +33,8 @@ import develop from '@/view/userCenter/develop'
 import requestList from '@/view/userCenter/requestList'
 import reviewRequest from '@/view/userCenter/reviewRequest'
 import checkSaleman from '@/view/userCenter/checkSaleman'
+import withdraw from '@/view/userCenter/withdraw'
+
 
 // 根目录
 const rootPath = ''
@@ -170,6 +172,10 @@ var routes = [
   {
     path: '/checkSaleman',
     component: checkSaleman
+  },
+  {
+    path: '/withdraw',
+    component: withdraw
   },
 ].map(route => {
   route.path = rootPath + route.path

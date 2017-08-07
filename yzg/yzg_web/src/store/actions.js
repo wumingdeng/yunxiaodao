@@ -581,7 +581,7 @@ export function changeBoss({commit, state},data) {
   self.$http.post(g.serverAddress+'/api/changeBoss', data.info)
     .then((response) => {
       // success callback
-      self.$f7.hidePreloader()
+      Global.v.$f7.hidePreloader()
       console.log(response)
       if (data.callback) {
         data.callback(self,response)

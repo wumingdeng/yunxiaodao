@@ -22,43 +22,89 @@
 		methods:{
 			
 		},
-		mounted() {
-			this.$f7.resize();
-			this.upid = this.$route.query.upid;
-			if (this.upid) {
-				if (this.upid != this.$store.state.userinfo.wxid) {
+		beforeRouteEnter(to,from,next){
+			var upid = to.query.upid;
+			if (upid) {
+				if (upid != Global.s.state.userinfo.wxid) {
 					//通过链接进来的
-					if (this.$store.state.userinfo.isSaleman) {
+					if (Global.s.state.userinfo.isSaleman) {
 						//如果已经是推广人了
-						var bossid = this.$store.state.userinfo.bossid
-						if (bossid != this.upid) {
+						var bossid = Global.s.state.userinfo.bossid
+						if (bossid != upid) {
 							//变更上限
-							this.$store.dispatch('changeBoss',{
-								self: this,
+							Global.s.dispatch('changeBoss',{
+								self: Global.v,
 								info:{
-									upid: this.upid
+									upid: upid
 								},
 								callback(self, res) {
 									//进入个人中心
-									self.$router.push('/userHome')
+						      next({
+						        path: '/userHome'
+						      })
 								}
 							})
 						} else {
-							this.$router.push('/userHome')
+				      next({
+				        path: '/userHome'
+				      })
 						}
 						
 					} else {
 						//进入申请推广人页面
-						this.$router.push({
-							path:'/fillInfo',
+			      next({
+			        path: '/fillInfo',
 							query:{
 								request: true,
-								upid: this.upid
+								upid: upid
 							}
-						})
+			      })
 					}
+				} else {
+					next()
 				}
+			} else {
+				next()
 			}
+
+		},
+		mounted() {
+			this.$f7.resize();
+			// this.upid = this.$route.query.upid;
+			// if (this.upid) {
+			// 	if (this.upid != this.$store.state.userinfo.wxid) {
+			// 		//通过链接进来的
+			// 		if (this.$store.state.userinfo.isSaleman) {
+			// 			//如果已经是推广人了
+			// 			var bossid = this.$store.state.userinfo.bossid
+			// 			if (bossid != this.upid) {
+			// 				//变更上限
+			// 				this.$store.dispatch('changeBoss',{
+			// 					self: this,
+			// 					info:{
+			// 						upid: this.upid
+			// 					},
+			// 					callback(self, res) {
+			// 						//进入个人中心
+			// 						self.$router.push('/userHome')
+			// 					}
+			// 				})
+			// 			} else {
+			// 				this.$router.push('/userHome')
+			// 			}
+						
+			// 		} else {
+			// 			//进入申请推广人页面
+			// 			this.$router.push({
+			// 				path:'/fillInfo',
+			// 				query:{
+			// 					request: true,
+			// 					upid: this.upid
+			// 				}
+			// 			})
+			// 		}
+			// 	}
+			// }
 
 		}
 	}
