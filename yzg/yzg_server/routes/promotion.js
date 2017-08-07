@@ -389,4 +389,21 @@ promotion_router.route('/refuseRequest').post(function(req, res){
 })
 
 
+//获取收入数据
+promotion_router.route('/getIncomeDetails').post(function(req, res){
+    var wxid = req.decoded.wxid || ''
+    var offset = req.body.offset || 0
+    var limit = req.body.limit || 0
+    db.yzg_incomes.findAll({ order:  [
+        ['type'],
+        ['createtime']
+    ], offset: offset, limit: limit}).then(function (records) {
+        if (records) {
+            res.json({ ok: records })
+        } else {
+            res.json({ ok: 0 })
+        }
+    })
+})
+
 module.exports=promotion_router; 
