@@ -1,5 +1,12 @@
 <template>
 	<f7-page navbar-through infinite-scroll :infinite-scroll-preloader="isPreloader" @infinite="onInfinite">
+        <f7-navbar sliding>
+          <f7-nav-left>
+              <f7-link icon="icon-back color-black color-black" @click="$router.go(-1)"></f7-link>
+          </f7-nav-left>
+          <f7-nav-center sliding title="收入明细"></f7-nav-center>
+          <f7-nav-right></f7-nav-right>
+        </f7-navbar>
 	  <div class="incomeDetailTop">
       <span>
           <p>总收入</p>
@@ -79,7 +86,7 @@
 			onCheck() {
 
 			},
-			getData(){
+			getData(done){
 				this.$store.dispatch('getIncomeDetails', {
                     self: this,
                     info: {
@@ -99,8 +106,8 @@
                                 self.isPreloader = false;
                                 console.log('stoppredown...')
                             }
-                            if (callback) {
-                                callback();
+                            if (done) {
+                                done();
                             }
                         }
                     }
@@ -118,7 +125,6 @@
 		},
         beforeDestroy() {
             console.log('destory...')
-            this.$refs.pb.close();
         }
 	}
 </script>

@@ -143,7 +143,7 @@
                 })
             },
             gotoWithdraw() {
-                // this.$router.push('/withdraw')
+                this.$router.push('/withdraw')
             }
         },
         components:{
