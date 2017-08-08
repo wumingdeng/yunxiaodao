@@ -182,17 +182,33 @@ promotion_router.route('/getSalemanData').post(function(req, res){
   var id = req.body.id;
   db.salemans.findOne({where:{userid:id}}).then(function(data) {
     if (data) {
-      //取推荐人
-      if (data.upid) {
-        db.salemans.findOne({where:{userid:data.upid}}).then(function(upData) {
-          if (upData) {
-            data.dataValues.upName = upData.realName;
+      //计算数据
+      var a = moment(data.joinDate);
+      var b = moment((new Date()).toLocaleString());
+      data.dataValues.joinDay = b.diff(a, 'days')
+
+      db.orders.count({where:{
+        $or:[
+          {reference: data.userid},
+          {reference2: data.userid}
+        ]
+      }}).then(function(orderCount) {
+        //取推荐人
+        data.dataValues.orderCount = orderCount;
+        db.salemans.count({where:{upid: data.userid}}).then(function(tgCount) {
+          data.dataValues.tgCount = tgCount;
+          if (data.upid) {
+            db.salemans.findOne({where:{userid:data.upid}}).then(function(upData) {
+              if (upData) {
+                data.dataValues.upName = upData.realName;
+              }
+              res.json({ok:data})
+            })
+          } else {
+            res.json({ok:data})
           }
-          res.json({ok:data})
         })
-      } else {
-        res.json({ok:data})
-      }
+      })
     } else {
       res.json({err:0,msg:'没有推广人数据'})
     }

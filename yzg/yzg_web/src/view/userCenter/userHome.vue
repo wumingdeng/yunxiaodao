@@ -6,22 +6,25 @@
     			<span>
                     <p style="margin-top:5px;">
                         {{$store.state.userinfo.realName}}
-                        <img src="static/assets/userCenter/modifyInfo.png" style="height:0.9em;">
+                        <img src="static/assets/userCenter/modifyInfo.png" style="height:0.8em;">
                     </p>
                     <!-- <p>余额: 0</p> -->
                 </span>
-                <!-- <font size="3em">&nbsp;&nbsp;&nbsp;{{tgJob}}</font> -->
+                <div class="statusIcon">
+                    <img v-if="$store.state.userinfo.isBoss" src="static/assets/userCenter/icon_boss.png">
+                    <img v-else src="static/assets/userCenter/icon_saleman.png">
+                </div>
                 <p style="height:2em;"></p>
     		</div>
             <div class="jscz">
                 <div class="shuxian"></div>
                 <div class="jsBtn" style="left:0px;" @click.prevent.stop="$router.push('/incomeDetail')">
                     <img style="width:35px;" src="static/assets/userCenter/income.png">
-                    <p style="margin:0">收入明细</p>
+                    <p style="margin:0;font-size:1.1em;">收入明细</p>
                 </div>
                 <div class="jsBtn" style="" @click="gotoWithdraw">
                     <img style="width:35px;" src="static/assets/userCenter/withdraw.png">
-                    <p style="margin:0">提现</p>
+                    <p style="margin:0;font-size:1.1em;">提现</p>
                 </div>
             </div>
 
@@ -35,17 +38,9 @@
                         <span>推广代言人</span>
                     </div>
                 </div>
-                <div @click.prevent.stop='gotoShare' style="position: relative;
-        margin-top: -1em;">
-                    <img style="width:100%" src="static/assets/userCenter/kapian2.jpg" alt="">
-                    <div class="menuContent">
-                        <img src="static/assets/userCenter/icon_tgcp.png">
-                        <span>产品推广</span>
-                    </div>
-                </div>
                 <div v-if="$store.state.userinfo.isBoss" @click.prevent.stop="$router.push('/mySaleman')" style="position: relative;
         margin-top: -1em;">
-                    <img style="width:100%" src="static/assets/userCenter/kapian3.jpg" alt="">
+                    <img style="width:100%" src="static/assets/userCenter/kapian2.jpg" alt="">
                     <div class="menuContent">
                         <img src="static/assets/userCenter/icon_mysaleman.png">
                         <span>我推广的代言人</span>
@@ -53,10 +48,18 @@
                 </div>
                 <div v-if="canReview" @click.prevent.stop="$router.push('/requestList')" style="position: relative;
         margin-top: -1em;">
-                    <img style="width:100%" src="static/assets/userCenter/kapian2.jpg" alt="">
+                    <img style="width:100%" src="static/assets/userCenter/kapian3.jpg" alt="">
                     <div class="menuContent">
                         <img src="static/assets/userCenter/icon_dyrsh.png">
                         <span>代言人审核</span>
+                    </div>
+                </div>
+                <div @click.prevent.stop='gotoShare' style="position: relative;
+        margin-top: -1em;">
+                    <img style="width:100%" :src="cptgImg" alt="">
+                    <div class="menuContent">
+                        <img src="static/assets/userCenter/icon_tgcp.png">
+                        <span>产品推广</span>
                     </div>
                 </div>
                 <div @click.prevent.stop="$router.push('/tgOrder')" style="position: relative;
@@ -111,6 +114,13 @@
                     } else {
                         return "static/assets/userCenter/kapian2.jpg"
                     }
+                }
+            },
+            cptgImg() {
+                if (this.$store.state.userinfo.isBoss && !this.canReview) {
+                    return "static/assets/userCenter/kapian3.jpg"
+                } else {
+                    return "static/assets/userCenter/kapian2.jpg"
                 }
             }
         },
@@ -222,6 +232,16 @@
         position: absolute;
         margin:0 0.7em;
         margin-top:2em;
+    }
+    #userHome .statusIcon {
+        background-color: #fee071;
+        position: absolute;
+        right: 0px;
+        top:1em;
+        padding: 3px 3px 0px 3px;
+    }
+    #userHome .statusIcon img{
+        height: 1.2em;
     }
 	.dc_top_per {
         width:100%;

@@ -13,26 +13,26 @@
       <div class="txBtn" style="left:0px;">
           <img style="width:12vw;" src="static/assets/userCenter/icon_kyye.png">
           <p style="margin:0; color:rgb(254,192,195);">可用余额</p>
-          <p style="margin:5px;;">0元</p>
+          <p style="margin:5px;color:#393939;">0元</p>
       </div>
       <div class="txBtn" style="">
           <img style="width:12vw;" src="static/assets/userCenter/icon_djye.png">
           <p style="margin:0; color:rgb(111,216,218);">冻结余额</p>
-          <p style="margin:5px;;">0元</p>
+          <p style="margin:5px;color:#393939;">0元</p>
       </div>
     </div>
     <div class="middle">
       <img src="static/assets/userCenter/yuanhuan.png" style="height:50px; float:left; margin-top:-33px;margin-left:20px;">
       <img src="static/assets/userCenter/yuanhuan.png" style="height:50px; float:right; margin-top:-33px;margin-right:20px;">
     	<f7-grid class="withdrawArea">
-    		<f7-col width=15 style="font-size:1.5em;">
+    		<f7-col width=20 style="font-size:1.4em;color:#515151;">
     			提现
     		</f7-col>
-    		<f7-col width=50>
+    		<f7-col width=45>
     			<input type="text">
     		</f7-col>
     		<f7-col width=35>
-    			<f7-button style="margin-top:0.7em;width:100%;" fill color="deepgreen">确定</f7-button>
+    			<f7-button style="margin-top:1em;width:100%;font-size:1.4em;line-height:1.5em;height:1.6em"  fill color="deepgreen">确定</f7-button>
     		</f7-col>
     	</f7-grid>
     </div>
@@ -47,7 +47,7 @@
 			}
 		},
 		mounted() {
-      this.$nextTick(this.$f7.resize)
+			this.$f7.resize()
 		}
 	}
 </script>
@@ -57,13 +57,13 @@
 		text-align: center;
 	}
 	#withdraw .topInfo {
-		width:92%;
-		margin-left: 4vw;
+		width:95%;
+		margin-left: 2.5vw;
 		height: 4.8em;
 		background-color: #fff;
 		position: absolute;
 		top: 4.8em;
-		border-radius: 3px;
+		border-radius: 7px;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
     white-space: nowrap;
     padding: 2em 0;
@@ -75,19 +75,19 @@
     display: inline;
   }
   #withdraw .middle {
-		width:92%;
-		margin-left: 4vw;
-		height: 5.6em;
+		width:95%;
+		margin-left: 2.5vw;
+		height: 7.35em;
 		background-color: #fff;
 		position: absolute;
 		top: 14.5em;
-		border-radius: 3px;
+		border-radius: 7px;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
     white-space: nowrap;
   }
   #withdraw .withdrawArea {
-  	height:3.3em;
-  	line-height: 3.3em;
+  	height:5em;
+  	line-height: 5em;
   	margin-top: 2.3em;
   	background-color: rgb(243,245,245);
   	vertical-align: middle;
@@ -96,7 +96,7 @@
   #withdraw .withdrawArea input {
   	background-color: rgb(213,213,213);
   	width: 100%;
-  	height: 2.2em;
+  	height: 2.5em;
   	box-shadow: none;
   	border: none;
   	text-align: center;

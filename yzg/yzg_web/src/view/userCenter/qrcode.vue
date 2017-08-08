@@ -4,7 +4,7 @@
       <f7-nav-left>
           <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
       </f7-nav-left>
-      <f7-nav-center sliding title="我的推广二维码"></f7-nav-center>
+      <f7-nav-center sliding title="代言人二维码"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
     <div v-show="showQRCode"  class="qrcodeBg">
@@ -12,8 +12,8 @@
         <div></div>
       </div>
       <img :src="qrcodeUrl" id='qrcode'>
-      <p>请识别图中二维码</p>
-      <p>欢迎加入我们</p>
+      <p>请扫描识别二维码</p>
+      <p>欢迎加入蜜鹊 为专业代言</p>
     </div>
     <div class="refreshBtn" @click="onRefresh"  v-show="showQRCode">
       刷新
@@ -96,6 +96,7 @@
         }
     },
 		mounted() {
+      this.$f7.resize();
 			var bossQrcode = this.$route.query.isBoss;
 			var isBoss = this.$store.state.userinfo.isBoss == 1;
 			if (isBoss) {

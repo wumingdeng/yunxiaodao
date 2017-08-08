@@ -1,5 +1,5 @@
 <template>
-	<f7-page>
+	<f7-page id="checkSaleman">
 <!-- 	  <f7-navbar sliding>
       <f7-nav-left>
         <f7-link icon="icon-back color-black" @click="$router.go(-1)"></f7-link>
@@ -12,9 +12,9 @@
 			<div class="topShuxian"></div>
 			<span class='cus_span'>
           <p style='font-size:16px;color:rgba(255,255,255,1)'>代言人: {{salemanData.realName}}</p>
-          <p>已加入代言计划{{10}}天</p>
-          <p>累计推广订单{{10}}单 </p>
-					<p>累计推广代言人{{10}}个</p>
+          <p>已加入代言计划{{salemanData.joinDay}}天</p>
+          <p>累计推广订单{{salemanData.orderCount}}单 </p>
+					<p>累计推广代言人{{salemanData.tgCount}}个</p>
       </span>
       <p style="height:20px;"></p>
 		</div>
@@ -133,7 +133,7 @@
 
 <style>
 	.checkSalemanTop {
-    background: url('/yzg/static/assets/userCenter/user_bg.jpg') no-repeat;
+    background: url('/static/assets/userCenter/user_bg.jpg') no-repeat;
     background-size:cover;
     width:100%;
     height:auto;
@@ -142,14 +142,14 @@
     margin-bottom:15px;
 	}
 	.checkSalemanTop .topShuxian {
-        width: 1px;
-        height: 2.5em;
-        background-color: rgba(0,115,154,1);
-        border-right: 1px solid rgba(117,255,249,1);
-        display: inline-block;
-        padding: 1em 0;
-        position: absolute;
-        margin:2.5em 0em 0 0.6em;
+      width: 1px;
+      height: 2.5em;
+      background-color: rgba(0,115,154,0.3);
+      border-right: 1px solid rgba(117,255,249,0.3);
+      display: inline-block;
+      padding: 1em 0;
+      position: absolute;
+      margin:2.5em 0em 0 0.6em;
     }
 	.checkSalemanTop .face {
     width: 20vw;
@@ -189,8 +189,9 @@
 	#checkSalemanForm > ul {
 		background-color: rgb(248,248,248);
 		border-radius: 10px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
 	}
-	#checkSalemanForm > .list-block .item-inner:after {
+	#checkSaleman .list-block .item-inner:after {
 		background-color: rgba(0,0,0,0)
 	}
 	#checkSalemanForm .item-content:after {
@@ -202,7 +203,7 @@
     top: auto;
     height: 1px;
     width: 100%;
-    background-color: #c8c7cc;
+    background-color: #eeeeee;
     display: block;
     z-index: 15;
     -webkit-transform-origin: 50% 100%;
@@ -239,7 +240,7 @@
 		color: #68cfc1;
 	}
 	#checkSalemanForm input {
-		text-align: right;
+		text-align: left;
 		color: #a7a7a7;
 	}
 	#checkSalemanForm #upmanItem input {
