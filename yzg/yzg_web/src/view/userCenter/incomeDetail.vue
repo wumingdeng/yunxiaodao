@@ -24,11 +24,11 @@
                 <f7-col width=20>
                     <img :src="'static/assets/userCenter/income_'+item.type+'.jpg'">
                 </f7-col>
-                <f7-col width=45>
+                <f7-col width=50>
                     <p style='color:rgb(100,100,100)'>{{incomeDate(item.createtime)}}</p>
                     <span>{{incomeType(item.type)}}</span>
                 </f7-col>
-                <f7-col width=35>
+                <f7-col width=30>
                     <p style='color:rgb(244,84,44);text-align:right'>{{incomeTxt(item.type,item.money)}}</p>
                     <span style='float:right'>. . .</span>
                 </f7-col>

@@ -7,21 +7,25 @@
 			<f7-nav-center sliding style="left:-22px;" title="审核代言人"></f7-nav-center>
 			<f7-nav-right></f7-nav-right>
 		</f7-navbar>
-	
 		<f7-card class='listCard' v-for="(item,index) in requestArray" :key='index'>
-			<f7-card-header style="white-space: nowrap;font-size:16px;">
-				<span>{{item.requestDate.substr(0,10)}}</span>
-				<span>
-					<span style='color:#68cfc1;font-size:16px'>推荐人 : </span>{{item.upName}}</span>
-				<span :style="setItemStatusColor(item.status)">{{requestStatus[item.status]}}</span>
+			<f7-card-header style="font-size:14px;">
+				<f7-grid style='width:100%'>
+					<f7-col>
+						<div style='float:left'>{{item.requestDate.substr(0,10)}}</div>
+						<div style='float:left;margin-left:30px'><span style='color:#68cfc1'>推荐人: </span>{{item.upName}}</div>
+						<div :style="setItemStatusColor(item.status)">{{requestStatus[item.status]}}</div>
+					</f7-col>
+				</f7-grid>
 			</f7-card-header>
 			<f7-card-content>
 				<f7-grid>
 					<f7-col width=20>
-						<img style="width:100%;border-radius: 80px;-moz-border-radius: 80px;-webkit-border-radius: 80px;overflow: hidden;border:3px solid rgba(0,220,240,0.2);" :src="item.headUrl" alt="">
+						<div style='width:100%;	border-radius: 100px;-moz-border-radius: 80px;-webkit-border-radius: 80px;border:2px solid rgba(0,220,240,0.2);'>
+							<img class='face' :src="item.headUrl" alt="">
+						</div>
 					</f7-col>
 					<f7-col width=5>
-						<div style='width:3px;border-right: 1px solid rgba(164,164,164,0.5);  padding-bottom:30px; margin-bottom:0px;margin-top:20px'>
+						<div style='width:3px;border-right: 1px solid rgba(164,164,164,0.5);  padding-bottom:30px; margin-bottom:0px;margin-top:15px'>
 						</div>
 					</f7-col>
 					<f7-col width=75>
@@ -29,10 +33,10 @@
 						<p>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：<span style='color:rgb(164,164,164)'>{{item.nickName}}</span></p>
 						<p>联系方式：<span style='color:rgb(164,164,164)'>{{item.phone}}</span></p>
 					</f7-col>
-					<div v-if="item.status==0" style="margin-top:35px;position:absolute;right:-10px;width:25%;">
+					<div v-if="item.status==0" style="margin-top:27px;position:absolute;right:-10px;width:25%;">
 						<f7-button fill class='cus_btn' @click="beginReview(index)">开始审核</f7-button>
 					</div>
-					<div v-else style="margin-top:35px;position:absolute;right:-10px;width:25%;">
+					<div v-else style="margin-top:27px;position:absolute;right:-10px;width:25%;">
 						<f7-button fill class='cus_btn' @click="onCheck(index)">详情</f7-button>
 					</div>
 				</f7-grid>
@@ -59,16 +63,14 @@ export default {
 		}
 	},
 	computed: {
-		// setItemStatusColor() {
-		// 	return 'float:right;color:#35c9ff'
-		// }
+		
 	},
 	methods: {
 		//不同状态显示不同颜色
 		setItemStatusColor(status) {
 			switch(status){
 				case 0:
-				return 'float:right;color:#fd8f86';
+				return 'float:right;color:#fd8f86;';
 				case 1:
 				return 'float:right;color:#35c9ff';
 				case 2:
@@ -129,26 +131,24 @@ export default {
 </script>
 
 <style scoped>
+.face {
+	width:90%;
+	border-radius: 80px;
+	-moz-border-radius: 80px;
+	-webkit-border-radius: 80px;
+	overflow: hidden;
+	border:0px solid rgba(0,220,240,0.1);
+	margin-top:3px;
+	margin-left:2px;
+}
+
 .listCard {
-	margin-left: 7px;
 	border-radius: 10px;
 }
 
-.head {
-	width: 90px;
-        height: 90px;
-        display: inline-block;
-        margin: 10px 0px 10px 30px;
-        border: 3px solid rgba(0,220,240,0.3);
-        border-radius: 80px;
-		
-        -moz-border-radius: 80px;
-        -webkit-border-radius: 80px;
-        overflow: hidden;
-}
-
 .listCard p {
-	margin: 2px 0px;
+	margin: 0px 0px;
+	line-height:1.4em;
 }
 
 .button{
