@@ -6,7 +6,7 @@
     			<span>
                     <p style="margin-top:5px;">
                         {{$store.state.userinfo.realName}}
-                        <img src="static/assets/userCenter/modifyInfo.png" style="height:0.8em;">
+                        <img src="static/assets/userCenter/modifyInfo.png" style="height:0.98em;position:relative;top:3px;">
                     </p>
                     <!-- <p>余额: 0</p> -->
                 </span>
@@ -20,11 +20,11 @@
                 <div class="shuxian"></div>
                 <div class="jsBtn" style="left:0px;" @click.prevent.stop="$router.push('/incomeDetail')">
                     <img style="width:35px;" src="static/assets/userCenter/income.png">
-                    <p style="margin:0;font-size:1.1em;">收入明细</p>
+                    <p style="margin:0;font-size:1.2em;">收入明细</p>
                 </div>
                 <div class="jsBtn" style="" @click="gotoWithdraw">
                     <img style="width:35px;" src="static/assets/userCenter/withdraw.png">
-                    <p style="margin:0;font-size:1.1em;">提现</p>
+                    <p style="margin:0;font-size:1.2em;">提现</p>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
                 <img src="static/assets/userCenter/yuanhuan.png" style="height:50px; float:right; margin-top:-33px;margin-right:20px;">
                 <div @click.prevent.stop="onTouchTG" style="margin-top:0px;">
                     <img style="width:100%" src="static/assets/userCenter/kapian1.jpg" alt="">
-                    <div class="menuContent" style="top:7.3vh;">
+                    <div class="menuContent" style="top:3.6em;">
                         <img src="static/assets/userCenter/icon_tgdyr.png">
                         <span>推广代言人</span>
                     </div>
@@ -70,6 +70,7 @@
                         <span>推广订单</span>
                     </div>
                 </div>
+                <div class="bottomArea"></div>
             </div>
         </f7-page-content>
 	</f7-page>
@@ -110,9 +111,9 @@
                     return "static/assets/userCenter/kapian3.jpg"
                 } else {
                     if (this.canReview) {
-                        return "static/assets/userCenter/kapian1.jpg"
+                        return "static/assets/userCenter/kapian5.jpg"
                     } else {
-                        return "static/assets/userCenter/kapian2.jpg"
+                        return "static/assets/userCenter/kapian4.jpg"
                     }
                 }
             },
@@ -120,7 +121,7 @@
                 if (this.$store.state.userinfo.isBoss && !this.canReview) {
                     return "static/assets/userCenter/kapian3.jpg"
                 } else {
-                    return "static/assets/userCenter/kapian2.jpg"
+                    return "static/assets/userCenter/kapian4.jpg"
                 }
             }
         },
@@ -239,8 +240,11 @@
         right: 0px;
         top:1em;
         padding: 3px 3px 0px 3px;
+        border-radius: 3px 0 0 3px;
     }
     #userHome .statusIcon img{
+        position: relative;
+        top:2px;
         height: 1.2em;
     }
 	.dc_top_per {
@@ -278,7 +282,7 @@
         background-color: #ffffff;
         width:95%;
         margin:0 auto;
-        height: 50px;
+        height: 60px;
         border-radius: 5px;
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
         position: relative;
@@ -295,7 +299,7 @@
     }
     .jsBtn {
         width:50%;
-        margin-top: -53px;
+        margin-top: -60px;
         position: absolute;
         display: inline;
     }
@@ -308,14 +312,15 @@
         /*height:500px;*/
         margin:0 auto;
         border-radius: 5px;
-        box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
     }
     .menuBg .menuContent {    
         /*float: left;*/
-        top: 4.5vh;
+        top: 2.4em;
         left: 30px;
         position: absolute;
         height:35px;
+        line-height: 38px;
     }
     .menuBg .menuContent img {
         height:30px;
@@ -326,7 +331,14 @@
         font-size: 20px;
         color:#ffffff;
         position: relative;
-        top: -6px;
+        top: -8px;
         left: 15px;
+    }
+    #userHome .bottomArea {
+        height: 35px;      
+        background: -webkit-linear-gradient(left top, #02d0bd , #0299d8); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(bottom right, #02d0bd , #0299d8); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(bottom right, #02d0bd , #0299d8); /* Firefox 3.6 - 15 */
+        background: linear-gradient( #ffffff , rgb(222,222,222)); /* 标准的语法 */
     }
 </style>

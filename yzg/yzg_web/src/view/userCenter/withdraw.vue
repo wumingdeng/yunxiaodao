@@ -12,12 +12,12 @@
       <div class="shuxian"></div>
       <div class="txBtn" style="left:0px;">
           <img style="width:12vw;" src="static/assets/userCenter/icon_kyye.png">
-          <p style="margin:0; color:rgb(254,192,195);">可用余额</p>
+          <p style="margin:0; color:rgb(254,192,195);font-size:16px">可用余额</p>
           <p style="margin:5px;color:#393939;">0元</p>
       </div>
       <div class="txBtn" style="">
           <img style="width:12vw;" src="static/assets/userCenter/icon_djye.png">
-          <p style="margin:0; color:rgb(111,216,218);">冻结余额</p>
+          <p style="margin:0; color:rgb(111,216,218);font-size:16px;">冻结余额</p>
           <p style="margin:5px;color:#393939;">0元</p>
       </div>
     </div>
@@ -25,16 +25,19 @@
       <img src="static/assets/userCenter/yuanhuan.png" style="height:50px; float:left; margin-top:-33px;margin-left:20px;">
       <img src="static/assets/userCenter/yuanhuan.png" style="height:50px; float:right; margin-top:-33px;margin-right:20px;">
     	<f7-grid class="withdrawArea">
-    		<f7-col width=20 style="font-size:1.4em;color:#515151;">
+    		<f7-col width=20 style="font-size:16px;;color:#515151;">
     			提现
     		</f7-col>
     		<f7-col width=45>
     			<input type="text">
     		</f7-col>
     		<f7-col width=35>
-    			<f7-button style="margin-top:1em;width:100%;font-size:1.4em;line-height:1.5em;height:1.6em"  fill color="deepgreen">确定</f7-button>
+    			<f7-button style="margin-top:19px;width:100%;font-size:16px;line-height:30px;height:32px;"  fill color="deepgreen">确定</f7-button>
     		</f7-col>
     	</f7-grid>
+    </div>
+    <div style="position:absolute;top:24em;text-align:center;width:100%;">
+    	暂无提现记录
     </div>
 	</f7-page>
 </template>
@@ -96,11 +99,12 @@
   #withdraw .withdrawArea input {
   	background-color: rgb(213,213,213);
   	width: 100%;
-  	height: 2.5em;
+  	height: 1.8em;
   	box-shadow: none;
   	border: none;
   	text-align: center;
   	border-radius: 5px;
+  	font-size:17px;
   }
 </style>
 

@@ -20,7 +20,7 @@
 			<f7-card-content>
 				<f7-grid>
 					<f7-col width=20>
-						<div style='width:100%;	border-radius: 100px;-moz-border-radius: 80px;-webkit-border-radius: 80px;border:2px solid rgba(0,220,240,0.2);'>
+						<div style='width:100%;'>
 							<img class='face' :src="item.headUrl" alt="">
 						</div>
 					</f7-col>
@@ -133,13 +133,14 @@ export default {
 <style scoped>
 .face {
 	width:90%;
-	border-radius: 80px;
-	-moz-border-radius: 80px;
-	-webkit-border-radius: 80px;
+	border-radius: 130px;
+	-moz-border-radius: 130px;
+	-webkit-border-radius: 130px;
 	overflow: hidden;
-	border:0px solid rgba(0,220,240,0.1);
+	border:2px solid rgba(255,255,255,1);
 	margin-top:3px;
 	margin-left:2px;
+  box-shadow: 0px 0px 3px rgba(90, 179, 167, .5);
 }
 
 .listCard {

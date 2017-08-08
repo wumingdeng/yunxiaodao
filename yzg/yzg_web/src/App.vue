@@ -40,6 +40,9 @@
 </script>
 
 <style>
+  .color-black i.icon, i.icon.color-black {
+    color:#515151;
+  }
   .button.button-fill.color-deepgreen {
     color:#fff;
     background-color: #68cfc1

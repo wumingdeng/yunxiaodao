@@ -1,13 +1,21 @@
 <template>
-	<f7-page navbar-through>
+	<f7-page navbar-through id="sharePage">
 		<f7-navbar sliding v-if="showNav">
       <f7-nav-left>
         <f7-link icon="icon-back color-black" @click="$router.push('/userHome')"></f7-link>
       </f7-nav-left>
-      <f7-nav-center sliding title="分享推广测试页"></f7-nav-center>
+      <f7-nav-center sliding title="分享推广"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
     </f7-navbar>
-		<p><f7-button style="margin:200px 100px 0 100px;" fill big @click="onHooked">选一双专业孕妇鞋</f7-button></p>
+    <div v-if="!showNav" style="height:45px;"></div>
+		<img class="clickBuy" src="static/assets/userCenter/share/clickBuy.png" @click="onHooked">
+    <div style="height:100%">
+	    <img
+				v-for="n in 12" 
+				v-lazy="getImgSrc(n)"
+				style="width:100%"
+	    >
+    </div>
 	</f7-page>
 </template>
 
@@ -20,6 +28,9 @@
 			}
 		},
 		methods:{
+			getImgSrc(index) {
+				return 'static/assets/userCenter/share/p1/share' + index + '.jpg'
+			},
 			onHooked() {
 				// if (this.boss && this.boss != this.$store.state.wxid) {
 				if (true) {
@@ -47,5 +58,9 @@
 </script>
 
 <style scoped>
-	
+	#sharePage .clickBuy {
+		position: absolute;
+		width: 40%;
+		top: 150px;
+	}
 </style>

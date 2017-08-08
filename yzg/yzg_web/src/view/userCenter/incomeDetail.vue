@@ -59,7 +59,7 @@
 		methods:{
             incomeTxt(type,income){
                 if(type==1 || type == 2){
-                    return '-'+income+'元'
+                    return ''+income+'元'
                 }else{
                     return '+'+income+'元'
                 }
@@ -140,37 +140,40 @@
 	}
 	.incomeDetailTop .topShuxian {
         width: 1px;
-        height: 2.5em;
+        height: 1.6em;
         background-color: rgba(0,115,154,1);
         border-right: 1px solid rgba(117,255,249,1);
         display: inline-block;
-        padding: 1em 0;
+        padding: 10px 0;
         position: absolute;
-        margin:2.5em 0em 0 0.6em;
+        margin: 2em 0em 0 0.6em;
     }
 	
 	.incomeDetailTop span {
         line-height: 25px;
-        height: 100px;
+        height: 80px;
         font-size: 16px;
         width:44%;
         color: #fff;
         display: inline-block;
-        margin: 15px 0 0 15px;
+        margin: 15px 0 0 10px;
         position: relative;
-        top:-8px;
+        top:-16px;
         left:10px;
         text-align:center;
 	}
 	.incomeDetailTop span p {
-		margin: 19px 0px;
+		margin: 10px 0px;
 		white-space: nowrap;
-		font-size:25px;
+		font-size:18px;
 		line-height:24px;
 		color:rgba(255,255,255,0.8);
+        position: relative;
+        top:12px;
 	}
     .cus_card{
         border-radius:10px;
+        color: #515151;
     }
     .cus_card img{
         width:100%;
@@ -183,6 +186,7 @@
     }
     .cus_card span{
         font-size:18px;
+        color: #515151;
     }
     .cus_card .card-content-inner{
         padding:10px;
