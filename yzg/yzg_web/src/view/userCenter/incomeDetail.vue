@@ -58,8 +58,8 @@
 		},
 		methods:{
             incomeTxt(type,income){
-                if(type==1 || type == 2){
-                    return ''+income+'元'
+                if(type == 2){
+                    return '-'+income+'元'
                 }else{
                     return '+'+income+'元'
                 }

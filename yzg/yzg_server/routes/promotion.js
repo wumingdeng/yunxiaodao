@@ -410,7 +410,7 @@ promotion_router.route('/getIncomeDetails').post(function(req, res){
     var wxid = req.decoded.wxid || ''
     var offset = req.body.offset || 0
     var limit = req.body.limit || 0
-    db.yzg_incomes.findAll({ order:  [
+    db.yzg_incomes.findAll({where:{wxid: wxid}, order:  [
         ['type'],
         ['createtime']
     ], offset: offset, limit: limit}).then(function (records) {
