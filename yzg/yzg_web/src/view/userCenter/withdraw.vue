@@ -32,7 +32,7 @@
     			<input type="text">
     		</f7-col>
     		<f7-col width=35>
-    			<f7-button style="margin-top:19px;width:100%;font-size:16px;line-height:30px;height:32px;"  fill color="deepgreen">确定</f7-button>
+    			<f7-button style="margin-top:18px;width:100%;font-size:16px;line-height:30px;height:32px;"  fill color="deepgreen">确定</f7-button>
     		</f7-col>
     	</f7-grid>
     </div>
@@ -99,7 +99,7 @@
   #withdraw .withdrawArea input {
   	background-color: rgb(213,213,213);
   	width: 100%;
-  	height: 1.8em;
+  	height: 32px;
   	box-shadow: none;
   	border: none;
   	text-align: center;

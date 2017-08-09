@@ -10,12 +10,12 @@
 	  <div class="incomeDetailTop">
       <span>
           <p>总收入</p>
-            <p>{{income}}元</p>
+            <p>{{0}}元</p>
       </span>  
         <div class="topShuxian"></div>
         <span>
-          <p>提现</p>
-        <p>{{cash}}元</p>
+          <p>已提现</p>
+        <p>{{0}}元</p>
       </span>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     </div>
 	 <f7-card class='cus_card' v-for="(item,index) in incomeDetails" :key='index'>
@@ -35,6 +35,10 @@
             </f7-grid>
         </f7-card-content>
      </f7-card>
+
+    <div style="position:absolute;top:14em;text-align:center;width:100%;">
+        暂无收入明细
+    </div>
 	</f7-page>
 </template>
 
@@ -141,8 +145,8 @@
 	.incomeDetailTop .topShuxian {
         width: 1px;
         height: 1.6em;
-        background-color: rgba(0,115,154,1);
-        border-right: 1px solid rgba(117,255,249,1);
+        /*background-color: rgba(0,115,154,1);*/
+        border-right: 1px solid #28d7ff;
         display: inline-block;
         padding: 10px 0;
         position: absolute;

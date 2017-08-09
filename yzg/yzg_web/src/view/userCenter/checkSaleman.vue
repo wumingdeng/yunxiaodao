@@ -9,7 +9,7 @@
 	  </f7-navbar> -->
 	  <div class="checkSalemanTop">
 			<img class="face" :src="salemanData.headUrl">
-			<div class="topShuxian"></div>
+			<!-- <div class="topShuxian"></div> -->
 			<span class='cus_span'>
           <p style='font-size:16px;color:rgba(255,255,255,1)'>代言人: {{salemanData.realName}}</p>
           <p>已加入代言计划{{salemanData.joinDay}}天</p>
@@ -133,7 +133,7 @@
 
 <style>
 	.checkSalemanTop {
-    background: url('/static/assets/userCenter/user_bg.jpg') no-repeat;
+    background: url('/yzg/static/assets/userCenter/user_bg.jpg') no-repeat;
     background-size:cover;
     width:100%;
     height:auto;
@@ -156,7 +156,7 @@
     height: 20vw;
     display: inline-block;
     margin: 20px 0px 10px 10px;
-    border: 3px solid rgba(0,220,240,0.3);
+    border: 3px solid rgba(255,255,255,0.3);
     border-radius: 20vw;
     -moz-border-radius: 80px;
     -webkit-border-radius: 80px;

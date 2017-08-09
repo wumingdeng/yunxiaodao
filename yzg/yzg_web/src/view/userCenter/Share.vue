@@ -13,7 +13,7 @@
 	    <img
 				v-for="n in 12" 
 				v-lazy="getImgSrc(n)"
-				style="width:100%"
+				style="width:100%; display:block;" 
 	    >
     </div>
 	</f7-page>

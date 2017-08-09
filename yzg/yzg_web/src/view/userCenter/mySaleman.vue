@@ -7,6 +7,10 @@
       <f7-nav-center sliding style="left:-22px;" title="我推广的代言人"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
 	  </f7-navbar>
+	  <div style="width:100%;height:100%;text-align:center;" v-if="isNoData">
+		  <img style="width: 20%; margin:30vh auto 0 auto;" src="static/assets/userCenter/noSaleman.png">
+		  <p>暂无推广成功的代言人</p>
+	  </div>
 		<f7-card class='listCard'
 			v-for="(item,index) in salemanArray"
 			:key=index
