@@ -6,28 +6,46 @@
       </f7-nav-left>
       <f7-nav-center sliding title="分享推广"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
+	  
     </f7-navbar>
-    <div v-if="!showNav" style="height:45px;"></div>
+	<div v-if="!showNav" style="height:45px;"></div>
+
+		
+	
+    <div id='pitDiv'style="height:100%">
 		<img class="clickBuy" src="static/assets/userCenter/share/clickBuy.png" @click="onHooked">
-    <div style="height:100%">
 	    <img
-				v-for="n in 12" 
-				v-lazy="getImgSrc(n)"
-				style="width:100%; display:block;" 
+			v-for="n in 12" 
+			v-lazy="getImgSrc(n)"
+			style="width:100%; display:block;" 
 	    >
     </div>
+	<div id='shareDiv' v-if="popupOpened" style='text-align:center;position:absolute;top:0px;left:0px;background-color:rgba(0,0,0,0.8)' @click="onSharedClick">
+		<img style='position: absolute;top:70px;right:20px;width:25%'  src="static/assets/userCenter/share/shareTxt_1.png"></img>
+		<img style='position: relative ;top:150px;width:60%' src="static/assets/userCenter/share/shareTxt_2.png"></img>
+		<img style='position: relative ;top:300px;width:70%' src="static/assets/userCenter/share/shareTxt_3.png"></img>
+	</div>
 	</f7-page>
 </template>
-
 <script>
 	export default {
 		data() {
 			return {
+				popupOpened:true,
 				boss:null,
 				showNav: false
 			}
 		},
 		methods:{
+			onTouched(){
+				console.log('dkdkjfkjdfj')
+			},
+			onSharedClick(event) {
+				if(event == "touchend") event.preventDefault();
+				this.popupOpened=false
+				document.getElementById('pitDiv').style.overflow=''
+				localStorage.shared = "true"
+			},
 			getImgSrc(index) {
 				return 'static/assets/userCenter/share/p1/share' + index + '.jpg'
 			},
@@ -49,6 +67,12 @@
 			}
 		},
 		mounted() {
+			if(localStorage.shared == "true"){
+				this.popupOpened = false
+			}else{
+				document.getElementById('shareDiv').style.height=document.body.clientHeight+'px';
+				document.getElementById('pitDiv').style.overflow='hidden'
+			}
 			this.boss = this.$route.query.upid;
 			this.showNav = this.$route.query.showNav;
 			this.$nextTick(this.$f7.resize)
