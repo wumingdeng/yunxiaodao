@@ -37,9 +37,6 @@
 			}
 		},
 		methods:{
-			onTouched(){
-				console.log('dkdkjfkjdfj')
-			},
 			onSharedClick(event) {
 				if(event == "touchend") event.preventDefault();
 				this.popupOpened=false
@@ -50,7 +47,6 @@
 				return 'static/assets/userCenter/share/p1/share' + index + '.jpg'
 			},
 			onHooked() {
-				// if (this.boss && this.boss != this.$store.state.wxid) {
 				if (true) {
 					//绑定关系
 					console.log(this.boss)
@@ -67,12 +63,8 @@
 			}
 		},
 		mounted() {
-			if(localStorage.shared == "true"){
-				this.popupOpened = false
-			}else{
-				document.getElementById('shareDiv').style.height=document.body.clientHeight+'px';
-				document.getElementById('pitDiv').style.overflow='hidden'
-			}
+			document.getElementById('shareDiv').style.height=document.body.clientHeight+'px';
+			document.getElementById('pitDiv').style.overflow='hidden'
 			this.boss = this.$route.query.upid;
 			this.showNav = this.$route.query.showNav;
 			this.$nextTick(this.$f7.resize)
