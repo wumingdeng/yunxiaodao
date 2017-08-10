@@ -6,7 +6,7 @@
     			<span>
                     <p style="margin-top:5px;">
                         {{$store.state.userinfo.realName}}
-                        <img src="static/assets/userCenter/modifyInfo.png" style="height:0.98em;position:relative;top:3px;">
+                        <img src="static/assets/userCenter/modifyInfo.png" style="height:0.98em;position:relative;top:3px;" @click="gotoFillin">
                     </p>
                     <!-- <p>余额: 0</p> -->
                 </span>
@@ -155,6 +155,14 @@
             },
             gotoWithdraw() {
                 this.$router.push('/withdraw')
+            },
+            gotoFillin() {
+                this.$router.push({
+                    path:'/fillInfo',
+                    query:{
+                        isModify: true
+                    }
+                })
             }
         },
         components:{

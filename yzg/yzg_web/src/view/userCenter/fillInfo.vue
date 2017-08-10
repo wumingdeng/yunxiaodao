@@ -1,15 +1,19 @@
 <template>
 	<f7-page id="infoPage">
-<!-- 	  <f7-navbar sliding>
-      <f7-nav-center sliding style="left:-22px;" title=""></f7-nav-center>
+	  <f7-navbar sliding v-if="isModify">
+      <f7-nav-left>
+          <f7-link icon="icon-back color-black color-black" @click="$router.go(-1)"></f7-link>
+      </f7-nav-left>
+      <f7-nav-center sliding style="left:-22px;" title="修改资料"></f7-nav-center>
       <f7-nav-right></f7-nav-right>
-	  </f7-navbar> -->
-	  <img style="width:100%" src="static/assets/tgdyr.jpg">
-
+	  </f7-navbar>
+	  <div v-if="isModify" style="height:43px;"></div>
+	  <img v-if="!isModify" style="width:100%" src="static/assets/tgdyr.jpg">
+	
 	  <f7-list id="userinfoForm" class="infoBg" :style="infoBgStyle" form enctype="multipart/form-data">
       <f7-list-item class="fillInfoItem">
         <f7-label>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</f7-label>
-        <f7-input id="nameInput" class="fillInput" type="text" placeholder=""></f7-input>
+        <f7-input id="nameInput" class="fillInput" type="text" placeholder="" v-model="$store.state.userinfo.realName"></f7-input>
       </f7-list-item>
       <f7-list-item class="fillInfoItem">
         <f7-label>手机号码</f7-label>
@@ -34,11 +38,11 @@
      
       <f7-list-item class="fillInfoItem">
         <f7-label>执业医院</f7-label>
-        <f7-input id="hospitalInput" type="text" placeholder=""></f7-input>
+        <f7-input id="hospitalInput" type="text" placeholder="" v-model="$store.state.userinfo.hospital"></f7-input>
       </f7-list-item>
       <f7-list-item class="fillInfoItem">
         <f7-label>科&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;室</f7-label>
-        <f7-input id="departmentInput" type="text" placeholder=""></f7-input>
+        <f7-input id="departmentInput" type="text" placeholder=""  v-model="$store.state.userinfo.department"></f7-input>
       </f7-list-item>
       <f7-list-item v-if="isRequest" class="fillInfoItem">
 			  <f7-label>执业证书</f7-label>
@@ -70,6 +74,7 @@
 				upid: null,	//上线
 				isTouch: false, //连点控制
 				isRequest:false, 	//是否为申请推广人
+				isModify: false,	//是否主动点进来
 				selectJob: 1,
 				upload:{
             server:"",
@@ -248,7 +253,7 @@
 			//获取审核状态
     	var isRequest = to.query.request;
     	if (Global.isTest) {
-    		isRequest = true;
+    		// isRequest = true;
     	}
     	if(isRequest) {
     		Global.s.dispatch('getRequestStatus',{
@@ -276,8 +281,9 @@
 		},
 		mounted() {
 			this.isRequest = this.$route.query.request;
+			this.isModify = this.$route.query.isModify
 			if (Global.isTest) {
-				this.isRequest = true;
+				// this.isRequest = true;
 			}
 			this.upid = this.$route.query.upid;
 		}

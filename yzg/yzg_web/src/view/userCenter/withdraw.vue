@@ -95,6 +95,7 @@
   	background-color: rgb(243,245,245);
   	vertical-align: middle;
   	padding: 0 10px;
+    border-radius: 0 0 6px 6px;
   }
   #withdraw .withdrawArea input {
   	background-color: rgb(213,213,213);
